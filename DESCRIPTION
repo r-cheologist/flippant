@@ -1,0 +1,12 @@
+Package: mdaa
+Maintainer: Who to complain to <yourfault@somewhere.net>
+Author: balin
+Version: 1.0
+License: GPL-3
+Title: 
+Description: 
+Suggests:
+    testthat,
+    roxygen2
+Collate:
+    'mdaa-package.r'
