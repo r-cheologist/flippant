@@ -1,12 +1,17 @@
-Package: mdaa
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Author: balin
-Version: 1.0
-License: GPL-3
-Title: 
-Description: 
+Package: MDAA
+Title: MDAA - Menon Data & Analysis
+Description: A package intended to encapsulate and document data and its 
+  analysis related to the Menon Flippase project.
+URL: http://chili.qatar-med.cornell.edu/projects/mdaa
+Version: 0.1
+Authors@R: person("Johannes", "Graumann", role = c("aut","cre"),
+    email="johannes_graumann@web.de")
+Depends:
+    R (>= 2.15.1)
 Suggests:
     testthat,
     roxygen2
-Collate:
-    'mdaa-package.r'
+#Imports:
+#Enhances: 
+License: GPL (>= 3)
+LazyData: true
