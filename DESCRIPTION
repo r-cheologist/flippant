@@ -1,7 +1,7 @@
 Package: MDAA
-Title: MDAA - Menon Data & Analysis
-Description: A package intended to encapsulate and document data and its 
-  analysis related to the Menon Flippase project.
+Title: MDAA - Menon Data and Analysis
+Description: A package intended to encapsulate and document data and its
+    analysis related to the Menon Flippase project.
 URL: http://chili.qatar-med.cornell.edu/projects/mdaa
 Version: 0.1
 Authors@R: person("Johannes", "Graumann", role = c("aut","cre"),
@@ -9,9 +9,14 @@ Authors@R: person("Johannes", "Graumann", role = c("aut","cre"),
 Depends:
     R (>= 2.15.1)
 Suggests:
-    testthat,
-    roxygen2
-#Imports:
+    roxygen2,
+    R.utils,
+    testthat
+#Imports: 
 #Enhances: 
 License: GPL (>= 3)
 LazyData: true
+Collate:
+    'MDAA-package.R'
+    'data-20121111_proteinGroups.R'
+    'LoadData.R'
