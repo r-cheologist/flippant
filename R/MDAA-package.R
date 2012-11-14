@@ -1,6 +1,6 @@
 #' @title MDAA
 #' @description A package intended to encapsulate and document data and its 
-#'  analysis related to the Menon Flippase project.
+#' analysis related to the Menon Flippase project.
 #' @details
 #' This package provides the data related to the Flippase project as produced by
 #' MaxQuant (see section "References") and pairs it with the custom data 
