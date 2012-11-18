@@ -9,6 +9,7 @@ Authors@R: person("Johannes", "Graumann", role = c("aut","cre"),
 Depends:
     R (>= 2.15.1)
 Suggests:
+    digest,
     roxygen2,
     R.utils,
     testthat
@@ -18,5 +19,5 @@ License: GPL (>= 3)
 LazyData: true
 Collate:
     'MDAA-package.R'
-    'data-20121111_proteinGroups.R'
-    'LoadData.R'
+    'data-pGroups.R'
+    'data-sha256sums.R'
