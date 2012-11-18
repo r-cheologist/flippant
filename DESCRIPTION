@@ -7,7 +7,8 @@ Version: 0.1
 Authors@R: person("Johannes", "Graumann", role = c("aut","cre"),
     email="johannes_graumann@web.de")
 Depends:
-    R (>= 2.15.1)
+    R (>= 2.15.1),
+    ggplot2
 Suggests:
     digest,
     roxygen2,
@@ -21,3 +22,4 @@ Collate:
     'MDAA-package.R'
     'data-pGroups.R'
     'data-sha256sums.R'
+    'plot-RatioDisributionAcrossFractions.R'
