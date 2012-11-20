@@ -20,6 +20,8 @@ License: GPL (>= 3)
 LazyData: true
 Collate:
     'MDAA-package.R'
+    'Correlate.R'
     'data-pGroups.R'
     'data-sha256sums.R'
     'plot-RatioDisributionAcrossFractions.R'
+    'SimpleSort.R'
