@@ -11,6 +11,10 @@
 #' @examples
 #' require(MDAA)
 #' Relativate(c(0.5,10,1,NA))
+#' 
+#' # Dealing with all-NA vectors
+#' aNA <- as.vector(c(NA,NA,NA,NA),mode="numeric")
+#' Relativate(aNA)
 Relativate <- function(x){
   if(!is.vector(x)){
     stop("\"x\" must be of class vector.")
@@ -18,5 +22,9 @@ Relativate <- function(x){
   if(!is.numeric(x)){
     stop("\"x\" must be of class numeric.")
   }
-  return(x/max(x,na.rm=TRUE))
+  if(sum(is.na(x))==length(x)){
+    return(x)
+  } else {
+    return(x/max(x,na.rm=TRUE))
+  }
 }
