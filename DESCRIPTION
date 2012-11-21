@@ -24,4 +24,6 @@ Collate:
     'data-pGroups.R'
     'data-sha256sums.R'
     'plot-RatioDisributionAcrossFractions.R'
+    'RatioInversion.R'
+    'Relativate.R'
     'SimpleSort.R'

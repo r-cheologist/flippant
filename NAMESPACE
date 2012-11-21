@@ -1,1 +1,5 @@
+export(Correlate)
 export(RatioDistributionAcrossFractions)
+export(RatioInversion)
+export(Relativate)
+export(SimpleSort)
