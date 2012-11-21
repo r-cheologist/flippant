@@ -17,9 +17,9 @@
 #' @examples
 #' require(MDAA)
 #' RatioInversion(0.5)
-#' Ratioinversion(0.1,base=10)
+#' RatioInversion(0.1,base=10)
 #' RatioInversion(c(0.5,1,2))
-#' RatioInversion(data.frame(A=c(0.5,1,2),B=c(0.5,1,2))
+#' RatioInversion(data.frame(A=c(0.5,1,2),B=c(0.5,1,2)))
 RatioInversion <- function(x,base=2){
   if(length(base) != 1){
     stop("\"base\" must be a single numeric value.")
