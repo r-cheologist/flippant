@@ -8,9 +8,11 @@ Authors@R: person("Johannes", "Graumann", role = c("aut","cre"),
     email="johannes_graumann@web.de")
 Depends:
     R (>= 2.15.1),
-    ggplot2
+    ggplot2,
+    RCFPD
 Suggests:
     digest,
+    pcaMethods,
     roxygen2,
     R.utils,
     testthat
@@ -21,9 +23,8 @@ LazyData: true
 Collate:
     'MDAA-package.R'
     'Correlate.R'
+    'DataPrep.R'
     'data-pGroups.R'
     'data-sha256sums.R'
     'plot-RatioDisributionAcrossFractions.R'
-    'RatioInversion.R'
-    'Relativate.R'
     'SimpleSort.R'

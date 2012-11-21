@@ -1,5 +1,4 @@
 export(Correlate)
+export(DataPrep)
 export(RatioDistributionAcrossFractions)
-export(RatioInversion)
-export(Relativate)
 export(SimpleSort)
