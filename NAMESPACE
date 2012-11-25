@@ -1,3 +1,4 @@
+export(CmpleteAnalysis)
 export(Correlate)
 export(DataPrep)
 export(RatioDistributionAcrossFractions)
