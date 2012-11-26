@@ -1,5 +1,20 @@
 #' @export
-CmpleteAnalysis <- function(){}
+CompleteAnalysis <- function(dir=tempdir()){
+  # Prep the data for correlation analysis
+  myData <- DataPrep(pGroups)
+  # Correlate (Spearman)
+  myData$CC <- Correlate(
+    x=myData,
+    y=Relativate(flippaseActivity[["Av. Spec. Activity"]]))
+  # Merge with original data
+  subsetter <- sapply(rownames(myData),function(x){which(pGroups$id == x)})
+  myData <- cbind(pGroups[subsetter,],myData)
+  Figure1(myData)
+  
+  plot(seq(13),myData[1,1:13])
+  points(seq(13),Relativate(flippaseActivity[["Av. Spec. Activity"]]),col="red")
+}
+
 #   # Where do the ratio minima reside 1?
 #   #ratioMin <- sapply(split(tmpData,seq(nrow(tmpData))),which.min)
 #   # Impute missing values
