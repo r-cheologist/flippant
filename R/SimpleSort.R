@@ -7,8 +7,11 @@ SimpleSort <- function(){
   rownames(saveData) <- NULL
   # Extract columns containing NOT-NORMALIZED ratios and assemble
   tmpData <- saveData[grep(pattern="^Ratio H/L Exp. [[:alpha:]]{1}",names(saveData))]
-  ratioMin <- sapply(split(tmpData,seq(nrow(tmpData))),which.min)
-  simpleData <- saveData[ratioMin == 4,]
+  # Invert the ratios
+  tmpData <- RatioInversion(tmpData)
+  # Where's the max?'
+  ratioMax <- sapply(split(tmpData,seq(nrow(tmpData))),which.max)
+  simpleData <- saveData[ratioMax == 4,]
   simpleData <- simpleData[order(simpleData["Ratio H/L Exp. D"]),]
   topX <- 50
   write.table(
