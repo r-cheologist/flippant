@@ -7,8 +7,6 @@ CompleteAnalysis <- function(dir=tempdir()){
     x=fig1Data,
     y=Relativate(flippaseActivity[["Av. Spec. Activity"]]))
   # Merge with original data
-  plot(seq(13),myData[1,1:13])
-  points(seq(13),Relativate(flippaseActivity[["Av. Spec. Activity"]]),col="red")
   subsetter <- sapply(rownames(fig1Data),function(x){which(pGroups$id == x)})
   fig1Data <- cbind(pGroups[subsetter,],fig1Data)
   test <- Figure1(fig1Data,dir=dir)
