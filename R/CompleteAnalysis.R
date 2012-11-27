@@ -18,6 +18,18 @@ CompleteAnalysis <- function(dir=tempdir()){
     col.names=TRUE)
   # Produce first figure
   test <- Figure1(fig1Data,dir=dir)
+  # Simple Sort
+  sS <- SimpleSort(dir=dir)
+  write.table(
+    x = sS,
+    file = file.path(
+      dir,
+      paste(
+        Sys.Date(),
+        "MaxRatioInFrac4.txt",
+        sep="_")
+    ),
+    sep = "\t",row.names=FALSE,col.names=TRUE)
 }
 
 #   # Where do the ratio minima reside 1?
