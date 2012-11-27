@@ -13,15 +13,5 @@ SimpleSort <- function(){
   ratioMax <- sapply(split(tmpData,seq(nrow(tmpData))),which.max)
   simpleData <- saveData[ratioMax == 4,]
   simpleData <- simpleData[order(simpleData["Ratio H/L Exp. D"]),]
-  topX <- 50
-  write.table(
-    x = simpleData,
-    file = file.path(
-      "/tmp",
-      paste(
-        Sys.Date(),
-        "MinRatioInFracD.txt",
-        sep="")
-    ),
-    sep = "\t",row.names=FALSE,col.names=TRUE)
+  return(simpleData)
 }
