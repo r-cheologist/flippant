@@ -1,5 +1,6 @@
-export(CmpleteAnalysis)
+export(CompleteAnalysis)
 export(Correlate)
 export(DataPrep)
+export(Figure1)
 export(RatioDistributionAcrossFractions)
 export(SimpleSort)
