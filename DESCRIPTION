@@ -9,7 +9,9 @@ Authors@R: person("Johannes", "Graumann", role = c("aut","cre"),
 Depends:
     R (>= 2.15.1),
     ggplot2,
-    RCFPD
+    grid,
+    RCFPD,
+    reshape
 Suggests:
     digest,
     pcaMethods,
