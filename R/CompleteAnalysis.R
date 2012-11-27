@@ -33,6 +33,15 @@ CompleteAnalysis <- function(dir=tempdir()){
         sep="_")
     ),
     sep = "\t",row.names=FALSE,col.names=TRUE)
+  ###########################################################################
+  # Fish out profiles for flippase candidates tested negatively (Menon lab) #
+  ###########################################################################
+#   NonFlippases <- c("Cpt1","Ept1","Ist2","Cho1","Pis1","Ale1","Cho2","Slc1","Yop1","Srp102","Pbn1","Sec12","Ost1","Tsc10","Wbp1","Spc3","Pga3","Sop4","Sur2","Lcb2","Pmt1")
+  Figure2 <- FilteredProfilePlots(fig1Data,NonFlippases)
+  ####################################
+  # Fish out profiles for Erg1/Erg11 #
+  ####################################
+  Figure3 <- FilteredProfilePlots(fig1Data,c("Erg1","Erg11"))
 }
 
 #   # Where do the ratio minima reside 1?
