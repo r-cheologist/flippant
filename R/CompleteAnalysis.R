@@ -20,9 +20,11 @@ CompleteAnalysis <- function(dir=tempdir()){
     row.names=FALSE,
     col.names=TRUE)
   # Produce first figure
-  test <- Figure1(fig1Data,dir=dir)
-  # Simple Sort
-  sS <- SimpleSort(dir=dir)
+  Figure1(fig1Data,dir=dir)
+  ############################################################
+  # Simple sorting: which ratio profile peaks in fraction 4? #
+  ############################################################
+  sS <- SimpleSort()
   write.table(
     x = sS,
     file = file.path(

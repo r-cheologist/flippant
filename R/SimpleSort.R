@@ -9,9 +9,12 @@ SimpleSort <- function(){
   tmpData <- saveData[grep(pattern="^Ratio H/L Exp. [[:alpha:]]{1}",names(saveData))]
   # Invert the ratios
   tmpData <- RatioInversion(tmpData)
+  names(tmpData) <- sub(pattern="H/L",replacement="L/H",x=names(tmpData))
   # Where's the max?'
   ratioMax <- sapply(split(tmpData,seq(nrow(tmpData))),which.max)
-  simpleData <- saveData[ratioMax == 4,]
-  simpleData <- simpleData[order(simpleData["Ratio H/L Exp. D"]),]
+  # Assemble and filter
+  simpleData <- cbind(saveData,tmpData)
+  simpleData <- simpleData[ratioMax == 4,]
+  simpleData <- simpleData[order(simpleData["Ratio L/H Exp. D"],decreasing=TRUE),]
   return(simpleData)
 }
