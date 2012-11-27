@@ -12,7 +12,7 @@ CompleteAnalysis <- function(dir=tempdir()){
   # Save
   write.table(
     x=fig1Data,
-    file=file.path(dir,"Correlation.txt"),
+    file=file.path(dir,paste(Sys.Date(),"Correlation.txt",sep="_")),
     sep="\t",
     row.names=FALSE,
     col.names=TRUE)
