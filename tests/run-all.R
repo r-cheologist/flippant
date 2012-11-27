@@ -1,4 +1,4 @@
 library(testthat)
-library(mdaa)
+library(MDAA)
 
-test_package("mdaa")
+test_package("MDAA")
