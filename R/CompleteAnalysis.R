@@ -1,14 +1,17 @@
 #' @export
 CompleteAnalysis <- function(dir=tempdir()){
+  ###########################################
+  # Profile Correlation Analysis - Figure 1 #
+  ###########################################
   # Prep the data for correlation analysis
   fig1Data <- DataPrep(pGroups)
   # Correlate (Spearman)
-  fig1Data$CC <- Correlate(
-    x=fig1Data,
+  fig1Data$RelativeInverted$CC <- Correlate(
+    x=fig1Data[["RelativeInverted"]],
     y=Relativate(flippaseActivity[["Av. Spec. Activity"]]))
   # Merge with original data
-  subsetter <- sapply(rownames(fig1Data),function(x){which(pGroups$id == x)})
-  fig1Data <- cbind(pGroups[subsetter,],fig1Data)
+  subsetter <- sapply(rownames(fig1Data$RelativeInverted),function(x){which(pGroups$id == x)})
+  fig1Data <- cbind(pGroups[subsetter,],fig1Data$Inverted,fig1Data$RelativeInverted)
   # Save
   write.table(
     x=fig1Data,
