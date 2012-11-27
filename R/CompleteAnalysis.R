@@ -9,6 +9,14 @@ CompleteAnalysis <- function(dir=tempdir()){
   # Merge with original data
   subsetter <- sapply(rownames(fig1Data),function(x){which(pGroups$id == x)})
   fig1Data <- cbind(pGroups[subsetter,],fig1Data)
+  # Save
+  write.table(
+    x=fig1Data,
+    file=file.path(dir,"Correlation.txt"),
+    sep="\t",
+    row.names=FALSE,
+    col.names=TRUE)
+  # Produce first figure
   test <- Figure1(fig1Data,dir=dir)
 }
 
