@@ -1,18 +1,17 @@
 #' @export
 CompleteAnalysis <- function(dir=tempdir()){
   # Prep the data for correlation analysis
-  myData <- DataPrep(pGroups)
+  fig1Data <- DataPrep(pGroups)
   # Correlate (Spearman)
-  myData$CC <- Correlate(
-    x=myData,
+  fig1Data$CC <- Correlate(
+    x=fig1Data,
     y=Relativate(flippaseActivity[["Av. Spec. Activity"]]))
   # Merge with original data
-  subsetter <- sapply(rownames(myData),function(x){which(pGroups$id == x)})
-  myData <- cbind(pGroups[subsetter,],myData)
-  Figure1(myData)
-  
   plot(seq(13),myData[1,1:13])
   points(seq(13),Relativate(flippaseActivity[["Av. Spec. Activity"]]),col="red")
+  subsetter <- sapply(rownames(fig1Data),function(x){which(pGroups$id == x)})
+  fig1Data <- cbind(pGroups[subsetter,],fig1Data)
+  test <- Figure1(fig1Data,dir=dir)
 }
 
 #   # Where do the ratio minima reside 1?
