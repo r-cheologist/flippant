@@ -24,7 +24,7 @@ CompleteAnalysis <- function(dir=tempdir()){
   ############################################################
   # Simple sorting: which ratio profile peaks in fraction 4? #
   ############################################################
-  sS <- SimpleSort()
+  sS <- SimpleSort(Fraction=4)
   write.table(
     x = sS,
     file = file.path(
@@ -32,6 +32,17 @@ CompleteAnalysis <- function(dir=tempdir()){
       paste(
         Sys.Date(),
         "MaxRatioInFrac4.txt",
+        sep="_")
+    ),
+    sep = "\t",row.names=FALSE,col.names=TRUE)
+  sS <- SimpleSort(Fraction=3)
+  write.table(
+    x = sS,
+    file = file.path(
+      dir,
+      paste(
+        Sys.Date(),
+        "MaxRatioInFrac3.txt",
         sep="_")
     ),
     sep = "\t",row.names=FALSE,col.names=TRUE)
