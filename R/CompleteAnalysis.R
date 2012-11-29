@@ -59,6 +59,8 @@ CompleteAnalysis <- function(dir=tempdir()){
   Figure4 <- FilteredProfilePlots(fig1Data,c("Dfn1","Dfn2","Dfn3","Drs2","Neo1"))
   # Organellar markers for plasma membrane (Pma1,Gas1,Can1),Vacuole (Vph1), Golgi (Mnn1)
   Figure5 <- FilteredProfilePlots(fig1Data,c("Pma1","Gas1","Can1","Vph1","Mnn1","Sec61"))
+  # Cooperativity Erg1/11?
+  Figure6 <- AdditiveFilteredProfilePlots(fig1Data,c("Erg1","Erg11"))
 }
 
 #   # Where do the ratio minima reside 1?
