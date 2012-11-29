@@ -55,6 +55,10 @@ CompleteAnalysis <- function(dir=tempdir()){
   # Fish out profiles for Erg1/Erg11 #
   ####################################
   Figure3 <- FilteredProfilePlots(fig1Data,c("Erg1","Erg11"))
+  # p-type ATPases known to flip lipids
+  Figure4 <- FilteredProfilePlots(fig1Data,c("Dfn1","Dfn2","Dfn3","Drs2","Neo1"))
+  # Organellar markers for plasma membrane (Pma1,Gas1,Can1),Vacuole (Vph1), Golgi (Mnn1)
+  Figure5 <- FilteredProfilePlots(fig1Data,c("Pma1","Gas1","Can1","Vph1","Mnn1","Sec61"))
 }
 
 #   # Where do the ratio minima reside 1?
