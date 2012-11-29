@@ -33,3 +33,4 @@ Collate:
     'FilteredProfilePlots.R'
     'plot-RatioDisributionAcrossFractions.R'
     'SimpleSort.R'
+    'AdditiveFilteredProfilePlots.R'

@@ -1,3 +1,4 @@
+export(AdditiveFilteredProfilePlots)
 export(CompleteAnalysis)
 export(Correlate)
 export(DataPrep)
