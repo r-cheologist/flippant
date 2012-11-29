@@ -25,5 +25,9 @@ SimpleSort <- function(Fraction=NA){
     order(
       simpleData[grep(pattern="^Ratio H/L Exp. [[:alpha:]]{1}",names(simpleData))[Fraction]],
       decreasing=TRUE),]
+  # Filter out NA only rows
+  subsetter <- sapply(seq(nrow(simpleData)),function(x){sum(is.na(simpleData[x,grep(pattern="^Ratio H/L Exp. [[:alpha:]]{1}",names(simpleData))]))})
+  subsetter <- subsetter != length(grep(pattern="^Ratio H/L Exp. [[:alpha:]]{1}",names(simpleData)))
+  simpleData <- simpleData[subsetter,]
   return(simpleData)
 }
