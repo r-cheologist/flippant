@@ -72,6 +72,25 @@ CompleteAnalysis <- function(dir=tempdir()){
   Figure4 <- FilteredProfilePlots(fig1Data,c("Dfn1","Dfn2","Dfn3","Drs2","Neo1"))
   # Organellar markers for plasma membrane (Pma1,Gas1,Can1),Vacuole (Vph1), Golgi (Mnn1)
   Figure5 <- FilteredProfilePlots(fig1Data,c("Pma1","Gas1","Can1","Vph1","Mnn1","Sec61"))
+  # Enzymes/transporters involved in protein N-glycosylation
+  Figure6 <- FilteredProfilePlots(
+    fig1Data,
+    c("Alg7","Alg13","Alg14","Alg1","Alg2","Alg11","Rft1","Alg3","Alg9","Alg12",
+      "Alg6","Alg8","Alg10","Alg5","Dpm1","Dfg10","Sec59","Ost1","Swp1","Wbp1",
+      "Ost4","Stt3","Ost3","Ost6","Ost2"))
+  # Enzymes of GPI anchor biosynthesis
+  Figure7 <- FilteredProfilePlots(
+    fig1Data,
+    c("Gpi3","Gpi15","Gpi2","Gpi1","Gpi19","Eri1","Gpi12","Gwt1","Gpi14","Pbn1",
+      "Gpi18","Mcd4","Gpi10","Gpi13","Gpi11","Gpi7","Gaa1","Gpi8","Gpi16",
+      "Gpi17","Gab1","Bst1"))
+  # Religious list of abundant proteins
+  Figure8 <- FilteredProfilePlots(
+    fig1Data,
+    c("ERG1","PHO88","SUR2","LCB2","ERV25","HOM6","YMR122W-A","SAC1","PMT1",
+      "IFA38","HXT3","RTN1","ERG3","YNR021W","PGA3","ERP2","SEC61","ERG5",
+      "TSC13","VMA13","GSF2","TPO4","LCB1","ERP1","SNA2","STE24","FAT1","SEC62",
+      "WBP1","YHL017W","YNL181W","DPL1","VOA1","OST1","SOP4"))
   # Cooperativity Erg1/11?
   Figure6 <- AdditiveFilteredProfilePlots(fig1Data,c("Erg1","Erg11"))
 }
