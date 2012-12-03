@@ -12,6 +12,19 @@ CompleteAnalysis <- function(dir=tempdir()){
   # Merge with original data
   subsetter <- sapply(rownames(fig1Data$RelativeInverted),function(x){which(pGroups$id == x)})
   fig1Data <- cbind(pGroups[subsetter,],fig1Data$Inverted,fig1Data$RelativeInverted)
+  # Retrieve Biomart/ENSEMBL/TMHMM annotation regarding potential transmembrane
+  # nature
+  library(biomaRt)
+  ensembl <- useMart(biomart="ensembl",dataset="scerevisiae_gene_ensembl")
+  leadingMajorUniprotIds <- sapply(
+    strsplit(fig1Data[["Majority protein IDs"]],";"),
+    function(x){x[1]})
+  tmTable <- getBM(
+    mart=ensembl,
+    attributes=c("uniprot_swissprot_accession","transmembrane_domain"),
+    filters="uniprot_swissprot_accession",
+    values=leadingMajorUniprotIds)
+  fig1Data <- cbind(fig1Data,transmembrane_domain=tmTable[match(x=leadingMajorUniprotIds,table=tmTable[[1]]),"transmembrane_domain"])
   # Save
   write.table(
     x=fig1Data,
@@ -26,7 +39,7 @@ CompleteAnalysis <- function(dir=tempdir()){
   ############################################################
   sS <- SimpleSort(Fraction=4)
   write.table(
-    x = sS,
+    x = fig1Data[na.omit(match(sS$id,fig1Data$id)),],
     file = file.path(
       dir,
       paste(
@@ -37,7 +50,7 @@ CompleteAnalysis <- function(dir=tempdir()){
     sep = "\t",row.names=FALSE,col.names=TRUE)
   sS <- SimpleSort(Fraction=3)
   write.table(
-    x = sS,
+    x = fig1Data[na.omit(match(sS$id,fig1Data$id)),],
     file = file.path(
       dir,
       paste(

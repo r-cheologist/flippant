@@ -15,6 +15,7 @@ FilteredProfilePlots <- function(x,filter){
     round(x$CC,2),
     x[["Peptides Exp. D"]],
     round(x[["Ratio L/H Exp. D"]],2),
+    x$transmembrane_domain,
     sep="|")
   # Extract columns 
   tmpRel <- x[c("ID",names(x)[grep(pattern="^Rel. Ratio",names(x))])]
