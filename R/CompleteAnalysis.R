@@ -90,7 +90,7 @@ CompleteAnalysis <- function(dir=tempdir()){
     c("ERG1","PHO88","SUR2","LCB2","ERV25","HOM6","YMR122W-A","SAC1","PMT1",
       "IFA38","HXT3","RTN1","ERG3","YNR021W","PGA3","ERP2","SEC61","ERG5",
       "TSC13","VMA13","GSF2","TPO4","LCB1","ERP1","SNA2","STE24","FAT1","SEC62",
-      "WBP1","YHL017W","YNL181W","DPL1","VOA1","OST1","SOP4"))
+      "WBP1","YHL017W","YNL181W","DPL1","VOA1","OST1","SOP4","ARV1"))
   # Cooperativity Erg1/11?
   Figure6 <- AdditiveFilteredProfilePlots(fig1Data,c("Erg1","Erg11"))
 }
