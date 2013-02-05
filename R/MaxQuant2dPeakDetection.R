@@ -87,6 +87,8 @@ MaxQuant2dPeakDetection <- function(x,trim=TRUE,return.half=TRUE){
   lThanNext <- y1 < y2
   leThanLast <- y1 <= y3
   peakStart <- which((lThanNext + leThanLast) == 2) - 1
+  # Is there a maximum?
+  hasMax <- sum(na.omit((lThanNext + leThanLast) == 0)) > 0
   # Where does a peak stop?
   leThanNext <- y1 <= y2
   lThanLast <- y1 < y3
@@ -107,7 +109,13 @@ MaxQuant2dPeakDetection <- function(x,trim=TRUE,return.half=TRUE){
   }
   # Deal with zero return
   if(length(peakStart) == 0 & length(peakStop) == 0){
-    return(NULL)
+    # Take care of single big peak case
+    if(hasMax){
+      peakStart <- c(1,peakStart)
+      peakStop <- c(peakStop,length(x))
+    } else {
+      return(NULL)
+    }
   }
   # Split the data into the peaks
   ###############################
