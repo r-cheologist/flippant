@@ -1,6 +1,7 @@
-#' 2D peak detection for mass spectra as implement in MaxQuant.
-#'
-#' Citing from Cox and Mann (2008; see \cite{References} below):
+#' @title MaxQuant2dPeakDetection
+#' @aliases MaxQuant2dPeakDetection 
+#' @description 2D peak detection for mass spectra as implement in MaxQuant.
+#' @details Citing from Cox and Mann (2008; see \cite{References} below):
 #' \sQuote{In each MS scan, peaks are detected in a conventional two-dimensional
 #' (2D) way by first searching for local maxima of the intensity as a function of 
 #' m/z. The lower and upper limits of the m/z interval for a 2D peak ... are then 
@@ -14,8 +15,6 @@
 #' From the figures in Cox and Mann (2008) it seems apparent that the peak starts and
 #' stops determined as above are trimmed and the default \code{trim} replicates that
 #' behavior.
-#' @title MaxQuant2dPeakDetection
-#' @aliases MaxQuant2dPeakDetection MaxQuant2dPeakDetection.profile_SpectrumAsList
 #' @param x A \code{\link{numeric}} vector of intensities in the order of their
 #' profile contribution (e.g. the \code{y} values in the order of their \code{x}
 #' partners).
