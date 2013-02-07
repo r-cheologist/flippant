@@ -79,49 +79,81 @@ MaxQuant2dPeakDetection <- function(x,trim=TRUE,return.half=TRUE){
   # has been reached ... . This straightforward approach of peak detection without 
   # any de-convolution, smoothing or de-noising is sufficient for MS data generated 
   # by modern high precision mass spectrometers such as LTQ FT or Orbitrap.
-  y1 <- c(NA,x,NA)
-  y2 <- c(x,NA,NA)
-  y3 <- c(NA,NA,x)
+  y1 <- c(0,x,0)
+  y2 <- c(x,0,0)
+  y3 <- c(0,0,x)
   # Where does a peak start?
   lThanNext <- y1 < y2
   leThanLast <- y1 <= y3
-  peakStart <- which((lThanNext + leThanLast) == 2) - 1
-  # Is there a maximum?
-  hasMax <- sum(na.omit((lThanNext + leThanLast) == 0)) > 0
+  startCalc <- lThanNext + leThanLast
+  startCalc <- startCalc[seq(from=2,to=length(startCalc)-1)]
+  peakStart <- as.numeric(which(startCalc == 2))
   # Where does a peak stop?
   leThanNext <- y1 <= y2
   lThanLast <- y1 < y3
-  peakStop <- which((leThanNext + lThanLast) == 2) - 1
-  # Deal with not fully qualified peaks at the sequence extremes:
-  if(suppressWarnings(min(peakStop,na.rm=TRUE)) < suppressWarnings(min(peakStart,na.rm=TRUE))){
-    if(return.half){
-      peakStart <- c(1,peakStart)
-    } else {
-      peakStop <- peakStop[seq(from=2,to=length(peakStop))]
-    }}
-  if(suppressWarnings(max(peakStart,na.rm=TRUE)) > suppressWarnings(max(peakStop,na.rm=TRUE))){
-    if(return.half){
-      peakStop <- c(peakStop,length(x))
-    } else {
-      peakStart <- peakStart[seq(length(peakStart)-1)]
-    }
-  }
+  stopCalc <- leThanNext + lThanLast
+  stopCalc <- stopCalc[seq(from=2,to=length(stopCalc)-1)]
+  peakStop <- as.numeric(which(stopCalc == 2))
+  # Where are maxima?
+  peakMax <- unique(
+    c(
+      as.numeric(which(startCalc == 0)),
+      as.numeric(which(stopCalc == 0))))
   # Deal with zero return
-  if(length(peakStart) == 0 & length(peakStop) == 0){
+  noStart <- length(peakStart) == 0
+  noStop <- length(peakStop) == 0
+  if(noStart & noStop){
     # Take care of single big peak case
-    if(hasMax){
+    if(length(peakMax) > 0){
       peakStart <- c(1,peakStart)
       peakStop <- c(peakStop,length(x))
     } else {
       return(NULL)
     }
+  } else if(noStart){
+    peakStart <- c(1,peakStart)
+  } else if(noStop){
+    peakStop <- c(peakStop,length(x))
   }
+  # Deal with not fully qualified peaks at the sequence extremes
+  ##############################################################
+  minPeakStop <- suppressWarnings(min(peakStop,na.rm=TRUE))
+  minPeakStart <- suppressWarnings(min(peakStart,na.rm=TRUE))
+  minPeakMax <- suppressWarnings(min(peakMax,na.rm=TRUE))
+  if(minPeakStop <= minPeakStart){
+    if(!return.half){
+      if(minPeakMax <= minPeakStop & minPeakMax > 1){
+        peakStart <- c(1,peakStart)
+      } else {
+        peakStop <- peakStop[-1]
+      }
+    } else {
+      peakStart <- c(1,peakStart)
+    }
+  }
+  maxPeakStop <- suppressWarnings(max(peakStop,na.rm=TRUE))
+  maxPeakStart <- suppressWarnings(max(peakStart,na.rm=TRUE))
+  maxPeakMax <- suppressWarnings(max(peakMax,na.rm=TRUE))
+  if(maxPeakStop <= maxPeakStart){
+    if(!return.half){
+      if(maxPeakMax >= maxPeakStop & maxPeakMax < length(x)){
+        peakStop <- c(peakStop,length(x))
+      } else {
+        length(peakStart) <- length(peakStart)-1
+      }
+    } else {
+      peakStop <- c(peakStop,length(x))
+    }
+  }
+  # Still somthing left?
+  if(length(peakStart) == 0){return(NULL)}
   # Split the data into the peaks
   ###############################
   peaks <- lapply(
     X = seq(length(peakStart)),
-    FUN = function(x){
-      return(c(peakStart[x],peakStop[x]))
+    FUN = function(z){
+      output <- c(peakStart[z],peakStop[z])
+      return(output)
     })
   # Peak trimming
   ###############
