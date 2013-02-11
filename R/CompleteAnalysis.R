@@ -6,7 +6,10 @@ CompleteAnalysis <- function(dir=tempdir()){
   # Prep the data for correlation analysis
   fig1Data <- DataPrep(pGroups)
   # Correlate (Spearman)
-  fig1Data$RelativeInverted$CC <- Correlate(
+  fig1Data$Inverted$CC <- Correlate(
+    x=fig1Data[["Inverted"]],
+    y=flippaseActivity[["Av. Spec. Activity"]])
+  fig1Data$RelativeInverted[["Rel.CC"]] <- Correlate(
     x=fig1Data[["RelativeInverted"]],
     y=Relativate(flippaseActivity[["Av. Spec. Activity"]]))
   # Merge with original data
@@ -32,6 +35,10 @@ CompleteAnalysis <- function(dir=tempdir()){
     sep="\t",
     row.names=FALSE,
     col.names=TRUE)
+  # Investigate effect of normalization on CC
+#   sFigure1 <- ggplot(data=fig1Data)
+#   sFigure1 + 
+#     geom_point(aes_string(x="Rel.CC",y="CC"))
   # Produce first figure
   Figure1(fig1Data,dir=dir)
   ############################################################
