@@ -230,6 +230,120 @@ CompleteAnalysis <- function(directory=tempdir()){
       height=8.27,
       units="in")
   }
+  ##########################
+  # Classical PCP analysis #
+  ##########################
+  # Test integrity of original data source
+  require(digest)
+  filename <- file.path("extdata","20121111_peptides.txt.bz2")
+  filepath <- system.file(
+    filename,
+    package="MDAA",
+    mustWork=TRUE)
+  tmpdigest <- digest(file=filepath,algo="sha256")
+  identical(
+    tmpdigest,
+    sha256sums[which(sha256sums$File == filename),"Sha256Sum"])
+  # Test whether lazyLoaded data.frame is equivalent to original data
+  con <-  bzfile(description=filepath,open="r")
+  fresh_peptides <- read.table(
+    file=con,
+    header=TRUE,
+    sep="\t",
+    quote="",
+    check.names=FALSE,
+    fill=TRUE,
+    comment.char="",
+    stringsAsFactors=FALSE)
+  close(con)
+  identical(peptides, fresh_peptides)
+  # Prep data
+  chiData <- DataPrep(peptides,na.replacement=NULL)$RelativeInverted
+  ## A consensus fractionation profile was obtained by averaging the normalized 
+  ## peptide abundance profile for all peptides identifying the known centrosomal
+  ## proteins centrin 2, γ-tubulin and pericentrin.
+  # --> Here replaced by normalized activity profile
+  ## ‘χ2 values’ were calculated as the squared deviation of the normalized 
+  ## profile for all peptides divided by the number of data points, ...
+  chiSquare <- lapply(
+    seq(nrow(chiData)),
+    function(x){
+      pepProfile <- unlist(chiData[x,])
+      dps <- sum(!is.na(pepProfile))
+      # Unsure whether to square sum or elements ... latter option correlates nicely with CC
+      chiSquare <- sum((pepProfile - Relativate(flippaseActivity[["Av. Spec. Activity"]]))^2,na.rm=TRUE)/dps
+      return(
+        data.frame(ChiSquare=chiSquare,DataPoints=dps))
+    })
+  chiSquare <- rbind.fill(chiSquare)
+  # CC <- Correlate(x=myData,y=Relativate(flippaseActivity[["Av. Spec. Activity"]]))
+  # plot(CC,chiSquare$ChiSquare)
+  chiData <- cbind(id=rownames(chiData),chiData,chiSquare)
+  # Merge with Data
+  pepData <- merge(x=peptides,y=chiData,by="id",all=FALSE)
+  ## ... for all peptides that had a minimum of four quantification values.
+  pepData <- pepData[pepData$DataPoints >= 4,]  
+  ## The χ2 value of a protein was determined as the median of its peptide χ2 
+  ## values.
+  tmpPGroups <- strsplit(x=pepData[["Protein group IDs"]],split=";")
+  pGroupCount <- sapply(tmpPGroups,length)
+  pepData <- pepData[rep(seq(nrow(pepData)),times=pGroupCount),]
+  pepData[["Protein group IDs"]] <- unlist(tmpPGroups,use.names=FALSE)
+  pepDataList <- split(x=pepData,f=pepData[["Protein group IDs"]])
+  protChiSquare <- sapply(
+    pepDataList,
+    function(x){
+      median(x$ChiSquare,na.rm=TRUE)
+    })
+  protChiSquare <- protChiSquare[names(protChiSquare) %in% fig2Data$id]
+  fig2Data[match(names(protChiSquare),fig2Data$id),"ProtChiSquare"] <- protChiSquare
+  fig2Data <- fig2Data[order(fig2Data$ProtChiSquare),]
+  # Tag peptide count/raw ratio onto label
+  fig2Data$ID <- sapply(
+    seq(nrow(fig2Data)),
+    function(x){
+      output <- paste(
+        fig2Data[x,"ID"],
+        round(fig2Data[x,"Peak.CC"],2),
+        round(fig2Data[x,"ProtChiSquare"],4),
+        fig2Data[x,"Peptides Exp. D"],
+        round(fig2Data[x,"Ratio L/H Exp. D"],2),
+        fig2Data[x,"transmembrane_domain"],
+        sep="|")
+      return(output)
+    })
+  # Blotting batches
+  panels <- ceiling(nrow(fig2Data)/20)
+  fig2Data$Panel <- rep(1:panels,each=20)[1:nrow(fig2Data)]
+  # Melt the data frame into plottable shape and swtich fraction names from alpha to numeric
+  tmpRel <- fig2Data
+  names(tmpRel) <- sub(pattern="Rel. Ratio L/H Exp. ",replacement="",names(tmpRel))
+  tmpRel <- melt(data=tmpRel,measure.vars=LETTERS[1:13])
+  tmpRel$variable <- match(tmpRel$variable,LETTERS)
+  # Prep the flippase Activity analogously
+  tmpFA <- flippaseActivity
+  tmpFA[["Av. Spec. Activity"]] <- Relativate(tmpFA[["Av. Spec. Activity"]])
+  names(tmpFA) <- c("variable","value")
+  tmpFA$variable <- match(tmpFA$variable,LETTERS)
+  for(panel in seq(panels)){
+    tmpPlot <- ggplot(data=tmpRel[tmpRel$Panel == panel,],aes(x=variable,y=value))
+    tmpPlot <- tmpPlot +
+#       geom_rect(aes(xmin=PeakStart,xmax=PeakStop,ymin=-Inf,ymax=Inf),fill="blue",alpha=0.01) +
+      geom_line() +
+      geom_line(data=tmpFA,col="red") +
+      facet_wrap(~ID) +
+      labs(
+        x="Fraction",
+        y="Relative Ratio L/H/Relative Flippase Activity")
+    print(tmpPlot)
+    readline("Hit <ENTER> to proceed!")
+#     ggsave(
+#       filename=file.path("","tmp",paste("PeakCorrelation_",panel,".pdf",sep="")),
+#       plot=tmpPlot,
+#       width=11.69,
+#       height=8.27,
+#       units="in")
+  }
 }
 
 #   # Where do the ratio minima reside 1?
