@@ -100,6 +100,136 @@ CompleteAnalysis <- function(directory=tempdir()){
   FilteredProfilePlots(fig1Data,c("STE24"))
   # Cooperativity Erg1/11?
   Figure6 <- AdditiveFilteredProfilePlots(fig1Data,c("Erg1","Erg11"))
+  ####################################
+  # Do correlation analysis on PEAKS #
+  ####################################
+  # Prep the data for correlation analysis
+  fig2Data <- fig1Data[grep(pattern="Rel. Ratio L/H Exp. ",x=names(fig1Data))]
+  rownames(fig2Data) <- fig1Data$id
+  # Identify peaks
+  peaks <- lapply(
+    seq(nrow(fig2Data)),
+    function(x){
+      output <- list(
+        Peaks = MaxQuant2dPeakDetection(unlist(fig2Data[x,]),trim=FALSE,return.half=TRUE),
+        id=rownames(fig2Data[x,]))
+      return(output)
+    })
+  # Crosscorrelate peaks (>=3 points!)
+  peaks <- lapply(
+    seq(length(peaks)),
+    function(x){
+      tmpPeaks <- peaks[[x]]$Peaks
+      tmpCC <- sapply(
+        tmpPeaks,
+        function(y){
+          subsetter <- seq(from=y$Start,to=y$Stop)
+          if(length(subsetter) < 3){return(NA)}
+          tmpRatios <- fig2Data[x,subsetter]
+          tmpFA <- Relativate(flippaseActivity[["Av. Spec. Activity"]])[subsetter]
+          return(
+            Correlate(
+              x=tmpRatios,
+              y=tmpFA,
+              use.rows=TRUE,
+              method="spearman"))
+        })
+      tmpLength <- sapply(
+        tmpPeaks,
+        function(x){
+          length(seq(from=x$Start,to=x$Stop))
+        })
+      output <- list(id = peaks[[x]]$id, Peaks = tmpPeaks, CC = tmpCC, PPP = tmpLength)
+      return(output)
+    })
+  # Isolate the best peak
+  bestPeak <- lapply(
+    peaks,
+    function(x){
+      if(sum(is.na(x$CC))==length(x$Peaks)){
+        output <- data.frame(
+          PeakStart=NA,
+          PeakStop=NA,
+          PeakMax=NA,
+          PeakLength=NA,
+          Peak.CC=NA)          
+      } else {
+        subsetter <- which.max(x$CC)
+        output <- data.frame(
+          PeakStart=x$Peaks[[subsetter]][["Start"]],
+          PeakStop=x$Peaks[[subsetter]][["Stop"]],
+          PeakMax=x$Peaks[[subsetter]][["Max"]],
+          PeakLength=length(seq(from=x$Peaks[[subsetter]][["Start"]],to=x$Peaks[[subsetter]][["Stop"]])),
+          Peak.CC=x$CC[[subsetter]]
+          )
+      }
+      output$id <- x$id
+      return(output)
+    })
+  bestPeak <- rbind.fill(bestPeak)
+  # Merge with Data
+  fig2Data <- merge(x=fig1Data,y=bestPeak,by="id",all=FALSE)
+  # Toss NAs
+  fig2Data <- fig2Data[!is.na(fig2Data$Peak.CC),]
+  # Is the peak-derived CC better than the one derived from the total data?
+  fig2Data <- fig2Data[fig2Data$CC < fig2Data$Peak.CC,]
+  # Is the peak-derived CC >= 0.8
+  fig2Data <- fig2Data[fig2Data$Peak.CC >= 0.8,]
+  # Is the PPP > 3?
+  fig2Data <- fig2Data[fig2Data$PeakLength > 3,]
+  # Is the peak max where we expect it?
+  fig2Data <- fig2Data[fig2Data$PeakMax %in% c(3,4,5),]
+  # Is the total CC <= 0.8?
+  fig2Data <- fig2Data[fig2Data$CC <= 0.8,]
+  # Fill in missing gene names with Uniprot IDs
+  subsetter <- fig2Data[["Gene names"]]==""
+  fig2Data[subsetter,"Gene names"] <- fig2Data[subsetter,"Majority protein IDs"]
+  names(fig2Data)[which(names(fig2Data)=="Gene names")] <- "ID"
+  # Tag peptide count/raw ratio onto label
+  fig2Data$ID <- sapply(
+      seq(nrow(fig2Data)),
+      function(x){
+        output <- paste(
+          fig2Data[x,"ID"],
+          round(fig2Data[x,"Peak.CC"],2),
+          fig2Data[x,"Peptides Exp. D"],
+          round(fig2Data[x,"Ratio L/H Exp. D"],2),
+          fig2Data[x,"transmembrane_domain"],
+          sep="|")
+        return(output)
+      })
+  # Order by CC
+  fig2Data <- fig2Data[order(fig2Data$Peak.CC,decreasing=TRUE),]
+  # Blotting batches
+  panels <- ceiling(nrow(fig2Data)/20)
+  fig2Data$Panel <- rep(1:panels,each=20)[1:nrow(fig2Data)]
+  # Melt the data frame into plottable shape and swtich fraction names from alpha to numeric
+  tmpRel <- fig2Data
+  names(tmpRel) <- sub(pattern="Rel. Ratio L/H Exp. ",replacement="",names(tmpRel))
+  tmpRel <- melt(data=tmpRel,measure.vars=LETTERS[1:13])
+  tmpRel$variable <- match(tmpRel$variable,LETTERS)
+  # Prep the flippase Activity analogously
+  tmpFA <- flippaseActivity
+  tmpFA[["Av. Spec. Activity"]] <- Relativate(tmpFA[["Av. Spec. Activity"]])
+  names(tmpFA) <- c("variable","value")
+  tmpFA$variable <- match(tmpFA$variable,LETTERS)
+  for(panel in seq(panels)){
+    tmpPlot <- ggplot(data=tmpRel[tmpRel$Panel == panel,],aes(x=variable,y=value))
+    tmpPlot <- tmpPlot +
+      geom_rect(aes(xmin=PeakStart,xmax=PeakStop,ymin=-Inf,ymax=Inf),fill="blue",alpha=0.01) +
+      geom_line() +
+      geom_line(data=tmpFA,col="red") +
+      facet_wrap(~ID) +
+      labs(
+        x="Fraction",
+        y="Relative Ratio L/H/Relative Flippase Activity")
+    ggsave(
+      filename=file.path("","tmp",paste("PeakCorrelation_",panel,".pdf",sep="")),
+      plot=tmpPlot,
+      width=11.69,
+      height=8.27,
+      units="in")
+  }
 }
 
 #   # Where do the ratio minima reside 1?
