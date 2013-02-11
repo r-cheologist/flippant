@@ -17,7 +17,6 @@ CompleteAnalysis <- function(directory=tempdir()){
   fig1Data <- cbind(pGroups[subsetter,],fig1Data$Inverted,fig1Data$RelativeInverted)
   # Retrieve Biomart/ENSEMBL/TMHMM annotation regarding potential transmembrane
   # nature
-  library(biomaRt)
   ensembl <- useMart(biomart="ensembl",dataset="scerevisiae_gene_ensembl")
   leadingMajorUniprotIds <- sapply(
     strsplit(fig1Data[["Majority protein IDs"]],";"),
