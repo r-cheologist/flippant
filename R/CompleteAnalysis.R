@@ -1,5 +1,5 @@
 #' @export
-CompleteAnalysis <- function(dir=tempdir()){
+CompleteAnalysis <- function(directory=tempdir()){
   ###########################################
   # Profile Correlation Analysis - Figure 1 #
   ###########################################
@@ -31,7 +31,7 @@ CompleteAnalysis <- function(dir=tempdir()){
   # Save
   write.table(
     x=fig1Data,
-    file=file.path(dir,paste(Sys.Date(),"Correlation.txt",sep="_")),
+    file=file.path(directory,paste(Sys.Date(),"Correlation.txt",sep="_")),
     sep="\t",
     row.names=FALSE,
     col.names=TRUE)
@@ -40,7 +40,7 @@ CompleteAnalysis <- function(dir=tempdir()){
 #   sFigure1 + 
 #     geom_point(aes_string(x="Rel.CC",y="CC"))
   # Produce first figure
-  Figure1(fig1Data,dir=dir)
+  Figure1(fig1Data,directory=directory)
   ############################################################
   # Simple sorting: which ratio profile peaks in fraction 4? #
   ############################################################
@@ -48,7 +48,7 @@ CompleteAnalysis <- function(dir=tempdir()){
   write.table(
     x = fig1Data[na.omit(match(sS$id,fig1Data$id)),],
     file = file.path(
-      dir,
+      directory,
       paste(
         Sys.Date(),
         "MaxRatioInFrac4.txt",
@@ -59,7 +59,7 @@ CompleteAnalysis <- function(dir=tempdir()){
   write.table(
     x = fig1Data[na.omit(match(sS$id,fig1Data$id)),],
     file = file.path(
-      dir,
+      directory,
       paste(
         Sys.Date(),
         "MaxRatioInFrac3.txt",
