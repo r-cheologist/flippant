@@ -22,8 +22,9 @@
 #' (defaulting to \code{TRUE}).
 #' @param return.half Whether or not to return not fully qualified peaks at the
 #' sequence extremes (defaulting to \code{TRUE}). 
-#' @return Returns a \code{\link{list}} of \code{\link{numeric}} vectors of 
-#' length 2, indicating the starting and stopping index of detected peaks. 
+#' @return Returns a \code{\link{list}} of \code{\link{list}}s vectors of 
+#' length 2, indicating \code{Start}, \code{Stop} and\code{Max} indexes of 
+#' detected peaks. 
 #' Returns \code{\link{NULL}} if no peak is detected.
 #' @author Johannes Graumann
 #' @references
@@ -45,12 +46,13 @@
 #' for(peaks in peakList){
 #'  plot(x,y)
 #'  rect(
-#'    xleft=sapply(peaks,function(z){x[z[1]]}),
-#'    xright=sapply(peaks,function(z){x[z[2]]}),
+#'    xleft=sapply(peaks,function(z){z$Start}),
+#'    xright=sapply(peaks,function(z){z$Stop}),
 #'    ybottom=0,
 #'    ytop=10,
 #'    col=rainbow(length(peaks)),
 #'    density=10)
+#'  abline(v=sapply(peaks,function(z){z$Max}),lty=2,col=rainbow(length(peaks)))
 #'  readline("Hit <ENTER> to proceed ...")
 #' }
 MaxQuant2dPeakDetection <- function(x,trim=TRUE,return.half=TRUE){
@@ -95,10 +97,25 @@ MaxQuant2dPeakDetection <- function(x,trim=TRUE,return.half=TRUE){
   stopCalc <- stopCalc[seq(from=2,to=length(stopCalc)-1)]
   peakStop <- as.numeric(which(stopCalc == 2))
   # Where are maxima?
-  peakMax <- unique(
-    c(
-      as.numeric(which(startCalc == 0)),
-      as.numeric(which(stopCalc == 0))))
+  peakMax <- sort(
+    unique(
+      c(
+        as.numeric(which(startCalc == 0)),
+        as.numeric(which(stopCalc == 0)))))
+  # Deal with potential plateaus
+  if(length(peakMax) > 1){
+    tmpPeakMax <- unlist(
+      sapply(
+        seq(length(peakMax)-1),
+        function(y){
+          if(length(unique(x[seq(from=peakMax[y],to=peakMax[y+1])])) == 1){
+            return(seq(from=peakMax[y],to=peakMax[y+1]))
+          } else {
+            return(NULL)
+          }
+        }),use.names=FALSE)
+    peakMax <- sort(unique(c(peakMax,tmpPeakMax)))
+  }
   # Deal with zero return
   noStart <- length(peakStart) == 0
   noStop <- length(peakStop) == 0
@@ -152,7 +169,10 @@ MaxQuant2dPeakDetection <- function(x,trim=TRUE,return.half=TRUE){
   peaks <- lapply(
     X = seq(length(peakStart)),
     FUN = function(z){
-      output <- c(peakStart[z],peakStop[z])
+      output <- list(
+        Start=peakStart[z],
+        Stop=peakStop[z])
+      output$Max <- peakMax[peakMax %in% seq(from=output$Start,to=output$Stop)]
       return(output)
     })
   # Peak trimming
@@ -162,10 +182,14 @@ MaxQuant2dPeakDetection <- function(x,trim=TRUE,return.half=TRUE){
       peaks,
       function(x){
         # Points In Peak
-        pip <- x[2]-x[1]+1
+        pip <- x$Stop-x$Start+1
         # Only trim peaks with pip > 2
         if(pip < 3){return(x)}
-        return(x + c(1,-1))
+        output <- x
+        output$Start <- output$Start + 1
+        output$Stop <- output$Stop - 1
+        output$Max <- output$Max[output$Max %in% seq(from=output$Start,to=output$Stop)]
+        return(output)
       })
   }
   # Assemble output #
