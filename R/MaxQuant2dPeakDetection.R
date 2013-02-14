@@ -81,6 +81,9 @@ MaxQuant2dPeakDetection <- function(x,trim=TRUE,return.half=TRUE){
   # has been reached ... . This straightforward approach of peak detection without 
   # any de-convolution, smoothing or de-noising is sufficient for MS data generated 
   # by modern high precision mass spectrometers such as LTQ FT or Orbitrap.
+  # NA purification
+  xNa <- which(is.na(x))
+  x <- na.omit(x)
   y1 <- c(0,x,0)
   y2 <- c(x,0,0)
   y3 <- c(0,0,x)
@@ -90,18 +93,27 @@ MaxQuant2dPeakDetection <- function(x,trim=TRUE,return.half=TRUE){
   startCalc <- lThanNext + leThanLast
   startCalc <- startCalc[seq(from=2,to=length(startCalc)-1)]
   peakStart <- as.numeric(which(startCalc == 2))
+  if(length(xNa) != 0 & length(peakStart) != 0){
+    peakStart <- peakStart + sapply(peakStart,function(z){sum(xNa <= z)})
+  }
   # Where does a peak stop?
   leThanNext <- y1 <= y2
   lThanLast <- y1 < y3
   stopCalc <- leThanNext + lThanLast
   stopCalc <- stopCalc[seq(from=2,to=length(stopCalc)-1)]
   peakStop <- as.numeric(which(stopCalc == 2))
+  if(length(xNa) != 0 & length(peakStop) != 0){
+    peakStop <- peakStop + sapply(peakStop,function(z){sum(xNa <= z)})
+  }
   # Where are maxima?
   peakMax <- sort(
     unique(
       c(
         as.numeric(which(startCalc == 0)),
         as.numeric(which(stopCalc == 0)))))
+  if(length(xNa) != 0 & length(peakMax) != 0){
+    peakMax <- peakMax + sapply(peakMax,function(z){sum(xNa <= z)})
+  }
   # Deal with potential plateaus
   if(length(peakMax) > 1){
     tmpPeakMax <- unlist(
@@ -123,14 +135,14 @@ MaxQuant2dPeakDetection <- function(x,trim=TRUE,return.half=TRUE){
     # Take care of single big peak case
     if(length(peakMax) > 0){
       peakStart <- c(1,peakStart)
-      peakStop <- c(peakStop,length(x))
+      peakStop <- c(peakStop,length(x) + length(xNa))
     } else {
       return(NULL)
     }
   } else if(noStart){
     peakStart <- c(1,peakStart)
   } else if(noStop){
-    peakStop <- c(peakStop,length(x))
+    peakStop <- c(peakStop,length(x) + length(xNa))
   }
   # Deal with not fully qualified peaks at the sequence extremes
   ##############################################################
@@ -153,13 +165,13 @@ MaxQuant2dPeakDetection <- function(x,trim=TRUE,return.half=TRUE){
   maxPeakMax <- suppressWarnings(max(peakMax,na.rm=TRUE))
   if(maxPeakStop <= maxPeakStart){
     if(!return.half){
-      if(maxPeakMax >= maxPeakStop & maxPeakMax < length(x)){
-        peakStop <- c(peakStop,length(x))
+      if(maxPeakMax >= maxPeakStop & maxPeakMax < length(x) + length(xNa)){
+        peakStop <- c(peakStop,length(x) + length(xNa))
       } else {
         length(peakStart) <- length(peakStart)-1
       }
     } else {
-      peakStop <- c(peakStop,length(x))
+      peakStop <- c(peakStop,length(x) + length(xNa))
     }
   }
   # Still somthing left?
