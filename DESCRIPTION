@@ -10,7 +10,7 @@ Depends:
     R (>= 2.15.1),
     ggplot2,
     grid,
-    RCFPD,
+    RCFPD (>= 1.2.1),
     reshape
 Suggests:
     digest,
