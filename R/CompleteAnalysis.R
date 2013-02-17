@@ -276,7 +276,7 @@ CompleteAnalysis <- function(directory=tempdir()){
         data.frame(ChiSquare=chiSquare,DataPoints=dps))
     })
   chiSquare <- rbind.fill(chiSquare)
-  # CC <- Correlate(x=myData,y=Relativate(flippaseActivity[["Av. Spec. Activity"]]))
+  # CC <- Correlate(x=chiData,y=Relativate(flippaseActivity[["Av. Spec. Activity"]]))
   # plot(CC,chiSquare$ChiSquare)
   chiData <- cbind(id=rownames(chiData),chiData,chiSquare)
   # Merge with Data
