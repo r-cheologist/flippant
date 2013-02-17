@@ -243,6 +243,16 @@ tmpPlot +
     y="Relative Logarithmized Ratio L/H, Relative Logarithmized Flippase Activity",
     title="Spearman Correlation Coefficient Bins")
 
+tmpPlot <- ggplot(data=plotData[plotData$transmembrane_domain == "TMHMM",])
+tmpPlot + 
+  geom_line(aes(x=variable,y=value,group=Label)) +
+  geom_line(data=relLog2Fa,aes(x=variable,y=value),color="red") +
+  facet_wrap(~Spearman.CC.Bin,nrow=8) +
+  labs(
+    x="Fraction",
+    y="Relative Logarithmized Ratio L/H, Relative Logarithmized Flippase Activity",
+    title="Spearman Correlation Coefficient Bins - TMD Proteins Only")
+
 for(bin in levels(plotData$Spearman.CC.Bin)){
   tmpPlotData <- plotData[plotData$Spearman.CC.Bin == bin,]
   tmpPlot <- ggplot(data=tmpPlotData)
