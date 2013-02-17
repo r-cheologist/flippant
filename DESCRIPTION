@@ -8,6 +8,7 @@ Authors@R: person("Johannes", "Graumann", role = c("aut","cre"),
     email="johannes_graumann@web.de")
 Depends:
     R (>= 2.15.1),
+    biomaRt,
     ggplot2,
     grid,
     RCFPD (>= 1.2.1),
@@ -26,6 +27,7 @@ Collate:
     'MDAA-package.R'
     'CompleteAnalysis.R'
     'ChiSquare.R'
+    'CleanAnalysis.R'
     'Correlate.R'
     'DataPrep.R'
     'data-pGroups.R'
