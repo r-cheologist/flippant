@@ -35,3 +35,4 @@ Collate:
     'plot-RatioDisributionAcrossFractions.R'
     'SimpleSort.R'
     'AdditiveFilteredProfilePlots.R'
+    'MaxQuant2dPeakDetection.R'
