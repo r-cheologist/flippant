@@ -25,6 +25,7 @@ LazyData: true
 Collate:
     'MDAA-package.R'
     'CompleteAnalysis.R'
+    'ChiSquare.R'
     'Correlate.R'
     'DataPrep.R'
     'data-pGroups.R'
