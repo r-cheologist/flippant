@@ -287,6 +287,50 @@ for(bin in levels(plotData$Spearman.CC.Bin)){
 
 #######################################
 
+plotData <- protData[protData$transmembrane_domain !="",]
+plotData <- plotData[!is.na(plotData$transmembrane_domain),]
+pairwisecombinations <- combn(seq(nrow(plotData)),m=2,simplify=FALSE)
+pairwiselist <- lapply(
+  pairwisecombinations,
+  function(x){
+    # NA + x currently produces NA!
+    ratios <- data.frame(rbind(plotData[x[1],protCols] + plotData[x[2],protCols]))
+    names(ratios) <- paste("Comb.",protCols)
+    ratios[["Label"]] <- paste(sub(pattern="\\|.*$",replacement="",x=plotData[x,"Label"]),collapse=" + ")
+    return(ratios)
+  })
+pairwise <- rbind.fill(pairwiselist)
+# Careful! Based on strange current version of relLog2Fa!
+pairwise[["Spearman.CC"]] <- Correlate(
+  x=pairwise[paste("Comb.",protCols)],
+  y=relLog2Fa$value,
+  use.rows=TRUE,
+  method="spearman",
+  use="na.or.complete")
+# Add CC bins
+pairwise$Spearman.CC.Bin <- cut(
+  x=pairwise$Spearman.CC,
+  breaks=seq(from=-1,to=1,by=0.05),
+  include.lowest=TRUE)
+table(pairwise$Spearman.CC.Bin)
+## --> There are approx 100 pairs just in the 0.95-1 bin
+## --> likely not much power in this analysis.
+
+# Prep for plotting
+plotData <- pairwise
+names(plotData) <- sub(pattern="Comb. Rel. Log2 Ratio L/H Exp. ",replacement="",names(plotData))
+
+# Melt the data frame into plottable shape and swtich fraction names from alpha to numeric
+plotData <- melt(data=plotData,measure.vars=LETTERS[1:13],na.rm=TRUE)
+plotData$variable <- match(plotData$variable,LETTERS)
+table()
+
+tmpPlot <- ggplot(data=plotData[plotData$Spearman.CC.Bin == "(0.95,1]",])
+tmpPlot +
+  geom_line(aes(x=variable,y=value,color=Label)
+
+#######################################
+
 # Reload data - no data point filtration
 protData <- pGroups
 # Extract columns containing NOT-NORMALIZED ratios and assemble
