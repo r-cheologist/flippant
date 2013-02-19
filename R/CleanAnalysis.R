@@ -285,6 +285,40 @@ for(bin in levels(plotData$Spearman.CC.Bin)){
 #   readline("Hit <ENTER> to proceed ...")
 }
 
+plotData <- plotData[plotData$transmembrane_domain == "TMHMM",]
+for(bin in levels(plotData$Spearman.CC.Bin)){
+  tmpPlotData <- plotData[plotData$Spearman.CC.Bin == bin,]
+  tmpPlot <- ggplot(data=tmpPlotData)
+  tmpPlot <- tmpPlot +
+    geom_line(aes(x=variable,y=value,color=Label))+
+    geom_line(data=relLog2Fa,aes(x=variable,y=value),color="red") +
+    labs(
+      x="Fraction",
+      y="Relative Logarithmized Ratio L/H, Relative Logarithmized Flippase Activity",
+      title=paste("Spearman Correlation Coefficient Bin",bin))
+  if(!(bin %in% c("[-1,-0.95]","(-0.95,-0.9]","(-0.9,-0.85]","(0.15,0.2]","(0.35,0.4]","(0.4,0.45]","(0.95,1]"))){
+    if(bin %in% c("(-0.65,-0.6]","(-0.6,-0.55]","(-0.55,-0.5]","(-0.4,-0.35]")){
+      tmpPlot <- tmpPlot + guides(col=guide_legend(ncol=3))
+    } else {
+      tmpPlot <- tmpPlot + guides(col=guide_legend(ncol=2))
+    }
+  }
+  #   print(tmpPlot)
+  tmpBin <- sub("\\[","",bin)
+  tmpBin <- sub("\\]","",tmpBin)
+  tmpBin <- sub("\\(","",tmpBin)
+  tmpBin <- sub("\\)","",tmpBin)
+  tmpBin <- sub("\\,","_",tmpBin)
+  ggsave(
+    filename=file.path(directory,paste("TMHMM_SpearmanCC",tmpBin,"Bin.pdf",sep="_")),
+    width=11.69,
+    height=8.27,
+    unit="in",
+    dpi=300)
+  #   readline("Hit <ENTER> to proceed ...")
+}
+
+
 #######################################
 
 plotData <- protData[protData$transmembrane_domain !="",]
