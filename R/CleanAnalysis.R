@@ -450,17 +450,19 @@ protData$Spearman.CC.Bin <- cut(
 # Retrieve Biomart/ENSEMBL/TMHMM annotation regarding potential transmembrane
 # nature
 ensembl <- useMart(biomart="ensembl",dataset="scerevisiae_gene_ensembl")
+tmTable <- getBM(
+  mart=ensembl,
+  attributes=c("uniprot_swissprot_accession","transmembrane_domain"))
+if(max(sapply(strsplit(tmTable$uniprot_swissprot_accession,";"),length)) != 1){
+  stop("ID spitting necessary.")
+}
 leadingMajorUniprotIds <- sapply(
   strsplit(protData[["Majority protein IDs"]],";"),
   function(x){x[1]})
-tmTable <- getBM(
-  mart=ensembl,
-  attributes=c("uniprot_swissprot_accession","transmembrane_domain"),
-  filters="uniprot_swissprot_accession",
-  values=leadingMajorUniprotIds)
 protData <- cbind(
   protData,
   transmembrane_domain=tmTable[match(x=leadingMajorUniprotIds,table=tmTable[[1]]),"transmembrane_domain"])
+
 # Tag peptide count/raw ratio onto label
 tmpLabels  <- sapply(strsplit(protData[["Gene names"]],";"),function(x){x[1]})
 tmpLabels[is.na(tmpLabels)] <- protData[is.na(tmpLabels),"Majority protein IDs"]
@@ -542,16 +544,22 @@ bestPeak <- rbind.fill(bestPeak)
 protData <- merge(x=protData,y=bestPeak,by="id",all=TRUE)
 # Toss NAs
 protData <- protData[!is.na(protData$Peak.CC),]
+# Filter for minimum number of values
+minValueCount <- (length(protCols) - 1)
+protData <- protData[rowSums(!is.na(protData[protCols])) >= minValueCount,]
 # Is the peak-derived CC better than the one derived from the total data?
 protData <- protData[protData$Spearman.CC < protData$Peak.CC,]
 # Is the peak-derived CC >= 0.8
-protData <- protData[protData$Peak.CC >= 0.8,]
+#protData <- protData[protData$Peak.CC >= 0.8,]
 # Is the PPP > 3?
 protData <- protData[protData$PeakLength > 3,]
 # Is the peak max where we expect it?
-protData <- protData[protData$PeakMax %in% c(3,4,5),]
+# protData <- protData[protData$PeakMax %in% c(3,4,5),]
+protData <- protData[protData$PeakMax ==4,]
 # Is the total CC <= 0.8?
-protData <- protData[protData$Spearman.CC <= 0.8,]
+#protData <- protData[protData$Spearman.CC <= 0.8,]
+# Concentrate on TM proteins
+protData <- protData[protData$transmembrane_domain == "TMHMM",]
 # Tag peptide count/raw ratio onto label
 tmpLabels  <- sapply(strsplit(protData[["Gene names"]],";"),function(x){x[1]})
 tmpLabels[is.na(tmpLabels)] <- protData[is.na(tmpLabels),"Majority protein IDs"]
@@ -572,15 +580,21 @@ tmpRel <- protData
 names(tmpRel) <- sub(pattern="Rel. Log2 Ratio L/H Exp. ",replacement="",names(tmpRel))
 tmpRel <- melt(data=tmpRel,measure.vars=LETTERS[1:13])
 tmpRel$variable <- match(tmpRel$variable,LETTERS)
+tmpRel$variable <- as.numeric(tmpRel$variable)
+# tmpRel$PeakStart <- factor(tmpRel$PeakStart)
+# tmpRel$PeakStop <- factor(tmpRel$PeakStop)
 # Prep the flippase Activity analogously
 relLog2Fa <- data.frame(rbind(Relativate(log2(flippaseActivity[["Av. Spec. Activity"]]))))
 names(relLog2Fa) <- LETTERS[1:length(relLog2Fa)]
 relLog2Fa <- melt(data=relLog2Fa,measure.vars=LETTERS[1:13],na.rm=TRUE)
 relLog2Fa$variable <- match(relLog2Fa$variable,LETTERS)
+relLog2Fa$variable <- as.numeric(relLog2Fa$variable)
 for(panel in seq(panels)){
-  tmpPlot <- ggplot(data=tmpRel[tmpRel$Panel == panel,],aes(x=factor(variable),y=value))
+  df <- tmpRel[tmpRel$Panel == panel,]
+  cat(levels(df$variable),"\n")
+  tmpPlot <- ggplot(data=df,aes(x=variable,y=value))
   tmpPlot <- tmpPlot +
-    geom_rect(aes(xmin=factor(PeakStart),xmax=factor(PeakStop),ymin=-Inf,ymax=Inf),fill="blue",alpha=0.01) +
+    geom_rect(aes(xmin=PeakStart,xmax=PeakStop,ymin=-Inf,ymax=Inf),fill="blue",alpha=0.01) +
     geom_line(aes(group=Label)) +
     geom_line(data=relLog2Fa,color="red",aes(group=NA)) +
     facet_wrap(~Label) +
@@ -595,30 +609,143 @@ for(panel in seq(panels)){
     units="in")
 }
 
+################################################################################
 
-
-
-
-
+# Reload data - no data point filtration
+protData <- pGroups
+# Extract columns containing NOT-NORMALIZED ratios and assemble
+protSubsetter <- grep(pattern="^Ratio H/L Exp. [[:alpha:]]{1}$",names(protData))
+# Reverse
+protCols <- sub(pattern="H/L",replacement="L/H",names(protData)[protSubsetter])
+protData[protCols] <- RatioInversion(protData[protSubsetter])
+rm(protSubsetter)
+# Logarithmize
+protData[protCols] <- log2(protData[protCols])
+names(protData)[which(names(protData) %in% protCols)] <- paste("Log2",protCols)
+protCols <- paste("Log2",protCols)
+# Relativate
+protDataList <- lapply(
+  seq(nrow(protData)),
+  function(x){
+    ratios <- unlist(protData[x,protCols])
+    data.frame(rbind(Relativate(ratios)),check.names=FALSE)
+  })
+protDataList <- rbind.fill(protDataList)
+protData[paste("Rel.",protCols)] <- protDataList
+# names(protData)[which(names(protData) %in% protCols)] <- paste("Rel.",protCols)
+protCols <- paste("Rel.",protCols)
+# Discard reverse and contaminant
+protData <- protData[protData$Reverse != "+",]
+protData <- protData[protData$Contaminant != "+",]
+# Compare protein profiles with Flippase Activity using multiple measures
+relLog2Fa <- Relativate(log2(flippaseActivity[["Av. Spec. Activity"]]))
+# which fractions to choose?
+fs <- seq(11)
+# Filter for minimum number of values
+minValueCount <- (length(fs) - 1)
+protData <- protData[rowSums(!is.na(protData[protCols[fs]])) >= minValueCount,]
+# Graumann's choice
+protData[["Partial.Spearman.CC"]] <- Correlate(
+  x=protData[protCols[fs]],
+  y=relLog2Fa[fs],
+  use.rows=TRUE,
+  method="spearman",
+  use="na.or.complete")
+# Add CC bins
+protData$Partial.Spearman.CC.Bin <- cut(
+  x=protData$Partial.Spearman.CC,
+  breaks=seq(from=-1,to=1,by=0.05),
+  include.lowest=TRUE)
+# Retrieve Biomart/ENSEMBL/TMHMM annotation regarding potential transmembrane
+# nature
+ensembl <- useMart(biomart="ensembl",dataset="scerevisiae_gene_ensembl")
+tmTable <- getBM(
+  mart=ensembl,
+  attributes=c("uniprot_swissprot_accession","transmembrane_domain"))
+if(max(sapply(strsplit(tmTable$uniprot_swissprot_accession,";"),length)) != 1){
+  stop("ID spitting necessary.")
+}
+leadingMajorUniprotIds <- sapply(
+  strsplit(protData[["Majority protein IDs"]],";"),
+  function(x){x[1]})
+protData <- cbind(
+  protData,
+  transmembrane_domain=tmTable[match(x=leadingMajorUniprotIds,table=tmTable[[1]]),"transmembrane_domain"])
+            
+# Tag peptide count/raw ratio onto label
+tmpLabels  <- sapply(strsplit(protData[["Gene names"]],";"),function(x){x[1]})
+tmpLabels[is.na(tmpLabels)] <- protData[is.na(tmpLabels),"Majority protein IDs"]
+protData$Label <- paste(
+  tmpLabels,
+  round(protData$Partial.Spearman.CC,2),
+  protData[["Peptides Exp. D"]],
+  round(RatioInversion(protData[["Ratio H/L Exp. D"]]),2),
+  protData$transmembrane_domain,
+  sep="|")
 
 # Prep for plotting
 plotData <- protData
 names(plotData) <- sub(pattern="Rel. Log2 Ratio L/H Exp. ",replacement="",names(plotData))
-
 # Melt the data frame into plottable shape and swtich fraction names from alpha to numeric
 plotData <- melt(data=plotData,measure.vars=LETTERS[1:13],na.rm=TRUE)
+plotData <- plotData[plotData[["variable"]] %in% LETTERS[fs],]
 plotData$variable <- match(plotData$variable,LETTERS)
-relLog2Fa <- data.frame(rbind(relLog2Fa))
+plotData <- plotData[plotData$transmembrane_domain == "TMHMM",]
+relLog2Fa <- data.frame(rbind(relLog2Fa[fs]))
 names(relLog2Fa) <- LETTERS[1:length(relLog2Fa)]
-relLog2Fa <- melt(data=relLog2Fa,measure.vars=LETTERS[1:13],na.rm=TRUE)
+relLog2Fa <- melt(data=relLog2Fa,measure.vars=LETTERS[fs],na.rm=TRUE)
 relLog2Fa$variable <- match(relLog2Fa$variable,LETTERS)
 
-tmpPlot <- ggplot(data=plotData)
-tmpPlot + 
-  geom_line(aes(x=variable,y=value,group=Label)) +
-  geom_line(data=relLog2Fa,aes(x=variable,y=value),color="red") +
-  facet_wrap(~Spearman.CC.Bin,nrow=8) +
-  labs(
-    x="Fraction",
-    y="Relative Logarithmized Ratio L/H, Relative Logarithmized Flippase Activity",
-    title="Spearman Correlation Coefficient Bins")
+for(bin in c("(0.8,0.85]","(0.85,0.9]","(0.9,0.95]","(0.95,1]")){
+  tmpPlotData <- plotData[plotData$Partial.Spearman.CC.Bin == bin,]
+  tmpPlot <- ggplot(data=tmpPlotData)
+  tmpPlot <- tmpPlot +
+    geom_line(data=relLog2Fa,aes(x=variable,y=value),color="red",size=1.5) +
+    geom_line(aes(x=variable,y=value,color=Label))+
+    labs(
+      x="Fraction",
+      y="Relative Logarithmized Ratio L/H, Relative Logarithmized Flippase Activity",
+      title=paste("Spearman Correlation Coefficient Bin",bin))
+#               if(!(bin %in% c("[-1,-0.95]","(-0.95,-0.9]","(-0.9,-0.85]","(0.15,0.2]","(0.35,0.4]","(0.4,0.45]","(0.95,1]"))){
+#                 if(bin %in% c("(-0.65,-0.6]","(-0.6,-0.55]","(-0.55,-0.5]","(-0.4,-0.35]")){
+#                   tmpPlot <- tmpPlot + guides(col=guide_legend(ncol=3))
+#                 } else {
+#                   tmpPlot <- tmpPlot + guides(col=guide_legend(ncol=2))
+#                 }
+#               }
+    print(tmpPlot)
+    tmpBin <- sub("\\[","",bin)
+    tmpBin <- sub("\\]","",tmpBin)
+    tmpBin <- sub("\\(","",tmpBin)
+    tmpBin <- sub("\\)","",tmpBin)
+    tmpBin <- sub("\\,","_",tmpBin)
+    ggsave(
+      filename=file.path(directory,paste("SpearmanCC",tmpBin,"Bin.pdf",sep="_")),
+      width=11.69,
+      height=8.27,
+      unit="in",
+      dpi=300)
+    # readline("Hit <ENTER> to proceed ...")
+}
+
+# # Prep for plotting
+# plotData <- protData
+# names(plotData) <- sub(pattern="Rel. Log2 Ratio L/H Exp. ",replacement="",names(plotData))
+# 
+# # Melt the data frame into plottable shape and swtich fraction names from alpha to numeric
+# plotData <- melt(data=plotData,measure.vars=LETTERS[1:13],na.rm=TRUE)
+# plotData$variable <- match(plotData$variable,LETTERS)
+# relLog2Fa <- data.frame(rbind(relLog2Fa))
+# names(relLog2Fa) <- LETTERS[1:length(relLog2Fa)]
+# relLog2Fa <- melt(data=relLog2Fa,measure.vars=LETTERS[1:13],na.rm=TRUE)
+# relLog2Fa$variable <- match(relLog2Fa$variable,LETTERS)
+# 
+# tmpPlot <- ggplot(data=plotData)
+# tmpPlot + 
+#   geom_line(aes(x=variable,y=value,group=Label)) +
+#   geom_line(data=relLog2Fa,aes(x=variable,y=value),color="red") +
+#   facet_wrap(~Spearman.CC.Bin,nrow=8) +
+#   labs(
+#     x="Fraction",
+#     y="Relative Logarithmized Ratio L/H, Relative Logarithmized Flippase Activity",
+#     title="Spearman Correlation Coefficient Bins")
