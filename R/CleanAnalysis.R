@@ -108,15 +108,51 @@ dataStats <- rbind.fill(
     stringsAsFactors=FALSE))
 
 # Gradient QC
+# Retrieve Biomart/ENSEMBL/TMHMM annotation
+ensembl <- useMart(biomart="ensembl",dataset="scerevisiae_gene_ensembl")
+pepTable <- getBM(
+  mart=ensembl,
+  attributes=c("uniprot_swissprot_accession","peptide"))
+pepTable <- cbind(
+  pepTable,
+  MW=sapply(pepTable$peptide,function(x){pmw(s2c(x))/10^3},USE.NAMES=FALSE),
+  MaxFraction=rep("",nrow(pepTable)))
+#pepTable <- as.data.frame(rbind(quantile(pepTable$MW)))
+#names(pepTable) <- c(0,25,50,75,100)
+
 protData[["MaxFraction"]] <- apply(X=protData[protCols],MARGIN=1,FUN=function(x){which(x=="1")[1]})
-tmpPlot <- ggplot(data=data.frame(MaxFraction=factor(protData$MaxFraction),MW=protData[["Mol. weight [kDa]"]]))
-tmpPlot +
+grid.newpage()
+pushViewport(
+  viewport(
+    layout=grid.layout(
+      nrow=1,
+      ncol=2,
+      widths=c(6/7,1/7))))
+pushViewport(viewport(layout.pos.row=1,layout.pos.col=1,name="A"))
+tmpPlot <- ggplot(data=data.frame(MaxFraction=as.numeric(protData$MaxFraction),MW=protData[["Mol. weight [kDa]"]]))
+tmpPlot <- tmpPlot +
+#   geom_rect(data=pepTable,aes_string(xmin="-Inf",xmax="Inf",ymin="25",ymax="75"),alpha=0.2,fill="red") +
+#   geom_hline(data=pepTable,aes(yintercept=50,col="red",size="2"))+
   geom_boxplot(aes_string(x="MaxFraction",y="MW",group="MaxFraction"),outlier.colour=NA) +
   geom_jitter(aes_string(x="MaxFraction",y="MW",group="MaxFraction")) +
   labs(
     x="Glycerol Gradient Fraction",
-    y="Molecular Weight (kDa)")
-## --> seems ok to fraction 6, but then?
+    y="Molecular Weight (kDa)") +
+  coord_cartesian(ylim=c(0,200))
+print(tmpPlot,vp="A")
+pushViewport(viewport(layout.pos.row=1,layout.pos.col=2,name="B"))
+tmpPlot <- ggplot(data=pepTable)
+tmpPlot <- tmpPlot +
+  geom_boxplot(aes_string(x="MaxFraction",y="MW")) +
+  labs(
+    x="S.c. Proteome",
+    y=NULL) +
+  coord_cartesian(ylim=c(0,200))
+print(tmpPlot,vp="B")
+#   scale_y_log10()
+## --> Fraction 1 likely contains all kind of degradation products and is little informative
+## --> seems ok to fraction 6, but then? Aggregation? Complexation?
+## --> given the spread in fraction 12 this is likely where there is lots of aggregation --> analyse with chopping that part off
 
 # Compare protein profiles with Flippase Activity using multiple measures
 relLog2Fa <- Relativate(log2(flippaseActivity[["Av. Spec. Activity"]]))
