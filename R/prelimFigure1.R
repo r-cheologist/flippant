@@ -1,6 +1,6 @@
 #' @export
 prelimFigure1 <- function(x,directory=tempdir()){
-  require(reshape)
+  require(reshape2)
   # Prep output
   output <- list()
   # Extract columns 

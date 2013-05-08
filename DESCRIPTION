@@ -12,7 +12,7 @@ Depends:
     ggplot2,
     grid,
     RCFPD (>= 1.2.1),
-    reshape
+    reshape2
 Suggests:
     digest,
     pcaMethods,

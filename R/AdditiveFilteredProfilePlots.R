@@ -1,6 +1,6 @@
 #' @export
 AdditiveFilteredProfilePlots <- function(x,filter){
-  require(reshape)
+  require(reshape2)
   # Prep output
   output <- list()
   # Filter candidates
