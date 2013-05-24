@@ -10,11 +10,12 @@ Depends:
     R (>= 2.15.1),
     biomaRt,
     ggplot2,
-    grid,
+    digest (>= 0.6.3),
+    gtable (>= 0.1.2),
+    png (>= 0.1-4),
     RCFPD (>= 1.2.1),
     reshape2
 Suggests:
-    digest,
     pcaMethods,
     roxygen2,
     R.utils,
