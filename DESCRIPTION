@@ -29,6 +29,7 @@ Collate:
     'CompleteAnalysis.R'
     'CleanAnalysis.R'
     'ChiSquare.R'
+    'CompleteOutput.R'
     'Correlate.R'
     'DataPrep.R'
     'data-pGroups.R'
