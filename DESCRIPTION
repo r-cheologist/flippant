@@ -36,6 +36,8 @@ Collate:
     'data-sha256sums.R'
     'Figure1.R'
     'Figure1B.R'
+    'FigureS1.R'
+    'FigureS1B.R'
     'FilteredProfilePlots.R'
     'plot-RatioDisributionAcrossFractions.R'
     'SimpleSort.R'
