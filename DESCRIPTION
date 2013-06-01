@@ -38,6 +38,7 @@ Collate:
     'Figure1B.R'
     'FigureS1.R'
     'FigureS1B.R'
+    'FigureS1C.R'
     'FilteredProfilePlots.R'
     'plot-RatioDisributionAcrossFractions.R'
     'SimpleSort.R'
