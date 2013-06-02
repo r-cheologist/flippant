@@ -36,6 +36,7 @@ Collate:
     'data-sha256sums.R'
     'Figure1.R'
     'Figure1B.R'
+    'Figure1C.R'
     'FigureS1.R'
     'FigureS1B.R'
     'FigureS1C.R'
