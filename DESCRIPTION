@@ -7,13 +7,13 @@ Version: 0.1
 Authors@R: person("Johannes", "Graumann", role = c("aut","cre"),
     email="johannes_graumann@web.de")
 Depends:
-    R (>= 2.15.1),
+    R (>= 3.0.1),
     biomaRt (>= 2.16.0),
     digest (>= 0.6.3),
     ggplot2 (>= 0.9.3.1),
     gtable (>= 0.1.2),
     png (>= 0.1-4),
-    RCFPD (>= 1.2.1),
+    RCFPD (>= 1.2.6),
     reshape2 (>= 1.2.2)
 Suggests:
     pcaMethods,
@@ -27,9 +27,9 @@ LazyData: true
 Collate:
     'MDAA-package.R'
     'CompleteAnalysis.R'
-    'CleanAnalysis.R'
     'ChiSquare.R'
     'CompleteOutput.R'
+    'CleanAnalysis.R'
     'Correlate.R'
     'DataPrep.R'
     'data-pGroups.R'
@@ -42,6 +42,7 @@ Collate:
     'FigureS1B.R'
     'FigureS1C.R'
     'FilteredProfilePlots.R'
+    'onAttach.R'
     'plot-RatioDisributionAcrossFractions.R'
     'SimpleSort.R'
     'SupplementaryTable1.R'
