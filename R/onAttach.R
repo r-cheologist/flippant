@@ -1,0 +1,35 @@
+#' @title onAttach
+#' @name onAttach
+#' @description Function executed when attaching the package to a session
+#' @details The function is executed upon attaching the package (e.g. via
+#' \code{\link{library}}). It checks the parameters of the current R session and
+#' produces a warning when the packages used diverge from the ones used for 
+#' publication.
+#' @author Johannes Graumann
+#' @seealso \code{\link[base]{.onAttach}} \code{\link{VersionCheck}}
+#' @keywords internal misc
+#.onLoad <- function(...){
+#  packageStartupMessage(versionCheck())
+#}
+.onAttach <- function(...){
+  vC <- VersionCheck(
+    expectedR=package_version("3.0.1"),
+    expectedPackages=list(
+      reshape2=package_version("1.2.2"),
+      RCFPD=package_version("1.2.6"),
+      XML=package_version("3.96-1.1"),
+      scales=package_version("0.2.3"),
+      seqinr=package_version("3.0.7"),
+      R.utils=package_version("1.23.2"),
+      plyr=package_version("1.8"),
+      plotrix=package_version("3.4-7"),
+      gsubfn=package_version("0.6-5"),
+      png=package_version("0.1-5"),
+      gtable=package_version("0.1.2"),
+      ggplot2=package_version("0.9.3.1"),
+      digest=package_version("0.6.3"),
+      biomaRt=package_version("2.16.0")))
+  if(!is.null(vC)){
+    packageStartupMessage(vC)
+  }
+}
