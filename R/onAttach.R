@@ -22,7 +22,7 @@
       seqinr=package_version("3.0.7"),
       R.utils=package_version("1.23.2"),
       plyr=package_version("1.8"),
-      plotrix=package_version("3.4-7"),
+      plotrix=package_version("3.4-8"),
       gsubfn=package_version("0.6-5"),
       png=package_version("0.1-5"),
       gtable=package_version("0.1.2"),
