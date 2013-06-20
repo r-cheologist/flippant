@@ -15,6 +15,7 @@
   vC <- VersionCheck(
     expectedR=package_version("3.0.1"),
     expectedPackages=list(
+      gridExtra=package_version("0.9.1"),
       reshape2=package_version("1.2.2"),
       RCFPD=package_version("1.2.6"),
       XML=package_version("3.96-1.1"),
