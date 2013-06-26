@@ -1,6 +1,7 @@
 export(AdditiveFilteredProfilePlots)
 export(ChiSquare)
 export(CompleteAnalysis)
+export(CompleteOutput)
 export(Correlate)
 export(DataPrep)
 export(Figure1)
