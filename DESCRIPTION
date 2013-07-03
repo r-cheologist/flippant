@@ -44,6 +44,7 @@ Collate:
     'FigureS1B.R'
     'FigureS1C.R'
     'FigureS2.R'
+    'FigureS3.R'
     'FilteredProfilePlots.R'
     'onAttach.R'
     'plot-RatioDisributionAcrossFractions.R'
