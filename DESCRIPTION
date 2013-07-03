@@ -27,10 +27,7 @@ License: GPL (>= 3)
 LazyData: true
 Collate:
     'MDAA-package.R'
-    'CompleteAnalysis.R'
-    'ChiSquare.R'
     'CompleteOutput.R'
-    'CleanAnalysis.R'
     'Correlate.R'
     'DataPrep.R'
     'data-pGroups.R'
@@ -45,11 +42,5 @@ Collate:
     'FigureS1C.R'
     'FigureS2.R'
     'FigureS3.R'
-    'FilteredProfilePlots.R'
     'onAttach.R'
-    'plot-RatioDisributionAcrossFractions.R'
-    'SimpleSort.R'
     'SupplementaryTable1.R'
-    'AdditiveFilteredProfilePlots.R'
-    'prelimFigure1.R'
-    'MaxQuant2dPeakDetection.R'
