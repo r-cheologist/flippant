@@ -18,7 +18,7 @@
       gridExtra=package_version("0.9.1"),
       reshape2=package_version("1.2.2"),
       RCFPD=package_version("1.2.6"),
-      XML=package_version("3.96-1.1"),
+      XML=package_version("3.98-1.1"),
       scales=package_version("0.2.3"),
       seqinr=package_version("3.0.7"),
       R.utils=package_version("1.26.2"),
