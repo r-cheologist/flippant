@@ -1,3 +1,4 @@
+#' @seealso \code{\link{ParseFluorometerData}}
 FlippaseDependencyPlot <- function(x=NA,ReactionVolumes=c(2000,2040),ePC=4.5){
   x <- list(
     "15ul"=list(
