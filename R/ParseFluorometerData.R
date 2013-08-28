@@ -129,6 +129,10 @@ ParseFluorometerData <- function(SpecFile=NA){
   tmpExtract <- as.numeric(unlist(strsplit(x=tmpExtract,split="\\s+")))
   tmpOutput$"Excitation Wavelength (nm)" <- tmpExtract[1]
   tmpOutput$"Emitting Wavelength (nm)" <- tmpExtract[2]
+  #################
+  # Return result #
+  #################
+  invisible(tmpOutput)
 #   library(ggplot2)
 #   tmpPlot <- ggplot(data=tmpOutput$Data,aes_string(x="`Time (s)`",y="`Fluorescense Intensity`"))
 #   tmpPlot + geom_line() + geom_point()
