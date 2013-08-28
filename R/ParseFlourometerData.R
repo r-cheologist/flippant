@@ -97,10 +97,15 @@ ParseFlourometerData <- function(SpecFile=NA){
   tmpExtract <- tmpBlocks[["Preamble"]][3]
   tmpOutput$"File Name" <- tmpExtract
   # Extract acquisition date/time
-  tmpExtract <- tmpBlocks[["Preamble"]][6]
-  tmpOutput$"Acquisition Data (YY/MM/DD)" <- tmpExtract
-  tmpExtract <- tmpBlocks[["Preamble"]][7]
+  tmpExtract <- tmpBlocks[["Preamble"]][4]
+  tmpOutput$"Acquisition Date (YY/MM/DD)" <- tmpExtract
+  tmpExtract <- tmpBlocks[["Preamble"]][5]
   tmpOutput$"Acquisition Time (HH:MM:SS)" <- tmpExtract
+  # Extract access date/time
+  tmpExtract <- tmpBlocks[["Preamble"]][6]
+  tmpOutput$"Access Date (YY/MM/DD)" <- tmpExtract
+  tmpExtract <- tmpBlocks[["Preamble"]][7]
+  tmpOutput$"Access Time (HH:MM:SS)" <- tmpExtract
   # Extract/check acquisition time  max
   tmpExtract <- as.numeric(tmpBlocks[["Preamble"]][10])
   if(tmpExtract != max(tmpOutput$Data$"Time (s)",na.rm=TRUE)){
@@ -113,6 +118,12 @@ ParseFlourometerData <- function(SpecFile=NA){
     stop("Reported and home-made acquisition time minima differ.")
   }
   tmpOutput$"Minimal Acquisition Time (s)" <- tmpExtract
+  # Extract instrument type
+  tmpExtract <- tmpBlocks[["Preamble"]][21]
+  tmpOutput$"Instrument" <- tmpExtract
+  # Extract instrument method
+  tmpExtract <- tmpBlocks[["Preamble"]][25]
+  tmpOutput$"Method File" <- tmpExtract
   # Extract excitation/emitting wave length
   tmpExtract <- tmpBlocks[["Preamble"]][38]
   tmpExtract <- as.numeric(unlist(strsplit(x=tmpExtract,split="\\s+")))
