@@ -1,4 +1,4 @@
-ParseFlourometerData <- function(SpecFile=NA){
+ParseFluorometerData <- function(SpecFile=NA){
   #######################
   # Check Prerequisites #
   #######################
