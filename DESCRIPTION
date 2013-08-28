@@ -44,3 +44,4 @@ Collate:
     'FigureS3.R'
     'onAttach.R'
     'SupplementaryTable1.R'
+    'ParseFluorometerData.R'

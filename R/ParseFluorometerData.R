@@ -1,3 +1,50 @@
+#' @title ParseFluorometerData
+#' @description Parse spectra from files provided by a Perkin Elmer FS55
+#' @details A function to read fluorometer output directly. Intended as a helper
+#' function to flippase activity determinations from dithionite assays.
+#' @param SpecFile Path to a \file{*.td} file as a \code{\link{character}} 
+#' object.
+#' @return Returns a \code{\link{list}} with the follwoing keys:
+#' \describe{
+#'  \item{\code{Data}}{A \code{\link{data.frame}} representing the actual 
+#'    spectrumwith the columns \code{Time (s)} and \code{Fluorescense Intensity}
+#'    (all \code{\link{numerical}}).}
+#'  \item{\code{Data Points}}{Number of data points in the spectrum as a 
+#'    \code{\link{numerical}}. Ecquivalent to \code{\link{nrow}} of the 
+#'    \code{link{data.frame}} in \code{Data}.}
+#'  \item{\code{Maximal Flurescence Intensity}}{\code{\link{numerical}} 
+#'    representation of the maximal fluorescence intensity from \code{Data}.}
+#'  \item{\code{Minimal Flurescence Intensity}}{\code{\link{numerical}} 
+#'    representation of the minimal fluorescence intensity from \code{Data}.}
+#'  \item{\code{File Name}}{\code{\link{character}} representation of the 
+#'    original file name used by the instrument. Often useless as MS 
+#'    Windows-specific truncation applies.}
+#'  \item{\code{Acquisition Date (YY/MM/DD)}}{\code{\link{character}} 
+#'    representation of the date of spectrum acquisition.}
+#'  \item{\code{Acquisition Time (HH:MM:SS)}}{\code{\link{character}} 
+#'    representation of the time of spectrum acquisition.}
+#'  \item{\code{Access Date (YY/MM/DD)}}{\code{\link{character}} 
+#'    representation of the date of file access.}
+#'  \item{\code{Access Time (HH:MM:SS)}}{\code{\link{character}} 
+#'    representation of the time of file access.}
+#'  \item{\code{Maximal Acquisition Time (s)}}{\code{\link{numerical}} 
+#'    representation of the maximal \code{Time (s)} from \code{Data}.}
+#'  \item{\code{Minimal Acquisition Time (s)}}{\code{\link{numerical}} 
+#'    representation of the minimal \code{Time(s)} from \code{Data}.}
+#'  \item{\code{Instrument}}{\code{\link{character}} representation of the 
+#'    spectrometer used.}
+#'  \item{\code{Method File}}{\code{\link{character}} representation of the 
+#'    file name of the method used by the instrument. Often useless as MS 
+#'    Windows-specific truncation applies.}
+#'  \item{\code{Excitation Wavelength (nm)}}{\code{\link{numerical}} 
+#'    representation of the excitation wavelength used.}
+#'  \item{\code{Emitting Wavelength (nm)}}{\code{\link{numerical}} 
+#'    representation of the emission wavelength recorded.}}
+#' @author Johannes Graumann
+#' @export
+#' @keywords manip IO file
+#' @examples
+#' stop("Function is missing examples!")
 ParseFluorometerData <- function(SpecFile=NA){
   #######################
   # Check Prerequisites #
