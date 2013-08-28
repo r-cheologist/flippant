@@ -75,4 +75,24 @@ FlippaseDependencyPlot <- function(x=NA,ReactionVolumes=c(2000,2040),ePC=4.5){
   if(any(file.access(sapply(x,function(x){x$Path}),mode=4) == -1)){
     stop("All 'Path' elements in 'x' must refer to readable files.")
   }
+  ##############
+  # Processing #
+  ##############
+  # Parse the data and extract whats needed
+  #########################################
+  # Parsing
+  tmpData <- lapply(
+    x,
+    function(x){ParseFluorometerData(SpecFile=x$Path)})
+  # What intensity to extract?
+  minAT <- sapply(tmpData,function(x){x$"Minimal Acquisition Time (s)"})
+  if(!all(minAT[1] == minAT)){
+    stop("Minimum acquisition times are not identical - aborting.")
+  }
+  minAT <- unique(minAT)
+  maxAT <- min(sapply(tmpData,function(x){x$"Maximal Acquisition Time (s)"}))
+  # Average over first 10 values for activity baseline
+  seq(from=minAT,to=minAT+9)
+  # Average over last 10 values for activity
+  seq(from=maxAT-9,to=maxAT)
 }
