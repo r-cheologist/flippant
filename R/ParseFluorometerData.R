@@ -12,9 +12,9 @@
 #'  \item{\code{Data Points}}{Number of data points in the spectrum as a 
 #'    \code{\link{numerical}}. Ecquivalent to \code{\link{nrow}} of the 
 #'    \code{link{data.frame}} in \code{Data}.}
-#'  \item{\code{Maximal Flurescence Intensity}}{\code{\link{numerical}} 
+#'  \item{\code{Maximal Fluorescence Intensity}}{\code{\link{numerical}} 
 #'    representation of the maximal fluorescence intensity from \code{Data}.}
-#'  \item{\code{Minimal Flurescence Intensity}}{\code{\link{numerical}} 
+#'  \item{\code{Minimal Fluorescence Intensity}}{\code{\link{numerical}} 
 #'    representation of the minimal fluorescence intensity from \code{Data}.}
 #'  \item{\code{File Name}}{\code{\link{character}} representation of the 
 #'    original file name used by the instrument. Often useless as MS 
@@ -133,13 +133,13 @@ ParseFluorometerData <- function(SpecFile=NA){
   if(tmpExtract != max(tmpOutput$Data$"Fluorescense Intensity",na.rm=TRUE)){
     stop("Reported and home-made fluorescense intentity maxima differ.")
   }
-  tmpOutput$"Maximal Flurescence Intensity" <- tmpExtract
+  tmpOutput$"Maximal Fluorescence Intensity" <- tmpExtract
   # Extract/check fluorescense min
   tmpExtract <- as.numeric(tmpBlocks[["#GR"]][10])
   if(tmpExtract != min(tmpOutput$Data$"Fluorescense Intensity",na.rm=TRUE)){
     stop("Reported and home-made fluorescense intentity minima differ.")
   }
-  tmpOutput$"Minimal Flurescence Intensity" <- tmpExtract
+  tmpOutput$"Minimal Fluorescence Intensity" <- tmpExtract
   # Extract file name
   tmpExtract <- tmpBlocks[["Preamble"]][3]
   tmpOutput$"File Name" <- tmpExtract
