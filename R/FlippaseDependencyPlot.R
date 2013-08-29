@@ -29,27 +29,27 @@ FlippaseDependencyPlot <- function(x=NA,ReactionVolumes=c(2000,2040),ePC=4.5){
   if(listDepth(x) != 2){
     stop("'x' must be of depth 2.")
   }
-  if(any(sapply(x,function(x){is.null(names(x))}))){
+  if(any(sapply(x,function(y){is.null(names(y))}))){
     stop("All elements on level 2 of 'x' must be named.")
   }
   nesLev2Names <- "Path"
   facLev2Names <- c("ReactionVolumes","ePC")
   legLev2Names <- c(nesLev2Names,facLev2Names)
-  if(!all(sapply(x,function(x){identical(intersect(names(x),legLev2Names),names(x))}))){
+  if(!all(sapply(x,function(y){identical(intersect(names(y),legLev2Names),names(y))}))){
     stop("All names on level 2 of 'x' must be from '",paste(legLev2Names,collapse="','"),"'.")
   }
-  if(!any(sapply(x,function(x){identical(intersect(names(x),nesLev2Names),names(x))}))){
+  if(!any(sapply(x,function(y){identical(intersect(names(y),nesLev2Names),names(y))}))){
     stop("Elements with names '",paste(nesLev2Names,collapse="','"),"' are compulsory on level 2 of 'x'.")
   }
-  if(!all(sapply(x,function(x){is.character(x$Path) & length(x$Path) ==1}))){
+  if(!all(sapply(x,function(y){is.character(y$Path) & length(y$Path) ==1}))){
     stop("All 'Path' elements in 'x' must be single length 'character' objects.")
   }
   if(!all(sapply(
     x,
-    function(x){
+    function(y){
       output <- TRUE
-      if("ReactionVolumes" %in% names(x)){
-        if(!is.numeric(x$ReactionVolumes) | length(x$ReactionVolumes) != 2){
+      if("ReactionVolumes" %in% names(y)){
+        if(!is.numeric(y$ReactionVolumes) | length(y$ReactionVolumes) != 2){
           output <- FALSE
         }
       }
@@ -59,10 +59,10 @@ FlippaseDependencyPlot <- function(x=NA,ReactionVolumes=c(2000,2040),ePC=4.5){
   }
   if(!all(sapply(
     x,
-    function(x){
+    function(y){
       output <- TRUE
-      if("ePC" %in% names(x)){
-        if(!is.numeric(x$ePC) | length(x$ePC) != 1){
+      if("ePC" %in% names(y)){
+        if(!is.numeric(y$ePC) | length(y$ePC) != 1){
           output <- FALSE
         }
       }
@@ -73,7 +73,7 @@ FlippaseDependencyPlot <- function(x=NA,ReactionVolumes=c(2000,2040),ePC=4.5){
   if(!all(file.exists(sapply(x,function(x){x$Path})))){
     stop("All 'Path' elements in 'x' must refer to existing files.")
   }
-  if(any(file.access(sapply(x,function(x){x$Path}),mode=4) == -1)){
+  if(any(file.access(sapply(x,function(y){y$Path}),mode=4) == -1)){
     stop("All 'Path' elements in 'x' must refer to readable files.")
   }
   ##############
@@ -84,14 +84,14 @@ FlippaseDependencyPlot <- function(x=NA,ReactionVolumes=c(2000,2040),ePC=4.5){
   # Parsing
   tmpData <- lapply(
     x,
-    function(x){ParseFluorometerData(SpecFile=x$Path)})
+    function(y){ParseFluorometerData(SpecFile=y$Path)})
   # What intensity to extract?
-  minAT <- sapply(tmpData,function(x){x$"Minimal Acquisition Time (s)"})
+  minAT <- sapply(tmpData,function(y){y$"Minimal Acquisition Time (s)"})
   if(!all(minAT[1] == minAT)){
     stop("Minimum acquisition times are not identical - aborting.")
   }
   minAT <- unique(minAT)
-  maxAT <- min(sapply(tmpData,function(x){x$"Maximal Acquisition Time (s)"}))
+  maxAT <- min(sapply(tmpData,function(y){y$"Maximal Acquisition Time (s)"}))
   # Average over first 10 values for activity baseline
   seq(from=minAT,to=minAT+9)
   # Average over last 10 values for activity
