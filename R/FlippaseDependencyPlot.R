@@ -92,8 +92,36 @@ FlippaseDependencyPlot <- function(x=NA,ReactionVolumes=c(2000,2040),ePC=4.5){
   }
   minAT <- unique(minAT)
   maxAT <- min(sapply(tmpData,function(y){y$"Maximal Acquisition Time (s)"}))
+  # Calculations
+  ##############
   # Average over first 10 values for activity baseline
-  seq(from=minAT,to=minAT+9)
-  # Average over last 10 values for activity
-  seq(from=maxAT-9,to=maxAT)
+  baselineIntensity <- sapply(
+    tmpData,
+    function(y){
+      tmpFrom <- min(which(y$Data$"Time (s)" >= minAT))
+      baselineSS <- seq(from=tmpFrom,to=tmpFrom+9)
+      return(median(y$Data$"Fluorescense Intensity"[baselineSS],na.rm=TRUE))
+    })
+  # Average over last 10 values (in common time range) for activity
+  activityIntensity <- sapply(
+    tmpData,
+    function(y){
+      tmpTo <- max(which(y$Data$"Time (s)" <= maxAT))
+      activitySS <- seq(from=tmpTo-9,to=tmpTo)
+      return(median(y$Data$"Fluorescense Intensity"[activitySS],na.rm=TRUE))
+    })
+  # Apply volume correction factors as needed
+  tmpRV <- lapply(
+    tmpData,
+    function(y){
+      if(is.null(y$"Reaction Volumes")){
+        return(ReactionVolumes)
+      } else {
+        return(y$"Reaction Volumes")
+      }
+    })
+  tmpCF <- sapply(tmpRV,function(y){y[2]/y[1]})
+  activityIntensity <- activityIntensity * tmpCF
+  # Calculate and relativate intensity differences
+  deltaIntensity <- 1-(activityIntensity/baselineIntensity)
 }
