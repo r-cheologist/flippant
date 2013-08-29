@@ -1,16 +1,27 @@
 #' @seealso \code{\link{ParseFluorometerData}}
-FlippaseDependencyPlot <- function(x=NA,ReactionVolumes=c(2000,2040),ePC=4.5){
+FlippaseDependencyPlot <- function(
+  x=NA,
+  ReactionVolumes=c(2000,2040),
+  ePC=4.5,
+  ProtC=NA,
+  AcquisitionTimePoint=NA)
+{
   x <- list(
     "15ul"=list(
-      Path="../FlurometerParsing/Erg9_TE_assay/TE+/RK_30_May-2013_Erg9_TE_plus_15ul.td"),
+      Path="../FlurometerParsing/Erg9_TE_assay/TE+/RK_30_May-2013_Erg9_TE_plus_15ul.td",
+      ProtV=15),
     "40ul"=list(
-      Path="../FlurometerParsing/Erg9_TE_assay/TE+/RK_30_May-2013_Erg9_TE_plus_40ul.td"),
+      Path="../FlurometerParsing/Erg9_TE_assay/TE+/RK_30_May-2013_Erg9_TE_plus_40ul.td",
+      ProtV=40),
     "80ul"=list(
-      Path="../FlurometerParsing/Erg9_TE_assay/TE+/RK_30_May-2013_Erg9_TE_plus_80ul.td"),
+      Path="../FlurometerParsing/Erg9_TE_assay/TE+/RK_30_May-2013_Erg9_TE_plus_80ul.td",
+      ProtV=80),
     "160ul"=list(
-      Path="../FlurometerParsing/Erg9_TE_assay/TE+/RK_30_May-2013_Erg9_TE_plus_160ul.td"))
+      Path="../FlurometerParsing/Erg9_TE_assay/TE+/RK_30_May-2013_Erg9_TE_plus_160ul.td",
+      ProtV=160))
   ReactionVolumes=c(2000,2040)
   ePC=4.5
+  ProtC=1.2
   #######################
   # Check prerequisites #
   #######################
@@ -32,8 +43,8 @@ FlippaseDependencyPlot <- function(x=NA,ReactionVolumes=c(2000,2040),ePC=4.5){
   if(any(vapply(x,function(y){is.null(names(y))},TRUE))){
     stop("All elements on level 2 of 'x' must be named.")
   }
-  nesLev2Names <- "Path"
-  facLev2Names <- c("ReactionVolumes","ePC")
+  nesLev2Names <- c("Path","ProtV")
+  facLev2Names <- c("ReactionVolumes","ePC","ProtC")
   legLev2Names <- c(nesLev2Names,facLev2Names)
   if(!all(vapply(x,function(y){identical(intersect(names(y),legLev2Names),names(y))},TRUE))){
     stop("All names on level 2 of 'x' must be from '",paste(legLev2Names,collapse="','"),"'.")
@@ -75,11 +86,40 @@ FlippaseDependencyPlot <- function(x=NA,ReactionVolumes=c(2000,2040),ePC=4.5){
     TRUE))){
     stop("All 'ePC' elements in 'x' must be 'numeric' objects of length 1.")
   }
+  if(!is.numeric(ProtC) | length(ProtC) != 1){
+    stop("'ProtC' must be 'numeric' objects of length 1.")
+  }
+  if(!all(vapply(
+    x,
+    function(y){
+      output <- TRUE
+      if("ProtC" %in% names(y)){
+        if(!is.numeric(y$ProtC) | length(y$ProtC) != 1){
+          output <- FALSE
+        }
+      }
+      return(output)
+    },
+    TRUE))){
+    stop("All 'ProtC' elements in 'x' must be 'numeric' objects of length 1.")
+  }
   if(!all(file.exists(vapply(x,function(y){y$Path},"A")))){
     stop("All 'Path' elements in 'x' must refer to existing files.")
   }
   if(any(file.access(vapply(x,function(y){y$Path},"A"),mode=4) == -1)){
     stop("All 'Path' elements in 'x' must refer to readable files.")
+  }
+  if(length(AcquisitionTimePoint) != 1){
+    stop("'AcquisitionTimePoint' must be of length 1.")
+  }
+  if(is.na(AcquisitionTimePoint)){
+    warning(c("'AcquisitionTimePoint' not defined. Calculating from spectra. ",
+            "Not appropriate for multiple extract comparisons. You have been ",
+            "warned.See function 'MinimumAcquisitionTime'."))
+  } else {
+    if(!is.numeric(AcquisitionTimePoint)){
+      stop("'AcquisitionTimePoint' must be of class 'numeric'.")
+    }
   }
   ##############
   # Processing #
@@ -97,6 +137,16 @@ FlippaseDependencyPlot <- function(x=NA,ReactionVolumes=c(2000,2040),ePC=4.5){
   }
   minAT <- unique(minAT)
   tmpAT <- vapply(tmpData,function(y){y$"Maximal Acquisition Time (s)"},1)
+  if(is.na(AcquisitionTimePoint)){
+    maxAT <- min(tmpAT)
+  } else {
+    if(any(tmpAT) < AcquisitionTimePoint){
+      stop("'AcquisitionTimePoint' is larger than the shortest spectrum 
+           acquisition.")
+    } else {
+      maxAT <- AcquisitionTimePoint
+    }
+  }
   # Calculations
   ##############
   # Average over first 10 values for activity baseline
@@ -132,4 +182,31 @@ FlippaseDependencyPlot <- function(x=NA,ReactionVolumes=c(2000,2040),ePC=4.5){
   activityIntensity <- activityIntensity * tmpCF
   # Calculate and relativate intensity differences
   deltaIntensity <- 1-(activityIntensity/baselineIntensity)
+  # Calculate Protein to egg phosphatidylcholin ratio
+  tmpPC <- vapply(
+    x,
+    function(y){
+      if(is.null(y$"ProtC")){
+        return(ProtC)
+      } else {
+        return(y$"ProtC")
+      }
+    },
+    1)
+  tmpPV <- vapply(x, function(y){return(y$"ProtV")},1)
+  tmpP <- tmpPC * tmpPV
+  tmpEPC <- vapply(
+    x,
+    function(y){
+      if(is.null(y$"ePC")){
+        return(ePC)
+      } else {
+        return(y$"ePC")
+      }
+    },
+    FUN.VALUE=1)
+  tmpPPC <- tmpP/tmpEPC
+  ###################
+  # Assemble output #
+  ###################
 }
