@@ -14,7 +14,7 @@ Depends:
     gridExtra (>= 0.9.1),
     gtable (>= 0.1.2),
     png (>= 0.1-4),
-    RCFPD (>= 1.2.6),
+    RCFPD (>= 1.2.6.2),
     reshape2 (>= 1.2.2)
 Suggests:
     pcaMethods,
