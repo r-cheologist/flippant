@@ -8,20 +8,21 @@ FlippaseDependencyPlot <- function(
 {
   x <- list(
     "15ul"=list(
-      Path="../FlurometerParsing/Erg9_TE_assay/TE+/RK_30_May-2013_Erg9_TE_plus_15ul.td",
+      Path="~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-15ul.txt",
       ProtV=15),
     "40ul"=list(
-      Path="../FlurometerParsing/Erg9_TE_assay/TE+/RK_30_May-2013_Erg9_TE_plus_40ul.td",
+      Path="~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-40ul.txt",
       ProtV=40),
-    "80ul"=list(
-      Path="../FlurometerParsing/Erg9_TE_assay/TE+/RK_30_May-2013_Erg9_TE_plus_80ul.td",
-      ProtV=80),
-    "160ul"=list(
-      Path="../FlurometerParsing/Erg9_TE_assay/TE+/RK_30_May-2013_Erg9_TE_plus_160ul.td",
-      ProtV=160))
+    "75ul"=list(
+      Path="~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-75ul.txt",
+      ProtV=75),
+    "150ul"=list(
+      Path="~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-150ul.txt",
+      ProtV=150))
+  AcquisitionTimePoint <- MinimumAcquisitionTime(sapply(x,function(y){y$Path}))
   ReactionVolumes=c(2000,2040)
   ePC=4.5
-  ProtC=1.2
+  ProtC=0.67
   #######################
   # Check prerequisites #
   #######################
@@ -129,7 +130,7 @@ FlippaseDependencyPlot <- function(
   # Parsing
   tmpData <- lapply(
     x,
-    function(y){ParseFluorometerData(SpecFile=y$Path)})
+    function(y){ParseFluorometerData2(SpecFile=y$Path)})
   # What intensity to extract?
   minAT <- vapply(tmpData,function(y){y$"Minimal Acquisition Time (s)"},1)
   if(!all(minAT[1] == minAT)){
@@ -140,7 +141,7 @@ FlippaseDependencyPlot <- function(
   if(is.na(AcquisitionTimePoint)){
     maxAT <- min(tmpAT)
   } else {
-    if(any(tmpAT) < AcquisitionTimePoint){
+    if(any(tmpAT < AcquisitionTimePoint)){
       stop("'AcquisitionTimePoint' is larger than the shortest spectrum 
            acquisition.")
     } else {
@@ -168,7 +169,7 @@ FlippaseDependencyPlot <- function(
     },
     1)
   # Apply volume correction factors as needed
-  tmpRV <- vapply(
+  tmpRV <- lapply(
     tmpData,
     function(y){
       if(is.null(y$"Reaction Volumes")){
@@ -176,8 +177,7 @@ FlippaseDependencyPlot <- function(
       } else {
         return(y$"Reaction Volumes")
       }
-    },
-    c(1,2))
+    })
   tmpCF <- vapply(tmpRV,function(y){y[2]/y[1]},1)
   activityIntensity <- activityIntensity * tmpCF
   # Calculate and relativate intensity differences

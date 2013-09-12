@@ -47,3 +47,4 @@ Collate:
     'onAttach.R'
     'SupplementaryTable1.R'
     'ParseFluorometerData.R'
+    'ParseFluorometerData2.R'
