@@ -1,4 +1,4 @@
-MinimumAcquisitionTime <- function(x=NA){
+TimepointOfMeasurement <- function(x=NA){
   #######################
   # Check prerequisites #
   #######################
