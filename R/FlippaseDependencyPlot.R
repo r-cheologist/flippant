@@ -1,18 +1,20 @@
 #' @seealso \code{\link{ParseFluorometerData}}, 
 #' \code{\link{ParseFluorometerData2}}, \code{\link{TimepointOfMeasurement}}
+#' @import robustbase
 FlippaseDependencySeries <- function(x)
 {
   x <- data.frame(
     Path = c(
+      "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/ePC.txt",
       "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-15ul.txt",
       "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-40ul.txt",
       "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-75ul.txt",
       "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-150ul.txt"),
-    "Extract Volume (ul)" = c(15,40,75,150),
+    "Extract Volume (ul)" = c(0,15,40,75,150),
 #     "Reaction Volume Blank (ul)" = rep(2000,4),
-    "Reaction Volume Reconstituted (ul)" = rep(2040,4),
-    "Concentration Egg PC (mM)" = rep(4.5,4),
-    "Extract Protein Concentration (mg/ml)" = rep(0.67,4),
+    "Reaction Volume Reconstituted (ul)" = rep(2040,5),
+    "Concentration Egg PC (mM)" = rep(4.5,5),
+    "Extract Protein Concentration (mg/ml)" = rep(0.67,5),
 #     "Timepoint of Measurement (s)",
     check.names=FALSE,
     stringsAsFactors=FALSE)
@@ -177,9 +179,39 @@ FlippaseDependencySeries <- function(x)
   # Calculate Protein to egg phosphatidylcholin ratio
   proteinAmount <- x$"Extract Protein Concentration (mg/ml)" * x$"Extract Volume (ul)"
   proteinToEpcRatio <- proteinAmount/x$"Concentration Egg PC (mM)"
+  # DEBUG: plot(proteinToEpcRatio,deltaIntensity)
   # Fit a monoexponential curve to the data
   #########################################
+  tmpData <- data.frame(
+    x=proteinToEpcRatio,
+    y=deltaIntensity)
+  library(robustbase)
+#  curve(-1+-1/x,0,10)
+#   http://people.richland.edu/james/lecture/m116/logs/models.html
+#   y = C ( 1 - e-kt ), k > 0
+  Rmod <- nlrob(y ~ C*(1-exp(-k*x)),data=tmpData, start = list(C=max(tmpData$x), k=1))
+  mod <- nls(y ~ C*(1-exp(-k*x)),data=tmpData, start = list(C=max(tmpData$x), k=1))
+  newData <- data.frame(x=seq(from=min(proteinToEpcRatio),to=max(proteinToEpcRatio),length.out=1000))
+  plot(tmpData)
+  lines(newData$x,predict(mod,newdata=newData),col="red")
+  lines(newData$x,predict(Rmod,newdata=newData),col="green")
   
+#   mod <- nlrob(y ~ a*exp(x*b), data=tmpData, start = list(a = -1, b = -1))
+  ## Test Example:
+#   char_fx <- "-1*exp(x*-1)"
+#   curve(-1*exp(x*-1),0,10)
+#   fx <- expression(-1*exp(x*-1))
+#   plot(fx,0,10)
+#   tmpEnv <- new.env()
+#   assign("x",seq(10),envir=tmpEnv)
+#   curve(-1*exp(x*-1),0,10)
+#   
+#   dfx <- deriv(fx,"x")
+#   
+#   tmpEnv <- new.env()
+#   assign("x",0,envir=tmpEnv)
+#   curve(eval(dfx,envir=tmpEnv),0,10,add=TRUE,col="red")
+#   eval(expr=dfx,envir=tmpEnv)
   ###################
   # Assemble output #
   ###################
