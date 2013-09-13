@@ -1,3 +1,4 @@
+#' @export
 TimepointOfMeasurement <- function(x=NA){
   #######################
   # Check prerequisites #
