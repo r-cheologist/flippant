@@ -21,7 +21,7 @@
       XML=package_version("3.98-1.1"),
       scales=package_version("0.2.3"),
       seqinr=package_version("3.0.7"),
-      R.utils=package_version("1.26.2"),
+      R.utils=package_version("1.27.1"),
       plyr=package_version("1.8"),
       plotrix=package_version("3.5.1"),
       gsubfn=package_version("0.6-5"),
