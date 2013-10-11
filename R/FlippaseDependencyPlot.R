@@ -1,6 +1,8 @@
 #' @seealso \code{\link{ParseFluorometerData}}, 
 #' \code{\link{ParseFluorometerData2}}, \code{\link{TimepointOfMeasurement}}
 #' @import robustbase
+#' @example
+#' stop("Add citation to Mike's manuscript!")
 FlippaseDependencySeries <- function(x)
 {
   x <- data.frame(
