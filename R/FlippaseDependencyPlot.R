@@ -130,18 +130,27 @@ FlippaseDependencySeries <- function(x)
   if(length(unique(x$"Timepoint of Measurement (s)")) != 1){
     stop("Column 'Timepoint of Measurement (s)' contains multiple values. Exiting.")
   }
+  # Ensure that there's a data point with liposomes ONLY as a unique reference
+  # point
+  liposomesOnlyIndex <- which(x$"Extract Volume (ul)" == 0)
+  if(length(liposomesOnlyIndex) == 0){
+    stop("A liposomes-ONLY ('Extract Volume (ul)' of '0') data point is required.")
+  }
+  if(length(liposomesOnlyIndex) > 1){
+    stop("A SINGLE liposomes-only ('Extract Volume (ul)' of '0') data point is 
+         required.")
+  }
   ##############
   # Processing #
   ##############
-  # Parse the data and extract whats needed
-  #########################################
+  ## End-point fluorescence reduction data from flippase activity assays were 
+  ## obtained for proteoliposomes generated over a range of PPR values.
+  ###########################################################################
   # Parsing
-  #########
   tmpData <- lapply(
     x$Path,
     function(y){ParseFluorometerData2(SpecFile=y)})
   # What spectral time windows to extract?
-  ########################################
   minAT <- unique(vapply(tmpData,function(y){y$"Minimal Acquisition Time (s)"},1))
   if(length(minAT) != 1){
     stop("Minimum acquisition times are not identical - aborting.")
@@ -153,50 +162,99 @@ FlippaseDependencySeries <- function(x)
   } else {
     maxAT <- unique(x$"Timepoint of Measurement (s)")
   }
-  # Calculations
-  ##############
   # Average over first 10 values for activity baseline
-  baselineIntensity <- vapply(
+  minAct <- vapply(
     tmpData,
-    function(y){
-      tmpFrom <- min(which(y$Data$"Time (s)" >= minAT))
+    function(z){
+      tmpFrom <- min(which(z$Data$"Time (s)" >= minAT))
       baselineSS <- seq(from=tmpFrom,to=tmpFrom+9)
-      return(median(y$Data$"Fluorescense Intensity"[baselineSS],na.rm=TRUE))
+      return(median(z$Data$"Fluorescense Intensity"[baselineSS],na.rm=TRUE))
     },
     1)
   # Average over last 10 values (in common time range) for activity
-  activityIntensity <- vapply(
+  maxAct <- vapply(
     tmpData,
-    function(y){
-      tmpTo <- max(which(y$Data$"Time (s)" <= maxAT))
+    function(z){
+      tmpTo <- max(which(z$Data$"Time (s)" <= maxAT))
       activitySS <- seq(from=tmpTo-9,to=tmpTo)
-      return(median(y$Data$"Fluorescense Intensity"[activitySS],na.rm=TRUE))
+      return(median(z$Data$"Fluorescense Intensity"[activitySS],na.rm=TRUE))
     },
     1)
   # Apply volume correction factors as needed
   correctionFactor <- x$"Reaction Volume Reconstituted (ul)"/x$"Reaction Volume Blank (ul)"
-  activityIntensity <- activityIntensity * correctionFactor
-  # Calculate and relativate intensity differences
-  deltaIntensity <- 1-(activityIntensity/baselineIntensity)
-  # Calculate Protein to egg phosphatidylcholin ratio
-  proteinAmount <- x$"Extract Protein Concentration (mg/ml)" * x$"Extract Volume (ul)"
-  proteinToEpcRatio <- proteinAmount/x$"Concentration Egg PC (mM)"
-  # DEBUG: plot(proteinToEpcRatio,deltaIntensity)
+  maxAct <- maxAct * correctionFactor
+  # Calculate relative activity reduction
+  relativeReduction <- 1-maxAct/minAct
+  ## The data were transformed according to the formula
+  ## p(≥1 flippase) = (y – yo)/(ymax – yo),
+  ## where yo is the percent reduction obtained with liposomes, ymax is the 
+  ## maximum percentage reduction observed and p is the probability that a 
+  ## particular vesicle in the ensemble is ‘flippase-active’, i.e it possesses 
+  ## at least one flippase.
+  ###########################################################################
+  y <- relativeReduction
+  y0 <- relativeReduction[liposomesOnlyIndex]
+  ymax <- max(relativeReduction,na.rm=TRUE)
+  p1Flippase <- (y-y0)/(ymax-y0)
+  ## The dependence of p(≥1 flippase) on PPR was analyzed as follows.
+  ## Definitions:
+  ##   f, number of flippases used for reconstitution
+  ##   v, number of vesicles(
+  ##   m, number of flippases per vesicle (=f/v)
+  ##   PPR, mg protein per mmol phospholipid
+  # Calculate PPR
+  PPR <- (x$"Extract Protein Concentration (mg/ml)"*x$"Extract Volume (ul)")/x$"Concentration Egg PC (mM)"
+  # DEBUG: plot(PPR,p1Flippase)
+  ## To calculate p(≥1 flippase) as a function of the PPR, we assume that 
+  ## reconstitution of opsin/rhodopsin molecules into vesicles occurs 
+  ## independently and that the vesicles are identical and may have more than 
+  ## one flippase. The probability that a flippase will be reconstituted into a 
+  ## particular vesicle is therefore 1/v. On reconstituting f flippases into an 
+  ## ensemble of v vesicles, the probability p(k) that a particular vesicle 
+  ## contains k flippases is given by the binomial formula:
+  ##   
+  ##   p(k) = C(f,k)(1/v)k(1-1/v)f-k(
+  ## 
+  ## Because f and v are both large, it is convenient to use the Poisson 
+  ## approximation:
+  ##   
+  ##   p(k) = (mk/k!)e-m, where m = f/v is the average number of flippases per vesicle
+  ## 
+  ## The probability of a particular vesicle having no flippases is p(0) = e-m; 
+  ## therefore, the probability that a vesicle has one or more flippases, i.e is
+  ## active in the flippase assay, is
+  ## 
+  ## p(≥1) = 1-p(0) = 1 - e-m 
+  ## 
+  ## The average number of flippases per vesicle, m, is proportional to PPR and 
+  ## can be written as m = PPR/α, where α is a constant with units of mg/mmol. 
+  ## Thus,
+  ## 
+  ## p(≥1) = 1 - e-m = 1 – exp(-PPR/α)
+  ## 
+  ## The mono-exponential fit constant for a graph of p(≥1) vs PPR is α mg/mmol; 
+  ## at this PPR value, m = 1 and ~63% of the vesicles in the population possess 
+  ## ≥1 flippase.
+  ## If we assume that reconstitution of an opsin/rhodopsin monomer (MW 41.7 
+  ## kDa) into a 200 nm diameter vesicle confers flippase activity to that 
+  ## vesicle, then α = 0.122 mg/mmol (note: 1 mmol of phospholipids yields ~1.75
+  ## x 1015 200 nm-diameter vesicles (Mimms et al, 1981); 1 mg of opsin or 
+  ## rhodopsin corresponds to 1.44 x 1016 molecules; m = f/v = 1 corresponds to
+  ## 1.75 x 1015 opsin/rhodopsin molecules per mmol phospholipid or 0.12 
+  ## mg/mmol). If opsin/rhodopsin molecules exist as preformed dimers and 
+  ## reconstitution of such dimers into a vesicle confers flippase activity to 
+  ## that vesicle, then α = 0.24 mmol/mg.
   # Fit a monoexponential curve to the data
   #########################################
   tmpData <- data.frame(
-    x=proteinToEpcRatio,
-    y=deltaIntensity)
+    x=PPR,
+    y=p1Flippase)
   library(robustbase)
-#  curve(-1+-1/x,0,10)
-#   http://people.richland.edu/james/lecture/m116/logs/models.html
-#   y = C ( 1 - e-kt ), k > 0
-  Rmod <- nlrob(y ~ C*(1-exp(-k*x)),data=tmpData, start = list(C=max(tmpData$x), k=1))
-  mod <- nls(y ~ C*(1-exp(-k*x)),data=tmpData, start = list(C=max(tmpData$x), k=1))
-  newData <- data.frame(x=seq(from=min(proteinToEpcRatio),to=max(proteinToEpcRatio),length.out=1000))
+  Rmod <- nlrob(y ~ 1-exp(-x/a),data=tmpData, start = list(a=1))
+  #mod <- nls(y ~ C*(1-exp(-k*x)),data=tmpData, start = list(C=max(tmpData$x), k=1))
+  newData <- data.frame(x=seq(from=min(PPR),to=max(PPR),length.out=1000))
   plot(tmpData)
-  lines(newData$x,predict(mod,newdata=newData),col="red")
-  lines(newData$x,predict(Rmod,newdata=newData),col="green")
+  lines(newData$x,predict(Rmod,newdata=newData),col="blue")
   
 #   mod <- nlrob(y ~ a*exp(x*b), data=tmpData, start = list(a = -1, b = -1))
   ## Test Example:
