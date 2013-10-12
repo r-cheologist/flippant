@@ -47,11 +47,13 @@ FlippaseDependencySeries <- function(x)
     Name = c(
       "Path",
       "Extract Volume (ul)",
-      "Extract Protein Concentration (mg/ml)"),
+      "Extract Protein Concentration (mg/ml)",
+      "Experimental Series"),
     Class = c(
       "character",
       "numeric",
-      "numeric"))
+      "numeric",
+      "character"))
   if(!all( requirements$Name %in% names(x))){
     stop(
       "'x' must hold at least the following columns: '",
@@ -82,16 +84,19 @@ FlippaseDependencySeries <- function(x)
       "Reaction Volume Blank (ul)",
       "Reaction Volume Reconstituted (ul)",
       "Concentration Egg PC (mM)",
-      "Timepoint of Measurement (s)"),
+      "Timepoint of Measurement (s)",
+      "Panel"),
     Class = c(
       "numeric",
       "numeric",
       "numeric",
-      "numeric"),
+      "numeric",
+      "character"),
     Default = c(
       2000,
       2040,
       4.5,
+      NA,
       NA))
   missing <- which(!(facultatives$Name %in% names(x)))
   if(length(missing) != 0){
@@ -101,7 +106,7 @@ FlippaseDependencySeries <- function(x)
           "Providing missing column '",
           facultatives$Name[y],
           "' from spectra ('Path'). Not appropriate for multiple extract ",
-          "comparisons. You have been warned. See function ",
+          "comparisons ('Panel's). You have been warned. See function ",
           "'TimepointOfMeasurement()'.")
         addOn <- TimepointOfMeasurement(x$Path)
       } else {
