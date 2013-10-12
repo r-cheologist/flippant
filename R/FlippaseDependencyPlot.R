@@ -173,7 +173,7 @@ FlippaseDependencySeries <- function(x)
     maxAT <- unique(x$"Timepoint of Measurement (s)")
   }
   # Average over first 10 values for activity baseline
-  minAct <- vapply(
+  x$"Baseline Fluorescense" <- vapply(
     tmpData,
     function(z){
       tmpFrom <- min(which(z$Data$"Time (s)" >= minAT))
@@ -182,7 +182,7 @@ FlippaseDependencySeries <- function(x)
     },
     1)
   # Average over last 10 values (in common time range) for activity
-  maxAct <- vapply(
+  x$"Minimum Fluorescense" <- vapply(
     tmpData,
     function(z){
       tmpTo <- max(which(z$Data$"Time (s)" <= maxAT))
@@ -192,7 +192,7 @@ FlippaseDependencySeries <- function(x)
     1)
   # Apply volume correction factors as needed
   correctionFactor <- x$"Reaction Volume Reconstituted (ul)"/x$"Reaction Volume Blank (ul)"
-  maxAct <- maxAct * correctionFactor
+  x$"Minimum Fluorescense, Volume Corrected" <- x$"Minimum Fluorescense" * correctionFactor
   # Calculate relative activity reduction
   relativeReduction <- 1-maxAct/minAct
   ## The data were transformed according to the formula
@@ -282,6 +282,7 @@ FlippaseDependencySeries <- function(x)
 #   assign("x",0,envir=tmpEnv)
 #   curve(eval(dfx,envir=tmpEnv),0,10,add=TRUE,col="red")
 #   eval(expr=dfx,envir=tmpEnv)
+  x$"Relative Fluorescense Reduction" <- 1-x$"Minimum Fluorescense, Volume Corrected"/x$"Baseline Fluorescense"
   ###################
   # Assemble output #
   ###################
