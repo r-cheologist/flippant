@@ -1,5 +1,7 @@
 #' @seealso \code{\link{ParseFluorometerData}}, 
 #' \code{\link{ParseFluorometerData2}}, \code{\link{TimepointOfMeasurement}}
+#' @import ggplot2
+#' @import plyr
 #' @import robustbase
 #' @example
 #' stop("Add citation to Mike's manuscript!")
@@ -290,6 +292,24 @@ FlippaseDependencySeries <- function(x)
       ########
       return(output)
     })
+  library(plyr)
+  x <- rbind.fill(lapply(xoList,function(z){z$Raw}))
+  fitX <- rbind.fill(lapply(xoList,function(z){z$Fit}))
+  library(ggplot2)
+  tmpPlot <- ggplot(
+    data=x,
+    aes_string(
+      x="`Protein per Phospholipid (mg/mmol)`",
+      y="`Pvalue >= 1 Flippase in Vesicle`",
+      color="`Experimental Series`"))
+  tmpPlot <- tmpPlot +
+    geom_line(data=fitX) +
+    geom_point() + 
+    facet_wrap(~Panel) +
+    labs(
+      x=expression(frac("Protein","Phospholipid")~~bgroup("(",frac("mg","mmol"),")")),
+      y=expression(p~bgroup("(",frac("Flippase","Liposome")>=1,")")),
+      color="Experiment")
   ###################
   # Assemble output #
   ###################
