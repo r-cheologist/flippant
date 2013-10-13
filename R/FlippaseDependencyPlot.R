@@ -107,9 +107,7 @@ FlippaseDependencySeries <- function(x)
         warning(
           "Providing missing column '",
           facultatives$Name[y],
-          "' from spectra ('Path'). Not appropriate for multiple extract ",
-          "comparisons ('Panel's). You have been warned. See function ",
-          "'TimepointOfMeasurement()'.")
+          "' from spectra ('Path').")
         addOn <- TimepointOfMeasurement(x$Path)
       } else {
         warning(
