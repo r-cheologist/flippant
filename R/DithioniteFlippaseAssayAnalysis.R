@@ -99,7 +99,7 @@
 #'  "Concentration Egg PC (mM)" = rep(4.5,10),
 #'  "Extract Protein Concentration (mg/ml)" = c(rep(0.67,5),rep(1.26,5)),
 #'  #     "Timepoint of Measurement (s)",
-#'  "Experimental Series"=c(rep("Depleted Extract",5),rep("Extract",5)),
+#'  "Experimental Series"=c(rep("Extract",5),rep("Depleted Extract",5)),
 #'  Panel=rep("Erg1, Replicate 1",10),
 #'  check.names=FALSE,
 #'  stringsAsFactors=FALSE)
