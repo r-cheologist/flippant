@@ -143,10 +143,8 @@ FlippaseDependencySeries <- function(x)
   ##############
   # Processing #
   ##############
-  ## End-point fluorescence reduction data from flippase activity assays were 
-  ## obtained for proteoliposomes generated over a range of PPR values.
-  ###########################################################################
-  # Parsing
+  # Parsing spectra
+  #################
   tmpData <- lapply(
     x$Path,
     function(y){ParseFluorometerData2(SpecFile=y)})
@@ -188,6 +186,8 @@ FlippaseDependencySeries <- function(x)
   # Split by Experiment
   #####################
   xiList <- split(x,x$"Experimental Series")
+  # Generate PPR vs. p>=1Flippase/Liposome Data
+  #############################################
   xoList <- lapply(
     xiList,
     function(z){
@@ -203,13 +203,15 @@ FlippaseDependencySeries <- function(x)
         stop("Experimental series '",unique(y$"Experimental Series"),"' has more
           than one liposomes-ONLY ('Extract Volume (ul)' of '0') data point.")
       }  
+      ## End-point fluorescence reduction data from flippase activity assays were 
+      ## obtained for proteoliposomes generated over a range of PPR values.
       ## The data were transformed according to the formula
       ## p(≥1 flippase) = (y – yo)/(ymax – yo),
       ## where yo is the percent reduction obtained with liposomes, ymax is the 
       ## maximum percentage reduction observed and p is the probability that a 
       ## particular vesicle in the ensemble is ‘flippase-active’, i.e it possesses 
       ## at least one flippase.
-      ###########################################################################
+      # Calculate p>=1Flippase/Liposome
       y <- z$"Relative Fluorescense Reduction"
       y0 <- z$"Relative Fluorescense Reduction"[liposomesOnlyIndex]
       ymax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE)
@@ -263,7 +265,6 @@ FlippaseDependencySeries <- function(x)
       ## reconstitution of such dimers into a vesicle confers flippase activity to 
       ## that vesicle, then α = 0.24 mmol/mg.
       # Fit a monoexponential curve to the data
-      #########################################
       tmpData <- data.frame(
         x=z$"Protein per Phospholipid (mg/mmol)",
         y=z$"Pvalue >= 1 Flippase in Vesicle")
@@ -271,6 +272,7 @@ FlippaseDependencySeries <- function(x)
       Rmod <- nlrob(y ~ 1-exp(-x/a),data=tmpData, start = list(a=1))
       z$"Fit Constant (a)" <- Rmod$coefficients
       output <- list(Raw=z)
+      # Generate data to plot the results of the fit
       predictX <- data.frame(
         x=seq(
           from=min(z$"Protein per Phospholipid (mg/mmol)",na.rm=TRUE),
@@ -287,28 +289,37 @@ FlippaseDependencySeries <- function(x)
         check.names=FALSE,
         stringsAsFactors=FALSE)
       # Return
-      ########
       return(output)
     })
+  # Recombine the processed data
+  ##############################
   library(plyr)
   x <- rbind.fill(lapply(xoList,function(z){z$Raw}))
   fitX <- rbind.fill(lapply(xoList,function(z){z$Fit}))
+  ###############################
+  # Assemble (graphical) output #
+  ###############################
   library(ggplot2)
+  # Groundwork (color-separation of "Experimental Series")
   tmpPlot <- ggplot(
     data=x,
     aes_string(
       x="`Protein per Phospholipid (mg/mmol)`",
       y="`Pvalue >= 1 Flippase in Vesicle`",
       color="`Experimental Series`"))
+  # Layering
   tmpPlot <- tmpPlot +
+    # First layer: lines/curves representing the monoexponential fit
     geom_line(data=fitX) +
+    # Second Layer: data points
     geom_point() + 
+    # Faceting by "Panel"
     facet_wrap(~Panel) +
+    # Prettifications
     labs(
       x=expression(frac("Protein","Phospholipid")~~bgroup("(",frac("mg","mmol"),")")),
       y=expression(p~bgroup("(",frac("Flippase","Liposome")>=1,")")),
       color="Experiment")
-  ###################
-  # Assemble output #
-  ###################
+  # Return
+  return(tmpPlot)
 }
