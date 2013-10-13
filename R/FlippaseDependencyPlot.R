@@ -3,7 +3,7 @@
 #' @import ggplot2
 #' @import plyr
 #' @import robustbase
-#' @example
+#' @examples
 #' stop("Add citation to Mike's manuscript!")
 #' x <- data.frame(
 #'  Path = c(
