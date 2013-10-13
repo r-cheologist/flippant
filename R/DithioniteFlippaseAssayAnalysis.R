@@ -357,7 +357,6 @@ DithioniteFlippaseAssayAnalysis <- function(x)
       tmpData <- data.frame(
         x=z$"Protein per Phospholipid (mg/mmol)",
         y=z$"Pvalue >= 1 Flippase in Vesicle")
-      library(robustbase)
       Rmod <- nlrob(y ~ 1-exp(-x/a),data=tmpData, start = list(a=1))
       z$"Fit Constant (a)" <- Rmod$coefficients
       output <- list(Raw=z)
@@ -382,13 +381,11 @@ DithioniteFlippaseAssayAnalysis <- function(x)
     })
   # Recombine the processed data
   ##############################
-  library(plyr)
   x <- rbind.fill(lapply(xoList,function(z){z$Raw}))
   fitX <- rbind.fill(lapply(xoList,function(z){z$Fit}))
   ###############################
   # Assemble (graphical) output #
   ###############################
-  library(ggplot2)
   # Groundwork (color-separation of "Experimental Series")
   tmpPlot <- ggplot(
     data=x,

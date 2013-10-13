@@ -13,9 +13,11 @@ Depends:
     ggplot2 (>= 0.9.3.1),
     gridExtra (>= 0.9.1),
     gtable (>= 0.1.2),
+    plyr (>= 1.8),
     png (>= 0.1-4),
     RCFPD (>= 1.2.6.2),
-    reshape2 (>= 1.2.2)
+    reshape2 (>= 1.2.2),
+    robustbase (>= 0.9-10)
 Suggests:
     pcaMethods,
     roxygen2,
