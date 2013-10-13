@@ -5,30 +5,30 @@
 #' @import robustbase
 #' @example
 #' stop("Add citation to Mike's manuscript!")
+#' x <- data.frame(
+#'  Path = c(
+#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/ePC.txt",
+#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-15ul.txt",
+#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-40ul.txt",
+#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-75ul.txt",
+#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-150ul.txt",
+#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/ePC.txt",
+#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-plus-15ul.txt",
+#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-40ul.txt",
+#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-75ul.txt",
+#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-150ul.txt"),
+#'  "Extract Volume (ul)" = c(0,15,40,75,150,0,15,40,75,150),
+#'  #     "Reaction Volume Blank (ul)" = rep(2000,4),
+#'  "Reaction Volume Reconstituted (ul)" = rep(2040,10),
+#'  "Concentration Egg PC (mM)" = rep(4.5,10),
+#'  "Extract Protein Concentration (mg/ml)" = c(rep(0.67,5),rep(1.26,5)),
+#'  #     "Timepoint of Measurement (s)",
+#'  "Experimental Series"=c(rep("Depleted Extract",5),rep("Extract",5)),
+#'  Panel=rep("Erg1, Replicate 1",10),
+#'  check.names=FALSE,
+#'  stringsAsFactors=FALSE)
 FlippaseDependencySeries <- function(x)
 {
-  x <- data.frame(
-    Path = c(
-      "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/ePC.txt",
-      "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-15ul.txt",
-      "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-40ul.txt",
-      "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-75ul.txt",
-      "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-150ul.txt",
-      "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/ePC.txt",
-      "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-plus-15ul.txt",
-      "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-40ul.txt",
-      "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-75ul.txt",
-      "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-150ul.txt"),
-    "Extract Volume (ul)" = c(0,15,40,75,150,0,15,40,75,150),
-#     "Reaction Volume Blank (ul)" = rep(2000,4),
-    "Reaction Volume Reconstituted (ul)" = rep(2040,10),
-    "Concentration Egg PC (mM)" = rep(4.5,10),
-    "Extract Protein Concentration (mg/ml)" = c(rep(0.67,5),rep(1.26,5)),
-#     "Timepoint of Measurement (s)",
-    "Experimental Series"=c(rep("Depleted Extract",5),rep("Extract",5)),
-    Panel=rep("Erg1, Replicate 1",10),
-    check.names=FALSE,
-    stringsAsFactors=FALSE)
   #######################
   # Check prerequisites #
   #######################
