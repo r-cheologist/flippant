@@ -19,7 +19,7 @@ TimepointOfMeasurement <- function(x=NA){
   #########
   tmpData <- lapply(
     x,
-    function(y){ParseFluorometerData2(SpecFile=y)})
+    function(y){ParseQuantMasterData(SpecFile=y)})
   # Extract data
   ##############
   # What is the latest data point per series?

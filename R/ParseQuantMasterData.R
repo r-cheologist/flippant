@@ -1,5 +1,6 @@
-#' @title ParseFluorometerData2
-#' @description Parse spectra from files provided by XXX
+#' @title ParseQuantMasterData
+#' @description Parse spectra from files provided by a Photon QuantMaster 
+#' fluorometer
 #' @details A function to read fluorometer output directly. Intended as a helper
 #' function to flippase activity determinations from dithionite assays.
 #' @param SpecFile Path to a \file{*.txt} file as a \code{\link{character}} 
@@ -22,12 +23,13 @@
 #'    representation of the maximal \code{Time (s)} from \code{Data}.}
 #'  \item{\code{Minimal Acquisition Time (s)}}{\code{\link{numeric}} 
 #'    representation of the minimal \code{Time(s)} from \code{Data}.}}
+#' @seealso \code{\link{DithioniteFlippaseAssayAnalysis}}
 #' @author Johannes Graumann
 #' @export
 #' @keywords manip IO file
 #' @examples
 #' stop("Function is missing examples!")
-ParseFluorometerData2 <- function(SpecFile=NA){
+ParseQuantMasterData <- function(SpecFile=NA){
   #######################
   # Check Prerequisites #
   #######################

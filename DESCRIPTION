@@ -45,6 +45,6 @@ Collate:
     'FigureS3.R'
     'onAttach.R'
     'ParseFluorometerData.R'
-    'ParseFluorometerData2.R'
+    'ParseQuantMasterData.R'
     'SupplementaryTable1.R'
     'TimepointOfMeasurement.R'

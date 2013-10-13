@@ -73,7 +73,7 @@
 #' @author Johannes Graumann
 #' @references MIKE PAPER
 #' @export
-#' @seealso \code{\link{ParseFluorometerData2}}, \code{\link{TimepointOfMeasurement}}
+#' @seealso \code{\link{ParseQuantMasterData}}, \code{\link{TimepointOfMeasurement}}
 #' @keywords methods manip
 #' @import ggplot2
 #' @import plyr
@@ -225,7 +225,7 @@ DithioniteFlippaseAssayAnalysis <- function(x)
   #################
   tmpData <- lapply(
     x$Path,
-    function(y){ParseFluorometerData2(SpecFile=y)})
+    function(y){ParseQuantMasterData(SpecFile=y)})
   # What spectral time windows to extract?
   minAT <- unique(vapply(tmpData,function(y){y$"Minimal Acquisition Time (s)"},1))
   if(length(minAT) != 1){
