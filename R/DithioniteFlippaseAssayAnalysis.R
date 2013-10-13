@@ -46,8 +46,8 @@
 #'    (see above).}
 #'  \item{For each spectrum/datapoint a \code{Relative Fluorescense Reduction} 
 #'    is calculated as \code{1-Minimum Fluorescense/Baseline Fluorescense}.}
-#'  \item{Data are \code{\link{split}} for parallel treatment using the 
-#'    \code{Experimental Series} identifier (see above).}
+#'  \item{Data are \code{\link{split}} for parallel treatment using a combined 
+#'    \code{Experimental Series}/\code{Panel} identifier (see above).}
 #'  \item{p-values for a liposome holding >= 1 flippase molecule are calculated
 #'    using \code{(y – y0)/(ymax – y0)}, where \code{y} is the 
 #'    \code{Relative Fluorescense Reduction}, \code{y0} is the 
@@ -92,15 +92,25 @@
 #'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-plus-15ul.txt",
 #'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-40ul.txt",
 #'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-75ul.txt",
+#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-150ul.txt",
+#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/ePC.txt",
+#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-15ul.txt",
+#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-40ul.txt",
+#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-75ul.txt",
+#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-150ul.txt",
+#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/ePC.txt",
+#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-plus-15ul.txt",
+#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-40ul.txt",
+#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-75ul.txt",
 #'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-150ul.txt"),
-#'  "Extract Volume (ul)" = c(0,15,40,75,150,0,15,40,75,150),
+#'  "Extract Volume (ul)" = c(0,15,40,75,150,0,15,40,75,150,0,15,40,75,150,0,15,40,75,150),
 #'  #     "Reaction Volume w/o DT (ul)" = rep(2000,4),
-#'  "Reaction Volume with DT (ul)" = rep(2040,10),
-#'  "Concentration Egg PC (mM)" = rep(4.5,10),
-#'  "Extract Protein Concentration (mg/ml)" = c(rep(0.67,5),rep(1.26,5)),
+#'  "Reaction Volume with DT (ul)" = rep(2040,20),
+#'  "Concentration Egg PC (mM)" = rep(4.5,20),
+#'  "Extract Protein Concentration (mg/ml)" = c(rep(0.67,5),rep(1.26,5),rep(0.67,5),rep(1.26,5)),
 #'  #     "Timepoint of Measurement (s)",
-#'  "Experimental Series"=c(rep("Extract",5),rep("Depleted Extract",5)),
-#'  Panel=rep("Erg1, Replicate 1",10),
+#'  "Experimental Series"=c(rep("Extract",5),rep("Depleted Extract",5),rep("Extract",5),rep("Depleted Extract",5)),
+#'  Panel=c(rep("Erg1, Replicate 1",10),rep("Erg1, Replicate 2",10)),
 #'  check.names=FALSE,
 #'  stringsAsFactors=FALSE)
 #'  # Run function
@@ -261,9 +271,10 @@ DithioniteFlippaseAssayAnalysis <- function(x)
   x$"Minimum Fluorescense, Volume Corrected" <- x$"Minimum Fluorescense" * correctionFactor
   # Calculate relative activity reduction
   x$"Relative Fluorescense Reduction" <- 1-x$"Minimum Fluorescense, Volume Corrected"/x$"Baseline Fluorescense"
-  # Split by Experiment
+  # Split by Experiment/Panel
   #####################
-  xiList <- split(x,x$"Experimental Series")
+  x$CombinedId <- paste(x$"Experimental Series",x$"Panel",sep="_")
+  xiList <- split(x,x$CombinedId)
   # Generate PPR vs. p>=1Flippase/Liposome Data
   #############################################
   xoList <- lapply(
