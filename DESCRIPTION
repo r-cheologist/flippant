@@ -44,7 +44,7 @@ Collate:
     'FigureS2.R'
     'FigureS3.R'
     'onAttach.R'
-    'ParseFluorometerData.R'
+    'LikelyNotNeeded_ParseFluorometerData.R'
     'ParseQuantMasterData.R'
     'SupplementaryTable1.R'
     'TimepointOfMeasurement.R'
