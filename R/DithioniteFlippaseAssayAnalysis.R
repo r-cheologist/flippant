@@ -1,10 +1,86 @@
-#' @seealso \code{\link{ParseFluorometerData}}, 
-#' \code{\link{ParseFluorometerData2}}, \code{\link{TimepointOfMeasurement}}
+#' @title DithioniteFlippaseAssayAnalysis
+#' @description A function that automates calculations necessary to interprete
+#' dithionite flippase assays
+#' @details The function accepts input in form of a \code{\link{data.frame}} 
+#' with the following \bold{mandatory} columns:
+#' \describe{
+#'  \item{\code{Path}:}{Paths to existing and readable \code{ASCII} output files 
+#'    of a Photon QuantMaster fluorometer.}
+#'  \item{\code{Extract Volume (ul)}:}{Volume of Triton X-100 extract used.}
+#'  \item{\code{Extract Protein Concentration (mg/ml)}:}{Self-explanatory.}
+#'  \item{\code{Experimental Series}:}{Identifier for a given series/graph (e.g.
+#'    \code{Extract} and \code{Depleted Extract}).}}
+#' 
+#' Further (facultative) columns are:
+#' \describe{
+#'  \item{\code{Reaction Volume w/o DT (ul)}:}{Volume of the reaction prior to 
+#'    addition of fluorescense-quenching ditihionite (defaulting to 
+#'    \code{2000}).}
+#'  \item{\code{Reaction Volume with DT (ul)}:}{Volume of the reaction after the
+#'    addition of fluorescense-quenching ditihionite (defaulting to 
+#'    \code{2040}).}
+#'  \item{\code{Concentration Egg PC (mM)}:}{Self-explanatory. Defaulting to 
+#'    \code{4.5}.}
+#'  \item{\code{Timepoint of Measurement (s)}:}{Timepoint used as an anchor for 
+#'    the extraction of terminal fluorescense. 
+#'    \code{\link{TimepointOfMeasurement}} is used on all \code{Path}s if none 
+#'    given.}
+#'  \item{\code{Panel}:}{Used for \code{\link{facet_wrap}} during generation of
+#'    \code{\link{ggplot}} output}.}
+#'    
+#' Based on MIKE PAPER the function proceeds as follows:
+#' \itemize{
+#'  \item{Input is format checked and defaults are injected for facultative 
+#'    parameters/ columns as appropriate (see input \code{\link{data.frame}} 
+#'    format above).}
+#'  \item{Fluorescense spectra are parsed using 
+#'    \code{\link{ParseFluorometerData2}}.}
+#'  \item{Pre-dithionite-addition \code{Baseline Fluorescense} is determined for
+#'    each spectrum by averaging (\code{\link{median}}) over the first 10 
+#'    values.}
+#'  \item{Post-ditihinonite-addition \code{Minimum Fluorescense} is determined 
+#'    for each spectrum by averaging (\code{\link{median}}) over the last 10 
+#'    values common to all spectra.}
+#'  \item{The \code{Minimum Fluorescense} is volume-corrected based on 
+#'    \code{Reaction Volume w/o DT (ul)} and \code{Reaction Volume with DT (ul)}
+#'    (see above).}
+#'  \item{For each spectrum/datapoint a \code{Relative Fluorescense Reduction} 
+#'    is calculated as \code{1-Minimum Fluorescense/Baseline Fluorescense}.}
+#'  \item{Data are \code{\link{split}} for parallel treatment using the 
+#'    \code{Experimental Series} identifier (see above).}
+#'  \item{p-values for a liposome holding >= 1 flippase molecule are calculated
+#'    using \code{(y – y0)/(ymax – y0)}, where \code{y} is the 
+#'    \code{Relative Fluorescense Reduction}, \code{y0} is the 
+#'    \code{Relative Fluorescense Reduction} in an experiment without addition 
+#'    of protein extract and \code{ymax} is the maximal
+#'    \code{Relative Fluorescense Reduction} in the series.}
+#'  \item{A \code{Protein per Phospholipid (mg/mmol)} ratio (\code{PPR}) is 
+#'    calculated.}
+#'  \item{A monoexponential curve is fitted to \code{p(≥1) = 1 – exp(-PPR/α)} 
+#'    using \code{\link{nlrob}}.}
+#'  \item{Data \code{\link{split}} apart above are recombined and a 
+#'    \code{\link{ggplot}} object is assembled with the following layers:
+#'    \itemize{
+#'      \item{Lines (\code{\link{geom_line}}) representing the monoexponential
+#'        fit(s). \code{color} is used to differentiate \code{Experimental Series}.}
+#'      \item{Points (\code{\link{geom_point}}) representing the corresponding 
+#'        datapoints. \code{color} is used to differentiate \code{Experimental Series}.}
+#'      \item{Plots are finally \code{\link{facet_wrap}}ed by \code{Panel} and
+#'        lables adjusted cosmetically.}}
+#'  }}
+#' @param x \code{\link{data.frame}} as described in "Details".
+#' @return Returns a \code{\link{ggplot}} object.
+#' @author Johannes Graumann
+#' @references MIKE PAPER
+#' @export
+#' @seealso \code{\link{ParseFluorometerData2}}, \code{\link{TimepointOfMeasurement}}
+#' @keywords methods manip
 #' @import ggplot2
 #' @import plyr
 #' @import robustbase
 #' @examples
 #' stop("Add citation to Mike's manuscript!")
+#' # Build input
 #' x <- data.frame(
 #'  Path = c(
 #'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/ePC.txt",
@@ -18,8 +94,8 @@
 #'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-75ul.txt",
 #'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-150ul.txt"),
 #'  "Extract Volume (ul)" = c(0,15,40,75,150,0,15,40,75,150),
-#'  #     "Reaction Volume Blank (ul)" = rep(2000,4),
-#'  "Reaction Volume Reconstituted (ul)" = rep(2040,10),
+#'  #     "Reaction Volume w/o DT (ul)" = rep(2000,4),
+#'  "Reaction Volume with DT (ul)" = rep(2040,10),
 #'  "Concentration Egg PC (mM)" = rep(4.5,10),
 #'  "Extract Protein Concentration (mg/ml)" = c(rep(0.67,5),rep(1.26,5)),
 #'  #     "Timepoint of Measurement (s)",
@@ -27,7 +103,9 @@
 #'  Panel=rep("Erg1, Replicate 1",10),
 #'  check.names=FALSE,
 #'  stringsAsFactors=FALSE)
-FlippaseDependencySeries <- function(x)
+#'  # Run function
+#'  DithioniteFlippaseAssayAnalysis(x)
+DithioniteFlippaseAssayAnalysis <- function(x)
 {
   #######################
   # Check prerequisites #
@@ -83,8 +161,8 @@ FlippaseDependencySeries <- function(x)
   ########################
   facultatives <- list(
     Name = c(
-      "Reaction Volume Blank (ul)",
-      "Reaction Volume Reconstituted (ul)",
+      "Reaction Volume w/o DT (ul)",
+      "Reaction Volume with DT (ul)",
       "Concentration Egg PC (mM)",
       "Timepoint of Measurement (s)",
       "Panel"),
@@ -179,7 +257,7 @@ FlippaseDependencySeries <- function(x)
     },
     1)
   # Apply volume correction factors as needed
-  correctionFactor <- x$"Reaction Volume Reconstituted (ul)"/x$"Reaction Volume Blank (ul)"
+  correctionFactor <- x$"Reaction Volume with DT (ul)"/x$"Reaction Volume w/o DT (ul)"
   x$"Minimum Fluorescense, Volume Corrected" <- x$"Minimum Fluorescense" * correctionFactor
   # Calculate relative activity reduction
   x$"Relative Fluorescense Reduction" <- 1-x$"Minimum Fluorescense, Volume Corrected"/x$"Baseline Fluorescense"
