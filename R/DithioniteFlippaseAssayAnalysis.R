@@ -49,14 +49,14 @@
 #'  \item{Data are \code{\link{split}} for parallel treatment using a combined 
 #'    \code{Experimental Series}/\code{Panel} identifier (see above).}
 #'  \item{p-values for a liposome holding >= 1 flippase molecule are calculated
-#'    using \code{(y – y0)/(ymax – y0)}, where \code{y} is the 
+#'    using \code{(y - y0)/(ymax - y0)}, where \code{y} is the 
 #'    \code{Relative Fluorescense Reduction}, \code{y0} is the 
 #'    \code{Relative Fluorescense Reduction} in an experiment without addition 
 #'    of protein extract and \code{ymax} is the maximal
 #'    \code{Relative Fluorescense Reduction} in the series.}
 #'  \item{A \code{Protein per Phospholipid (mg/mmol)} ratio (\code{PPR}) is 
 #'    calculated.}
-#'  \item{A monoexponential curve is fitted to \code{p(≥1) = 1 – exp(-PPR/α)} 
+#'  \item{A monoexponential curve is fitted to \code{p(>=1) = 1 - exp(-PPR/a)} 
 #'    using \code{\link{nlrob}}.}
 #'  \item{Data \code{\link{split}} apart above are recombined and a 
 #'    \code{\link{ggplot}} object is assembled with the following layers:
