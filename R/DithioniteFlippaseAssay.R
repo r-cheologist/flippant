@@ -63,6 +63,10 @@
 #'    \itemize{
 #'      \item{Lines (\code{\link{geom_line}}) representing the monoexponential
 #'        fit(s). \code{color} is used to differentiate \code{Experimental Series}.}
+#'      \item{Segments (\code{\link{geom_segment}}) representing the \code{PPR}
+#'        at which the fit constant a is equal to \code{PPR} and thus
+#'        \code{p(>=1) = 1 - exp(-PPR/a) = 1 - exp(-1) ~ 0.63}. \code{color} is 
+#'        used to differentiate \code{Experimental Series}.}
 #'      \item{Points (\code{\link{geom_point}}) representing the corresponding 
 #'        datapoints. \code{color} is used to differentiate \code{Experimental Series}.}
 #'      \item{Plots are finally \code{\link{facet_wrap}}ed by \code{Experiment} and
@@ -359,6 +363,7 @@ DithioniteFlippaseAssay <- function(x)
         y=z$"Pvalue >= 1 Flippase in Vesicle")
       Rmod <- nlrob(y ~ 1-exp(-x/a),data=tmpData, start = list(a=1))
       z$"Fit Constant (a)" <- Rmod$coefficients
+      z$"PPR at P = 0.5" <- -Rmod$coefficients * log(1-0.5)
       output <- list(Raw=z)
       # Generate data to plot the results of the fit
       predictX <- data.frame(
@@ -383,6 +388,31 @@ DithioniteFlippaseAssay <- function(x)
   ##############################
   x <- rbind.fill(lapply(xoList,function(z){z$Raw}))
   fitX <- rbind.fill(lapply(xoList,function(z){z$Fit}))
+  annotX <- x[c("Experiment","Experimental Series","Fit Constant (a)")]
+  #   annotX <- x[c("Experiment","Experimental Series","PPR at P = 0.5")]
+  names(annotX) <- c("Experiment", "Experimental Series", "x1")
+  annotX$x2 <- annotX$x1
+  annotX$y1 <- 1-exp(-1)
+  annotX$LineType <- 2
+  #   annotX$y1 <- 0.5
+  annotX$y2 <- -Inf
+  annotX <- annotX[!duplicated(paste(annotX$Experiment,annotX$"Experimental Series")),]
+  annotXiList <- split(annotX,annotX$Experiment)
+  annotXoList <- lapply(
+    annotXiList,
+    function(x){
+      data.frame(
+        Experiment=unique(x$Experiment),
+        "Experimental Series"=x$"Experimental Series"[1],
+        x1=-Inf,
+        x2=max(x$"x1",na.rm=TRUE),
+        y1=unique(x$y1),
+        y2=unique(x$y1),
+        LineType=3,
+        stringsAsFactors=FALSE)
+    }
+  )
+  annotX <- rbind.fill(annotX,rbind.fill(annotXoList))
   ###############################
   # Assemble (graphical) output #
   ###############################
@@ -397,7 +427,9 @@ DithioniteFlippaseAssay <- function(x)
   tmpPlot <- tmpPlot +
     # First layer: lines/curves representing the monoexponential fit
     geom_line(data=fitX) +
-    # Second Layer: data points
+    # Second layer: annotations indicating PPR at p=0.5
+    geom_segment(data=annotX,aes(x=x1,xend=x2,y=y1,yend=y2),linetype=2) +
+    # Third Layer: data points
     geom_point() + 
     # Faceting by "Experiment"
     facet_wrap(~Experiment) +
