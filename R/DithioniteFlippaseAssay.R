@@ -1,4 +1,4 @@
-#' @title DithioniteFlippaseAssayAnalysis
+#' @title DithioniteFlippaseAssay
 #' @description A function that automates calculations necessary to interprete
 #' dithionite flippase assays
 #' @details The function accepts input in form of a \code{\link{data.frame}} 
@@ -114,8 +114,8 @@
 #'  check.names=FALSE,
 #'  stringsAsFactors=FALSE)
 #'  # Run function
-#'  DithioniteFlippaseAssayAnalysis(x)
-DithioniteFlippaseAssayAnalysis <- function(x)
+#'  DithioniteFlippaseAssay(x)
+DithioniteFlippaseAssay <- function(x)
 {
   #######################
   # Check prerequisites #
