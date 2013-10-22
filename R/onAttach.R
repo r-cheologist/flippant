@@ -29,7 +29,7 @@
       gtable=package_version("0.1.2"),
       ggplot2=package_version("0.9.3.1"),
       digest=package_version("0.6.3"),
-      biomaRt=package_version("2.16.0"),
+      biomaRt=package_version("2.18.0"),
       robustbase=package_version("0.9-10")))
   if(!is.null(vC)){
     packageStartupMessage(vC)
