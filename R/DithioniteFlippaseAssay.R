@@ -65,7 +65,9 @@
 #'        fit(s). \code{color} is used to differentiate \code{Experimental Series}.}
 #'      \item{Segments (\code{\link{geom_segment}}) representing the \code{PPR}
 #'        at which the fit constant a is equal to \code{PPR} and thus
-#'        \code{p(>=1) = 1 - exp(-PPR/a) = 1 - exp(-1) ~ 0.63}. \code{color} is 
+#'        \code{p(>=1) = 1 - exp(-PPR/a) = 1 - exp(-1) ~ 0.63}. This tau value 
+#'        has the implication that at this PPR all vesicles on average have 1 
+#'        flippase and 63\% have 1 or more (i.e. are active). \code{color} is 
 #'        used to differentiate \code{Experimental Series}.}
 #'      \item{Points (\code{\link{geom_point}}) representing the corresponding 
 #'        datapoints. \code{color} is used to differentiate \code{Experimental Series}.}
