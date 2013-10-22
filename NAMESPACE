@@ -1,7 +1,7 @@
 export(CompleteOutput)
 export(Correlate)
 export(DataPrep)
-export(DithioniteFlippaseAssayAnalysis)
+export(DithioniteFlippaseAssay)
 export(Figure1)
 export(Figure1B)
 export(Figure1C)

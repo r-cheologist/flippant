@@ -34,7 +34,7 @@ Collate:
     'DataPrep.R'
     'data-pGroups.R'
     'data-sha256sums.R'
-    'DithioniteFlippaseAssayAnalysis.R'
+    'DithioniteFlippaseAssay.R'
     'Figure1.R'
     'Figure1B.R'
     'Figure1C.R'
