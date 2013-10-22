@@ -25,7 +25,7 @@
 #'    the extraction of terminal fluorescense. 
 #'    \code{\link{TimepointOfMeasurement}} is used on all \code{Path}s if none 
 #'    given.}
-#'  \item{\code{Panel}:}{Used for \code{\link{facet_wrap}} during generation of
+#'  \item{\code{Experiment}:}{Used for \code{\link{facet_wrap}} during generation of
 #'    \code{\link{ggplot}} output}.}
 #'    
 #' Based on MIKE PAPER the function proceeds as follows:
@@ -47,7 +47,7 @@
 #'  \item{For each spectrum/datapoint a \code{Relative Fluorescense Reduction} 
 #'    is calculated as \code{1-Minimum Fluorescense/Baseline Fluorescense}.}
 #'  \item{Data are \code{\link{split}} for parallel treatment using a combined 
-#'    \code{Experimental Series}/\code{Panel} identifier (see above).}
+#'    \code{Experimental Series}/\code{Experiment} identifier (see above).}
 #'  \item{p-values for a liposome holding >= 1 flippase molecule are calculated
 #'    using \code{(y - y0)/(ymax - y0)}, where \code{y} is the 
 #'    \code{Relative Fluorescense Reduction}, \code{y0} is the 
@@ -65,7 +65,7 @@
 #'        fit(s). \code{color} is used to differentiate \code{Experimental Series}.}
 #'      \item{Points (\code{\link{geom_point}}) representing the corresponding 
 #'        datapoints. \code{color} is used to differentiate \code{Experimental Series}.}
-#'      \item{Plots are finally \code{\link{facet_wrap}}ed by \code{Panel} and
+#'      \item{Plots are finally \code{\link{facet_wrap}}ed by \code{Experiment} and
 #'        lables adjusted cosmetically.}}
 #'  }}
 #' @param x \code{\link{data.frame}} as described in "Details".
@@ -110,7 +110,7 @@
 #'  "Extract Protein Concentration (mg/ml)" = c(rep(0.67,5),rep(1.26,5),rep(0.67,5),rep(1.26,5)),
 #'  #     "Timepoint of Measurement (s)",
 #'  "Experimental Series"=c(rep("Extract",5),rep("Depleted Extract",5),rep("Extract",5),rep("Depleted Extract",5)),
-#'  Panel=c(rep("Erg1, Replicate 1",10),rep("Erg1, Replicate 2",10)),
+#'  Experiment=c(rep("Erg1, Replicate 1",10),rep("Erg1, Replicate 2",10)),
 #'  check.names=FALSE,
 #'  stringsAsFactors=FALSE)
 #'  # Run function
@@ -175,7 +175,7 @@ DithioniteFlippaseAssay <- function(x)
       "Reaction Volume with DT (ul)",
       "Concentration Egg PC (mM)",
       "Timepoint of Measurement (s)",
-      "Panel"),
+      "Experiment"),
     Class = c(
       "numeric",
       "numeric",
@@ -271,9 +271,9 @@ DithioniteFlippaseAssay <- function(x)
   x$"Minimum Fluorescense, Volume Corrected" <- x$"Minimum Fluorescense" * correctionFactor
   # Calculate relative activity reduction
   x$"Relative Fluorescense Reduction" <- 1-x$"Minimum Fluorescense, Volume Corrected"/x$"Baseline Fluorescense"
-  # Split by Experiment/Panel
+  # Split by Experiment
   #####################
-  x$CombinedId <- paste(x$"Experimental Series",x$"Panel",sep="_")
+  x$CombinedId <- paste(x$"Experimental Series",x$"Experiment",sep="_")
   xiList <- split(x,x$CombinedId)
   # Generate PPR vs. p>=1Flippase/Liposome Data
   #############################################
@@ -373,7 +373,7 @@ DithioniteFlippaseAssay <- function(x)
         "Protein per Phospholipid (mg/mmol)"=predictX$x,
         "Pvalue >= 1 Flippase in Vesicle"=predictedY,
         "Experimental Series"=unique(z$"Experimental Series"),
-        "Panel"=unique(z$"Panel"),
+        "Experiment"=unique(z$"Experiment"),
         check.names=FALSE,
         stringsAsFactors=FALSE)
       # Return
@@ -399,8 +399,8 @@ DithioniteFlippaseAssay <- function(x)
     geom_line(data=fitX) +
     # Second Layer: data points
     geom_point() + 
-    # Faceting by "Panel"
-    facet_wrap(~Panel) +
+    # Faceting by "Experiment"
+    facet_wrap(~Experiment) +
     # Prettifications
     labs(
       x=expression(frac("Protein","Phospholipid")~~bgroup("(",frac("mg","mmol"),")")),
