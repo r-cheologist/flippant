@@ -75,7 +75,10 @@
 #' @param x \code{\link{data.frame}} as described in "Details".
 #' @return Returns a \code{\link{ggplot}} object.
 #' @author Johannes Graumann
-#' @references MIKE PAPER
+#' @references Menon, I., Huber, T., Sanyal, S., Banerjee, S., Barré, P., Canis, 
+#' S., Warren, J.D., Hwa, J., Sakmar, T.P., and Menon, A.K. (2011). Opsin Is a 
+#' Phospholipid Flippase. Current Biology 21, 149–153.
+#' MIKE PAPER
 #' @export
 #' @seealso \code{\link{ParseQuantMasterData}}, \code{\link{TimepointOfMeasurement}}
 #' @keywords methods manip
