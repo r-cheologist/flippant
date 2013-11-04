@@ -11,3 +11,8 @@ library(testthat)
 library(RCFPD,lib.loc="~/R-DevTools/mdaa-Development")
 # Load the worked on package
 library(MDAA)
+options(
+  rstudio.markdownToHTML = function(inputFile, outputFile){
+    system(paste("pandoc --bibliography=References.bib", shQuote(inputFile), "-o", shQuote(outputFile)))
+  })
+library(knitr)
