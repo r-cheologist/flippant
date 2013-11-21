@@ -1,5 +1,5 @@
 #' @export
-TimepointOfMeasurement <- function(x=NA){
+TimepointOfMeasurement <- function(x=NA,Fluorometer=c("MasterQuant","LS55")){
   #######################
   # Check prerequisites #
   #######################
@@ -12,14 +12,21 @@ TimepointOfMeasurement <- function(x=NA){
   if(any(file.access(x,mode=4) == -1)){
     stop("All elements in 'x' must refer to readable files.")
   }
+  Fluorometer <- match.arg(arg=Fluorometer,choices=c("QuantMaster","LS55"),several.ok=FALSE)
   ##############
   # Processing #
   ##############
   # Parsing
   #########
-  tmpData <- lapply(
-    x,
-    function(y){ParseQuantMasterData(SpecFile=y)})
+  if(Fluorometer=="QuantMaster"){
+    tmpData <- lapply(
+      x,
+      function(y){ParseQuantMasterData(SpecFile=y)})
+  } else if(Fluorometer=="LS55"){
+    tmpData <- lapply(
+      x,
+      function(y){ParseLS55Data(SpecFile=y)})
+  }
   # Extract data
   ##############
   # What is the latest data point per series?

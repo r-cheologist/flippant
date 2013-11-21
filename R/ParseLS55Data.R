@@ -1,5 +1,5 @@
-#' @title ParseFluorometerData
-#' @description Parse spectra from files provided by a Perkin Elmer FS55
+#' @title ParseLS55Data
+#' @description Parse spectra from files provided by a Perkin Elmer LS55
 #' @details A function to read fluorometer output directly. Intended as a helper
 #' function to flippase activity determinations from dithionite assays.
 #' @param SpecFile Path to a \file{*.td} file as a \code{\link{character}} 
@@ -45,7 +45,7 @@
 #' @keywords manip IO file
 #' @examples
 #' stop("Function is missing examples!")
-ParseFluorometerData <- function(SpecFile=NA){
+ParseLS55Data <- function(SpecFile=NA){
   #######################
   # Check Prerequisites #
   #######################

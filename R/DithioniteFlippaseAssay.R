@@ -1,8 +1,10 @@
 #' @title DithioniteFlippaseAssay
 #' @description A function that automates calculations necessary to interprete
 #' dithionite flippase assays
-#' @details The function accepts input in form of a \code{\link{data.frame}} 
-#' with the following \bold{mandatory} columns:
+#' @details Currently the function can parse \code{ASCII} output as extractable 
+#' from a Photon QuantMaster and a Perkin Elmer LS55 Fluorescense Spectrometer.
+#' Beyond that, it accepts input in form of a 
+#' \code{\link{data.frame}} with the following \bold{mandatory} columns:
 #' \describe{
 #'  \item{\code{Path}:}{Paths to existing and readable \code{ASCII} output files 
 #'    of a Photon QuantMaster fluorometer.}
@@ -75,6 +77,8 @@
 #'        lables adjusted cosmetically.}}
 #'  }}
 #' @param x \code{\link{data.frame}} as described in "Details".
+#' @param Fluorometer Fluorescense Spectrometer used for data acquisition. 
+#' Defaulting to \code{QuantMaster}. See "Details" for more.
 #' @return Returns a \code{\link{ggplot}} object.
 #' @author Johannes Graumann
 #' @references Menon, I., Huber, T., Sanyal, S., Banerjee, S., Barré, P., Canis, 
@@ -82,13 +86,15 @@
 #' Phospholipid Flippase. Current Biology 21, 149–153.
 #' MIKE PAPER
 #' @export
-#' @seealso \code{\link{ParseQuantMasterData}}, \code{\link{TimepointOfMeasurement}}
+#' @seealso \code{\link{ParseQuantMasterData}}, \code{\link{ParseLS55Data}}, 
+#' \code{\link{TimepointOfMeasurement}}
 #' @keywords methods manip
 #' @import ggplot2
 #' @import plyr
 #' @import robustbase
 #' @examples
 #' stop("Add citation to Mike's manuscript!")
+#' stop("Add example using actually published data.")
 #' # Build input
 #' x <- data.frame(
 #'  Path = c(
@@ -124,11 +130,16 @@
 #'  stringsAsFactors=FALSE)
 #'  # Run function
 #'  DithioniteFlippaseAssay(x)
-DithioniteFlippaseAssay <- function(x)
+DithioniteFlippaseAssay <- function(
+  x,
+  Fluorometer=c("QuantMaster","LS55"))
 {
   #######################
   # Check prerequisites #
   #######################
+  # Fluorometer
+  #############
+  Fluorometer <- match.arg(arg=Fluorometer,choices=c("QuantMaster","LS55"),several.ok=FALSE)
   # General DF characteristics
   ############################
   if(!is.data.frame(x)){
@@ -205,7 +216,7 @@ DithioniteFlippaseAssay <- function(x)
           "Providing missing column '",
           facultatives$Name[y],
           "' from spectra ('Path').")
-        addOn <- TimepointOfMeasurement(x$Path)
+        addOn <- TimepointOfMeasurement(x$Path,Fluorometer=Fluorometer)
       } else {
         warning(
           "Providing missing column '",
@@ -242,9 +253,19 @@ DithioniteFlippaseAssay <- function(x)
   ##############
   # Parsing spectra
   #################
-  tmpData <- lapply(
-    x$Path,
-    function(y){ParseQuantMasterData(SpecFile=y)})
+  if(Fluorometer=="QuantMaster"){
+    tmpData <- lapply(
+      x$Path,
+      function(y){
+        ParseQuantMasterData(SpecFile=y)
+      })
+  } else if(Fluorometer=="LS55"){
+    tmpData <- lapply(
+      x$Path,
+      function(y){
+        ParseLS55Data(SpecFile=y)
+      })
+  }
   # What spectral time windows to extract?
   minAT <- unique(vapply(tmpData,function(y){y$"Minimal Acquisition Time (s)"},1))
   if(length(minAT) != 1){
