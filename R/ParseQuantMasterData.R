@@ -82,7 +82,8 @@ ParseQuantMasterData <- function(SpecFile=NA){
       names(tmpBlock) <- names(blockIndeces[x-1])
       return(tmpBlock)
     })
-  tmpBlocks <- tmpBlocks[c("<Trace>","X\tY\t")]
+  names(tmpBlocks) <- sub(pattern="\\s+$",replacement="",names(tmpBlocks))
+  tmpBlocks <- tmpBlocks[c("<Trace>","X\tY")]
   # Rough format check
   elementCountTest <- sapply(tmpBlocks,length) == c(2,NA)
   elementCountTest[is.na(elementCountTest)] <- TRUE
@@ -95,7 +96,7 @@ ParseQuantMasterData <- function(SpecFile=NA){
   # Process spectral data
   #######################
   # Cull empty entries
-  tmpOutput$Data <- tmpBlocks$"X\tY\t"
+  tmpOutput$Data <- tmpBlocks$"X\tY"
   # Parse data apart
   tmpOutput$Data <- lapply(tmpOutput$Data,function(x){unlist(strsplit(x=x,split="\\s+"))})
   # Numerizise
