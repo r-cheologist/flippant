@@ -10,6 +10,8 @@
 #'    of a Photon QuantMaster fluorometer.}
 #'  \item{\code{Extract Volume (ul)}:}{Volume of Triton X-100 extract used.}
 #'  \item{\code{Extract Protein Concentration (mg/ml)}:}{Self-explanatory.}
+#'  \item{\code{Experiment}:}{Identifier for any given experiment. Used for 
+#'    \code{\link{facet_wrap}} during generation of \code{\link{ggplot}} output}.
 #'  \item{\code{Experimental Series}:}{Identifier for a given series/graph (e.g.
 #'    \code{Extract} and \code{Depleted Extract}).}}
 #' 
@@ -26,9 +28,7 @@
 #'  \item{\code{Timepoint of Measurement (s)}:}{Timepoint used as an anchor for 
 #'    the extraction of terminal fluorescense. 
 #'    \code{\link{TimepointOfMeasurement}} is used on all \code{Path}s if none 
-#'    given.}
-#'  \item{\code{Experiment}:}{Used for \code{\link{facet_wrap}} during generation of
-#'    \code{\link{ggplot}} output}.}
+#'    given.}}
 #'    
 #' Based on MIKE PAPER the function proceeds as follows:
 #' \itemize{
@@ -158,11 +158,13 @@ DithioniteFlippaseAssay <- function(
       "Path",
       "Extract Volume (ul)",
       "Extract Protein Concentration (mg/ml)",
+      "Experiment",
       "Experimental Series"),
     Class = c(
       "character",
       "numeric",
       "numeric",
+      "character",
       "character"))
   if(!all( requirements$Name %in% names(x))){
     stop(
@@ -194,19 +196,16 @@ DithioniteFlippaseAssay <- function(
       "Reaction Volume w/o DT (ul)",
       "Reaction Volume with DT (ul)",
       "Concentration Egg PC (mM)",
-      "Timepoint of Measurement (s)",
-      "Experiment"),
+      "Timepoint of Measurement (s)"),
     Class = c(
       "numeric",
       "numeric",
       "numeric",
-      "numeric",
-      "character"),
+      "numeric"),
     Default = c(
       2000,
       2040,
       4.5,
-      NA,
       NA))
   missing <- which(!(facultatives$Name %in% names(x)))
   if(length(missing) != 0){
