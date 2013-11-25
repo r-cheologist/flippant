@@ -7,28 +7,28 @@
 #' \code{\link{data.frame}} with the following \bold{mandatory} columns:
 #' \describe{
 #'  \item{\code{Path}:}{Paths to existing and readable \code{ASCII} output files 
-#'    of a Photon QuantMaster fluorometer.}
-#'  \item{\code{Extract Volume (ul)}:}{Volume of Triton X-100 extract used.}
-#'  \item{\code{Extract Protein Concentration (mg/ml)}:}{Self-explanatory.}
-#'  \item{\code{Experiment}:}{Identifier for any given experiment. Used for 
-#'    \code{\link{facet_wrap}} during generation of \code{\link{ggplot}} output}.
-#'  \item{\code{Experimental Series}:}{Identifier for a given series/graph (e.g.
-#'    \code{Extract} and \code{Depleted Extract}).}}
+#'    of a fluorometer.}
+#'  \item{\code{Protein in Reconstitution (mg)}:}{Self-explanatory.}}
 #' 
 #' Further (facultative) columns are:
 #' \describe{
-#'  \item{\code{Reaction Volume w/o DT (ul)}:}{Volume of the reaction prior to 
-#'    addition of fluorescense-quenching ditihionite (defaulting to 
-#'    \code{2000}).}
-#'  \item{\code{Reaction Volume with DT (ul)}:}{Volume of the reaction after the
-#'    addition of fluorescense-quenching ditihionite (defaulting to 
-#'    \code{2040}).}
-#'  \item{\code{Concentration Egg PC (mM)}:}{Self-explanatory. Defaulting to 
-#'    \code{4.5}.}
+#'  \item{\code{Fluorescence Assay Vol. w/o DT (ul)}:}{Volume of the 
+#'    fluorescence assay prior to addition of fluorescense-quenching ditihionite
+#'    (defaulting to \code{2000}).}
+#'  \item{\code{Fluorescence Assay Vol. with DT (ul)}:}{Volume of the 
+#'    fluorescence assay after the addition of fluorescense-quenching 
+#'    ditihionite (defaulting to \code{2040}).}
+#'  \item{\code{Egg PC in Reconstitution (mmol)}:}{Self-explanatory. Defaulting to 
+#'    \code{0.0045} (1 ml of a 1 mM solution.}
 #'  \item{\code{Timepoint of Measurement (s)}:}{Timepoint used as an anchor for 
 #'    the extraction of terminal fluorescense. 
 #'    \code{\link{TimepointOfMeasurement}} is used on all \code{Path}s if none 
-#'    given.}}
+#'    given.}
+#'  \item{\code{Experiment}:}{Identifier for any given experiment. Used for 
+#'    \code{\link{facet_wrap}} during generation of \code{\link{ggplot}} output}.
+#'  \item{\code{Experimental Series}:}{Identifier for a given series/graph (e.g.
+#'    \code{Extract} and \code{Depleted Extract}). Used by \code{color} during 
+#'    generation of \code{\link{ggplot}} output.}}
 #'    
 #' Based on MIKE PAPER the function proceeds as follows:
 #' \itemize{
@@ -156,16 +156,10 @@ DithioniteFlippaseAssay <- function(
   requirements <- list(
     Name = c(
       "Path",
-      "Extract Volume (ul)",
-      "Extract Protein Concentration (mg/ml)",
-      "Experiment",
-      "Experimental Series"),
+      "Protein in Reconstitution (mg)"),
     Class = c(
       "character",
-      "numeric",
-      "numeric",
-      "character",
-      "character"))
+      "numeric"))
   if(!all( requirements$Name %in% names(x))){
     stop(
       "'x' must hold at least the following columns: '",
@@ -193,20 +187,26 @@ DithioniteFlippaseAssay <- function(
   ########################
   facultatives <- list(
     Name = c(
-      "Reaction Volume w/o DT (ul)",
-      "Reaction Volume with DT (ul)",
-      "Concentration Egg PC (mM)",
-      "Timepoint of Measurement (s)"),
+      "Fluorescence Assay Vol. w/o DT (ul)",
+      "Fluorescence Assay Vol. with DT (ul)",
+      "Egg PC in Reconstitution (mmol)",
+      "Timepoint of Measurement (s)",
+      "Experiment",
+      "Experimental Series"),
     Class = c(
       "numeric",
       "numeric",
       "numeric",
-      "numeric"),
+      "numeric",
+      "character",
+      "character"),
     Default = c(
       2000,
       2040,
-      4.5,
-      NA))
+      0.0045,
+      NA,
+      NA_character_,
+      NA_character_))
   missing <- which(!(facultatives$Name %in% names(x)))
   if(length(missing) != 0){
     for (y in missing){
@@ -296,7 +296,7 @@ DithioniteFlippaseAssay <- function(
     },
     1)
   # Apply volume correction factors as needed
-  correctionFactor <- x$"Reaction Volume with DT (ul)"/x$"Reaction Volume w/o DT (ul)"
+  correctionFactor <- x$"Fluorescence Assay Vol. with DT (ul)"/x$"Fluorescence Assay Vol. w/o DT (ul)"
   x$"Minimum Fluorescense, Volume Corrected" <- x$"Minimum Fluorescense" * correctionFactor
   # Calculate relative activity reduction
   x$"Relative Fluorescense Reduction" <- 1-x$"Minimum Fluorescense, Volume Corrected"/x$"Baseline Fluorescense"
@@ -311,7 +311,7 @@ DithioniteFlippaseAssay <- function(
     function(z){
       # Ensure that there's a data point with liposomes ONLY as a unique 
       # reference point
-      liposomesOnlyIndex <- which(z$"Extract Volume (ul)" == 0)
+      liposomesOnlyIndex <- which(z$"Protein in Reconstitution (mg)" == 0)
       if(length(liposomesOnlyIndex) == 0){
         stop("Experimental series '",unique(y$"Experimental Series"),"' does not
           have the required liposomes-ONLY ('Extract Volume (ul)' of '0') data 
@@ -341,7 +341,7 @@ DithioniteFlippaseAssay <- function(
       ##   m, number of flippases per vesicle (=f/v)
       ##   PPR, mg protein per mmol phospholipid
       # Calculate PPR
-      z$"Protein per Phospholipid (mg/mmol)" <- (z$"Extract Protein Concentration (mg/ml)"*z$"Extract Volume (ul)")/z$"Concentration Egg PC (mM)"
+      z$"Protein per Phospholipid (mg/mmol)" <- (z$"Protein in Reconstitution (mg)"/z$"Egg PC in Reconstitution (mmol)")
       # DEBUG: plot(z$"Protein per Phospholipid (mg/mmol)",z$"Pvalue >= 1 Flippase in Vesicle")
       ## To calculate p(≥1 flippase) as a function of the PPR, we assume that 
       ## reconstitution of opsin/rhodopsin molecules into vesicles occurs 
