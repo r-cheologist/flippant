@@ -79,8 +79,6 @@
 #' @param x \code{\link{data.frame}} as described in "Details".
 #' @param Fluorometer Fluorescense Spectrometer used for data acquisition. 
 #' Defaulting to \code{QuantMaster}. See "Details" for more.
-#' @param Start Starting parameter estimate for \code{a} used in the fit of 
-#' \code{y ~ 1-exp(-x/a)} by \code{\link{nlrob}}.
 #' @return Returns a \code{\link{ggplot}} object.
 #' @author Johannes Graumann
 #' @references Menon, I., Huber, T., Sanyal, S., Banerjee, S., Barré, P., Canis, 
@@ -134,9 +132,7 @@
 #'  DithioniteFlippaseAssay(x)
 DithioniteFlippaseAssay <- function(
   x,
-  Fluorometer=c("QuantMaster","LS55"),
-  Start=1
-  )
+  Fluorometer=c("QuantMaster","LS55"))
 {
   #######################
   # Check prerequisites #
@@ -390,7 +386,7 @@ DithioniteFlippaseAssay <- function(
       tmpData <- data.frame(
         x=z$"Protein per Phospholipid (mg/mmol)",
         y=z$"Pvalue >= 1 Flippase in Vesicle")
-      Rmod <- nlrob(y ~ 1-exp(-x/a),data=tmpData, start = list(a=Start))
+      Rmod <- nlrob(y ~ 1-exp(-x/a),data=tmpData, start = list(a=1))
       z$"Fit Constant (a)" <- Rmod$coefficients
       z$"PPR at P = 0.5" <- -Rmod$coefficients * log(1-0.5)
       output <- list(Raw=z)
