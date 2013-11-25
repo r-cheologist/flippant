@@ -422,7 +422,11 @@ DithioniteFlippaseAssay <- function(
   #   annotX$y1 <- 0.5
   annotX$y2 <- -Inf
   annotX <- annotX[!duplicated(paste(annotX$Experiment,annotX$"Experimental Series")),]
-  annotXiList <- split(annotX,annotX$Experiment)
+  if(any(!is.na(annotX$Experiment))){
+    annotXiList <- split(annotX,annotX$Experiment)
+  } else {
+    annotXiList <- list(annotX)
+  }
   annotXoList <- lapply(
     annotXiList,
     function(x){
