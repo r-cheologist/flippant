@@ -216,6 +216,8 @@ DithioniteFlippaseAssay <- function(
           facultatives$Name[y],
           "' from spectra ('Path').")
         addOn <- TimepointOfMeasurement(x$Path,Fluorometer=Fluorometer)
+      } else if(facultatives$Name[y] %in% c("Experiment","Experimental Series")) {
+        addOn <- facultatives$Default[y]
       } else {
         warning(
           "Providing missing column '",
