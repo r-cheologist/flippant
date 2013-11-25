@@ -441,24 +441,44 @@ DithioniteFlippaseAssay <- function(
   ###############################
   # Assemble (graphical) output #
   ###############################
-  # Groundwork (color-separation of "Experimental Series")
+  # Groundwork
   tmpPlot <- ggplot(
     data=x,
     aes_string(
       x="`Protein per Phospholipid (mg/mmol)`",
-      y="`Pvalue >= 1 Flippase in Vesicle`",
-      color="`Experimental Series`"))
+      y="`Pvalue >= 1 Flippase in Vesicle`"))
   # Layering
+  ## First layer: lines/curves representing the monoexponential fit
+  if(any(!is.na(fitX$"Experimental Series"))){
+    tmpPlot <- tmpPlot +
+      geom_line(data=fitX,aes(color="`Experimental Series`"))
+  } else {
+    tmpPlot <- tmpPlot +
+      geom_line(data=fitX)
+  }
+  ## Second layer: annotations indicating PPR at p=0.5
+  if(any(!is.na(annotX$"Experimental Series"))){
+    tmpPlot <- tmpPlot +
+      geom_segment(data=annotX,aes(x=x1,xend=x2,y=y1,yend=y2,color="`Experimental Series`"),linetype=2)
+  } else {
+    tmpPlot <- tmpPlot +
+      geom_segment(data=annotX,aes(x=x1,xend=x2,y=y1,yend=y2),linetype=2)
+  }
+  ## Third Layer: data points
+  if(any(!is.na(x$"Experimental Series"))){
+    tmpPlot <- tmpPlot +
+      geom_point(aes(color="`Experimental Series`"))
+  } else {
+    tmpPlot <- tmpPlot +
+      geom_point()
+  }
+  ## Faceting by "Experiment"
+  if(any(!is.na(x$"Experiment"))){
+    tmpPlot <- tmpPlot + 
+      facet_wrap(~Experiment)
+  }
+  # Prettifications
   tmpPlot <- tmpPlot +
-    # First layer: lines/curves representing the monoexponential fit
-    geom_line(data=fitX) +
-    # Second layer: annotations indicating PPR at p=0.5
-    geom_segment(data=annotX,aes(x=x1,xend=x2,y=y1,yend=y2),linetype=2) +
-    # Third Layer: data points
-    geom_point() + 
-    # Faceting by "Experiment"
-    facet_wrap(~Experiment) +
-    # Prettifications
     labs(
       x=expression(frac("Protein","Phospholipid")~~bgroup("(",frac("mg","mmol"),")")),
       y=expression(p~bgroup("(",frac("Flippase","Liposome")>=1,")")),
