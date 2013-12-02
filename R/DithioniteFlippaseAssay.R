@@ -94,6 +94,7 @@
 #' @import robustbase
 #' @examples
 #' stop("Add citation to Mike's manuscript!")
+#' stop("Revisit workflow description.")
 #' stop("Add example using actually published data.")
 #' # Build input
 #' x <- data.frame(
