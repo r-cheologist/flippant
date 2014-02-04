@@ -389,7 +389,7 @@ DithioniteFlippaseAssay <- function(
       tmpData <- data.frame(
         x=z$"Protein per Phospholipid (mg/mmol)",
         y=z$"Pvalue >= 1 Flippase in Vesicle")
-      Rmod <- nlrob(y ~ 1-exp(-x/a),data=tmpData, start = list(a=1))
+      Rmod <- nlrob(y ~ 1-exp(-x/a),data=tmpData, start = list(a=1), maxit=40)
       z$"Fit Constant (a)" <- Rmod$coefficients
       z$"PPR at P = 0.5" <- -Rmod$coefficients * log(1-0.5)
       output <- list(Raw=z)
