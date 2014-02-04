@@ -458,7 +458,7 @@ DithioniteFlippaseAssay <- function(
   ## First layer: lines/curves representing the monoexponential fit
   if(any(!is.na(fitX$"Experimental Series"))){
     tmpPlot <- tmpPlot +
-      geom_line(data=fitX,aes(color="`Experimental Series`"))
+      geom_line(data=fitX,aes_string(color="`Experimental Series`"))
   } else {
     tmpPlot <- tmpPlot +
       geom_line(data=fitX)
@@ -466,7 +466,7 @@ DithioniteFlippaseAssay <- function(
   ## Second layer: annotations indicating PPR at p=0.5
   if(any(!is.na(annotX$"Experimental Series"))){
     tmpPlot <- tmpPlot +
-      geom_segment(data=annotX,aes(x=x1,xend=x2,y=y1,yend=y2,color="`Experimental Series`"),linetype=2)
+      geom_segment(data=annotX,aes_string(x="x1",xend="x2",y="y1",yend="y2",color="`Experimental Series`"),linetype=2)
   } else {
     tmpPlot <- tmpPlot +
       geom_segment(data=annotX,aes(x=x1,xend=x2,y=y1,yend=y2),linetype=2)
@@ -474,7 +474,7 @@ DithioniteFlippaseAssay <- function(
   ## Third Layer: data points
   if(any(!is.na(x$"Experimental Series"))){
     tmpPlot <- tmpPlot +
-      geom_point(aes(color="`Experimental Series`"))
+      geom_point(aes_string(color="`Experimental Series`"))
   } else {
     tmpPlot <- tmpPlot +
       geom_point()
