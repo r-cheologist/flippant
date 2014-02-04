@@ -21,16 +21,16 @@
       XML=package_version("3.98-1.1"),
       scales=package_version("0.2.3"),
       seqinr=package_version("3.0.7"),
-      R.utils=package_version("1.28.4"),
+      R.utils=package_version("1.29.8"),
       plyr=package_version("1.8"),
-      plotrix=package_version("3.5.2"),
+      plotrix=package_version("3.5.3"),
       gsubfn=package_version("0.6-5"),
-      png=package_version("0.1-6"),
+      png=package_version("0.1-7"),
       gtable=package_version("0.1.2"),
       ggplot2=package_version("0.9.3.1"),
-      digest=package_version("0.6.3"),
+      digest=package_version("0.6.4"),
       biomaRt=package_version("2.18.0"),
-      robustbase=package_version("0.9-10")))
+      robustbase=package_version("0.90-1")))
   if(!is.null(vC)){
     packageStartupMessage(vC)
   }
