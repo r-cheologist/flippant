@@ -17,7 +17,7 @@ Depends:
     png (>= 0.1-7),
     RCFPD (>= 1.2.6.2),
     reshape2 (>= 1.2.2),
-    robustbase (>= 0.90-1)
+    robustbase (>= 0.90-2)
 Suggests:
     pcaMethods,
     roxygen2,
