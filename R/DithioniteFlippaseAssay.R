@@ -134,16 +134,10 @@
 #'  stringsAsFactors=FALSE)
 #'  # Run function
 #'  DithioniteFlippaseAssay(x)
-DithioniteFlippaseAssay <- function(
-  x,
-  Fluorometer=c("QuantMaster","LS55"))
-{
+DithioniteFlippaseAssay <- function(x){
   #######################
   # Check prerequisites #
   #######################
-  # Fluorometer
-  #############
-  Fluorometer <- match.arg(arg=Fluorometer,choices=c("QuantMaster","LS55"),several.ok=FALSE)
   # General DF characteristics
   ############################
   if(!is.data.frame(x)){
@@ -191,6 +185,7 @@ DithioniteFlippaseAssay <- function(
   ########################
   facultatives <- list(
     Name = c(
+      "Fluorometer",
       "Fluorescence Assay Vol. w/o DT (ul)",
       "Fluorescence Assay Vol. with DT (ul)",
       "Egg PC in Reconstitution (mmol)",
@@ -198,13 +193,15 @@ DithioniteFlippaseAssay <- function(
       "Experiment",
       "Experimental Series"),
     Class = c(
+      "character",
       "numeric",
       "numeric",
       "numeric",
       "numeric",
       "character",
       "character"),
-    Default = c(
+    Default = list(
+      "QuantMaster",
       2000,
       2040,
       0.0045,
@@ -221,15 +218,15 @@ DithioniteFlippaseAssay <- function(
           "' from spectra ('Path').")
         addOn <- TimepointOfMeasurement(x$Path,Fluorometer=Fluorometer)
       } else if(facultatives$Name[y] %in% c("Experiment","Experimental Series")) {
-        addOn <- facultatives$Default[y]
+        addOn <- facultatives$Default[[y]]
       } else {
         warning(
           "Providing missing column '",
           facultatives$Name[y],
           "' from defaults (",
-          facultatives$Default[y],
+          facultatives$Default[[y]],
           "). Make sure this is correct.")
-        addOn <- facultatives$Default[y]
+        addOn <- facultatives$Default[[y]]
       }
       tmpX <- cbind(
         x,
@@ -249,6 +246,16 @@ DithioniteFlippaseAssay <- function(
       paste(facultatives$Class,collapse="', '"),
       "'.")
   }
+  # Check "Fluorometer" legality
+  x$Fluorometer <- vapply(
+    x$Fluorometer,
+    function(y){
+      match.arg(
+        arg=y,
+        choices=c("QuantMaster","LS55"),
+        several.ok=FALSE)},
+    "character",
+    USE.NAMES=FALSE)
   # Check "Timepoint of Measurement (s)" consistency
   if(length(unique(x$"Timepoint of Measurement (s)")) != 1){
     stop("Column 'Timepoint of Measurement (s)' contains multiple values. Exiting.")
@@ -258,19 +265,17 @@ DithioniteFlippaseAssay <- function(
   ##############
   # Parsing spectra
   #################
-  if(Fluorometer=="QuantMaster"){
-    tmpData <- lapply(
-      x$Path,
-      function(y){
-        ParseQuantMasterData(SpecFile=y)
-      })
-  } else if(Fluorometer=="LS55"){
-    tmpData <- lapply(
-      x$Path,
-      function(y){
-        ParseLS55Data(SpecFile=y)
-      })
-  }
+  tmpData <- lapply(
+    seq(nrow(x)),
+    function(y){
+      if(x[y,"Fluorometer"] == "QuantMaster"){
+        ParseQuantMasterData(SpecFile=x[y,"Path"])
+      } else if(x[y,"Fluorometer"] == "LS55"){
+        ParseLS55Data(SpecFile=x[y,"Path"])
+      } else {
+        stop("Not implemented: ",x[y,"Fluorometer"])
+      }
+    })
   # What spectral time windows to extract?
   minAT <- unique(vapply(tmpData,function(y){y$"Minimal Acquisition Time (s)"},1))
   if(length(minAT) != 1){
