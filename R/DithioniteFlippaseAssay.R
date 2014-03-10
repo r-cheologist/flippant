@@ -25,7 +25,7 @@
 #'    \code{\link{TimepointOfMeasurement}} is used on all \code{Path}s if none 
 #'    given.}
 #'  \item{\code{Experiment}:}{Identifier for any given experiment. Used for 
-#'    \code{\link{facet_wrap}} during generation of \code{\link{ggplot}} output}.
+#'    \code{\link{facet_wrap}} during generation of \code{\link{ggplot}} output.}
 #'  \item{\code{Experimental Series}:}{Identifier for a given series/graph (e.g.
 #'    \code{Extract} and \code{Depleted Extract}). Used by \code{color} during 
 #'    generation of \code{\link{ggplot}} output.}}
