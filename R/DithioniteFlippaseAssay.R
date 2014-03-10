@@ -1,10 +1,8 @@
 #' @title DithioniteFlippaseAssay
 #' @description A function that automates calculations necessary to interprete
 #' dithionite flippase assays
-#' @details Currently the function can parse \code{ASCII} output as extractable 
-#' from a Photon QuantMaster and a Perkin Elmer LS55 Fluorescense Spectrometer.
-#' Beyond that, it accepts input in form of a 
-#' \code{\link{data.frame}} with the following \bold{mandatory} columns:
+#' @details The function accepts input in form of a \code{\link{data.frame}} 
+#' with the following \bold{mandatory} columns:
 #' \describe{
 #'  \item{\code{Path}:}{Paths to existing and readable \code{ASCII} output files 
 #'    of a fluorometer.}
@@ -12,6 +10,13 @@
 #' 
 #' Further (facultative) columns are:
 #' \describe{
+#'  \item{\code{Fluorometer}:}{
+#'    Fluorometer producing the file at \code{Path}.
+#'    Currently the function can parse \code{ASCII} output as produced by: 
+#'    Photon QuantMaster, Perkin Elmer LS55. The corresponding legal 
+#'    \code{\link{character}} values in the column are \code{QuantMaster} and 
+#'    \code{LS55}. The default is \code{QuantMaster}.
+#'  }
 #'  \item{\code{Fluorescence Assay Vol. w/o DT (ul)}:}{Volume of the 
 #'    fluorescence assay prior to addition of fluorescense-quenching ditihionite
 #'    (defaulting to \code{2000}).}
@@ -77,8 +82,6 @@
 #'        lables adjusted cosmetically.}}
 #'  }}
 #' @param x \code{\link{data.frame}} as described in "Details".
-#' @param Fluorometer Fluorescense Spectrometer used for data acquisition. 
-#' Defaulting to \code{QuantMaster}. See "Details" for more.
 #' @return Returns a \code{\link{ggplot}} object.
 #' @author Johannes Graumann
 #' @references Menon, I., Huber, T., Sanyal, S., Banerjee, S., Barré, P., Canis, 
