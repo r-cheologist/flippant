@@ -33,18 +33,7 @@
 #'  \item{Input is format checked and defaults are injected for facultative 
 #'    parameters/columns as appropriate (see input \code{\link{data.frame}} 
 #'    format above).}
-#'  \item{Fluorescense spectra are parsed
-#'   
-#'     using 
-#'  #'  \item{\code{Fluorometer}:}{
-#'    Fluorometer producing the file at \code{Path}.
-#'    Currently the function can parse \code{ASCII} output as produced by: 
-#'    Photon QuantMaster, Perkin Elmer LS55. The corresponding legal 
-#'    \code{\link{character}} values in the column are \code{QuantMaster} and 
-#'    \code{LS55}. The default is \code{QuantMaster}.
-#'  }
-
-#'    \code{\link{ParseFluorometerData2}}.}
+#'  \item{Fluorescense spectra are parsed using \code{\link{parse_fluorometer_output}}.}
 #'  \item{Pre-dithionite-addition \code{Baseline Fluorescense} is determined for
 #'    each spectrum by averaging (\code{\link{median}}) over the first 10 
 #'    values.}
