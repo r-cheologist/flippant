@@ -1,4 +1,4 @@
-#' @title DithioniteFlippaseAssay
+#' @title dithionite_flippase_assay
 #' @description A function that automates calculations necessary to interprete
 #' dithionite flippase assays
 #' @details The function accepts input in form of a \code{\link{data.frame}} 
@@ -10,13 +10,6 @@
 #' 
 #' Further (facultative) columns are:
 #' \describe{
-#'  \item{\code{Fluorometer}:}{
-#'    Fluorometer producing the file at \code{Path}.
-#'    Currently the function can parse \code{ASCII} output as produced by: 
-#'    Photon QuantMaster, Perkin Elmer LS55. The corresponding legal 
-#'    \code{\link{character}} values in the column are \code{QuantMaster} and 
-#'    \code{LS55}. The default is \code{QuantMaster}.
-#'  }
 #'  \item{\code{Fluorescence Assay Vol. w/o DT (ul)}:}{Volume of the 
 #'    fluorescence assay prior to addition of fluorescense-quenching ditihionite
 #'    (defaulting to \code{2000}).}
@@ -38,9 +31,19 @@
 #' Based on MIKE PAPER the function proceeds as follows:
 #' \itemize{
 #'  \item{Input is format checked and defaults are injected for facultative 
-#'    parameters/ columns as appropriate (see input \code{\link{data.frame}} 
+#'    parameters/columns as appropriate (see input \code{\link{data.frame}} 
 #'    format above).}
-#'  \item{Fluorescense spectra are parsed using 
+#'  \item{Fluorescense spectra are parsed
+#'   
+#'     using 
+#'  #'  \item{\code{Fluorometer}:}{
+#'    Fluorometer producing the file at \code{Path}.
+#'    Currently the function can parse \code{ASCII} output as produced by: 
+#'    Photon QuantMaster, Perkin Elmer LS55. The corresponding legal 
+#'    \code{\link{character}} values in the column are \code{QuantMaster} and 
+#'    \code{LS55}. The default is \code{QuantMaster}.
+#'  }
+
 #'    \code{\link{ParseFluorometerData2}}.}
 #'  \item{Pre-dithionite-addition \code{Baseline Fluorescense} is determined for
 #'    each spectrum by averaging (\code{\link{median}}) over the first 10 
@@ -134,7 +137,7 @@
 #'  stringsAsFactors=FALSE)
 #'  # Run function
 #'  DithioniteFlippaseAssay(x)
-DithioniteFlippaseAssay <- function(x){
+dithionite_flippase_assay <- function(x){
   #######################
   # Check prerequisites #
   #######################
@@ -151,27 +154,27 @@ DithioniteFlippaseAssay <- function(x){
   }
   # Required parameters
   #####################
-  requirements <- list(
+  required_columns_in_x <- list(
     Name = c(
       "Path",
       "Protein in Reconstitution (mg)"),
     Class = c(
       "character",
       "numeric"))
-  if(!all( requirements$Name %in% names(x))){
+  if(!all( required_columns_in_x$Name %in% names(x))){
     stop(
       "'x' must hold at least the following columns: '",
-      paste(requirements,collapse="', '"),
+      paste(required_columns_in_x,collapse="', '"),
       "'.")
   }
   if(!identical(
-    unname(vapply(x[requirements$Name],class,c(A="A"))),
-    requirements$Class)){
+    unname(vapply(x[required_columns_in_x$Name],class,c(A="A"))),
+    required_columns_in_x$Class)){
     stop(
       "Required columns '",
-      paste(requirements$Name,collapse="', '"),
+      paste(required_columns_in_x$Name,collapse="', '"),
       "' must be of classes '",
-      paste(requirements$Class,collapse="', '"),
+      paste(required_columns_in_x$Class,collapse="', '"),
       "'.")
   }
   # Check paths
@@ -183,9 +186,8 @@ DithioniteFlippaseAssay <- function(x){
   }
   # Facultative parameters
   ########################
-  facultatives <- list(
+  facultative_columns_in_x <- list(
     Name = c(
-      "Fluorometer",
       "Fluorescence Assay Vol. w/o DT (ul)",
       "Fluorescence Assay Vol. with DT (ul)",
       "Egg PC in Reconstitution (mmol)",
@@ -193,7 +195,6 @@ DithioniteFlippaseAssay <- function(x){
       "Experiment",
       "Experimental Series"),
     Class = c(
-      "character",
       "numeric",
       "numeric",
       "numeric",
@@ -201,61 +202,50 @@ DithioniteFlippaseAssay <- function(x){
       "character",
       "character"),
     Default = list(
-      "QuantMaster",
       2000,
       2040,
       0.0045,
       NA,
       NA_character_,
       NA_character_))
-  missing <- which(!(facultatives$Name %in% names(x)))
-  if(length(missing) != 0){
-    for (y in missing){
-      if(facultatives$Name[y] == "Timepoint of Measurement (s)"){
+  missing_facultative_columns_in_x <- which(!(facultative_columns_in_x$Name %in% names(x)))
+  if(length(missing_facultative_columns_in_x) != 0){
+    for (y in missing_facultative_columns_in_x){
+      if(facultative_columns_in_x$Name[y] == "Timepoint of Measurement (s)"){
         warning(
           "Providing missing column '",
-          facultatives$Name[y],
+          facultative_columns_in_x$Name[y],
           "' from spectra ('Path').")
-        addOn <- TimepointOfMeasurement(x$Path,Fluorometer=Fluorometer)
-      } else if(facultatives$Name[y] %in% c("Experiment","Experimental Series")) {
-        addOn <- facultatives$Default[[y]]
+        to_be_added_on <- timepoint_of_measurement(x$Path)
+      } else if(facultative_columns_in_x$Name[y] %in% c("Experiment","Experimental Series")) {
+        to_be_added_on <- facultative_columns_in_x$Default[[y]]
       } else {
         warning(
           "Providing missing column '",
-          facultatives$Name[y],
+          facultative_columns_in_x$Name[y],
           "' from defaults (",
-          facultatives$Default[[y]],
+          facultative_columns_in_x$Default[[y]],
           "). Make sure this is correct.")
-        addOn <- facultatives$Default[[y]]
+        to_be_added_on <- facultative_columns_in_x$Default[[y]]
       }
-      tmpX <- cbind(
+      output <- cbind(
         x,
-        rep(x=addOn,times=nrow(x)),
+        rep(x=to_be_added_on,times=nrow(x)),
         stringsAsFactors=FALSE)
-      names(tmpX)[ncol(tmpX)] <- facultatives$Name[y]
-      x <- tmpX
+      names(output)[ncol(output)] <- facultative_columns_in_x$Name[y]
+      x <- output
     }
   }
   if(!identical(
-    unname(vapply(x[facultatives$Name],class,c(A="A"))),
-    facultatives$Class)){
+    unname(vapply(x[facultative_columns_in_x$Name],class,c(A="A"))),
+    facultative_columns_in_x$Class)){
     stop(
       "Facultative columns '",
-      paste(facultatives$Name,collapse="', '"),
+      paste(facultative_columns_in_x$Name,collapse="', '"),
       "' must be of classes '",
-      paste(facultatives$Class,collapse="', '"),
+      paste(facultative_columns_in_x$Class,collapse="', '"),
       "'.")
   }
-  # Check "Fluorometer" legality
-  x$Fluorometer <- vapply(
-    x$Fluorometer,
-    function(y){
-      match.arg(
-        arg=y,
-        choices=c("QuantMaster","LS55"),
-        several.ok=FALSE)},
-    "character",
-    USE.NAMES=FALSE)
   # Check "Timepoint of Measurement (s)" consistency
   if(length(unique(x$"Timepoint of Measurement (s)")) != 1){
     stop("Column 'Timepoint of Measurement (s)' contains multiple values. Exiting.")
@@ -265,23 +255,15 @@ DithioniteFlippaseAssay <- function(x){
   ##############
   # Parsing spectra
   #################
-  tmpData <- lapply(
-    seq(nrow(x)),
-    function(y){
-      if(x[y,"Fluorometer"] == "QuantMaster"){
-        ParseQuantMasterData(SpecFile=x[y,"Path"])
-      } else if(x[y,"Fluorometer"] == "LS55"){
-        ParseLS55Data(SpecFile=x[y,"Path"])
-      } else {
-        stop("Not implemented: ",x[y,"Fluorometer"])
-      }
-    })
+  spectral_data <- lapply(
+    x$Path,
+    parse_fluorometer_output)
   # What spectral time windows to extract?
-  minAT <- unique(vapply(tmpData,function(y){y$"Minimal Acquisition Time (s)"},1))
+  minAT <- unique(vapply(spectral_data,function(y){y$Min.Acquisition.Time.in.sec},1))
   if(length(minAT) != 1){
     stop("Minimum acquisition times are not identical - aborting.")
   }
-  maxAT <- vapply(tmpData,function(y){y$"Maximal Acquisition Time (s)"},1)
+  maxAT <- vapply(spectral_data,function(y){y$Max.Acquisition.Time.in.sec},1)
   if(any(maxAT < x$"Timepoint of Measurement (s)")){
     stop("'Timepoint of Measurement (s)' is larger than the shortest spectrum 
          acquisition.")
@@ -290,45 +272,49 @@ DithioniteFlippaseAssay <- function(x){
   }
   # Average over first 10 values for activity baseline
   x$"Baseline Fluorescense" <- vapply(
-    tmpData,
+    spectral_data,
     function(z){
-      tmpFrom <- min(which(z$Data$"Time (s)" >= minAT))
-      baselineSS <- seq(from=tmpFrom,to=tmpFrom+9)
-      return(median(z$Data$"Fluorescense Intensity"[baselineSS],na.rm=TRUE))
+      start_index_for_averaging <- min(which(z$Data$Time.in.sec >= minAT))
+      indexes_for_averaging <- seq(
+        from=start_index_for_averaging,
+        to=start_index_for_averaging+9)
+      return(median(z$Data$Fluorescense.Intensity[indexes_for_averaging],na.rm=TRUE))
     },
     1)
   # Average over last 10 values (in common time range) for activity
   x$"Minimum Fluorescense" <- vapply(
-    tmpData,
+    spectral_data,
     function(z){
-      tmpTo <- max(which(z$Data$"Time (s)" <= maxAT))
-      activitySS <- seq(from=tmpTo-9,to=tmpTo)
-      return(median(z$Data$"Fluorescense Intensity"[activitySS],na.rm=TRUE))
+      stop_index_for_averaging <- max(which(z$Data$Time.in.sec <= maxAT))
+      indexes_for_averaging <- seq(
+        from=stop_index_for_averaging-9,
+        to=stop_index_for_averaging)
+      return(median(z$Data$Fluorescense.Intensity[indexes_for_averaging],na.rm=TRUE))
     },
     1)
   # Apply volume correction factors as needed
-  correctionFactor <- x$"Fluorescence Assay Vol. with DT (ul)"/x$"Fluorescence Assay Vol. w/o DT (ul)"
-  x$"Minimum Fluorescense, Volume Corrected" <- x$"Minimum Fluorescense" * correctionFactor
+  volume_correction_factor <- x$"Fluorescence Assay Vol. with DT (ul)"/x$"Fluorescence Assay Vol. w/o DT (ul)"
+  x$"Minimum Fluorescense, Volume Corrected" <- x$"Minimum Fluorescense" * volume_correction_factor
   # Calculate relative activity reduction
   x$"Relative Fluorescense Reduction" <- 1-x$"Minimum Fluorescense, Volume Corrected"/x$"Baseline Fluorescense"
   # Split by Experiment
   #####################
   x$CombinedId <- paste(x$"Experimental Series",x$"Experiment",sep="_")
-  xiList <- split(x,x$CombinedId)
+  input_list_from_x <- split(x,x$CombinedId)
   # Generate PPR vs. p>=1Flippase/Liposome Data
   #############################################
-  xoList <- lapply(
-    xiList,
+  processed_list_from_x <- lapply(
+    input_list_from_x,
     function(z){
       # Ensure that there's a data point with liposomes ONLY as a unique 
       # reference point
-      liposomesOnlyIndex <- which(z$"Protein in Reconstitution (mg)" == 0)
-      if(length(liposomesOnlyIndex) == 0){
+      index_of_liposomes_only_data <- which(z$"Protein in Reconstitution (mg)" == 0)
+      if(length(index_of_liposomes_only_data) == 0){
         stop("Experimental series '",unique(y$"Experimental Series"),"' does not
           have the required liposomes-ONLY ('Extract Volume (ul)' of '0') data 
           point.")
       }
-      if(length(liposomesOnlyIndex) > 1){
+      if(length(index_of_liposomes_only_data) > 1){
         stop("Experimental series '",unique(y$"Experimental Series"),"' has more
           than one liposomes-ONLY ('Extract Volume (ul)' of '0') data point.")
       }  
@@ -342,7 +328,7 @@ DithioniteFlippaseAssay <- function(x){
       ## at least one flippase.
       # Calculate p>=1Flippase/Liposome
       y <- z$"Relative Fluorescense Reduction"
-      y0 <- z$"Relative Fluorescense Reduction"[liposomesOnlyIndex]
+      y0 <- z$"Relative Fluorescense Reduction"[index_of_liposomes_only_data]
       ymax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE)
       z$"Pvalue >= 1 Flippase in Vesicle" <- (y-y0)/(ymax-y0)
       ## The dependence of p(≥1 flippase) on PPR was analyzed as follows.
@@ -394,25 +380,25 @@ DithioniteFlippaseAssay <- function(x){
       ## reconstitution of such dimers into a vesicle confers flippase activity to 
       ## that vesicle, then α = 0.24 mmol/mg.
       # Fit a monoexponential curve to the data
-      tmpData <- data.frame(
+      subset_for_fit <- data.frame(
         x=z$"Protein per Phospholipid (mg/mmol)",
         y=z$"Pvalue >= 1 Flippase in Vesicle")
-      Rmod <- nlrob(y ~ 1-exp(-x/a),data=tmpData, start = list(a=1), maxit=40)
+      Rmod <- nlrob(y ~ 1-exp(-x/a),data=subset_for_fit, start = list(a=1), maxit=40)
       z$"Fit Constant (a)" <- Rmod$coefficients
       z$"PPR at P = 0.5" <- -Rmod$coefficients * log(1-0.5)
       output <- list(Raw=z)
       # Generate data to plot the results of the fit
-      predictX <- data.frame(
+      x_predicted_from_fit <- data.frame(
         x=seq(
           from=min(z$"Protein per Phospholipid (mg/mmol)",na.rm=TRUE),
           to=max(z$"Protein per Phospholipid (mg/mmol)",na.rm=TRUE),
           length.out=200))
-      predictedY <- predict(
+      y_predicted_from_fit <- predict(
           object=Rmod,
-          newdata=predictX)
+          newdata=x_predicted_from_fit)
       output$Fit <- data.frame(
-        "Protein per Phospholipid (mg/mmol)"=predictX$x,
-        "Pvalue >= 1 Flippase in Vesicle"=predictedY,
+        "Protein per Phospholipid (mg/mmol)"=x_predicted_from_fit$x,
+        "Pvalue >= 1 Flippase in Vesicle"=y_predicted_from_fit,
         "Experimental Series"=unique(z$"Experimental Series"),
         "Experiment"=unique(z$"Experiment"),
         check.names=FALSE,
@@ -422,24 +408,24 @@ DithioniteFlippaseAssay <- function(x){
     })
   # Recombine the processed data
   ##############################
-  x <- rbind.fill(lapply(xoList,function(z){z$Raw}))
-  fitX <- rbind.fill(lapply(xoList,function(z){z$Fit}))
-  annotX <- x[c("Experiment","Experimental Series","Fit Constant (a)")]
-  #   annotX <- x[c("Experiment","Experimental Series","PPR at P = 0.5")]
-  names(annotX) <- c("Experiment", "Experimental Series", "x1")
-  annotX$x2 <- annotX$x1
-  annotX$y1 <- 1-exp(-1)
-  annotX$LineType <- 2
-  #   annotX$y1 <- 0.5
-  annotX$y2 <- -Inf
-  annotX <- annotX[!duplicated(paste(annotX$Experiment,annotX$"Experimental Series")),]
-  if(any(!is.na(annotX$Experiment))){
-    annotXiList <- split(annotX,annotX$Experiment)
+  x <- rbind.fill(lapply(processed_list_from_x,function(z){z$Raw}))
+  fit_results_from_x <- rbind.fill(lapply(processed_list_from_x,function(z){z$Fit}))
+  annotations_for_x <- x[c("Experiment","Experimental Series","Fit Constant (a)")]
+  #   annotations_for_x <- x[c("Experiment","Experimental Series","PPR at P = 0.5")]
+  names(annotations_for_x) <- c("Experiment", "Experimental Series", "x1")
+  annotations_for_x$x2 <- annotations_for_x$x1
+  annotations_for_x$y1 <- 1-exp(-1)
+  annotations_for_x$LineType <- 2
+  #   annotations_for_x$y1 <- 0.5
+  annotations_for_x$y2 <- -Inf
+  annotations_for_x <- annotations_for_x[!duplicated(paste(annotations_for_x$Experiment,annotations_for_x$"Experimental Series")),]
+  if(any(!is.na(annotations_for_x$Experiment))){
+    annotation_list_for_x <- split(annotations_for_x,annotations_for_x$Experiment)
   } else {
-    annotXiList <- list(annotX)
+    annotation_list_for_x <- list(annotations_for_x)
   }
-  annotXoList <- lapply(
-    annotXiList,
+  processed_annotation_list_for_x <- lapply(
+    annotation_list_for_x,
     function(x){
       data.frame(
         Experiment=unique(x$Experiment),
@@ -452,52 +438,52 @@ DithioniteFlippaseAssay <- function(x){
         stringsAsFactors=FALSE)
     }
   )
-  annotX <- rbind.fill(annotX,rbind.fill(annotXoList))
+  annotations_for_x <- rbind.fill(annotations_for_x,rbind.fill(processed_annotation_list_for_x))
   ###############################
   # Assemble (graphical) output #
   ###############################
   # Groundwork
-  tmpPlot <- ggplot(
+  plot_output <- ggplot(
     data=x,
     aes_string(
       x="`Protein per Phospholipid (mg/mmol)`",
       y="`Pvalue >= 1 Flippase in Vesicle`"))
   # Layering
   ## First layer: lines/curves representing the monoexponential fit
-  if(any(!is.na(fitX$"Experimental Series"))){
-    tmpPlot <- tmpPlot +
-      geom_line(data=fitX,aes_string(color="`Experimental Series`"))
+  if(any(!is.na(fit_results_from_x$"Experimental Series"))){
+    plot_output <- plot_output +
+      geom_line(data=fit_results_from_x,aes_string(color="`Experimental Series`"))
   } else {
-    tmpPlot <- tmpPlot +
-      geom_line(data=fitX)
+    plot_output <- plot_output +
+      geom_line(data=fit_results_from_x)
   }
   ## Second layer: annotations indicating PPR at p=0.5
-  if(any(!is.na(annotX$"Experimental Series"))){
-    tmpPlot <- tmpPlot +
-      geom_segment(data=annotX,aes_string(x="x1",xend="x2",y="y1",yend="y2",color="`Experimental Series`"),linetype=2)
+  if(any(!is.na(annotations_for_x$"Experimental Series"))){
+    plot_output <- plot_output +
+      geom_segment(data=annotations_for_x,aes_string(x="x1",xend="x2",y="y1",yend="y2",color="`Experimental Series`"),linetype=2)
   } else {
-    tmpPlot <- tmpPlot +
-      geom_segment(data=annotX,aes(x=x1,xend=x2,y=y1,yend=y2),linetype=2)
+    plot_output <- plot_output +
+      geom_segment(data=annotations_for_x,aes(x=x1,xend=x2,y=y1,yend=y2),linetype=2)
   }
   ## Third Layer: data points
   if(any(!is.na(x$"Experimental Series"))){
-    tmpPlot <- tmpPlot +
+    plot_output <- plot_output +
       geom_point(aes_string(color="`Experimental Series`"))
   } else {
-    tmpPlot <- tmpPlot +
+    plot_output <- plot_output +
       geom_point()
   }
   ## Faceting by "Experiment"
   if(any(!is.na(x$"Experiment"))){
-    tmpPlot <- tmpPlot + 
+    plot_output <- plot_output + 
       facet_wrap(~Experiment)
   }
   # Prettifications
-  tmpPlot <- tmpPlot +
+  plot_output <- plot_output +
     labs(
       x=expression(frac("Protein","Phospholipid")~~bgroup("(",frac("mg","mmol"),")")),
       y=expression(p~bgroup("(",frac("Flippase","Liposome")>=1,")")),
       color="Experiment")
   # Return
-  return(tmpPlot)
+  return(plot_output)
 }
