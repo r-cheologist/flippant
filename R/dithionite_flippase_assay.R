@@ -310,12 +310,12 @@ dithionite_flippase_assay <- function(x){
       # reference point
       index_of_liposomes_only_data <- which(z$"Protein in Reconstitution (mg)" == 0)
       if(length(index_of_liposomes_only_data) == 0){
-        stop("Experimental series '",unique(y$"Experimental Series"),"' does not
+        stop("Experimental series '",unique(y["Experimental Series"]),"' does not
           have the required liposomes-ONLY ('Extract Volume (ul)' of '0') data 
           point.")
       }
       if(length(index_of_liposomes_only_data) > 1){
-        stop("Experimental series '",unique(y$"Experimental Series"),"' has more
+        stop("Experimental series '",unique(y["Experimental Series"]),"' has more
           than one liposomes-ONLY ('Extract Volume (ul)' of '0') data point.")
       }  
       ## End-point fluorescence reduction data from flippase activity assays were 
