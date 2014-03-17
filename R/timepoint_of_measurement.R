@@ -1,5 +1,4 @@
-#' @export
-TimepointOfMeasurement <- function(x=NA,Fluorometer=c("MasterQuant","LS55")){
+timepoint_of_measurement <- function(x=NA){
   #######################
   # Check prerequisites #
   #######################
@@ -12,25 +11,18 @@ TimepointOfMeasurement <- function(x=NA,Fluorometer=c("MasterQuant","LS55")){
   if(any(file.access(x,mode=4) == -1)){
     stop("All elements in 'x' must refer to readable files.")
   }
-  Fluorometer <- match.arg(arg=Fluorometer,choices=c("QuantMaster","LS55"),several.ok=FALSE)
   ##############
   # Processing #
   ##############
   # Parsing
   #########
-  if(Fluorometer=="QuantMaster"){
-    tmpData <- lapply(
-      x,
-      function(y){ParseQuantMasterData(SpecFile=y)})
-  } else if(Fluorometer=="LS55"){
-    tmpData <- lapply(
-      x,
-      function(y){ParseLS55Data(SpecFile=y)})
-  }
+  tmp_data <- lapply(
+    x,
+    parse_fluorometer_output)
   # Extract data
   ##############
   # What is the latest data point per series?
-  maxAT <- vapply(tmpData,function(y){y$"Maximal Acquisition Time (s)"},1)
+  maxAT <- vapply(tmp_data,function(y){y$Max.Acquisition.Time.in.sec},1)
   # Identify the shortest one
   minMaxAT <- min(maxAT,na.rm=TRUE)
   ##########
