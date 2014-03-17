@@ -13,7 +13,7 @@
 #}
 .onAttach <- function(...){
   vC <- VersionCheck(
-    expectedR=package_version("3.0.2"),
+    expectedR=package_version("3.0.3"),
     expectedPackages=list(
       gridExtra=package_version("0.9.1"),
       reshape2=package_version("1.2.2"),
