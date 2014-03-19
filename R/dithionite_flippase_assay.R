@@ -247,22 +247,22 @@ dithionite_flippase_assay <- function(x){
     x$Path,
     parse_fluorometer_output)
   # What spectral time windows to extract?
-  minAT <- unique(vapply(spectral_data,function(y){y$Min.Acquisition.Time.in.sec},1))
-  if(length(minAT) != 1){
+  min_acquisition_time <- unique(vapply(spectral_data,function(y){y$Min.Acquisition.Time.in.sec},1))
+  if(length(min_acquisition_time) != 1){
     stop("Minimum acquisition times are not identical - aborting.")
   }
-  maxAT <- vapply(spectral_data,function(y){y$Max.Acquisition.Time.in.sec},1)
-  if(any(maxAT < x$"Timepoint of Measurement (s)")){
+  max_acquisition_time <- vapply(spectral_data,function(y){y$Max.Acquisition.Time.in.sec},1)
+  if(any(max_acquisition_time < x$"Timepoint of Measurement (s)")){
     stop("'Timepoint of Measurement (s)' is larger than the shortest spectrum 
          acquisition.")
   } else {
-    maxAT <- unique(x$"Timepoint of Measurement (s)")
+    max_acquisition_time <- unique(x$"Timepoint of Measurement (s)")
   }
   # Average over first 10 values for activity baseline
   x$"Baseline Fluorescense" <- vapply(
     spectral_data,
     function(z){
-      start_index_for_averaging <- min(which(z$Data$Time.in.sec >= minAT))
+      start_index_for_averaging <- min(which(z$Data$Time.in.sec >= min_acquisition_time))
       indexes_for_averaging <- seq(
         from=start_index_for_averaging,
         to=start_index_for_averaging+9)
@@ -273,7 +273,7 @@ dithionite_flippase_assay <- function(x){
   x$"Minimum Fluorescense" <- vapply(
     spectral_data,
     function(z){
-      stop_index_for_averaging <- max(which(z$Data$Time.in.sec <= maxAT))
+      stop_index_for_averaging <- max(which(z$Data$Time.in.sec <= max_acquisition_time))
       indexes_for_averaging <- seq(
         from=stop_index_for_averaging-9,
         to=stop_index_for_averaging)
