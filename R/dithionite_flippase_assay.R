@@ -130,8 +130,9 @@ dithionite_flippase_assay <- function(x){
   #######################
   # Check prerequisites #
   #######################
+  # Check x
+  #########
   # General DF characteristics
-  ############################
   if(!is.data.frame(x)){
     stop("'x' must be of class 'data.frame'.")
   }
@@ -142,7 +143,6 @@ dithionite_flippase_assay <- function(x){
     stop("'x' cannot contain 'NA'.")
   }
   # Required parameters
-  #####################
   required_columns_in_x <- list(
     Name = c(
       "Path",
@@ -174,7 +174,6 @@ dithionite_flippase_assay <- function(x){
     stop("All entries in column 'Path' must refer to existing files.")
   }
   # Facultative parameters
-  ########################
   facultative_columns_in_x <- list(
     Name = c(
       "Fluorescence Assay Vol. w/o DT (ul)",
