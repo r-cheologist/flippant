@@ -318,7 +318,7 @@ dithionite_flippase_assay <- function(x){
       y <- z$"Relative Fluorescense Reduction"
       y0 <- z$"Relative Fluorescense Reduction"[index_of_liposomes_only_data]
       ymax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE)
-      z$"Pvalue >= 1 Flippase in Vesicle" <- (y-y0)/(ymax-y0)
+      z$"Probability >= 1 Flippase in Vesicle" <- (y-y0)/(ymax-y0)
       ## The dependence of p(≥1 flippase) on PPR was analyzed as follows.
       ## Definitions:
       ##   f, number of flippases used for reconstitution
@@ -370,7 +370,7 @@ dithionite_flippase_assay <- function(x){
       # Fit a monoexponential curve to the data
       subset_for_fit <- data.frame(
         x=z$"Protein per Phospholipid (mg/mmol)",
-        y=z$"Pvalue >= 1 Flippase in Vesicle")
+        y=z$"Probability >= 1 Flippase in Vesicle")
       Rmod <- nlrob(y ~ 1-exp(-x/a),data=subset_for_fit, start = list(a=1), maxit=40)
       z$"Fit Constant (a)" <- Rmod$coefficients
       z$"PPR at P = 0.5" <- -Rmod$coefficients * log(1-0.5)
@@ -386,7 +386,7 @@ dithionite_flippase_assay <- function(x){
           newdata=x_predicted_from_fit)
       output$Fit <- data.frame(
         "Protein per Phospholipid (mg/mmol)"=x_predicted_from_fit$x,
-        "Pvalue >= 1 Flippase in Vesicle"=y_predicted_from_fit,
+        "Probability >= 1 Flippase in Vesicle"=y_predicted_from_fit,
         "Experimental Series"=unique(z$"Experimental Series"),
         "Experiment"=unique(z$"Experiment"),
         check.names=FALSE,
@@ -435,7 +435,7 @@ dithionite_flippase_assay <- function(x){
     data=x,
     aes_string(
       x="`Protein per Phospholipid (mg/mmol)`",
-      y="`Pvalue >= 1 Flippase in Vesicle`"))
+      y="`Probability >= 1 Flippase in Vesicle`"))
   # Layering
   ## First layer: lines/curves representing the monoexponential fit
   if(any(!is.na(fit_results_from_x$"Experimental Series"))){
