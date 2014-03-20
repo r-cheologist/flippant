@@ -48,7 +48,7 @@
 #'  \item{Data are \code{\link{split}} for parallel treatment using a combined 
 #'    \code{Experimental Series}/\code{Experiment} identifier (see above).}
 #'  \item{A \code{Relative Fluorescense Reduction} is calculated in comparison
-#'    to the liposomes-only/no-protein control).
+#'    to the liposomes-only/no-protein control).}
 #'  \item{A \code{Protein per Phospholipid (mg/mmol)} ratio (\code{PPR}) is 
 #'    calculated.}
 #'  \item{A probability for a liposome holding >= 1 flippase molecule are 
