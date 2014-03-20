@@ -127,12 +127,9 @@
 #'  # Run function
 #'  DithioniteFlippaseAssay(x)
 dithionite_flippase_assay <- function(x){
-  #######################
-  # Check prerequisites #
-  #######################
+# Check Prerequisites -----------------------------------------------------
   # Check x
-  #########
-  # General DF characteristics
+  ## General DF characteristics
   if(!is.data.frame(x)){
     stop("'x' must be of class 'data.frame'.")
   }
@@ -142,7 +139,7 @@ dithionite_flippase_assay <- function(x){
   if(any(is.na(x))){
     stop("'x' cannot contain 'NA'.")
   }
-  # Required parameters
+  ## Required parameters
   required_columns_in_x <- list(
     Name = c(
       "Path",
@@ -166,14 +163,14 @@ dithionite_flippase_assay <- function(x){
       paste(required_columns_in_x$Class,collapse="', '"),
       "'.")
   }
-  # Check paths
+  ## Check paths
   if(!all(file.exists(x$Path))){
     stop("All entries in column 'Path' must refer to existing files.")
   }
   if(any(file.access(x$Path,mode=4) == -1)){
     stop("All entries in column 'Path' must refer to existing files.")
   }
-  # Facultative parameters
+  ## Facultative parameters
   facultative_columns_in_x <- list(
     Name = c(
       "Fluorescence Assay Vol. w/o DT (ul)",
@@ -234,19 +231,16 @@ dithionite_flippase_assay <- function(x){
       paste(facultative_columns_in_x$Class,collapse="', '"),
       "'.")
   }
-  # Check "Timepoint of Measurement (s)" consistency
+  ## Check "Timepoint of Measurement (s)" consistency
   if(length(unique(x$"Timepoint of Measurement (s)")) != 1){
     stop("Column 'Timepoint of Measurement (s)' contains multiple values. Exiting.")
   }
-  ##############
-  # Processing #
-  ##############
+# Processing --------------------------------------------------------------
   # Parsing spectra
-  #################
   spectral_data <- lapply(
     x$Path,
     parse_fluorometer_output)
-  # What spectral time windows to extract?
+  ## What spectral time windows to extract?
   min_acquisition_time <- unique(vapply(spectral_data,function(y){y$Min.Acquisition.Time.in.sec},1))
   if(length(min_acquisition_time) != 1){
     stop("Minimum acquisition times are not identical - aborting.")
@@ -258,7 +252,7 @@ dithionite_flippase_assay <- function(x){
   } else {
     max_acquisition_time <- unique(x$"Timepoint of Measurement (s)")
   }
-  # Average over first 10 values for activity baseline
+  ## Average over first 10 values for activity baseline
   x$"Baseline Fluorescense" <- vapply(
     spectral_data,
     function(z){
@@ -269,7 +263,7 @@ dithionite_flippase_assay <- function(x){
       return(median(z$Data$Fluorescense.Intensity[indexes_for_averaging],na.rm=TRUE))
     },
     1)
-  # Average over last 10 values (in common time range) for activity
+  ## Average over last 10 values (in common time range) for activity
   x$"Minimum Fluorescense" <- vapply(
     spectral_data,
     function(z){
@@ -280,22 +274,21 @@ dithionite_flippase_assay <- function(x){
       return(median(z$Data$Fluorescense.Intensity[indexes_for_averaging],na.rm=TRUE))
     },
     1)
-  # Apply volume correction factors as needed
+  ## Apply volume correction factors as needed
   volume_correction_factor <- x$"Fluorescence Assay Vol. with DT (ul)"/x$"Fluorescence Assay Vol. w/o DT (ul)"
   x$"Minimum Fluorescense, Volume Corrected" <- x$"Minimum Fluorescense" * volume_correction_factor
   # Calculate relative activity reduction
   x$"Relative Fluorescense Reduction" <- 1-x$"Minimum Fluorescense, Volume Corrected"/x$"Baseline Fluorescense"
   # Split by Experiment
-  #####################
   x$CombinedId <- paste(x$"Experimental Series",x$"Experiment",sep="_")
   input_list_from_x <- split(x,x$CombinedId)
+
   # Generate PPR vs. p>=1Flippase/Liposome Data
-  #############################################
   processed_list_from_x <- lapply(
     input_list_from_x,
     function(z){
-      # Ensure that there's a data point with liposomes ONLY as a unique 
-      # reference point
+      ## Ensure that there's a data point with liposomes ONLY as a unique 
+      ## reference point
       index_of_liposomes_only_data <- which(z$"Protein in Reconstitution (mg)" == 0)
       if(length(index_of_liposomes_only_data) == 0){
         stop("Experimental series '",unique(y["Experimental Series"]),"' does not
@@ -306,68 +299,60 @@ dithionite_flippase_assay <- function(x){
         stop("Experimental series '",unique(y["Experimental Series"]),"' has more
           than one liposomes-ONLY ('Extract Volume (ul)' of '0') data point.")
       }  
-      ## End-point fluorescence reduction data from flippase activity assays were 
-      ## obtained for proteoliposomes generated over a range of PPR values.
-      ## The data were transformed according to the formula
-      ## p(≥1 flippase) = (y – yo)/(ymax – yo),
-      ## where yo is the percent reduction obtained with liposomes, ymax is the 
-      ## maximum percentage reduction observed and p is the probability that a 
-      ## particular vesicle in the ensemble is ‘flippase-active’, i.e it possesses 
-      ## at least one flippase.
       # Calculate p>=1Flippase/Liposome
+      ##> End-point fluorescence reduction data from flippase activity assays 
+      ##> were obtained for proteoliposomes generated over a range of PPR 
+      ##> values.
+      ##> The data were transformed according to the formula
+      ##> p(≥1 flippase) = (y – yo)/(ymax – yo),
+      ##> where yo is the percent reduction obtained with liposomes, ymax is the 
+      ##> maximum percentage reduction observed and p is the probability that a 
+      ##> particular vesicle in the ensemble is ‘flippase-active’, i.e it 
+      ##> possesses at least one flippase.
       y <- z$"Relative Fluorescense Reduction"
       y0 <- z$"Relative Fluorescense Reduction"[index_of_liposomes_only_data]
       ymax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE)
       z$"Probability >= 1 Flippase in Vesicle" <- (y-y0)/(ymax-y0)
-      ## The dependence of p(≥1 flippase) on PPR was analyzed as follows.
-      ## Definitions:
-      ##   f, number of flippases used for reconstitution
-      ##   v, number of vesicles(
-      ##   m, number of flippases per vesicle (=f/v)
-      ##   PPR, mg protein per mmol phospholipid
-      # Calculate PPR
-      z$"Protein per Phospholipid (mg/mmol)" <- (z$"Protein in Reconstitution (mg)"/z$"Egg PC in Reconstitution (mmol)")
-      # DEBUG: plot(z$"Protein per Phospholipid (mg/mmol)",z$"Pvalue >= 1 Flippase in Vesicle")
-      ## To calculate p(≥1 flippase) as a function of the PPR, we assume that 
-      ## reconstitution of opsin/rhodopsin molecules into vesicles occurs 
-      ## independently and that the vesicles are identical and may have more than 
-      ## one flippase. The probability that a flippase will be reconstituted into a 
-      ## particular vesicle is therefore 1/v. On reconstituting f flippases into an 
-      ## ensemble of v vesicles, the probability p(k) that a particular vesicle 
-      ## contains k flippases is given by the binomial formula:
-      ##   
-      ##   p(k) = C(f,k)(1/v)k(1-1/v)f-k(
-      ## 
-      ## Because f and v are both large, it is convenient to use the Poisson 
-      ## approximation:
-      ##   
-      ##   p(k) = (mk/k!)e-m, where m = f/v is the average number of flippases per vesicle
-      ## 
-      ## The probability of a particular vesicle having no flippases is p(0) = e-m; 
-      ## therefore, the probability that a vesicle has one or more flippases, i.e is
-      ## active in the flippase assay, is
-      ## 
-      ## p(≥1) = 1-p(0) = 1 - e-m 
-      ## 
-      ## The average number of flippases per vesicle, m, is proportional to PPR and 
-      ## can be written as m = PPR/α, where α is a constant with units of mg/mmol. 
-      ## Thus,
-      ## 
-      ## p(≥1) = 1 - e-m = 1 – exp(-PPR/α)
-      ## 
-      ## The mono-exponential fit constant for a graph of p(≥1) vs PPR is α mg/mmol; 
-      ## at this PPR value, m = 1 and ~63% of the vesicles in the population possess 
-      ## ≥1 flippase.
-      ## If we assume that reconstitution of an opsin/rhodopsin monomer (MW 41.7 
-      ## kDa) into a 200 nm diameter vesicle confers flippase activity to that 
-      ## vesicle, then α = 0.122 mg/mmol (note: 1 mmol of phospholipids yields ~1.75
-      ## x 1015 200 nm-diameter vesicles (Mimms et al, 1981); 1 mg of opsin or 
-      ## rhodopsin corresponds to 1.44 x 1016 molecules; m = f/v = 1 corresponds to
-      ## 1.75 x 1015 opsin/rhodopsin molecules per mmol phospholipid or 0.12 
-      ## mg/mmol). If opsin/rhodopsin molecules exist as preformed dimers and 
-      ## reconstitution of such dimers into a vesicle confers flippase activity to 
-      ## that vesicle, then α = 0.24 mmol/mg.
-      # Fit a monoexponential curve to the data
+      ##> The dependence of p(≥1 flippase) on PPR was analyzed as follows.
+      ##> Definitions:
+      ##>   f, number of flippases used for reconstitution
+      ##>   v, number of vesicles(
+      ##>   m, number of flippases per vesicle (=f/v)
+      ##>   PPR, mg protein per mmol phospholipid
+      ##> To calculate p(≥1 flippase) as a function of the PPR, we assume that 
+      ##> reconstitution of opsin/rhodopsin molecules into vesicles occurs 
+      ##> independently and that the vesicles are identical and may have more
+      ##> than one flippase. The probability that a flippase will be 
+      ##> reconstituted into a particular vesicle is therefore 1/v. On 
+      ##> reconstituting f flippases into an ensemble of v vesicles, the 
+      ##> probability p(k) that a particular vesicle contains k flippases is 
+      ##> given by the binomial formula:
+      ##>   
+      ##>   p(k) = C(f,k)(1/v)k(1-1/v)f-k(
+      ##> 
+      ##> Because f and v are both large, it is convenient to use the Poisson 
+      ##> approximation:
+      ##>   
+      ##>   p(k) = (mk/k!)e-m, where m = f/v is the average number of flippases
+      ##> per vesicle
+      ##>
+      ##> The probability of a particular vesicle having no flippases is 
+      ##> p(0) = e-m; therefore, the probability that a vesicle has one or more
+      ##> flippases, i.e isactive in the flippase assay, is
+      ##> 
+      ##> p(≥1) = 1-p(0) = 1 - e-m 
+      ##> 
+      ##> The average number of flippases per vesicle, m, is proportional to PPR
+      ##> and can be written as m = PPR/α, where α is a constant with units of
+      ##> mg/mmol. 
+      ##> Thus,
+      ##> 
+      ##> p(≥1) = 1 - e-m = 1 – exp(-PPR/α)
+      ##> 
+      ##> The mono-exponential fit constant for a graph of p(≥1) vs PPR is 
+      ##> α mg/mmol; at this PPR value, m = 1 and ~63% of the vesicles in the 
+      ##> population possess ≥1 flippase.
+      ## Fit a monoexponential curve to the data
       subset_for_fit <- data.frame(
         x=z$"Protein per Phospholipid (mg/mmol)",
         y=z$"Probability >= 1 Flippase in Vesicle")
@@ -375,7 +360,7 @@ dithionite_flippase_assay <- function(x){
       z$"Fit Constant (a)" <- Rmod$coefficients
       z$"PPR at P = 0.5" <- -Rmod$coefficients * log(1-0.5)
       output <- list(Raw=z)
-      # Generate data to plot the results of the fit
+      ## Generate data to plot the results of the fit
       x_predicted_from_fit <- data.frame(
         x=seq(
           from=min(z$"Protein per Phospholipid (mg/mmol)",na.rm=TRUE),
@@ -391,11 +376,12 @@ dithionite_flippase_assay <- function(x){
         "Experiment"=unique(z$"Experiment"),
         check.names=FALSE,
         stringsAsFactors=FALSE)
-      # Return
+      ## Return
       return(output)
     })
-  # Recombine the processed data
-  ##############################
+
+
+# Recombine the processed data --------------------------------------------
   x <- rbind.fill(lapply(processed_list_from_x,function(z){z$Raw}))
   fit_results_from_x <- rbind.fill(lapply(processed_list_from_x,function(z){z$Fit}))
   annotations_for_x <- x[c("Experiment","Experimental Series","Fit Constant (a)")]
@@ -427,9 +413,8 @@ dithionite_flippase_assay <- function(x){
     }
   )
   annotations_for_x <- rbind.fill(annotations_for_x,rbind.fill(processed_annotation_list_for_x))
-  ###############################
-  # Assemble (graphical) output #
-  ###############################
+
+# Assemble the (graphical) output -----------------------------------------
   # Groundwork
   plot_output <- ggplot(
     data=x,
@@ -461,7 +446,7 @@ dithionite_flippase_assay <- function(x){
     plot_output <- plot_output +
       geom_point()
   }
-  ## Faceting by "Experiment"
+  # Faceting by "Experiment"
   if(any(!is.na(x$"Experiment"))){
     plot_output <- plot_output + 
       facet_wrap(~Experiment)
