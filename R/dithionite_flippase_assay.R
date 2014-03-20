@@ -47,16 +47,20 @@
 #'    is calculated as \code{1-Minimum Fluorescense/Baseline Fluorescense}.}
 #'  \item{Data are \code{\link{split}} for parallel treatment using a combined 
 #'    \code{Experimental Series}/\code{Experiment} identifier (see above).}
-#'  \item{p-values for a liposome holding >= 1 flippase molecule are calculated
-#'    using \code{(y - y0)/(ymax - y0)}, where \code{y} is the 
-#'    \code{Relative Fluorescense Reduction}, \code{y0} is the 
-#'    \code{Relative Fluorescense Reduction} in an experiment without addition 
-#'    of protein extract and \code{ymax} is the maximal
-#'    \code{Relative Fluorescense Reduction} in the series.}
 #'  \item{A \code{Relative Fluorescense Reduction} is calculated in comparison
 #'    to the liposomes-only/no-protein control).
 #'  \item{A \code{Protein per Phospholipid (mg/mmol)} ratio (\code{PPR}) is 
 #'    calculated.}
+#'  \item{A probability for a liposome holding >= 1 flippase molecule are 
+#'    calculated using \code{(y - y0)/(ymax - y0)}, where \code{y} is the 
+#'    \code{Relative Fluorescense Reduction} and \code{y0} is the 
+#'    \code{Relative Fluorescense Reduction} in an experiment without addition 
+#'    of protein extract. Depending on the \code{scale_to} parameter, 
+#'    \code{ymax} is either the maximal \code{Relative Fluorescense Reduction} 
+#'    in the series (\code{scale_to = "data"}) or derived from a 
+#'    mono-exponential fit to the data (\code{scale_to = "model"}). The latter 
+#'    (default) is a precaution for the case where the protein/phospholipid
+#'    titration did not reach the plateau of the saturation curve (yet).}
 #'  \item{A monoexponential curve is fitted to \code{p(>=1) = 1 - exp(-PPR/a)} 
 #'    using \code{\link{nlrob}}.}
 #'  \item{Data \code{\link{split}} apart above are recombined and a 
@@ -76,6 +80,8 @@
 #'        lables adjusted cosmetically.}}
 #'  }}
 #' @param x \code{\link{data.frame}} as described in "Details".
+#' @param scale_to Defines the source of \code{ymax}, defaulting to 
+#' \code{model}. See "Details".
 #' @return Returns a \code{\link{ggplot}} object.
 #' @author Johannes Graumann
 #' @references Menon, I., Huber, T., Sanyal, S., Banerjee, S., Barré, P., Canis, 
@@ -128,7 +134,7 @@
 #'  stringsAsFactors=FALSE)
 #'  # Run function
 #'  DithioniteFlippaseAssay(x)
-dithionite_flippase_assay <- function(x){
+dithionite_flippase_assay <- function(x,scale_to=c("model","data")){
 # Check Prerequisites -----------------------------------------------------
   # Check x
   ## General DF characteristics
@@ -237,6 +243,13 @@ dithionite_flippase_assay <- function(x){
   if(length(unique(x$"Timepoint of Measurement (s)")) != 1){
     stop("Column 'Timepoint of Measurement (s)' contains multiple values. Exiting.")
   }
+
+  # Check scale_to
+  scale_to <- match.arg(
+    arg=scale_to,
+    choices=c("model","data"),
+    several.ok=FALSE)
+
 # Processing --------------------------------------------------------------
   # Parsing spectra
   spectral_data <- lapply(
@@ -302,7 +315,6 @@ dithionite_flippase_assay <- function(x){
         stop("Experimental series '",unique(y["Experimental Series"]),"' has more
           than one liposomes-ONLY ('Extract Volume (ul)' of '0') data point.")
       }  
-      # Calculate p>=1Flippase/Liposome
       ##> End-point fluorescence reduction data from flippase activity assays 
       ##> were obtained for proteoliposomes generated over a range of PPR 
       ##> values.
@@ -314,9 +326,20 @@ dithionite_flippase_assay <- function(x){
       ##> possesses at least one flippase.
       ## Calcualte the relative fluorescence reduction
       z$"Relative Fluorescense Reduction" <- z$"Fluorescense Reduction" - z$"Fluorescense Reduction"[index_of_liposomes_only_data]
+      ## Calculate PPR
+      z$"Protein per Phospholipid (mg/mmol)" <- (z$"Protein in Reconstitution (mg)"/z$"Egg PC in Reconstitution (mmol)")
+      ## Calculate p>=1Flippase/Liposome
       y <- z$"Relative Fluorescense Reduction"
       y0 <- z$"Relative Fluorescense Reduction"[index_of_liposomes_only_data]
-      ymax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE)
+      if(scale_to == "model"){
+        subset_for_fit <- data.frame(
+          x=z$"Protein per Phospholipid (mg/mmol)",
+          y=z$"Relative Fluorescense Reduction")
+        Rmod <- nlrob(y ~ b-exp(-x/a),data=subset_for_fit, start = list(a=1,b=max(z$"Relative Fluorescense Reduction",na.rm=TRUE)), maxit=40)
+        ymax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE) * Rmod$coefficient["b"]
+      } else {
+        ymax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE)
+      }
       z$"Probability >= 1 Flippase in Vesicle" <- (y-y0)/(ymax-y0)
       ##> The dependence of p(≥1 flippase) on PPR was analyzed as follows.
       ##> Definitions:
