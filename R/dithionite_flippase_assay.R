@@ -458,7 +458,7 @@ dithionite_flippase_assay <- function(x,scale_to=c("model","data")){
     plot_output <- plot_output +
       geom_line(data=fit_results_from_x)
   }
-  ## Second layer: annotations indicating PPR at p=0.5
+  ## Second layer: annotations indicating PPR at tau
   if(any(!is.na(annotations_for_x$"Experimental Series"))){
     plot_output <- plot_output +
       geom_segment(data=annotations_for_x,aes_string(x="x1",xend="x2",y="y1",yend="y2",color="`Experimental Series`"),linetype=2)
