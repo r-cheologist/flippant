@@ -43,7 +43,7 @@
 #'  \item{The \code{Minimum Fluorescense} is volume-corrected based on 
 #'    \code{Reaction Volume w/o DT (ul)} and \code{Reaction Volume with DT (ul)}
 #'    (see above).}
-#'  \item{For each spectrum/datapoint a \code{Relative Fluorescense Reduction} 
+#'  \item{For each spectrum/datapoint a measured \code{Fluorescense Reduction} 
 #'    is calculated as \code{1-Minimum Fluorescense/Baseline Fluorescense}.}
 #'  \item{Data are \code{\link{split}} for parallel treatment using a combined 
 #'    \code{Experimental Series}/\code{Experiment} identifier (see above).}
@@ -53,6 +53,8 @@
 #'    \code{Relative Fluorescense Reduction} in an experiment without addition 
 #'    of protein extract and \code{ymax} is the maximal
 #'    \code{Relative Fluorescense Reduction} in the series.}
+#'  \item{A \code{Relative Fluorescense Reduction} is calculated in comparison
+#'    to the liposomes-only/no-protein control).
 #'  \item{A \code{Protein per Phospholipid (mg/mmol)} ratio (\code{PPR}) is 
 #'    calculated.}
 #'  \item{A monoexponential curve is fitted to \code{p(>=1) = 1 - exp(-PPR/a)} 
@@ -277,8 +279,9 @@ dithionite_flippase_assay <- function(x){
   ## Apply volume correction factors as needed
   volume_correction_factor <- x$"Fluorescence Assay Vol. with DT (ul)"/x$"Fluorescence Assay Vol. w/o DT (ul)"
   x$"Minimum Fluorescense, Volume Corrected" <- x$"Minimum Fluorescense" * volume_correction_factor
-  # Calculate relative activity reduction
-  x$"Relative Fluorescense Reduction" <- 1-x$"Minimum Fluorescense, Volume Corrected"/x$"Baseline Fluorescense"
+  ## Calculate activity reduction
+  x$"Fluorescense Reduction" <- 1-x$"Minimum Fluorescense, Volume Corrected"/x$"Baseline Fluorescense"
+  
   # Split by Experiment
   x$CombinedId <- paste(x$"Experimental Series",x$"Experiment",sep="_")
   input_list_from_x <- split(x,x$CombinedId)
@@ -309,6 +312,8 @@ dithionite_flippase_assay <- function(x){
       ##> maximum percentage reduction observed and p is the probability that a 
       ##> particular vesicle in the ensemble is ‘flippase-active’, i.e it 
       ##> possesses at least one flippase.
+      ## Calcualte the relative fluorescence reduction
+      z$"Relative Fluorescense Reduction" <- z$"Fluorescense Reduction" - z$"Fluorescense Reduction"[index_of_liposomes_only_data]
       y <- z$"Relative Fluorescense Reduction"
       y0 <- z$"Relative Fluorescense Reduction"[index_of_liposomes_only_data]
       ymax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE)
