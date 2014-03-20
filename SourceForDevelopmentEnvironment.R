@@ -5,6 +5,8 @@ devPath <- path.expand("~/R-DevTools/mdaa-Development")
 if(!(devPath %in% .libPaths())){
   dev_mode(path=devPath)
   update.packages(checkBuilt=TRUE)
+  source("http://bioconductor.org/biocLite.R")
+  biocLite(ask=FALSE)
 }
 library(testthat)
 # Ensure correct RCFPD package
