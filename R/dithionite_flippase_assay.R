@@ -470,7 +470,7 @@ dithionite_flippase_assay <- function(x){
   plot_output <- plot_output +
     labs(
       x=expression(frac("Protein","Phospholipid")~~bgroup("(",frac("mg","mmol"),")")),
-      y=expression(p~bgroup("(",frac("Flippase","Liposome")>=1,")")),
+      y=expression(P~bgroup("(",frac("Flippase","Liposome")>=1,")")),
       color="Experiment")
   # Return
   return(plot_output)
