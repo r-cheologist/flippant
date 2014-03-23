@@ -32,7 +32,9 @@
 #' \itemize{
 #'  \item{Input is format checked and defaults are injected for facultative 
 #'    parameters/columns as appropriate (see input \code{\link{data.frame}} 
-#'    format above).}
+#'    format above). The internal function 
+#'    \code{\link{dithionite_flippase_assay_input_validation}} supplies this 
+#'    functionality.}
 #'  \item{Fluorescense spectra are parsed using \code{\link{parse_fluorometer_output}}.}
 #'  \item{Pre-dithionite-addition \code{Baseline Fluorescense} is determined for
 #'    each spectrum by averaging (\code{\link{median}}) over the first 10 
@@ -91,6 +93,7 @@
 #' @export
 #' @seealso \code{\link{ParseQuantMasterData}}, \code{\link{ParseLS55Data}}, 
 #' \code{\link{TimepointOfMeasurement}}
+#' \code{\link{dithionite_flippase_assay_input_validation}},
 #' @keywords methods manip
 #' @import ggplot2
 #' @import plyr
@@ -136,119 +139,9 @@
 #'  DithioniteFlippaseAssay(x)
 dithionite_flippase_assay_plot <- function(x,scale_to=c("model","data")){
 # Check Prerequisites -----------------------------------------------------
-  # Check x
-  ## General DF characteristics
-  if(!is.data.frame(x)){
-    stop("'x' must be of class 'data.frame'.")
-  }
-  if(nrow(x)==0){
-    stop("'x' must have rows.")
-  }
-  if(any(is.na(x))){
-    stop("'x' cannot contain 'NA'.")
-  }
-  ## Required parameters
-  required_columns_in_x <- list(
-    Name = c(
-      "Path",
-      "Protein in Reconstitution (mg)"),
-    Class = c(
-      "character",
-      "numeric"))
-  if(!all( required_columns_in_x$Name %in% names(x))){
-    stop(
-      "'x' must hold at least the following columns: '",
-      paste(required_columns_in_x,collapse="', '"),
-      "'.")
-  }
-  if(!identical(
-    unname(vapply(x[required_columns_in_x$Name],class,c(A="A"))),
-    required_columns_in_x$Class)){
-    stop(
-      "Required columns '",
-      paste(required_columns_in_x$Name,collapse="', '"),
-      "' must be of classes '",
-      paste(required_columns_in_x$Class,collapse="', '"),
-      "'.")
-  }
-  ## Check paths
-  if(!all(file.exists(x$Path))){
-    stop("All entries in column 'Path' must refer to existing files.")
-  }
-  if(any(file.access(x$Path,mode=4) == -1)){
-    stop("All entries in column 'Path' must refer to existing files.")
-  }
-  ## Facultative parameters
-  facultative_columns_in_x <- list(
-    Name = c(
-      "Fluorescence Assay Vol. w/o DT (ul)",
-      "Fluorescence Assay Vol. with DT (ul)",
-      "Egg PC in Reconstitution (mmol)",
-      "Timepoint of Measurement (s)",
-      "Experiment",
-      "Experimental Series"),
-    Class = c(
-      "numeric",
-      "numeric",
-      "numeric",
-      "numeric",
-      "character",
-      "character"),
-    Default = list(
-      2000,
-      2040,
-      0.0045,
-      NA,
-      NA_character_,
-      NA_character_))
-  missing_facultative_columns_in_x <- which(!(facultative_columns_in_x$Name %in% names(x)))
-  if(length(missing_facultative_columns_in_x) != 0){
-    for (y in missing_facultative_columns_in_x){
-      if(facultative_columns_in_x$Name[y] == "Timepoint of Measurement (s)"){
-        warning(
-          "Providing missing column '",
-          facultative_columns_in_x$Name[y],
-          "' from spectra ('Path').")
-        to_be_added_on <- timepoint_of_measurement(x$Path)
-      } else if(facultative_columns_in_x$Name[y] %in% c("Experiment","Experimental Series")) {
-        to_be_added_on <- facultative_columns_in_x$Default[[y]]
-      } else {
-        warning(
-          "Providing missing column '",
-          facultative_columns_in_x$Name[y],
-          "' from defaults (",
-          facultative_columns_in_x$Default[[y]],
-          "). Make sure this is correct.")
-        to_be_added_on <- facultative_columns_in_x$Default[[y]]
-      }
-      output <- cbind(
-        x,
-        rep(x=to_be_added_on,times=nrow(x)),
-        stringsAsFactors=FALSE)
-      names(output)[ncol(output)] <- facultative_columns_in_x$Name[y]
-      x <- output
-    }
-  }
-  if(!identical(
-    unname(vapply(x[facultative_columns_in_x$Name],class,c(A="A"))),
-    facultative_columns_in_x$Class)){
-    stop(
-      "Facultative columns '",
-      paste(facultative_columns_in_x$Name,collapse="', '"),
-      "' must be of classes '",
-      paste(facultative_columns_in_x$Class,collapse="', '"),
-      "'.")
-  }
-  ## Check "Timepoint of Measurement (s)" consistency
-  if(length(unique(x$"Timepoint of Measurement (s)")) != 1){
-    stop("Column 'Timepoint of Measurement (s)' contains multiple values. Exiting.")
-  }
-
-  # Check scale_to
-  scale_to <- match.arg(
-    arg=scale_to,
-    choices=c("model","data"),
-    several.ok=FALSE)
+  validated_params <- dithionite_flippase_assay_input_validation(x=x,scale_to=scale_to)
+  x <- validated_params[["x"]]
+  scale_to <- validated_params[["scale_to"]]
 
 # Processing --------------------------------------------------------------
   # Parsing spectra
