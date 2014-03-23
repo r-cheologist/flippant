@@ -165,13 +165,6 @@ dithionite_flippase_assay_plot <- function(x,scale_to=c("model","data")){
   } else {
     annotation_list_for_x <- list(annotations_for_x)
   }
-#   annotations_for_x[["Experimental Series"]] <- paste(
-#     '"',
-#     x$"Experimental Series",
-#     '; "',
-#     '* tau==',
-#     round(annotations_for_x$"x1",2),
-#     sep="")
   processed_annotation_list_for_x <- lapply(
     annotation_list_for_x,
     function(x){

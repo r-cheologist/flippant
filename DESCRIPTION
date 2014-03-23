@@ -37,6 +37,7 @@ Collate:
     'dithionite_flippase_assay_plot.R'
     'dithionite_flippase_assay_calculations.R'
     'dithionite_flippase_assay_input_validation.R'
+    'dithionite_flippase_assay_stats.R'
     'Figure1.R'
     'Figure1B.R'
     'Figure1C.R'
