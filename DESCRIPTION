@@ -1,25 +1,18 @@
-Package: MDAA
-Title: MDAA - Menon Data and Analysis
-Description: A package intended to encapsulate and document data and its
-    analysis related to the Menon Flippase project.
-URL: http://chili.qatar-med.cornell.edu/projects/mdaa
+Package: flippant
+Title: flippant - Dithionite Flippase Assay Analysis
+Description: A package for the analysis of data provided by dithionite flippase
+  assays.
+URL: http://chili.qatar-med.cornell.edu/projects/flippant
 Version: 0.1
 Authors@R: person("Johannes", "Graumann", role = c("aut","cre"),
     email="johannes_graumann@web.de")
 Depends:
     R (>= 3.0.3),
-    biomaRt (>= 2.18.0),
-    digest (>= 0.6.4),
     ggplot2 (>= 0.9.3.1),
-    gridExtra (>= 0.9.1),
-    gtable (>= 0.1.2),
     plyr (>= 1.8.1),
-    png (>= 0.1-7),
-    RCFPD (>= 1.2.6.2),
     reshape2 (>= 1.2.2),
     robustbase (>= 0.90-2)
 Suggests:
-    pcaMethods,
     roxygen2,
     R.utils,
     testthat
@@ -28,30 +21,15 @@ Suggests:
 License: GPL (>= 3)
 LazyData: true
 Collate:
-    'MDAA-package.R'
-    'CompleteOutput.R'
-    'Correlate.R'
-    'DataPrep.R'
-    'data-pGroups.R'
-    'data-sha256sums.R'
+    'flippant-package.R'
     'dithionite_flippase_assay_plot.R'
     'dithionite_flippase_assay_calculations.R'
     'dithionite_flippase_assay_input_validation.R'
     'dithionite_flippase_assay_stats.R'
-    'Figure1.R'
-    'Figure1B.R'
-    'Figure1C.R'
-    'Figure1D.R'
-    'Figure2.R'
-    'FigureS1.R'
-    'FigureS1B.R'
-    'FigureS1C.R'
-    'FigureS2.R'
-    'FigureS3.R'
     'onAttach.R'
     'parse_felix32_output.R'
     'parse_felixgx_output.R'
     'parse_fluorometer_output.R'
     'parse_manual_output.R'
-    'SupplementaryTable1.R'
     'timepoint_of_measurement.R'
+    'version_check.R'
