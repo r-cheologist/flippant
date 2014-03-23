@@ -1,4 +1,4 @@
-#' @title dithionite_flippase_assay
+#' @title dithionite_flippase_assay_plot
 #' @description A function that automates calculations necessary to interprete
 #' dithionite flippase assays
 #' @details The function accepts input in form of a \code{\link{data.frame}} 
@@ -134,7 +134,7 @@
 #'  stringsAsFactors=FALSE)
 #'  # Run function
 #'  DithioniteFlippaseAssay(x)
-dithionite_flippase_assay <- function(x,scale_to=c("model","data")){
+dithionite_flippase_assay_plot <- function(x,scale_to=c("model","data")){
 # Check Prerequisites -----------------------------------------------------
   # Check x
   ## General DF characteristics
@@ -408,7 +408,6 @@ dithionite_flippase_assay <- function(x,scale_to=c("model","data")){
       return(output)
     })
 
-
 # Recombine the processed data --------------------------------------------
   x <- rbind.fill(lapply(processed_list_from_x,function(z){z$Raw}))
   fit_results_from_x <- rbind.fill(lapply(processed_list_from_x,function(z){z$Fit}))
@@ -426,6 +425,13 @@ dithionite_flippase_assay <- function(x,scale_to=c("model","data")){
   } else {
     annotation_list_for_x <- list(annotations_for_x)
   }
+#   annotations_for_x[["Experimental Series"]] <- paste(
+#     '"',
+#     x$"Experimental Series",
+#     '; "',
+#     '* tau==',
+#     round(annotations_for_x$"x1",2),
+#     sep="")
   processed_annotation_list_for_x <- lapply(
     annotation_list_for_x,
     function(x){
