@@ -5,8 +5,8 @@
 #' @param x \code{\link{character}} vector resulting from 
 #' \code{\link{readLines}} of the corresponding data file.
 #' @return See \code{\link{parse_fluorometer_output}}.
-#' @seealso \code{\link{Dithionite_Flippase_Assay_Analysis}} 
-#' \code{\link{parse_fluorometer_output}} \code{\link{parse_felix32_output}}
+#' @seealso \code{\link{parse_fluorometer_output}}, 
+#' \code{\link{parse_felix32_output}},
 #' \code{\link{parse_manual_output}}
 #' @author Johannes Graumann
 #' @keywords manip IO file

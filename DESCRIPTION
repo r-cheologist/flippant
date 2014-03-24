@@ -1,7 +1,7 @@
 Package: flippant
 Title: flippant - Dithionite Flippase Assay Analysis
 Description: A package for the analysis of data provided by dithionite flippase
-  assays.
+    assays.
 URL: http://chili.qatar-med.cornell.edu/projects/flippant
 Version: 0.1
 Authors@R: person("Johannes", "Graumann", role = c("aut","cre"),
@@ -10,26 +10,11 @@ Depends:
     R (>= 3.0.3),
     ggplot2 (>= 0.9.3.1),
     plyr (>= 1.8.1),
-    reshape2 (>= 1.2.2),
     robustbase (>= 0.90-2)
 Suggests:
     roxygen2,
-    R.utils,
     testthat
 #Imports: 
 #Enhances: 
 License: GPL (>= 3)
 LazyData: true
-Collate:
-    'flippant-package.R'
-    'dithionite_flippase_assay_plot.R'
-    'dithionite_flippase_assay_calculations.R'
-    'dithionite_flippase_assay_input_validation.R'
-    'dithionite_flippase_assay_stats.R'
-    'onAttach.R'
-    'parse_felix32_output.R'
-    'parse_felixgx_output.R'
-    'parse_fluorometer_output.R'
-    'parse_manual_output.R'
-    'timepoint_of_measurement.R'
-    'version_check.R'

@@ -1,3 +1,11 @@
+#' @title timepoint_of_measurement
+#' @description Helper function to establish a measurement time window for which
+#' fluorescence intensities are averaged in a dithionite flippase assay.
+#' @param x A \code{\link{character}} vector referring to fluorometer output
+#' parseable by \code{\link{parse_fluorometer_output}}.
+#' @author Johannes Graumann
+#' @seealso \code{\link{parse_fluorometer_output}}
+#' @keywords manip
 timepoint_of_measurement <- function(x=NA){
   #######################
   # Check prerequisites #

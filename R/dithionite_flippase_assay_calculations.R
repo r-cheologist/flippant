@@ -1,3 +1,13 @@
+#' @title dithionite_flippase_assay_calculations
+#' @description Helper function to process dithionite flippase analyses.
+#' @details The flow of the data processing is documented in
+#' \code{\link{dithionite_flippase_assay_plot}}.
+#' @param x A \code{\link{data.frame}} conforming to the format described in
+#' \code{\link{dithionite_flippase_assay_plot}}.
+#' @param scale_to What to scale the data to (see 
+#' \code{\link{dithionite_flippase_assay_plot}} for details.)
+#' @author Johannes Graumann
+#' @keywords manip
 dithionite_flippase_assay_calculations <- function(x,scale_to){
 # Parsing spectra ---------------------------------------------------------
   spectral_data <- lapply(

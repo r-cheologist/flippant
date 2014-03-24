@@ -7,12 +7,8 @@
 #' \code{model}. See \code{\link{dithionite_flippase_assay_plot}}.
 #' @return Returns a \code{\link{data.frame}}.
 #' @author Johannes Graumann
-#' @references Menon, I., Huber, T., Sanyal, S., Banerjee, S., Barré, P., Canis, 
-#' S., Warren, J.D., Hwa, J., Sakmar, T.P., and Menon, A.K. (2011). Opsin Is a 
-#' Phospholipid Flippase. Current Biology 21, 149–153.
-#' MIKE PAPER
 #' @export
-#' @seealso \code{\link{ParseQuantMasterData}}, \code{\link{ParseLS55Data}}, 
+#' @seealso \code{\link{parse_fluorometer_output}}, 
 #' \code{\link{dithionite_flippase_assay_plot}},
 #' \code{\link{dithionite_flippase_assay_input_validation}},
 #' \code{\link{dithionite_flippase_assay_calculations}}

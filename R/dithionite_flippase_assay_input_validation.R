@@ -1,3 +1,13 @@
+#' @title dithionite_flippase_assay_input_validation
+#' @description Helper function to validate input for dithionite flippase 
+#' analysis.
+#' @param x A \code{\link{data.frame}} conforming to the format described in
+#' \code{\link{dithionite_flippase_assay_plot}}.
+#' @param scale_to What to scale the data to (see 
+#' \code{\link{dithionite_flippase_assay_plot}} for details.)
+#' @return A \code{\link{data.frame}}.
+#' @author Johannes Graumann
+#' @keywords manip
 dithionite_flippase_assay_input_validation <- function(x,scale_to){
   # Check x
   ## General DF characteristics

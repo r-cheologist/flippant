@@ -6,7 +6,7 @@
 #' produces a warning when the packages used diverge from the ones used for 
 #' publication.
 #' @author Johannes Graumann
-#' @seealso \code{\link[base]{.onAttach}} \code{\link{VersionCheck}}
+#' @seealso \code{\link[base]{.onAttach}} \code{\link{version_check}}
 #' @keywords internal misc
 #.onLoad <- function(...){
 #  packageStartupMessage(versionCheck())
@@ -15,9 +15,7 @@
   vC <- version_check(
     expectedR=package_version("3.0.3"),
     expectedPackages=list(
-      reshape2=package_version("1.2.2"),
       scales=package_version("0.2.3"),
-      R.utils=package_version("1.29.8"),
       plyr=package_version("1.8.1"),
       ggplot2=package_version("0.9.3.1"),
       robustbase=package_version("0.90-2")))

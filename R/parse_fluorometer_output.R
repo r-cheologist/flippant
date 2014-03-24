@@ -30,7 +30,7 @@
 #'  \item{\code{File.Name}}{\code{\link{character}} representation of the 
 #'    file name (as saved by the instrument).}
 #' }
-#' @seealso \code{\link{Dithionite_Flippase_Assay_Analysis}} 
+#' @seealso \code{\link{dithionite_flippase_assay_input_validation}} 
 #' \code{\link{parse_felixgx_output}} \code{\link{parse_felix32_output}}
 #' \code{\link{parse_manual_output}}
 #' @author Johannes Graumann

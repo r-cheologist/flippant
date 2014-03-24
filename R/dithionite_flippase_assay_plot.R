@@ -20,7 +20,7 @@
 #'    \code{0.0045} (1 ml of a 1 mM solution.}
 #'  \item{\code{Timepoint of Measurement (s)}:}{Timepoint used as an anchor for 
 #'    the extraction of terminal fluorescense. 
-#'    \code{\link{TimepointOfMeasurement}} is used on all \code{Path}s if none 
+#'    \code{\link{timepoint_of_measurement}} is used on all \code{Path}s if none 
 #'    given.}
 #'  \item{\code{Experiment}:}{Identifier for any given experiment. Used for 
 #'    \code{\link{facet_wrap}} during generation of \code{\link{ggplot}} output.}
@@ -88,12 +88,12 @@
 #' \code{model}. See "Details".
 #' @return Returns a \code{\link{ggplot}} object.
 #' @author Johannes Graumann
-#' @references Menon, I., Huber, T., Sanyal, S., Banerjee, S., Barré, P., Canis, 
+#' @references Menon, I., Huber, T., Sanyal, S., Banerjee, S., Barre, P., Canis, 
 #' S., Warren, J.D., Hwa, J., Sakmar, T.P., and Menon, A.K. (2011). Opsin Is a 
-#' Phospholipid Flippase. Current Biology 21, 149–153.
+#' Phospholipid Flippase. Current Biology 21, 149-153.
 #' MIKE PAPER
 #' @export
-#' @seealso \code{\link{ParseQuantMasterData}}, \code{\link{ParseLS55Data}}, 
+#' @seealso \code{\link{parse_fluorometer_output}}, 
 #' \code{\link{dithionite_flippase_assay_input_validation}},
 #' \code{\link{dithionite_flippase_assay_calculations}}
 #' @keywords methods manip
@@ -203,7 +203,7 @@ dithionite_flippase_assay_plot <- function(x,scale_to=c("model","data")){
       geom_segment(data=annotations_for_x,aes_string(x="x1",xend="x2",y="y1",yend="y2",color="`Experimental Series`"),linetype=2)
   } else {
     plot_output <- plot_output +
-      geom_segment(data=annotations_for_x,aes(x=x1,xend=x2,y=y1,yend=y2),linetype=2)
+      geom_segment(data=annotations_for_x,aes_string(x="x1",xend="x2",y="y1",yend="y2"),linetype=2)
   }
   ## Third Layer: data points
   if(any(!is.na(x$"Experimental Series"))){
