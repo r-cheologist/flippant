@@ -6,19 +6,20 @@
 #' produces a warning when the packages used diverge from the ones used for 
 #' publication.
 #' @author Johannes Graumann
-#' @seealso \code{\link[base]{.onAttach}} \code{\link{version_check}}
-#' @keywords internal misc
+#' @seealso \code{\link[base]{.onAttach}} \code{\link[pdapbase]{checkVersion}}
+#' @import pdapbase 
 #.onLoad <- function(...){
 #  packageStartupMessage(versionCheck())
 #}
 .onAttach <- function(...){
-  vC <- version_check(
-    expectedR=package_version("3.0.3"),
+  vC <- checkVersion(
+    expectedR=package_version("3.1.0"),
     expectedPackages=list(
-      scales=package_version("0.2.3"),
-      plyr=package_version("1.8.1"),
       ggplot2=package_version("0.9.3.1"),
-      robustbase=package_version("0.90-2")))
+      pdapbase=package_version("0.0-1"),
+      plyr=package_version("1.8.1"),
+      robustbase=package_version("0.90-2"),
+      scales=package_version("0.2.3")))
   if(!is.null(vC)){
     packageStartupMessage(vC)
   }

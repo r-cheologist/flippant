@@ -9,6 +9,7 @@ Authors@R: person("Johannes", "Graumann", role = c("aut","cre"),
 Depends:
     R (>= 3.0.3),
     ggplot2 (>= 0.9.3.1),
+    pdapbase (>= 0.0-1),
     plyr (>= 1.8.1),
     robustbase (>= 0.90-2)
 Suggests:
