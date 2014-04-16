@@ -1,5 +1,5 @@
-#' @title dithionite_flippase_assay_plot
-#' @description A function that automates calculations necessary to interprete
+#' @title dithioniteFlippaseAssayPlot
+#' @description A functions that automate calculations necessary to interprete
 #' dithionite flippase assays
 #' @details The function accepts input in form of a \code{\link{data.frame}} 
 #' with the following \bold{mandatory} columns:
@@ -30,7 +30,7 @@
 #'    
 #' Based on MIKE PAPER the function proceeds as follows (the majority of the 
 #' data processing is split off into the internal function 
-#' \code{\link{dithionite_flippase_assay_calculations}}):
+#' \code{\link{dithioniteFlippaseAssayCalculations}}):
 #' \itemize{
 #'  \item{Input is format checked and defaults are injected for facultative 
 #'    parameters/columns as appropriate (see input \code{\link{data.frame}} 
@@ -139,14 +139,14 @@
 #'  stringsAsFactors=FALSE)
 #'  # Run function
 #'  DithioniteFlippaseAssay(x)
-dithionite_flippase_assay_plot <- function(x,scale_to=c("model","data")){
+dithioniteFlippaseAssayPlot <- function(x,scale_to=c("model","data")){
 # Check Prerequisites -----------------------------------------------------
   validated_params <- dithionite_flippase_assay_input_validation(x=x,scale_to=scale_to)
   x <- validated_params[["x"]]
   scale_to <- validated_params[["scale_to"]]
 
 # Processing --------------------------------------------------------------
-  processed_list_from_x <- dithionite_flippase_assay_calculations(x=x,scale_to=scale_to)
+  processed_list_from_x <- dithioniteFlippaseAssayCalculations(x=x,scale_to=scale_to)
 
 # Recombine the processed data --------------------------------------------
   x <- rbind.fill(lapply(processed_list_from_x,function(z){z$Raw}))
