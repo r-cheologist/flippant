@@ -35,7 +35,7 @@
 #'  \item{Input is format checked and defaults are injected for facultative 
 #'    parameters/columns as appropriate (see input \code{\link{data.frame}} 
 #'    format above). The internal function 
-#'    \code{\link{dithionite_flippase_assay_input_validation}} supplies this 
+#'    \code{flippant:::dithioniteFlippaseAssayInputValidation} supplies this 
 #'    functionality.}
 #'  \item{Fluorescense spectra are parsed using \code{\link{parse_fluorometer_output}}.}
 #'  \item{Pre-dithionite-addition \code{Baseline Fluorescense} is determined for
@@ -93,10 +93,7 @@
 #' Phospholipid Flippase. Current Biology 21, 149-153.
 #' MIKE PAPER
 #' @export
-#' @seealso \code{\link{parse_fluorometer_output}}, 
-#' \code{\link{dithionite_flippase_assay_input_validation}},
-#' \code{\link{dithionite_flippase_assay_calculations}}
-#' @keywords methods manip
+#' @seealso \code{\link{parse_fluorometer_output}}
 #' @import ggplot2
 #' @import plyr
 #' @import robustbase
@@ -141,7 +138,7 @@
 #'  DithioniteFlippaseAssay(x)
 dithioniteFlippaseAssayPlot <- function(x,scale_to=c("model","data")){
 # Check Prerequisites -----------------------------------------------------
-  validated_params <- dithionite_flippase_assay_input_validation(x=x,scale_to=scale_to)
+  validated_params <- dithioniteFlippaseAssayInputValidation(x=x,scale_to=scale_to)
   x <- validated_params[["x"]]
   scale_to <- validated_params[["scale_to"]]
 
