@@ -12,7 +12,7 @@ Depends:
     ggplot2 (>= 0.9.3.1),
     pdapbase (>= 0.0-1),
     plyr (>= 1.8.1),
-    robustbase (>= 0.90-2)
+    robustbase (>= 0.91-1)
 Suggests:
     roxygen2,
     testthat
