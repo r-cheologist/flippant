@@ -20,3 +20,4 @@ Suggests:
 #Enhances: 
 License: GPL (>= 3)
 LazyData: true
+Roxygen: list(wrap = TRUE)
