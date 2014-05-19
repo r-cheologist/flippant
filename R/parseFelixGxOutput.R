@@ -1,16 +1,16 @@
-#' @title parse_felixgx_output
+#' @title parseFelixGxOutput
 #' @description Parse spectra from files provided by a Photon QuantMaster 
 #' fluorometer using \code{FelixGX v4.1}
-#' @details A helper function to \code{\link{parse_fluorometer_output}}.
+#' @details A helper function to \code{\link{parseFluorometerOutput}}.
 #' @param x \code{\link{character}} vector resulting from 
 #' \code{\link{readLines}} of the corresponding data file.
-#' @return See \code{\link{parse_fluorometer_output}}.
-#' @seealso \code{\link{parse_fluorometer_output}}, 
-#' \code{\link{parse_felix32_output}},
-#' \code{\link{parse_manual_output}}
+#' @return See \code{\link{parseFluorometerOutput}}.
+#' @seealso \code{\link{parseFluorometerOutput}}, 
+#' \code{\link{parseFelix32Output}},
+#' \code{\link{parseManualOutput}}
 #' @author Johannes Graumann
 #' @keywords manip IO file
-parse_felixgx_output <- function(x=NA){
+parseFelixGxOutput <- function(x=NA){
   #######################
   # Check Prerequisites #
   #######################

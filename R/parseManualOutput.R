@@ -1,17 +1,17 @@
-#' @title parse_manual_output
+#' @title parseManualOutput
 #' @description Parse spectra from files provided in a manually assembled 
 #' format.
-#' @details A helper function to \code{\link{parse_fluorometer_output}}.
+#' @details A helper function to \code{\link{parseFluorometerOutput}}.
 #' The file in question is supposed to contain a tab-delimited table
 #' with the columns \code{Time (sec)} and \code{Blank}.
 #' @param x \code{\link{character}} vector resulting from 
 #' \code{\link{readLines}} of the corresponding data file.
-#' @return See \code{\link{parse_fluorometer_output}}.
-#' @seealso \code{\link{parse_fluorometer_output}},
-#' \code{\link{parse_felixgx_output}}, \code{\link{parse_felix32_output}}
+#' @return See \code{\link{parseFluorometerOutput}}.
+#' @seealso \code{\link{parseFluorometerOutput}},
+#' \code{\link{parseFelixGxOutput}}, \code{\link{parseFelix32Output}}
 #' @author Johannes Graumann
 #' @keywords manip IO file
-parse_manual_output <- function(x=NA){
+parseManualOutput <- function(x=NA){
   #######################
   # Check Prerequisites #
   #######################

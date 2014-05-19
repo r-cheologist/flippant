@@ -20,7 +20,7 @@
 #'    \code{0.0045} (1 ml of a 1 mM solution.}
 #'  \item{\code{Timepoint of Measurement (s)}:}{Timepoint used as an anchor for 
 #'    the extraction of terminal fluorescense. 
-#'    \code{\link{timepoint_of_measurement}} is used on all \code{Path}s if none 
+#'    \code{\link{timepointOfMeasurement}} is used on all \code{Path}s if none 
 #'    given.}
 #'  \item{\code{Experiment}:}{Identifier for any given experiment. Used for 
 #'    \code{\link{facet_wrap}} during generation of \code{\link{ggplot}} output.}
@@ -37,7 +37,7 @@
 #'    format above). The internal function 
 #'    \code{flippant:::dithioniteFlippaseAssayInputValidation} supplies this 
 #'    functionality.}
-#'  \item{Fluorescense spectra are parsed using \code{\link{parse_fluorometer_output}}.}
+#'  \item{Fluorescense spectra are parsed using \code{\link{parseFluorometerOutput}}.}
 #'  \item{Pre-dithionite-addition \code{Baseline Fluorescense} is determined for
 #'    each spectrum by averaging (\code{\link{median}}) over the first 10 
 #'    values.}
@@ -93,7 +93,7 @@
 #' Phospholipid Flippase. Current Biology 21, 149-153.
 #' MIKE PAPER
 #' @export
-#' @seealso \code{\link{parse_fluorometer_output}}
+#' @seealso \code{\link{parseFluorometerOutput}}
 #' @import ggplot2
 #' @import plyr
 #' @import robustbase

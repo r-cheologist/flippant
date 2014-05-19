@@ -16,7 +16,7 @@ dithioniteFlippaseAssayTraces <- function(x,scale_to=c("model","data")){
           processed_list_from_x[[y]][["Raw"]][c("Path","Experimental Series","Experiment","Protein per Phospholipid (mg/mmol)")]
         }))
   # Parse the fluorometer data and whip it into shape
-  raw_florometer_output <- lapply(x$Path,parse_fluorometer_output)
+  raw_florometer_output <- lapply(x$Path,parseFluorometerOutput)
   names(raw_florometer_output) <- x$Path
   data_from_raw_florometer_output <- rbind.fill(
     lapply(

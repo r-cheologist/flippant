@@ -3,7 +3,7 @@ dithioniteFlippaseAssayCalculations <- function(x,scale_to){
 # Parsing spectra ---------------------------------------------------------
   spectral_data <- lapply(
     x$Path,
-    parse_fluorometer_output)
+    parseFluorometerOutput)
 
 # Read out data -----------------------------------------------------------  
   # What spectral time windows to extract?

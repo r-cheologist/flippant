@@ -71,7 +71,7 @@ dithioniteFlippaseAssayInputValidation <- function(x,scale_to){
           "Providing missing column '",
           facultative_columns_in_x$Name[y],
           "' from spectra ('Path').")
-        to_be_added_on <- timepoint_of_measurement(x$Path)
+        to_be_added_on <- timepointOfMeasurement(x$Path)
       } else if(facultative_columns_in_x$Name[y] %in% c("Experiment","Experimental Series")) {
         to_be_added_on <- facultative_columns_in_x$Default[[y]]
       } else {

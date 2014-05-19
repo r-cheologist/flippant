@@ -1,4 +1,4 @@
-#' @title parse_fluorometer_output
+#' @title parseFluorometerOutput
 #' @description Parse fluorometer spectra
 #' @details A function to read fluorometer output directly. Intended as a helper
 #' function to flippase activity determinations from dithionite assays.
@@ -31,14 +31,14 @@
 #'    file name (as saved by the instrument).}
 #' }
 #' @seealso \code{flippant:::dithioniteFlippaseAssayInputValidation}
-#' \code{\link{parse_felixgx_output}} \code{\link{parse_felix32_output}}
-#' \code{\link{parse_manual_output}}
+#' \code{\link{parseFelixGxOutput}} \code{\link{parseFelix32Output}}
+#' \code{\link{parseManualOutput}}
 #' @author Johannes Graumann
-#' @export
 #' @keywords manip IO file
 #' @examples
 #' stop("Function is missing examples!")
-parse_fluorometer_output <- function(spec_file=NA){
+#' @export
+parseFluorometerOutput <- function(spec_file=NA){
   #######################
   # Check Prerequisites #
   #######################
@@ -86,11 +86,11 @@ parse_fluorometer_output <- function(spec_file=NA){
   # Extract data
   ##############
   if(format_of_spec_file == "FelixGXv4.1.0.3096"){
-    output <- parse_felixgx_output(lines_in_spec_file)
+    output <- parseFelixGxOutput(lines_in_spec_file)
   } else if(format_of_spec_file == "Felix32v1.20"){
-    output <- parse_felix32_output(lines_in_spec_file)
+    output <- parseFelix32Output(lines_in_spec_file)
   } else if(format_of_spec_file == "Manual"){
-    output <- parse_manual_output(lines_in_spec_file)
+    output <- parseManualOutput(lines_in_spec_file)
   }
   #################
   # Return result #
