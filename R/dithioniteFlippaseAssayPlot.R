@@ -30,7 +30,7 @@
 #'    
 #' Based on MIKE PAPER data is processed as follows (the majority of the 
 #' processing is split off into the internal function 
-#' \code{\link{flippant:::dithioniteFlippaseAssayCalculations}}):
+#' \code{flippant:::dithioniteFlippaseAssayCalculations}):
 #' \itemize{
 #'  \item{Input is format checked and defaults are injected for facultative 
 #'    parameters/columns as appropriate (see input \code{\link{data.frame}} 
