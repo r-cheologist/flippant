@@ -1,0 +1,68 @@
+#' @rdname dithioniteFlippaseAssayPlot
+#' @import assertive plyr
+dithioniteFlippaseAssayInputTemplate <- function(path="dithioniteFlippaseAssayInputTemplate.txt"){
+# Check input -------------------------------------------------------------
+  assert_is_a_non_empty_string(path)
+  if(file.exists(path)){
+    stop("File '",path,"' exists. Chickening out.")
+  }
+
+# Generate template data.frame --------------------------------------------
+  # Create data structure in list form
+  dataStructure <- list(
+    ## Available fileds/columns
+    columnName = c(
+      "Path",
+      "Protein in Reconstitution (mg)",
+      "Fluorescence Assay Vol. w/o DT (ul)",
+      "Fluorescence Assay Vol. with DT (ul)",
+      "Egg PC in Reconstitution (mmol)",
+      "Timepoint of Measurement (s)",
+      "Experiment",
+      "Experimental Series"),
+    ## Is the column required or facultative?
+    columnRequired = c(
+      rep(x="Required",times=2),
+      rep(x="Facultative",times=6)),
+    ## What's the expected data type?
+    columnType = c(
+      "character",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "character",
+      "character"),
+    ## Default values used if the column isn't defined
+    columnDefault = c(
+      rep(x="-",times=2),
+      "2000",
+      "2040",
+      "0.0045",
+      "NA",
+      "NA",
+      "NA"))
+  # Outcomment the appropriate lines
+  commentedDataStructure <- lapply(
+    names(dataStructure),
+    function(x){
+      if(x == "columnName"){
+        return(dataStructure[[x]])
+      } else {
+        tmpVec <- dataStructure[[x]]
+        tmpVec[1] <- paste("#",tmpVec[1])
+        return(tmpVec)
+      }
+    })
+  # Assemble the data.frame
+  outputDataFrameAsList <- lapply(
+    commentedDataStructure[2:length(commentedDataStructure)],
+    function(x){as.data.frame(rbind(x),stringsAsFactors=FALSE)})
+  outputDataFrame <- rbind.fill(outputDataFrameAsList)
+  names(outputDataFrame) <- dataStructure[[1]]
+
+# Write the file out ------------------------------------------------------
+  write.table(x=outputDataFrame,file=path,sep="\t",row.names=FALSE)
+
+}
