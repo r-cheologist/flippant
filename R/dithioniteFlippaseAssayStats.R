@@ -14,6 +14,7 @@ dithioniteFlippaseAssayStats <- function(x,scaleTo=c("model","data")){
   output <- rbind.fill(processedListFromX)
   output <- output[!duplicated(output$CombinedId),]
   output <- output[which(names(output) %in% c("Fit Constant (a)","PPR at P = 0.5","Experimental Series","Experiment"))]
+  output[c("Fit Constant (a)","PPR at P = 0.5")] <- round(output[c("Fit Constant (a)","PPR at P = 0.5")],digits=2)
 
 # Return ------------------------------------------------------------------
   return(output)
