@@ -3,9 +3,14 @@
 #' fluorescence intensities are averaged in a dithionite flippase assay.
 #' @param x A \code{\link{character}} vector referring to fluorometer output
 #' parseable by \code{\link{parseFluorometerOutput}}.
+#' @details The function identifies the maximum reported measurement time from
+#' all spectral series involved and reports the smallest of them.
+#' @return A \code{\link{numeric}} of length \code{1}.
 #' @author Johannes Graumann
 #' @seealso \code{\link{parseFluorometerOutput}}
 #' @keywords manip
+#' @examples
+#' stop("Function is missing examples!")
 timepointOfMeasurement <- function(x=NA){
   #######################
   # Check prerequisites #

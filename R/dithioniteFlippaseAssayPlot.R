@@ -1,8 +1,8 @@
 #' @title dithioniteFlippaseAssayPlot
-#' @description A functions that automate calculations necessary to interprete
-#' dithionite flippase assays
-#' @details The function accepts input in form of a \code{\link{data.frame}} 
-#' with the following \bold{mandatory} columns:
+#' @description Functions for the presentation and evaluaton of dithionite 
+#' flippase assays
+#' @details The \code{\link{data.frame}} accepted by the majority of the 
+#' functions (\code{x}) must have the following \bold{mandatory} columns:
 #' \describe{
 #'  \item{\code{Path}:}{Paths to existing and readable \code{ASCII} output files 
 #'    of a fluorometer.}
@@ -28,16 +28,17 @@
 #'    \code{Extract} and \code{Depleted Extract}). Used by \code{color} during 
 #'    generation of \code{\link{ggplot}} output.}}
 #'    
-#' Based on MIKE PAPER the function proceeds as follows (the majority of the 
-#' data processing is split off into the internal function 
-#' \code{\link{dithioniteFlippaseAssayCalculations}}):
+#' Based on MIKE PAPER data is processed as follows (the majority of the 
+#' processing is split off into the internal function 
+#' \code{\link{flippant:::dithioniteFlippaseAssayCalculations}}):
 #' \itemize{
 #'  \item{Input is format checked and defaults are injected for facultative 
 #'    parameters/columns as appropriate (see input \code{\link{data.frame}} 
 #'    format above). The internal function 
 #'    \code{flippant:::dithioniteFlippaseAssayInputValidation} supplies this 
 #'    functionality.}
-#'  \item{Fluorescense spectra are parsed using \code{\link{parseFluorometerOutput}}.}
+#'  \item{Fluorescense spectra are parsed using 
+#'    \code{\link{parseFluorometerOutput}}.}
 #'  \item{Pre-dithionite-addition \code{Baseline Fluorescense} is determined for
 #'    each spectrum by averaging (\code{\link{median}}) over the first 10 
 #'    values.}
@@ -71,7 +72,8 @@
 #'    \code{\link{ggplot}} object is assembled with the following layers:
 #'    \itemize{
 #'      \item{Lines (\code{\link{geom_line}}) representing the monoexponential
-#'        fit(s). \code{color} is used to differentiate \code{Experimental Series}.}
+#'        fit(s). \code{color} is used to differentiate 
+#'        \code{Experimental Series}.}
 #'      \item{Segments (\code{\link{geom_segment}}) representing the \code{PPR}
 #'        at which the fit constant a is equal to \code{PPR} and thus
 #'        \code{p(>=1) = 1 - exp(-PPR/a) = 1 - exp(-1) ~ 0.63}. This tau value 
@@ -79,10 +81,13 @@
 #'        flippase and 63\% have 1 or more (i.e. are active). \code{color} is 
 #'        used to differentiate \code{Experimental Series}.}
 #'      \item{Points (\code{\link{geom_point}}) representing the corresponding 
-#'        datapoints. \code{color} is used to differentiate \code{Experimental Series}.}
-#'      \item{Plots are finally \code{\link{facet_wrap}}ed by \code{Experiment} and
-#'        lables adjusted cosmetically.}}
+#'        datapoints. \code{color} is used to differentiate 
+#'        \code{Experimental Series}.}
+#'      \item{Plots are finally \code{\link{facet_wrap}}ed by \code{Experiment} 
+#'        and lables adjusted cosmetically.}}
 #'  }}
+#' @param path \code{\link{character}} object giving the path of an \bold{empty}
+#' template for a spreadsheet that can provide \code{x}.
 #' @param x \code{\link{data.frame}} as described in "Details".
 #' @param scaleTo Defines the source of \code{ymax}, defaulting to 
 #' \code{model}. See "Details".
@@ -99,43 +104,7 @@
 #' @import robustbase
 #' @examples
 #' stop("Add citation to Mike's manuscript!")
-#' stop("Revisit workflow description.")
 #' stop("Add example using actually published data.")
-#' # Build input
-#' x <- data.frame(
-#'  Path = c(
-#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/ePC.txt",
-#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-15ul.txt",
-#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-40ul.txt",
-#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-75ul.txt",
-#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-150ul.txt",
-#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/ePC.txt",
-#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-plus-15ul.txt",
-#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-40ul.txt",
-#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-75ul.txt",
-#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-150ul.txt",
-#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/ePC.txt",
-#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-15ul.txt",
-#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-40ul.txt",
-#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-75ul.txt",
-#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-minus-150ul.txt",
-#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/ePC.txt",
-#'  "~/localTmp/Fluor Data_Menon Lab/21FEB2013_Erg1 immun_deple/Erg1 TE-plus-15ul.txt",
-#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-40ul.txt",
-#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-75ul.txt",
-#'  "~/localTmp/Fluor Data_Menon Lab//21FEB2013_Erg1 immun_deple/Erg1 TE-plus-150ul.txt"),
-#'  "Extract Volume (ul)" = c(0,15,40,75,150,0,15,40,75,150,0,15,40,75,150,0,15,40,75,150),
-#'  #     "Reaction Volume w/o DT (ul)" = rep(2000,4),
-#'  "Reaction Volume with DT (ul)" = rep(2040,20),
-#'  "Concentration Egg PC (mM)" = rep(4.5,20),
-#'  "Extract Protein Concentration (mg/ml)" = c(rep(0.67,5),rep(1.26,5),rep(0.67,5),rep(1.26,5)),
-#'  #     "Timepoint of Measurement (s)",
-#'  "Experimental Series"=c(rep("Extract",5),rep("Depleted Extract",5),rep("Extract",5),rep("Depleted Extract",5)),
-#'  Experiment=c(rep("Erg1, Replicate 1",10),rep("Erg1, Replicate 2",10)),
-#'  check.names=FALSE,
-#'  stringsAsFactors=FALSE)
-#'  # Run function
-#'  DithioniteFlippaseAssay(x)
 dithioniteFlippaseAssayPlot <- function(x,scaleTo=c("model","data")){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- dithioniteFlippaseAssayInputValidation(x=x,scaleTo=scaleTo)

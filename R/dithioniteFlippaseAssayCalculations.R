@@ -1,4 +1,3 @@
-#' @rdname dithioniteFlippaseAssayPlot
 dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
 # Parsing spectra ---------------------------------------------------------
   spectralData <- lapply(

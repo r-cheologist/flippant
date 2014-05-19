@@ -4,16 +4,17 @@
 #' function to flippase activity determinations from dithionite assays.
 #' 
 #' The function is currently capable to deal with input derived from QuantMaster
-#' instruments running software versions \code{FelixGX v4.1} and 
-#' \code{Felix32 v1.20}. The version is devined from the data structure and
-#' appropriate internal parsing functions called.
+#' instruments running software versions \code{FelixGX v4.1} 
+#' (see \code{\link{parseFelixGxOutput}}) and \code{Felix32 v1.20} (see 
+#' \code{\link{parseFelix32Output}}). The version is devined from the data 
+#' structure and appropriate internal parsing functions called.
 #' @param specFile Path to a \file{*.txt} file as a \code{\link{character}} 
 #' object.
 #' @return Returns a \code{\link{list}} with the follwoing keys:
 #' \describe{
 #'  \item{\code{Data}}{A \code{\link{data.frame}} representing the actual 
-#'    spectrumwith the columns \code{Time.in.sec} and \code{Fluorescense.Intensity}
-#'    (all \code{\link{numeric}}).}
+#'    spectrum with the columns \code{Time.in.sec} and 
+#'    \code{Fluorescense.Intensity} (all \code{\link{numeric}}).}
 #'  \item{\code{Data.Points}}{Number of data points in the spectrum as a 
 #'    \code{\link{numeric}}. Ecquivalent to \code{\link{nrow}} of the 
 #'    \code{link{data.frame}} in \code{Data}.}
