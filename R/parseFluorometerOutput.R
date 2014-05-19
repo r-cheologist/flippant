@@ -7,7 +7,7 @@
 #' instruments running software versions \code{FelixGX v4.1} and 
 #' \code{Felix32 v1.20}. The version is devined from the data structure and
 #' appropriate internal parsing functions called.
-#' @param spec_file Path to a \file{*.txt} file as a \code{\link{character}} 
+#' @param specFile Path to a \file{*.txt} file as a \code{\link{character}} 
 #' object.
 #' @return Returns a \code{\link{list}} with the follwoing keys:
 #' \describe{
@@ -38,59 +38,59 @@
 #' @examples
 #' stop("Function is missing examples!")
 #' @export
-parseFluorometerOutput <- function(spec_file=NA){
+parseFluorometerOutput <- function(specFile=NA){
   #######################
   # Check Prerequisites #
   #######################
-  if(is.na(spec_file[1])){
-    stop("'spec_file' must be defined.")
+  if(is.na(specFile[1])){
+    stop("'specFile' must be defined.")
   }
-  if(!is.character(spec_file)){
-    stop("'spec_file' must be of class 'character'.")
+  if(!is.character(specFile)){
+    stop("'specFile' must be of class 'character'.")
   }
-  if(length(spec_file) != 1){
-    stop("'spec_file' must be of length 1.")
+  if(length(specFile) != 1){
+    stop("'specFile' must be of length 1.")
   }
-  if(!file.exists(spec_file)){
-    stop("'spec_file' must represent an existing path.")
+  if(!file.exists(specFile)){
+    stop("'specFile' must represent an existing path.")
   }
-  if(file.access(names=spec_file,mode=4) != 0){
-    stop("'spec_file' must be readable.")
+  if(file.access(names=specFile,mode=4) != 0){
+    stop("'specFile' must be readable.")
   }
   ##############
   # Processing #
   ##############
   # Aspirate the file
   ###################
-  lines_in_spec_file <- readLines(spec_file)
+  linesInSpecFile <- readLines(specFile)
   # Divine the output-producing fluorometer
   #########################################
   if(
-    grepl(pattern="^<Trace>$",x=lines_in_spec_file[1],ignore.case=TRUE) &
-      grepl(pattern="^X\tY\t$",x=lines_in_spec_file[4],ignore.case=TRUE) &
-      grepl(pattern="^</Trace>$",x=tail(lines_in_spec_file,n=1),ignore.case=TRUE)){
-    format_of_spec_file <- "FelixGXv4.1.0.3096"
+    grepl(pattern="^<Trace>$",x=linesInSpecFile[1],ignore.case=TRUE) &
+      grepl(pattern="^X\tY\t$",x=linesInSpecFile[4],ignore.case=TRUE) &
+      grepl(pattern="^</Trace>$",x=tail(linesInSpecFile,n=1),ignore.case=TRUE)){
+    formatOfSpecFile <- "FelixGXv4.1.0.3096"
   } else if(
-    grepl(pattern="^1$",x=lines_in_spec_file[1],ignore.case=TRUE) &
-      grepl(pattern="^X\tY$",x=lines_in_spec_file[4],ignore.case=TRUE) &
-      grepl(pattern="^\\d+\\.{1,1}\\d+\t\\d+$",x=tail(lines_in_spec_file,n=1),ignore.case=TRUE)
+    grepl(pattern="^1$",x=linesInSpecFile[1],ignore.case=TRUE) &
+      grepl(pattern="^X\tY$",x=linesInSpecFile[4],ignore.case=TRUE) &
+      grepl(pattern="^\\d+\\.{1,1}\\d+\t\\d+$",x=tail(linesInSpecFile,n=1),ignore.case=TRUE)
   ){
-    format_of_spec_file <- "Felix32v1.20"
+    formatOfSpecFile <- "Felix32v1.20"
   } else if(
-    grepl(pattern="^Time \\(sec\\)\tBlank$",x=lines_in_spec_file[1],ignore.case=TRUE)
+    grepl(pattern="^Time \\(sec\\)\tBlank$",x=linesInSpecFile[1],ignore.case=TRUE)
   ){
-    format_of_spec_file <- "Manual"
+    formatOfSpecFile <- "Manual"
   } else {
-    stop("Unsupported data format in ",spec_file)
+    stop("Unsupported data format in ",specFile)
   }
   # Extract data
   ##############
-  if(format_of_spec_file == "FelixGXv4.1.0.3096"){
-    output <- parseFelixGxOutput(lines_in_spec_file)
-  } else if(format_of_spec_file == "Felix32v1.20"){
-    output <- parseFelix32Output(lines_in_spec_file)
-  } else if(format_of_spec_file == "Manual"){
-    output <- parseManualOutput(lines_in_spec_file)
+  if(formatOfSpecFile == "FelixGXv4.1.0.3096"){
+    output <- parseFelixGxOutput(linesInSpecFile)
+  } else if(formatOfSpecFile == "Felix32v1.20"){
+    output <- parseFelix32Output(linesInSpecFile)
+  } else if(formatOfSpecFile == "Manual"){
+    output <- parseManualOutput(linesInSpecFile)
   }
   #################
   # Return result #

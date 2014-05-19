@@ -1,5 +1,5 @@
 #' @import assertive
-dithioniteFlippaseAssayInputValidation <- function(x,scale_to){
+dithioniteFlippaseAssayInputValidation <- function(x,scaleTo){
   # Check x
   ## General DF characteristics
   assert_is_data.frame(x)
@@ -10,27 +10,27 @@ dithioniteFlippaseAssayInputValidation <- function(x,scale_to){
     stop("'x' cannot contain 'NA'.")
   }
   ## Required parameters
-  required_columns_in_x <- list(
+  requiredColumnsInX <- list(
     Name = c(
       "Path",
       "Protein in Reconstitution (mg)"),
     Class = c(
       "character",
       "numeric"))
-  if(!all( required_columns_in_x$Name %in% names(x))){
+  if(!all( requiredColumnsInX$Name %in% names(x))){
     stop(
       "'x' must hold at least the following columns: '",
-      paste(required_columns_in_x,collapse="', '"),
+      paste(requiredColumnsInX,collapse="', '"),
       "'.")
   }
   if(!identical(
-    unname(vapply(x[required_columns_in_x$Name],class,c(A="A"))),
-    required_columns_in_x$Class)){
+    unname(vapply(x[requiredColumnsInX$Name],class,c(A="A"))),
+    requiredColumnsInX$Class)){
     stop(
       "Required columns '",
-      paste(required_columns_in_x$Name,collapse="', '"),
+      paste(requiredColumnsInX$Name,collapse="', '"),
       "' must be of classes '",
-      paste(required_columns_in_x$Class,collapse="', '"),
+      paste(requiredColumnsInX$Class,collapse="', '"),
       "'.")
   }
   ## Check paths
@@ -41,7 +41,7 @@ dithioniteFlippaseAssayInputValidation <- function(x,scale_to){
     stop("All entries in column 'Path' must refer to existing files.")
   }
   ## Facultative parameters
-  facultative_columns_in_x <- list(
+  facultativeColumnsInX <- list(
     Name = c(
       "Fluorescence Assay Vol. w/o DT (ul)",
       "Fluorescence Assay Vol. with DT (ul)",
@@ -63,42 +63,42 @@ dithioniteFlippaseAssayInputValidation <- function(x,scale_to){
       NA,
       NA_character_,
       NA_character_))
-  missing_facultative_columns_in_x <- which(!(facultative_columns_in_x$Name %in% names(x)))
-  if(length(missing_facultative_columns_in_x) != 0){
-    for (y in missing_facultative_columns_in_x){
-      if(facultative_columns_in_x$Name[y] == "Timepoint of Measurement (s)"){
+  missingFacultativeColumnsInX <- which(!(facultativeColumnsInX$Name %in% names(x)))
+  if(length(missingFacultativeColumnsInX) != 0){
+    for (y in missingFacultativeColumnsInX){
+      if(facultativeColumnsInX$Name[y] == "Timepoint of Measurement (s)"){
         warning(
           "Providing missing column '",
-          facultative_columns_in_x$Name[y],
+          facultativeColumnsInX$Name[y],
           "' from spectra ('Path').")
-        to_be_added_on <- timepointOfMeasurement(x$Path)
-      } else if(facultative_columns_in_x$Name[y] %in% c("Experiment","Experimental Series")) {
-        to_be_added_on <- facultative_columns_in_x$Default[[y]]
+        toBeAddedOn <- timepointOfMeasurement(x$Path)
+      } else if(facultativeColumnsInX$Name[y] %in% c("Experiment","Experimental Series")) {
+        toBeAddedOn <- facultativeColumnsInX$Default[[y]]
       } else {
         warning(
           "Providing missing column '",
-          facultative_columns_in_x$Name[y],
+          facultativeColumnsInX$Name[y],
           "' from defaults (",
-          facultative_columns_in_x$Default[[y]],
+          facultativeColumnsInX$Default[[y]],
           "). Make sure this is correct.")
-        to_be_added_on <- facultative_columns_in_x$Default[[y]]
+        toBeAddedOn <- facultativeColumnsInX$Default[[y]]
       }
       output <- cbind(
         x,
-        rep(x=to_be_added_on,times=nrow(x)),
+        rep(x=toBeAddedOn,times=nrow(x)),
         stringsAsFactors=FALSE)
-      names(output)[ncol(output)] <- facultative_columns_in_x$Name[y]
+      names(output)[ncol(output)] <- facultativeColumnsInX$Name[y]
       x <- output
     }
   }
   if(!identical(
-    unname(vapply(x[facultative_columns_in_x$Name],class,c(A="A"))),
-    facultative_columns_in_x$Class)){
+    unname(vapply(x[facultativeColumnsInX$Name],class,c(A="A"))),
+    facultativeColumnsInX$Class)){
     stop(
       "Facultative columns '",
-      paste(facultative_columns_in_x$Name,collapse="', '"),
+      paste(facultativeColumnsInX$Name,collapse="', '"),
       "' must be of classes '",
-      paste(facultative_columns_in_x$Class,collapse="', '"),
+      paste(facultativeColumnsInX$Class,collapse="', '"),
       "'.")
   }
   ## Check "Timepoint of Measurement (s)" consistency
@@ -106,14 +106,14 @@ dithioniteFlippaseAssayInputValidation <- function(x,scale_to){
     stop("Column 'Timepoint of Measurement (s)' contains multiple values. Exiting.")
   }
   
-  # Check scale_to
-  scale_to <- match.arg(
-    arg=scale_to,
+  # Check scaleTo
+  scaleTo <- match.arg(
+    arg=scaleTo,
     choices=c("model","data"),
     several.ok=FALSE)
-  if(scale_to == "model"){
+  if(scaleTo == "model"){
     warning("Data will be scaled to the plateau of its monoexponential fit.")
   }
   # Return
-  return(list(x=x,scale_to=scale_to))
+  return(list(x=x,scaleTo=scaleTo))
 }

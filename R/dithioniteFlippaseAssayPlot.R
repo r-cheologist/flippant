@@ -59,10 +59,10 @@
 #'    calculated using \code{(y - y0)/(ymax - y0)}, where \code{y} is the 
 #'    \code{Relative Fluorescense Reduction} and \code{y0} is the 
 #'    \code{Relative Fluorescense Reduction} in an experiment without addition 
-#'    of protein extract. Depending on the \code{scale_to} parameter, 
+#'    of protein extract. Depending on the \code{scaleTo} parameter, 
 #'    \code{ymax} is either the maximal \code{Relative Fluorescense Reduction} 
-#'    in the series (\code{scale_to = "data"}) or derived from a 
-#'    mono-exponential fit to the data (\code{scale_to = "model"}). The latter 
+#'    in the series (\code{scaleTo = "data"}) or derived from a 
+#'    mono-exponential fit to the data (\code{scaleTo = "model"}). The latter 
 #'    (default) is a precaution for the case where the protein/phospholipid
 #'    titration did not reach the plateau of the saturation curve (yet).}
 #'  \item{A monoexponential curve is fitted to \code{p(>=1) = 1 - exp(-PPR/a)} 
@@ -84,7 +84,7 @@
 #'        lables adjusted cosmetically.}}
 #'  }}
 #' @param x \code{\link{data.frame}} as described in "Details".
-#' @param scale_to Defines the source of \code{ymax}, defaulting to 
+#' @param scaleTo Defines the source of \code{ymax}, defaulting to 
 #' \code{model}. See "Details".
 #' @return Returns a \code{\link{ggplot}} object.
 #' @author Johannes Graumann
@@ -136,34 +136,34 @@
 #'  stringsAsFactors=FALSE)
 #'  # Run function
 #'  DithioniteFlippaseAssay(x)
-dithioniteFlippaseAssayPlot <- function(x,scale_to=c("model","data")){
+dithioniteFlippaseAssayPlot <- function(x,scaleTo=c("model","data")){
 # Check Prerequisites -----------------------------------------------------
-  validated_params <- dithioniteFlippaseAssayInputValidation(x=x,scale_to=scale_to)
-  x <- validated_params[["x"]]
-  scale_to <- validated_params[["scale_to"]]
+  validatedParams <- dithioniteFlippaseAssayInputValidation(x=x,scaleTo=scaleTo)
+  x <- validatedParams[["x"]]
+  scaleTo <- validatedParams[["scaleTo"]]
 
 # Processing --------------------------------------------------------------
-  processed_list_from_x <- dithioniteFlippaseAssayCalculations(x=x,scale_to=scale_to)
+  processedListFromX <- dithioniteFlippaseAssayCalculations(x=x,scaleTo=scaleTo)
 
 # Recombine the processed data --------------------------------------------
-  x <- rbind.fill(lapply(processed_list_from_x,function(z){z$Raw}))
-  fit_results_from_x <- rbind.fill(lapply(processed_list_from_x,function(z){z$Fit}))
-  annotations_for_x <- x[c("Experiment","Experimental Series","Fit Constant (a)")]
-  #   annotations_for_x <- x[c("Experiment","Experimental Series","PPR at P = 0.5")]
-  names(annotations_for_x) <- c("Experiment", "Experimental Series", "x1")
-  annotations_for_x$x2 <- annotations_for_x$x1
-  annotations_for_x$y1 <- 1-exp(-1)
-  annotations_for_x$LineType <- 2
-  #   annotations_for_x$y1 <- 0.5
-  annotations_for_x$y2 <- -Inf
-  annotations_for_x <- annotations_for_x[!duplicated(paste(annotations_for_x$Experiment,annotations_for_x$"Experimental Series")),]
-  if(any(!is.na(annotations_for_x$Experiment))){
-    annotation_list_for_x <- split(annotations_for_x,annotations_for_x$Experiment)
+  x <- rbind.fill(lapply(processedListFromX,function(z){z$Raw}))
+  fitResultsFromX <- rbind.fill(lapply(processedListFromX,function(z){z$Fit}))
+  annotationsForX <- x[c("Experiment","Experimental Series","Fit Constant (a)")]
+  #   annotationsForX <- x[c("Experiment","Experimental Series","PPR at P = 0.5")]
+  names(annotationsForX) <- c("Experiment", "Experimental Series", "x1")
+  annotationsForX$x2 <- annotationsForX$x1
+  annotationsForX$y1 <- 1-exp(-1)
+  annotationsForX$LineType <- 2
+  #   annotationsForX$y1 <- 0.5
+  annotationsForX$y2 <- -Inf
+  annotationsForX <- annotationsForX[!duplicated(paste(annotationsForX$Experiment,annotationsForX$"Experimental Series")),]
+  if(any(!is.na(annotationsForX$Experiment))){
+    annotationListForX <- split(annotationsForX,annotationsForX$Experiment)
   } else {
-    annotation_list_for_x <- list(annotations_for_x)
+    annotationListForX <- list(annotationsForX)
   }
-  processed_annotation_list_for_x <- lapply(
-    annotation_list_for_x,
+  processedAnnotationListForX <- lapply(
+    annotationListForX,
     function(x){
       data.frame(
         Experiment=unique(x$Experiment),
@@ -176,51 +176,51 @@ dithioniteFlippaseAssayPlot <- function(x,scale_to=c("model","data")){
         stringsAsFactors=FALSE)
     }
   )
-  annotations_for_x <- rbind.fill(annotations_for_x,rbind.fill(processed_annotation_list_for_x))
+  annotationsForX <- rbind.fill(annotationsForX,rbind.fill(processedAnnotationListForX))
 
 # Assemble the (graphical) output -----------------------------------------
   # Groundwork
-  plot_output <- ggplot(
+  plotOutput <- ggplot(
     data=x,
     aes_string(
       x="`Protein per Phospholipid (mg/mmol)`",
       y="`Probability >= 1 Flippase in Vesicle`"))
   # Layering
   ## First layer: lines/curves representing the monoexponential fit
-  if(any(!is.na(fit_results_from_x$"Experimental Series"))){
-    plot_output <- plot_output +
-      geom_line(data=fit_results_from_x,aes_string(color="`Experimental Series`"))
+  if(any(!is.na(fitResultsFromX$"Experimental Series"))){
+    plotOutput <- plotOutput +
+      geom_line(data=fitResultsFromX,aes_string(color="`Experimental Series`"))
   } else {
-    plot_output <- plot_output +
-      geom_line(data=fit_results_from_x)
+    plotOutput <- plotOutput +
+      geom_line(data=fitResultsFromX)
   }
   ## Second layer: annotations indicating PPR at tau
-  if(any(!is.na(annotations_for_x$"Experimental Series"))){
-    plot_output <- plot_output +
-      geom_segment(data=annotations_for_x,aes_string(x="x1",xend="x2",y="y1",yend="y2",color="`Experimental Series`"),linetype=2)
+  if(any(!is.na(annotationsForX$"Experimental Series"))){
+    plotOutput <- plotOutput +
+      geom_segment(data=annotationsForX,aes_string(x="x1",xend="x2",y="y1",yend="y2",color="`Experimental Series`"),linetype=2)
   } else {
-    plot_output <- plot_output +
-      geom_segment(data=annotations_for_x,aes_string(x="x1",xend="x2",y="y1",yend="y2"),linetype=2)
+    plotOutput <- plotOutput +
+      geom_segment(data=annotationsForX,aes_string(x="x1",xend="x2",y="y1",yend="y2"),linetype=2)
   }
   ## Third Layer: data points
   if(any(!is.na(x$"Experimental Series"))){
-    plot_output <- plot_output +
+    plotOutput <- plotOutput +
       geom_point(aes_string(color="`Experimental Series`"))
   } else {
-    plot_output <- plot_output +
+    plotOutput <- plotOutput +
       geom_point()
   }
   # Faceting by "Experiment"
   if(any(!is.na(x$"Experiment"))){
-    plot_output <- plot_output + 
+    plotOutput <- plotOutput + 
       facet_wrap(~Experiment)
   }
   # Prettifications
-  plot_output <- plot_output +
+  plotOutput <- plotOutput +
     labs(
       x=expression(frac("Protein","Phospholipid")~~bgroup("(",frac("mg","mmol"),")")),
       y=expression(P~bgroup("(",frac("Flippase","Liposome")>=1,")")),
       color="Experiment")
   # Return
-  return(plot_output)
+  return(plotOutput)
 }

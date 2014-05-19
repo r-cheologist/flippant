@@ -25,13 +25,13 @@ parseFelix32Output <- function(x=NA){
   # Extract data
   ##############
   # Where are data blocks starting?
-  block_indeces_in_x <- lapply(
+  blockIndecesInX <- lapply(
     c("^X\\tY"),
     function(y){
       which(sapply(x,function(z){grep(pattern=y,x=z)}) == 1)
     })
   # Check for data block counts
-  for(y in block_indeces_in_x){
+  for(y in blockIndecesInX){
     if(length(y) == 0){
       stop("No discernable '",names(y),"' block present - aborting.")
     } else if(length(y) > 1){
@@ -39,33 +39,33 @@ parseFelix32Output <- function(x=NA){
     }
   }
   # Ensure order and append line boundaries
-  block_indeces_in_x <- unlist(block_indeces_in_x,use.names=TRUE)
-  block_indeces_in_x <- c(
+  blockIndecesInX <- unlist(blockIndecesInX,use.names=TRUE)
+  blockIndecesInX <- c(
     1,
-    block_indeces_in_x[order(unlist(block_indeces_in_x))]+1,
+    blockIndecesInX[order(unlist(blockIndecesInX))]+1,
     length(x)+2)
   # Split into blocks
-  blocks_in_x <- sapply(
-    seq(from=2,to=length(block_indeces_in_x)),
+  blocksInX <- sapply(
+    seq(from=2,to=length(blockIndecesInX)),
     function(y){
-      block <- list(x[(block_indeces_in_x[[y-1]]):(block_indeces_in_x[[y]]-2)])
-      names(block) <- names(block_indeces_in_x[y-1])
+      block <- list(x[(blockIndecesInX[[y-1]]):(blockIndecesInX[[y]]-2)])
+      names(block) <- names(blockIndecesInX[y-1])
       return(block)
     })
-  names(blocks_in_x) <- sub(pattern="\\s+$",replacement="",names(blocks_in_x))
+  names(blocksInX) <- sub(pattern="\\s+$",replacement="",names(blocksInX))
   # Rough format check
-  right_length_blocks_in_x <- sapply(blocks_in_x,length) == c(3,NA)
-  right_length_blocks_in_x[is.na(right_length_blocks_in_x)] <- TRUE
-  if(!all(right_length_blocks_in_x)){
+  rightLengthBlocksInX <- sapply(blocksInX,length) == c(3,NA)
+  rightLengthBlocksInX[is.na(rightLengthBlocksInX)] <- TRUE
+  if(!all(rightLengthBlocksInX)){
     stop(
       "Data blocks '",
-      paste(names(blocks_in_x[!right_length_blocks_in_x]),collapse=","),
+      paste(names(blocksInX[!rightLengthBlocksInX]),collapse=","),
       "' have unexpected member counts.")
   }
   # Process spectral data
   #######################
   output <- list(
-    Data = blocks_in_x$"X\tY")
+    Data = blocksInX$"X\tY")
   # Parse data apart & numerizise
   output$Data <- lapply(
     output$Data,
@@ -85,10 +85,10 @@ parseFelix32Output <- function(x=NA){
   # Create fluorescense min
   output$Min.Fluorescence.Intensity <- min(output$Data$Fluorescense.Intensity,na.rm=TRUE)
   # Extract file name
-  output$File.Name <- blocks_in_x[[1]][2]
+  output$File.Name <- blocksInX[[1]][2]
   # Extract/check acquisition time  max
-  max_acq_time <- as.numeric(blocks_in_x[[1]][2])
-  if(max_acq_time != floor(max(output$Data$Time.in.sec,na.rm=TRUE))){
+  maxAcqTime <- as.numeric(blocksInX[[1]][2])
+  if(maxAcqTime != floor(max(output$Data$Time.in.sec,na.rm=TRUE))){
     stop("Reported and home-made acquisition time maxima differ.")
   }
   output$Max.Acquisition.Time.in.sec <- max(output$Data$Time.in.sec,na.rm=TRUE)

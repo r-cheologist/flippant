@@ -24,17 +24,17 @@ timepointOfMeasurement <- function(x=NA){
   ##############
   # Parsing
   #########
-  tmp_data <- lapply(
+  tmpData <- lapply(
     x,
     parseFluorometerOutput)
   # Extract data
   ##############
   # What is the latest data point per series?
-  maxAT <- vapply(tmp_data,function(y){y$Max.Acquisition.Time.in.sec},1)
+  maxAt <- vapply(tmpData,function(y){y$Max.Acquisition.Time.in.sec},1)
   # Identify the shortest one
-  minMaxAT <- min(maxAT,na.rm=TRUE)
+  minMaxAt <- min(maxAt,na.rm=TRUE)
   ##########
   # Return #
   ##########
-  return(minMaxAT)
+  return(minMaxAt)
 }

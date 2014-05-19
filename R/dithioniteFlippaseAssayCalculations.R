@@ -1,69 +1,69 @@
 #' @rdname dithioniteFlippaseAssayPlot
-dithioniteFlippaseAssayCalculations <- function(x,scale_to){
+dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
 # Parsing spectra ---------------------------------------------------------
-  spectral_data <- lapply(
+  spectralData <- lapply(
     x$Path,
     parseFluorometerOutput)
 
 # Read out data -----------------------------------------------------------  
   # What spectral time windows to extract?
-  min_acquisition_time <- unique(vapply(spectral_data,function(y){y$Min.Acquisition.Time.in.sec},1))
-  if(length(min_acquisition_time) != 1){
+  minAcquisitionTime <- unique(vapply(spectralData,function(y){y$Min.Acquisition.Time.in.sec},1))
+  if(length(minAcquisitionTime) != 1){
     stop("Minimum acquisition times are not identical - aborting.")
   }
-  max_acquisition_time <- vapply(spectral_data,function(y){y$Max.Acquisition.Time.in.sec},1)
-  if(any(max_acquisition_time < x$"Timepoint of Measurement (s)")){
+  maxAcquisitionTime <- vapply(spectralData,function(y){y$Max.Acquisition.Time.in.sec},1)
+  if(any(maxAcquisitionTime < x$"Timepoint of Measurement (s)")){
     stop("'Timepoint of Measurement (s)' is larger than the shortest spectrum 
          acquisition. Aborting.")
   } else {
-    max_acquisition_time <- unique(x$"Timepoint of Measurement (s)")
+    maxAcquisitionTime <- unique(x$"Timepoint of Measurement (s)")
   }
   # Average over first 10 values for activity baseline
   x$"Baseline Fluorescense" <- vapply(
-    spectral_data,
+    spectralData,
     function(z){
-      start_index_for_averaging <- min(which(z$Data$Time.in.sec >= min_acquisition_time))
-      indexes_for_averaging <- seq(
-        from=start_index_for_averaging,
-        to=start_index_for_averaging+9)
-      return(median(z$Data$Fluorescense.Intensity[indexes_for_averaging],na.rm=TRUE))
+      startIndexForAveraging <- min(which(z$Data$Time.in.sec >= minAcquisitionTime))
+      indexesForAveraging <- seq(
+        from=startIndexForAveraging,
+        to=startIndexForAveraging+9)
+      return(median(z$Data$Fluorescense.Intensity[indexesForAveraging],na.rm=TRUE))
     },
     1)
   # Average over last 10 values (in common time range) for activity
   x$"Minimum Fluorescense" <- vapply(
-    spectral_data,
+    spectralData,
     function(z){
-      stop_index_for_averaging <- max(which(z$Data$Time.in.sec <= max_acquisition_time))
-      indexes_for_averaging <- seq(
-        from=stop_index_for_averaging-9,
-        to=stop_index_for_averaging)
-      return(median(z$Data$Fluorescense.Intensity[indexes_for_averaging],na.rm=TRUE))
+      stopIndexForAveraging <- max(which(z$Data$Time.in.sec <= maxAcquisitionTime))
+      indexesForAveraging <- seq(
+        from=stopIndexForAveraging-9,
+        to=stopIndexForAveraging)
+      return(median(z$Data$Fluorescense.Intensity[indexesForAveraging],na.rm=TRUE))
     },
     1)
   # Apply volume correction factors as needed
-  volume_correction_factor <- x$"Fluorescence Assay Vol. with DT (ul)"/x$"Fluorescence Assay Vol. w/o DT (ul)"
-  x$"Minimum Fluorescense, Volume Corrected" <- x$"Minimum Fluorescense" * volume_correction_factor
+  volumeCorrectionFactor <- x$"Fluorescence Assay Vol. with DT (ul)"/x$"Fluorescence Assay Vol. w/o DT (ul)"
+  x$"Minimum Fluorescense, Volume Corrected" <- x$"Minimum Fluorescense" * volumeCorrectionFactor
   ## Calculate activity reduction
   x$"Fluorescense Reduction" <- 1-x$"Minimum Fluorescense, Volume Corrected"/x$"Baseline Fluorescense"
 
 # Generate PPR v.s P(>=1 Flippase/Liposome) -------------------------------
   # Split by Experiment
   x$CombinedId <- paste(x$"Experimental Series",x$"Experiment",sep="_")
-  input_list_from_x <- split(x,x$CombinedId)
+  inputListFromX <- split(x,x$CombinedId)
 
   # Calculations
-  processed_list_from_x <- lapply(
-    input_list_from_x,
+  processedListFromX <- lapply(
+    inputListFromX,
     function(z){
       ## Ensure that there's a data point with liposomes ONLY as a unique 
       ## reference point
-      index_of_liposomes_only_data <- which(z$"Protein in Reconstitution (mg)" == 0)
-      if(length(index_of_liposomes_only_data) == 0){
+      indexOfLiposomesOnlyData <- which(z$"Protein in Reconstitution (mg)" == 0)
+      if(length(indexOfLiposomesOnlyData) == 0){
         stop("Experimental series '",unique(y["Experimental Series"]),"' does 
           not have the required liposomes-ONLY ('Extract Volume (ul)' of '0') 
           data point. Aborting.")
       }
-      if(length(index_of_liposomes_only_data) > 1){
+      if(length(indexOfLiposomesOnlyData) > 1){
         stop("Experimental series '",unique(y["Experimental Series"]),"' has 
           more than one liposomes-ONLY ('Extract Volume (ul)' of '0') data 
           point.")
@@ -72,28 +72,28 @@ dithioniteFlippaseAssayCalculations <- function(x,scale_to){
       ##> were obtained for proteoliposomes generated over a range of PPR 
       ##> values.
       ##> The data were transformed according to the formula
-      ##> p(≥1 flippase) = (y – yo)/(ymax – yo),
-      ##> where yo is the percent reduction obtained with liposomes, ymax is the 
+      ##> p(≥1 flippase) = (y – yo)/(yMax – yo),
+      ##> where yo is the percent reduction obtained with liposomes, yMax is the 
       ##> maximum percentage reduction observed and p is the probability that a 
       ##> particular vesicle in the ensemble is ‘flippase-active’, i.e it 
       ##> possesses at least one flippase.
       ## Calcualte the relative fluorescence reduction
-      z$"Relative Fluorescense Reduction" <- z$"Fluorescense Reduction" - z$"Fluorescense Reduction"[index_of_liposomes_only_data]
+      z$"Relative Fluorescense Reduction" <- z$"Fluorescense Reduction" - z$"Fluorescense Reduction"[indexOfLiposomesOnlyData]
       ## Calculate PPR
       z$"Protein per Phospholipid (mg/mmol)" <- (z$"Protein in Reconstitution (mg)"/z$"Egg PC in Reconstitution (mmol)")
       ## Calculate p>=1Flippase/Liposome
       y <- z$"Relative Fluorescense Reduction"
-      y0 <- z$"Relative Fluorescense Reduction"[index_of_liposomes_only_data]
-      if(scale_to == "model"){
-        subset_for_fit <- data.frame(
+      y0 <- z$"Relative Fluorescense Reduction"[indexOfLiposomesOnlyData]
+      if(scaleTo == "model"){
+        subsetForFit <- data.frame(
           x=z$"Protein per Phospholipid (mg/mmol)",
           y=z$"Relative Fluorescense Reduction")
-        Rmod <- nlrob(y ~ b-exp(-x/a),data=subset_for_fit, start = list(a=1,b=max(z$"Relative Fluorescense Reduction",na.rm=TRUE)), maxit=40)
-        ymax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE) * Rmod$coefficient["b"]
+        rMod <- nlrob(y ~ b-exp(-x/a),data=subsetForFit, start = list(a=1,b=max(z$"Relative Fluorescense Reduction",na.rm=TRUE)), maxit=40)
+        yMax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE) * rMod$coefficient["b"]
       } else {
-        ymax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE)
+        yMax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE)
       }
-      z$"Probability >= 1 Flippase in Vesicle" <- (y-y0)/(ymax-y0)
+      z$"Probability >= 1 Flippase in Vesicle" <- (y-y0)/(yMax-y0)
       ##> The dependence of p(≥1 flippase) on PPR was analyzed as follows.
       ##> Definitions:
       ##>   f, number of flippases used for reconstitution
@@ -134,25 +134,25 @@ dithioniteFlippaseAssayCalculations <- function(x,scale_to){
       ##> α mg/mmol; at this PPR value, m = 1 and ~63% of the vesicles in the 
       ##> population possess ≥1 flippase.
       ## Fit a monoexponential curve to the data
-      subset_for_fit <- data.frame(
+      subsetForFit <- data.frame(
         x=z$"Protein per Phospholipid (mg/mmol)",
         y=z$"Probability >= 1 Flippase in Vesicle")
-      Rmod <- nlrob(y ~ 1-exp(-x/a),data=subset_for_fit, start = list(a=1), maxit=40)
-      z$"Fit Constant (a)" <- Rmod$coefficients
-      z$"PPR at P = 0.5" <- -Rmod$coefficients * log(1-0.5)
+      rMod <- nlrob(y ~ 1-exp(-x/a),data=subsetForFit, start = list(a=1), maxit=40)
+      z$"Fit Constant (a)" <- rMod$coefficients
+      z$"PPR at P = 0.5" <- -rMod$coefficients * log(1-0.5)
       output <- list(Raw=z)
       ## Generate data to plot the results of the fit
-      x_predicted_from_fit <- data.frame(
+      xPredictedFromFit <- data.frame(
         x=seq(
           from=min(z$"Protein per Phospholipid (mg/mmol)",na.rm=TRUE),
           to=max(z$"Protein per Phospholipid (mg/mmol)",na.rm=TRUE),
           length.out=200))
-      y_predicted_from_fit <- predict(
-        object=Rmod,
-        newdata=x_predicted_from_fit)
+      yPredictedFromFit <- predict(
+        object=rMod,
+        newdata=xPredictedFromFit)
       output$Fit <- data.frame(
-        "Protein per Phospholipid (mg/mmol)"=x_predicted_from_fit$x,
-        "Probability >= 1 Flippase in Vesicle"=y_predicted_from_fit,
+        "Protein per Phospholipid (mg/mmol)"=xPredictedFromFit$x,
+        "Probability >= 1 Flippase in Vesicle"=yPredictedFromFit,
         "Experimental Series"=unique(z$"Experimental Series"),
         "Experiment"=unique(z$"Experiment"),
         check.names=FALSE,
@@ -163,6 +163,6 @@ dithioniteFlippaseAssayCalculations <- function(x,scale_to){
   )
 
 # Output ------------------------------------------------------------------
-  return(processed_list_from_x)
+  return(processedListFromX)
 
 }
