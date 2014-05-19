@@ -1,16 +1,3 @@
-#' @title onAttach
-#' @name onAttach
-#' @description Function executed when attaching the package to a session
-#' @details The function is executed upon attaching the package (e.g. via
-#' \code{\link{library}}). It checks the parameters of the current R session and
-#' produces a warning when the packages used diverge from the ones used for 
-#' publication.
-#' @author Johannes Graumann
-#' @seealso \code{\link[base]{.onAttach}} \code{\link[pdapbase]{checkVersion}}
-#' @import pdapbase 
-#.onLoad <- function(...){
-#  packageStartupMessage(versionCheck())
-#}
 .onAttach <- function(...){
   vC <- checkVersion(
     expectedR=package_version("3.1.0"),
