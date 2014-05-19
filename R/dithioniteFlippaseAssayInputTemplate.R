@@ -1,5 +1,7 @@
 #' @rdname dithioniteFlippaseAssayPlot
-#' @import assertive plyr
+#' @import assertive
+#' @import plyr
+#' @export
 dithioniteFlippaseAssayInputTemplate <- function(path="dithioniteFlippaseAssayInputTemplate.txt"){
 # Check input -------------------------------------------------------------
   assert_is_a_non_empty_string(path)
