@@ -38,6 +38,8 @@
 #' @keywords manip IO file
 #' @examples
 #' stop("Function is missing examples!")
+#' @import wmtsa
+#' @importFrom RcppRoll roll_mean
 #' @export
 parseFluorometerOutput <- function(specFile=NA){
   #######################
@@ -93,6 +95,33 @@ parseFluorometerOutput <- function(specFile=NA){
   } else if(formatOfSpecFile == "Manual"){
     output <- parseManualOutput(linesInSpecFile)
   }
+  # Determine timepoint of dithionite addition and adjust time axis accordingly
+  #############################################################################
+  # Following http://stackoverflow.com/a/24560355/2103880
+  
+  # Smooth the intensity using a simple rolling mean
+  n <- 10
+  smoothedTmpData <- roll_mean(output$Data$Fluorescense.Intensity, n)
+  # Wavelet-based peak detection
+  gradient <- -diff(smoothedTmpData)
+  cwt <- wavCWT(gradient)
+  tree <- wavCWTTree(cwt)
+  peakMax <- wavCWTPeaks(tree)$x
+  # (Clunky) safeguard against early artifact(s)
+  minPeakDelay <-10
+  earlyPeakMax <- output$Data$Time.in.sec[peakMax] < minPeakDelay
+  if(any(earlyPeakMax)){
+    warning("Early slope fluctuation(s) (<= ",minPeakDelay," s) detected in '",specFile,"' and discarded as artifactual.")
+  }
+  peakMax <- peakMax[!earlyPeakMax]
+  # Reset acquisition time
+  if(length(peakMax) < 1){
+    stop("No ditionite addition detected in '",specFile,"'.")
+  }
+  zeroTimePoint <- output$Data$Time.in.sec[peakMax[1]]
+  output$Data$Time.in.sec <- output$Data$Time.in.sec - zeroTimePoint
+  output$Max.Acquisition.Time.in.sec <- max(output$Data$Time.in.sec,na.rm=TRUE)
+  output$Min.Acquisition.Time.in.sec <- min(output$Data$Time.in.sec,na.rm=TRUE)
   #################
   # Return result #
   #################

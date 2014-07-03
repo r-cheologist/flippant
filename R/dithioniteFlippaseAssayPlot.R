@@ -38,13 +38,17 @@
 #'    \code{flippant:::dithioniteFlippaseAssayInputValidation} supplies this 
 #'    functionality.}
 #'  \item{Fluorescense spectra are parsed using 
-#'    \code{\link{parseFluorometerOutput}}.}
+#'    \code{\link{parseFluorometerOutput}}. This includes automated 
+#'    determination of when dithionite was added to the sample using 
+#'    \pkg{wmtsa}-supplied methodology and resetting the acquisition time 
+#'    accordingly (\code{0} henceforth corresponds to the time of addition).}
 #'  \item{Pre-dithionite-addition \code{Baseline Fluorescense} is determined for
-#'    each spectrum by averaging (\code{\link{median}}) over the first 10 
-#'    values.}
+#'    each spectrum by averaging (\code{\link{median}}) over the 10 
+#'    values preceding dithionite addition.}
 #'  \item{Post-ditihinonite-addition \code{Minimum Fluorescense} is determined 
 #'    for each spectrum by averaging (\code{\link{median}}) over the last 10 
-#'    values common to all spectra.}
+#'    values common to all spectra (or preceding 
+#'    \code{Timepoint of Measurement (s)}, see above).}
 #'  \item{The \code{Minimum Fluorescense} is volume-corrected based on 
 #'    \code{Reaction Volume w/o DT (ul)} and \code{Reaction Volume with DT (ul)}
 #'    (see above).}

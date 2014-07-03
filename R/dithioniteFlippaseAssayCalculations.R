@@ -4,11 +4,11 @@ dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
     x$Path,
     parseFluorometerOutput)
 
-# Read out data -----------------------------------------------------------  
+# Read out data -----------------------------------------------------------
   # What spectral time windows to extract?
-  minAcquisitionTime <- unique(vapply(spectralData,function(y){y$Min.Acquisition.Time.in.sec},1))
-  if(length(minAcquisitionTime) != 1){
-    stop("Minimum acquisition times are not identical - aborting.")
+  minAcquisitionTime <- vapply(spectralData,function(y){y$Min.Acquisition.Time.in.sec},1)
+  if(!all(minAcquisitionTime < 0)){
+    stop("Minimum acquisition times are not all negative - aborting.")
   }
   maxAcquisitionTime <- vapply(spectralData,function(y){y$Max.Acquisition.Time.in.sec},1)
   if(any(maxAcquisitionTime < x$"Timepoint of Measurement (s)")){
@@ -17,14 +17,11 @@ dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
   } else {
     maxAcquisitionTime <- unique(x$"Timepoint of Measurement (s)")
   }
-  # Average over first 10 values for activity baseline
+  # Average over 10 values before dithionite addition for activity baseline
   x$"Baseline Fluorescense" <- vapply(
     spectralData,
     function(z){
-      startIndexForAveraging <- min(which(z$Data$Time.in.sec >= minAcquisitionTime))
-      indexesForAveraging <- seq(
-        from=startIndexForAveraging,
-        to=startIndexForAveraging+9)
+      indexesForAveraging <- tail(which(z$Data$Time.in.sec < 0),n=10)
       return(median(z$Data$Fluorescense.Intensity[indexesForAveraging],na.rm=TRUE))
     },
     1)
