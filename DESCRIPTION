@@ -12,11 +12,13 @@ Depends:
     ggplot2 (>= 1.0.0),
     pdapbase (>= 0.0-1),
     plyr (>= 1.8.1),
-    robustbase (>= 0.91-1)
+    robustbase (>= 0.91-1),
+    wmtsa (>= 2.0-0)
 Suggests:
     roxygen2,
     testthat
-#Imports: 
+Imports:
+    RcppRoll (>= 0.1.0)
 #Enhances: 
 License: GPL (>= 3)
 LazyData: true
