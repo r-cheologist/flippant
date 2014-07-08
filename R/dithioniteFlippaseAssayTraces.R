@@ -31,7 +31,7 @@ dithioniteFlippaseAssayTraces <- function(x,scaleTo=c("model","data")){
   mergedData <- merge(x=dataFromRawFlourometerOutput,y=trimmedProcessedListFromX,by="Path")
   names(mergedData) <- make.names(names(mergedData))
   # Use corresponding PPR as path
-  mergedData$Path <- round(mergedData$Protein.per.Phospholipid..mg.mmol.,2)
+  mergedData$Path <- as.factor(round(mergedData$Protein.per.Phospholipid..mg.mmol.,2))
 # Assemble the output -----------------------------------------
   # Groundwork
   plotOutput <- ggplot(
