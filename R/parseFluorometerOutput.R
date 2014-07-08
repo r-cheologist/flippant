@@ -62,18 +62,18 @@ parseFluorometerOutput <- function(specFile=NA){
   # Divine the output-producing fluorometer
   #########################################
   if(
-    grepl(pattern="^<Trace>$",x=linesInSpecFile[1],ignore.case=TRUE) &
-      grepl(pattern="^X\tY\t$",x=linesInSpecFile[4],ignore.case=TRUE) &
-      grepl(pattern="^</Trace>$",x=tail(linesInSpecFile,n=1),ignore.case=TRUE)){
+    grepl(pattern="^<Trace>\s*$",x=linesInSpecFile[1],ignore.case=TRUE) &
+      grepl(pattern="^X\tY\s*$",x=linesInSpecFile[4],ignore.case=TRUE) &
+      grepl(pattern="^</Trace>\s*$",x=tail(linesInSpecFile,n=1),ignore.case=TRUE)){
     formatOfSpecFile <- "FelixGXv4.1.0.3096"
   } else if(
-    grepl(pattern="^1$",x=linesInSpecFile[1],ignore.case=TRUE) &
-      grepl(pattern="^X\tY$",x=linesInSpecFile[4],ignore.case=TRUE) &
-      grepl(pattern="^\\d+\\.{1,1}\\d+\t\\d+$",x=tail(linesInSpecFile,n=1),ignore.case=TRUE)
+    grepl(pattern="^1\s*$",x=linesInSpecFile[1],ignore.case=TRUE) &
+      grepl(pattern="^X\tY\s*$",x=linesInSpecFile[4],ignore.case=TRUE) &
+      grepl(pattern="^\\d+\\.{1,1}\\d+\t\\d+\s*$",x=tail(linesInSpecFile,n=1),ignore.case=TRUE)
   ){
     formatOfSpecFile <- "Felix32v1.20"
   } else if(
-    grepl(pattern="^Time \\(sec\\)\tBlank$",x=linesInSpecFile[1],ignore.case=TRUE)
+    grepl(pattern="^Time \\(sec\\)\tBlank\s*$",x=linesInSpecFile[1],ignore.case=TRUE)
   ){
     formatOfSpecFile <- "Manual"
   } else {
