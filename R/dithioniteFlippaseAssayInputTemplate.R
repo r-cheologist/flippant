@@ -61,7 +61,7 @@ dithioniteFlippaseAssayInputTemplate <- function(path="dithioniteFlippaseAssayIn
   outputDataFrameAsList <- lapply(
     commentedDataStructure[2:length(commentedDataStructure)],
     function(x){as.data.frame(rbind(x),stringsAsFactors=FALSE)})
-  outputDataFrame <- rbind.fill(outputDataFrameAsList)
+  outputDataFrame <- plyr::rbind.fill(outputDataFrameAsList)
   names(outputDataFrame) <- dataStructure[[1]]
 
 # Write the file out ------------------------------------------------------

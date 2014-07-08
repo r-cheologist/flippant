@@ -10,7 +10,7 @@ dithioniteFlippaseAssayTraces <- function(x,scaleTo=c("model","data")){
 # Processing --------------------------------------------------------------
   # Perform assay calculations to retrive PPR
   processedListFromX <- flippant:::dithioniteFlippaseAssayCalculations(x=x,scaleTo=scaleTo)
-  trimmedProcessedListFromX <- rbind.fill(
+  trimmedProcessedListFromX <- plyr::rbind.fill(
       lapply(
         names(processedListFromX),
         function(y){
@@ -19,7 +19,7 @@ dithioniteFlippaseAssayTraces <- function(x,scaleTo=c("model","data")){
   # Parse the fluorometer data and whip it into shape
   rawFlourometerOutput <- lapply(x$Path,parseFluorometerOutput)
   names(rawFlourometerOutput) <- x$Path
-  dataFromRawFlourometerOutput <- rbind.fill(
+  dataFromRawFlourometerOutput <- plyr::rbind.fill(
     lapply(
       names(rawFlourometerOutput),
       function(y){data.frame(

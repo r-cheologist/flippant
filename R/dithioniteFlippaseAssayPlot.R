@@ -119,8 +119,8 @@ dithioniteFlippaseAssayPlot <- function(x,scaleTo=c("model","data")){
   processedListFromX <- dithioniteFlippaseAssayCalculations(x=x,scaleTo=scaleTo)
 
 # Recombine the processed data --------------------------------------------
-  x <- rbind.fill(lapply(processedListFromX,function(z){z$Raw}))
-  fitResultsFromX <- rbind.fill(lapply(processedListFromX,function(z){z$Fit}))
+  x <- plyr::rbind.fill(lapply(processedListFromX,function(z){z$Raw}))
+  fitResultsFromX <- plyr::rbind.fill(lapply(processedListFromX,function(z){z$Fit}))
   annotationsForX <- x[c("Experiment","Experimental Series","Fit Constant (a)")]
   #   annotationsForX <- x[c("Experiment","Experimental Series","PPR at P = 0.5")]
   names(annotationsForX) <- c("Experiment", "Experimental Series", "x1")
@@ -149,7 +149,7 @@ dithioniteFlippaseAssayPlot <- function(x,scaleTo=c("model","data")){
         stringsAsFactors=FALSE)
     }
   )
-  annotationsForX <- rbind.fill(annotationsForX,rbind.fill(processedAnnotationListForX))
+  annotationsForX <- plyr::rbind.fill(annotationsForX,plyr::rbind.fill(processedAnnotationListForX))
 
 # Assemble the (graphical) output -----------------------------------------
   # Groundwork
