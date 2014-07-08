@@ -9,6 +9,13 @@ dithioniteFlippaseAssayInputValidation <- function(x,scaleTo){
   if(any(is.na(x))){
     stop("'x' cannot contain 'NA'.")
   }
+  ## Enforce use of 'numeric' over 'integer'
+  integerColumns <- names(x)[sapply(names(x),function(y){is.integer(x[[y]])})]
+  if(length(integerColumns) > 0){
+    for(column in integerColumns){
+      x[[column]] <- as.numeric(x[[column]])
+    }
+  }
   ## Required parameters
   requiredColumnsInX <- list(
     Name = c(
@@ -91,6 +98,7 @@ dithioniteFlippaseAssayInputValidation <- function(x,scaleTo){
       x <- output
     }
   }
+  
   if(!identical(
     unname(vapply(x[facultativeColumnsInX$Name],class,c(A="A"))),
     facultativeColumnsInX$Class)){
