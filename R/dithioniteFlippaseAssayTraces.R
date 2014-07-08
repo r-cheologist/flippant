@@ -1,4 +1,5 @@
 #' @rdname dithioniteFlippaseAssayPlot
+#' @importFrom plyr rbind.fill
 #' @export
 dithioniteFlippaseAssayTraces <- function(x,scaleTo=c("model","data")){
 # Check Prerequisites -----------------------------------------------------
