@@ -38,6 +38,7 @@
 #' @keywords manip IO file
 #' @examples
 #' stop("Function is missing examples!")
+#' @import assertive
 #' @import wmtsa
 #' @importFrom RcppRoll roll_mean
 #' @export
@@ -45,15 +46,7 @@ parseFluorometerOutput <- function(specFile=NA){
   #######################
   # Check Prerequisites #
   #######################
-  if(is.na(specFile[1])){
-    stop("'specFile' must be defined.")
-  }
-  if(!is.character(specFile)){
-    stop("'specFile' must be of class 'character'.")
-  }
-  if(length(specFile) != 1){
-    stop("'specFile' must be of length 1.")
-  }
+  assert_is_a_string(specFile)
   if(!file.exists(specFile)){
     stop("'specFile' must represent an existing path.")
   }
