@@ -3,13 +3,13 @@
 #' @export
 dithioniteFlippaseAssayTraces <- function(x,scaleTo=c("model","data")){
 # Check Prerequisites -----------------------------------------------------
-  validatedParams <- dithioniteFlippaseAssayInputValidation(x=x,scaleTo=scaleTo)
+  validatedParams <- flippant:::dithioniteFlippaseAssayInputValidation(x=x,scaleTo=scaleTo)
   x <- validatedParams[["x"]]
   scaleTo <- validatedParams[["scaleTo"]]
 
 # Processing --------------------------------------------------------------
   # Perform assay calculations to retrive PPR
-  processedListFromX <- dithioniteFlippaseAssayCalculations(x=x,scaleTo=scaleTo)
+  processedListFromX <- flippant:::dithioniteFlippaseAssayCalculations(x=x,scaleTo=scaleTo)
   trimmedProcessedListFromX <- rbind.fill(
       lapply(
         names(processedListFromX),
