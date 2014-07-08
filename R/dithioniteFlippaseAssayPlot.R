@@ -104,7 +104,7 @@
 #' @export
 #' @seealso \code{\link{parseFluorometerOutput}}
 #' @import ggplot2
-#' @import plyr
+#' @importFrom plyr rbind.fill
 #' @import robustbase
 #' @examples
 #' stop("Add citation to Mike's manuscript!")
