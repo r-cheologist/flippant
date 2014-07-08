@@ -55,12 +55,12 @@ dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
       ## reference point
       indexOfLiposomesOnlyData <- which(z$"Protein in Reconstitution (mg)" == 0)
       if(length(indexOfLiposomesOnlyData) == 0){
-        stop("Experimental series '",unique(y["Experimental Series"]),"' does 
+        stop("Experimental series '",unique(z["Experimental Series"]),"' does 
           not have the required liposomes-ONLY ('Extract Volume (ul)' of '0') 
           data point. Aborting.")
       }
       if(length(indexOfLiposomesOnlyData) > 1){
-        stop("Experimental series '",unique(y["Experimental Series"]),"' has 
+        stop("Experimental series '",unique(z["Experimental Series"]),"' has 
           more than one liposomes-ONLY ('Extract Volume (ul)' of '0') data 
           point.")
       }  
