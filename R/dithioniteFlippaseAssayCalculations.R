@@ -1,4 +1,6 @@
 dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
+# Set parameters ----------------------------------------------------------
+  nlsControl <- list(maxiter=50,minFactor=1/8192)
 # Parsing spectra ---------------------------------------------------------
   spectralData <- lapply(
     x$Path,
@@ -84,7 +86,14 @@ dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
         subsetForFit <- data.frame(
           x=z$"Protein per Phospholipid (mg/mmol)",
           y=z$"Relative Fluorescense Reduction")
-        rMod <- nlrob(y ~ b-exp(-x/a),data=subsetForFit, start = list(a=1,b=max(z$"Relative Fluorescense Reduction",na.rm=TRUE)), maxit=40)
+        ### Determine a sensible start point for 'a'
+        pointSixYRange <- diff(range(subsetForFit$y,na.rm=TRUE)) * 0.6
+        estimatedA <- subsetForFit$x[which.min(abs(subsetForFit$y - pointSixYRange))]
+        rMod <- nlrob(
+          y ~ b-exp(-x/a),
+          data = subsetForFit, 
+          start = list(a=estimatedA,b=max(z$"Relative Fluorescense Reduction",na.rm=TRUE)),
+          control = nlsControl)
         yMax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE) * rMod$coefficient["b"]
       } else {
         yMax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE)
@@ -133,7 +142,14 @@ dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
       subsetForFit <- data.frame(
         x=z$"Protein per Phospholipid (mg/mmol)",
         y=z$"Probability >= 1 Flippase in Vesicle")
-      rMod <- nlrob(y ~ 1-exp(-x/a),data=subsetForFit, start = list(a=1), maxit=40)
+      ### Determine a sensible start point for 'a'
+      pointSixYRange <- diff(range(subsetForFit$y,na.rm=TRUE)) * 0.6
+      estimatedA <- subsetForFit$x[which.min(abs(subsetForFit$y - pointSixYRange))]
+      rMod <- nlrob(
+        y ~ 1-exp(-x/a),
+        data = subsetForFit,
+        start = list(a=estimatedA),
+        control = nlsControl)
       z$"Fit Constant (a)" <- rMod$coefficients
       z$"PPR at P = 0.5" <- -rMod$coefficients * log(1-0.5)
       output <- list(Raw=z)
