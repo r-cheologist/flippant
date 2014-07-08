@@ -47,7 +47,8 @@ dithioniteFlippaseAssayTraces <- function(x,scaleTo=c("model","data")){
   plotOutput <- plotOutput +
     labs(
       x="Time (s)",
-      y="Relative Fluorescense Intensity")
+      y="Relative Fluorescense Intensity",
+      colour=expression("PPR "*bgroup("(",frac("mg","mmol"),")")))
   # Facetting
   hasExperiment <- any(!is.na(mergedData$Experiment))
   hasSeries <- any(!is.na(mergedData$Experimental.Series))
