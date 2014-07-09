@@ -24,11 +24,16 @@ dithioniteFlippaseAssayTraces <- function(x,scaleTo=c("model","data"),timeMax=NA
   dataFromRawFlourometerOutput <- plyr::rbind.fill(
     lapply(
       names(rawFlourometerOutput),
-      function(y){data.frame(
-        Path=y,
-        Time.in.sec=rawFlourometerOutput[[y]][["Data"]][["Time.in.sec"]],
-        Fluorescense.Intensity=rawFlourometerOutput[[y]][["Data"]][["Fluorescense.Intensity"]])})
-  )
+      function(y){
+        time.in.sec <- rawFlourometerOutput[[y]][["Data"]][["Time.in.sec"]]
+        fluorescenseIntensity <- rawFlourometerOutput[[y]][["Data"]][["Fluorescense.Intensity"]]
+        fluorescenseIntensity <- fluorescenseIntensity/max(fluorescenseIntensity,na.rm=TRUE)
+        return(
+          data.frame(
+            Path = y,
+            Time.in.sec = time.in.sec,
+            Fluorescense.Intensity=fluorescenseIntensity))
+    }))
   # Merge spectral data and analysis
   mergedData <- merge(x=dataFromRawFlourometerOutput,y=trimmedProcessedListFromX,by="Path")
   names(mergedData) <- make.names(names(mergedData))
