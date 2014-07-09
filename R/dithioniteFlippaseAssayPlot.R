@@ -5,7 +5,8 @@
 #' functions (\code{x}) must have the following \bold{mandatory} columns:
 #' \describe{
 #'  \item{\code{Path}:}{Paths to existing and readable \code{ASCII} output files 
-#'    of a fluorometer.}
+#'    of a fluorometer. See \code{\link{parseFluorometerOutput}} for details and
+#'    supported formats.}
 #'  \item{\code{Protein in Reconstitution (mg)}:}{Self-explanatory.}}
 #' 
 #' Further (facultative) columns are:
