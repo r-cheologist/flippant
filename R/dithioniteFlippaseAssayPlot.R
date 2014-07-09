@@ -95,6 +95,9 @@
 #' @param x \code{\link{data.frame}} as described in "Details".
 #' @param scaleTo Defines the source of \code{ymax}, defaulting to 
 #' \code{model}. See "Details".
+#' @param timeMax A single \code{\link{numeric}}. If given, 
+#' \code{\link{dithioniteFlippaseAssayTraces}} produces a time/x axis trimmed to
+#' this value.
 #' @return Returns a \code{\link{ggplot}} object.
 #' @author Johannes Graumann
 #' @references Menon, I., Huber, T., Sanyal, S., Banerjee, S., Barre, P., Canis, 
