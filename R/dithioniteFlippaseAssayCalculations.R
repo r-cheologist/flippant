@@ -1,6 +1,6 @@
 dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
 # Set parameters ----------------------------------------------------------
-  nlsControl <- list(maxiter=100,minFactor=1/8192)
+  nlsControl <- list(minFactor=1/20480,maxit=100)
 # Parsing spectra ---------------------------------------------------------
   spectralData <- lapply(
     x$Path,
@@ -87,7 +87,7 @@ dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
           x=z$"Protein per Phospholipid (mg/mmol)",
           y=z$"Relative Fluorescense Reduction")
         ### Determine a sensible start point for 'a'
-        pointSixYRange <- diff(range(subsetForFit$y,na.rm=TRUE)) * 0.6
+        pointSixYRange <- max(subsetForFit$y,na.rm=TRUE) * 0.6
         estimatedA <- subsetForFit$x[which.min(abs(subsetForFit$y - pointSixYRange))]
         rMod <- nlrob(
           y ~ b-exp(-x/a),
@@ -143,10 +143,10 @@ dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
         x=z$"Protein per Phospholipid (mg/mmol)",
         y=z$"Probability >= 1 Flippase in Vesicle")
       ### Determine a sensible start point for 'a'
-      pointSixYRange <- diff(range(subsetForFit$y,na.rm=TRUE)) * 0.6
-      estimatedA <- subsetForFit$x[which.min(abs(subsetForFit$y - pointSixYRange))]
       rMod <- nlrob(
         y ~ 1-exp(-x/a),
+      pointSixY <- max(subsetForFit$y,na.rm=TRUE) * 0.6
+      estimatedA <- subsetForFit$x[which.min(abs(subsetForFit$y - pointSixY))]
         data = subsetForFit,
         start = list(a=estimatedA),
         control = nlsControl)
