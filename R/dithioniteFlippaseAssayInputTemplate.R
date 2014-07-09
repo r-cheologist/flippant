@@ -42,7 +42,7 @@ dithioniteFlippaseAssayInputTemplate <- function(path="dithioniteFlippaseAssayIn
       "2000",
       "2040",
       "0.0045",
-      "NA",
+      "400",
       "NA",
       "NA"))
   # Outcomment the appropriate lines

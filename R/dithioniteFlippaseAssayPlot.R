@@ -18,10 +18,9 @@
 #'    ditihionite (defaulting to \code{2040}).}
 #'  \item{\code{Egg PC in Reconstitution (mmol)}:}{Self-explanatory. Defaulting to 
 #'    \code{0.0045} (1 ml of a 1 mM solution.}
-#'  \item{\code{Timepoint of Measurement (s)}:}{Timepoint used as an anchor for 
-#'    the extraction of terminal fluorescense. 
-#'    \code{\link{timepointOfMeasurement}} is used on all \code{Path}s if none 
-#'    given.}
+#'  \item{\code{Timepoint of Measurement (s)}:}{Timepoint (in seconds) used as 
+#'    an anchor for the extraction of terminal fluorescense (defaulting to 
+#'    \code{400}).}
 #'  \item{\code{Experiment}:}{Identifier for any given experiment. Used for 
 #'    \code{\link{facet_wrap}} during generation of \code{\link{ggplot}} output.}
 #'  \item{\code{Experimental Series}:}{Identifier for a given series/graph (e.g.

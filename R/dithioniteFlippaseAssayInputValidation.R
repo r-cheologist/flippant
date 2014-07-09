@@ -64,22 +64,23 @@ dithioniteFlippaseAssayInputValidation <- function(x,scaleTo){
       "character",
       "character"),
     Default = list(
-      2000,
-      2040,
+      2000.0,
+      2040.0,
       0.0045,
-      NA,
+      400.0,
       NA_character_,
       NA_character_))
   missingFacultativeColumnsInX <- which(!(facultativeColumnsInX$Name %in% names(x)))
   if(length(missingFacultativeColumnsInX) != 0){
     for (y in missingFacultativeColumnsInX){
-      if(facultativeColumnsInX$Name[y] == "Timepoint of Measurement (s)"){
-        warning(
-          "Providing missing column '",
-          facultativeColumnsInX$Name[y],
-          "' from spectra ('Path').")
-        toBeAddedOn <- timepointOfMeasurement(x$Path)
-      } else if(facultativeColumnsInX$Name[y] %in% c("Experiment","Experimental Series")) {
+#       if(facultativeColumnsInX$Name[y] == "Timepoint of Measurement (s)"){
+#         warning(
+#           "Providing missing column '",
+#           facultativeColumnsInX$Name[y],
+#           "' from spectra ('Path').")
+#         toBeAddedOn <- timepointOfMeasurement(x$Path)
+#       } else 
+      if(facultativeColumnsInX$Name[y] %in% c("Experiment","Experimental Series")) {
         toBeAddedOn <- facultativeColumnsInX$Default[[y]]
       } else {
         warning(
