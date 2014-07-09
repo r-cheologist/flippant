@@ -1,6 +1,6 @@
 dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
 # Set parameters ----------------------------------------------------------
-  nlsControl <- list(maxiter=50,minFactor=1/8192)
+  nlsControl <- list(maxiter=100,minFactor=1/8192)
 # Parsing spectra ---------------------------------------------------------
   spectralData <- lapply(
     x$Path,
