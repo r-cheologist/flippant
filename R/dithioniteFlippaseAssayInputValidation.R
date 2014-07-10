@@ -1,5 +1,5 @@
 #' @import assertive
-dithioniteFlippaseAssayInputValidation <- function(x,scaleTo){
+dithioniteFlippaseAssayInputValidation <- function(x,scaleTo,forceThroughOrigin){
   # Check x
   ## General DF characteristics
   assert_is_data.frame(x)
@@ -123,6 +123,8 @@ dithioniteFlippaseAssayInputValidation <- function(x,scaleTo){
   if(scaleTo == "model"){
     warning("Data will be scaled to the plateau of its monoexponential fit.")
   }
+  # Check forceThroughOrigin
+  assertive::assert_is_a_bool(forceThroughOrigin)
   # Return
-  return(list(x=x,scaleTo=scaleTo))
+  return(list(x=x,scaleTo=scaleTo,forceThroughOrigin=forceThroughOrigin))
 }

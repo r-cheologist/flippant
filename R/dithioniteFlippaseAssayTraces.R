@@ -2,11 +2,10 @@
 #' @import assertive
 #' @importFrom plyr rbind.fill
 #' @export
-dithioniteFlippaseAssayTraces <- function(x,scaleTo=c("model","data"),timeMax=NA_real_){
+dithioniteFlippaseAssayTraces <- function(x,timeMax=NA_real_){
 # Check Prerequisites -----------------------------------------------------
-  validatedParams <- flippant:::dithioniteFlippaseAssayInputValidation(x=x,scaleTo=scaleTo)
+  validatedParams <- flippant:::dithioniteFlippaseAssayInputValidation(x=x,scaleTo="data",forceThroughOrigin=TRUE)
   x <- validatedParams[["x"]]
-  scaleTo <- validatedParams[["scaleTo"]]
   assertive::assert_is_a_number(timeMax)
 
 # Processing --------------------------------------------------------------

@@ -1,5 +1,5 @@
 #' @importFrom nlmrt nlxb
-dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
+dithioniteFlippaseAssayCalculations <- function(x,scaleTo,forceThroughOrigin=TRUE){
 # Set parameters ----------------------------------------------------------
   nlsControl <- list(minFactor=1/20480,maxit=100)
 # Parsing spectra ---------------------------------------------------------
@@ -91,11 +91,11 @@ dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
         pointSixYRange <- max(subsetForFit$y,na.rm=TRUE) * 0.6
         estimatedA <- subsetForFit$x[which.min(abs(subsetForFit$y - pointSixYRange))]
         rMod <- nlmrt::nlxb(
-          y ~ b-exp(-x/a),
+          y ~ b * (1 - exp(-x/a)),
           data = subsetForFit, 
           start = list(a=estimatedA,b=max(z$"Relative Fluorescense Reduction",na.rm=TRUE)),
           control = nlsControl)
-        yMax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE) * coef(rMod)[["b"]]
+        yMax <- coef(rMod)[["b"]]
       } else {
         yMax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE)
       }
@@ -147,12 +147,24 @@ dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
       pointSixY <- max(subsetForFit$y,na.rm=TRUE) * 0.6
       estimatedA <- subsetForFit$x[which.min(abs(subsetForFit$y - pointSixY))]
       rMod <- nlmrt::nlxb(
-        y ~ b-exp(-x/a),
+        formula = if(forceThroughOrigin){
+          y ~ b * (1 - exp(-x/a))
+        } else {
+          y ~ b-c*exp(-x/a)
+        },
         data = subsetForFit,
-        start = list(a=estimatedA,b=1),
+        start = if(forceThroughOrigin){
+          list(a=estimatedA,b=1)
+        } else {        
+          start = list(a=estimatedA,b=1,c=1)
+        },
         control = nlsControl)
       z$"Fit Constant (a)" <- coef(rMod)[["a"]]
-      z$"PPR at P = 0.5" <- -coef(rMod)[["a"]] * log(1-0.5)
+      z$"PPR at P = 0.5" <- if(forceThroughOrigin){
+        -coef(rMod)[["a"]] * log(1 - 0.5/coef(rMod)[["b"]])
+      } else {
+        -coef(rMod)[["a"]] * log((coef(rMod)[["b"]] - 0.5)/coef(rMod)[["c"]])
+      }
       output <- list(Raw=z)
       ## Generate data to plot the results of the fit
       xPredictedFromFit <- seq(

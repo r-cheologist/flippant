@@ -70,8 +70,9 @@
 #'    mono-exponential fit to the data (\code{scaleTo = "model"}). The latter 
 #'    (default) is a precaution for the case where the protein/phospholipid
 #'    titration did not reach the plateau of the saturation curve (yet).}
-#'  \item{A monoexponential curve is fitted to \code{p(>=1) = 1 - exp(-PPR/a)} 
-#'    using \code{\link{nlrob}}.}
+#'  \item{A monoexponential curve is fitted unsig \code{\link{nlxb}} to either
+#'    \code{p(>=1) = b - c*(exp(-PPR/a))} (if \code{forceThroughOrigin = FALSE})
+#'    or  \code{p(>=1) = b * (1 - exp(-PPR/a))}.}
 #'  \item{Data \code{\link{split}} apart above are recombined and a 
 #'    \code{\link{ggplot}} object is assembled with the following layers:
 #'    \itemize{
@@ -79,8 +80,7 @@
 #'        fit(s). \code{color} is used to differentiate 
 #'        \code{Experimental Series}.}
 #'      \item{Segments (\code{\link{geom_segment}}) representing the \code{PPR}
-#'        at which the fit constant a is equal to \code{PPR} and thus
-#'        \code{p(>=1) = 1 - exp(-PPR/a) = 1 - exp(-1) ~ 0.63}. This tau value 
+#'        at which the fit constant a is equal to \code{PPR}. This tau value 
 #'        has the implication that at this PPR all vesicles on average have 1 
 #'        flippase and 63\% have 1 or more (i.e. are active). \code{color} is 
 #'        used to differentiate \code{Experimental Series}.}
@@ -95,6 +95,8 @@
 #' @param x \code{\link{data.frame}} as described in "Details".
 #' @param scaleTo Defines the source of \code{ymax}, defaulting to 
 #' \code{model}. See "Details".
+#' @param forceThroughOrigin \code{\link{logical}} indicating whether to force 
+#' the fitted courve(s) to penetrate the origin.
 #' @param timeMax A single \code{\link{numeric}}. If given, 
 #' \code{\link{dithioniteFlippaseAssayTraces}} produces a time/x axis trimmed to
 #' this value.
@@ -112,14 +114,14 @@
 #' @examples
 #' stop("Add citation to Mike's manuscript!")
 #' stop("Add example using actually published data.")
-dithioniteFlippaseAssayPlot <- function(x,scaleTo=c("model","data")){
+dithioniteFlippaseAssayPlot <- function(x,scaleTo=c("model","data"),forceThroughOrigin=TRUE){
 # Check Prerequisites -----------------------------------------------------
-  validatedParams <- flippant:::dithioniteFlippaseAssayInputValidation(x=x,scaleTo=scaleTo)
+  validatedParams <- flippant:::dithioniteFlippaseAssayInputValidation(x=x,scaleTo=scaleTo,forceThroughOrigin=forceThroughOrigin)
   x <- validatedParams[["x"]]
   scaleTo <- validatedParams[["scaleTo"]]
-
+  forceThroughOrigin <- validatedParams[["forceThroughOrigin"]]
 # Processing --------------------------------------------------------------
-  processedListFromX <- flippant:::dithioniteFlippaseAssayCalculations(x=x,scaleTo=scaleTo)
+  processedListFromX <- flippant:::dithioniteFlippaseAssayCalculations(x=x,scaleTo=scaleTo,forceThroughOrigin=forceThroughOrigin)
 
 # Recombine the processed data --------------------------------------------
   x <- plyr::rbind.fill(lapply(processedListFromX,function(z){z$Raw}))
@@ -165,10 +167,10 @@ dithioniteFlippaseAssayPlot <- function(x,scaleTo=c("model","data")){
   ## First layer: lines/curves representing the monoexponential fit
   if(any(!is.na(fitResultsFromX$"Experimental Series"))){
     plotOutput <- plotOutput +
-      geom_line(data=fitResultsFromX,aes_string(color="`Experimental Series`"))
+      geom_line(data=fitResultsFromX,aes_string(color="`Experimental Series`"),fullRange=TRUE)
   } else {
     plotOutput <- plotOutput +
-      geom_line(data=fitResultsFromX)
+      geom_line(data=fitResultsFromX,fullRange=TRUE)
   }
   ## Second layer: annotations indicating PPR at tau
   if(any(!is.na(annotationsForX$"Experimental Series"))){
