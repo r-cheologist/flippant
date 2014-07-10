@@ -144,12 +144,12 @@ dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
         x=z$"Protein per Phospholipid (mg/mmol)",
         y=z$"Probability >= 1 Flippase in Vesicle")
       ### Determine a sensible start point for 'a'
-        y ~ 1-exp(-x/a),
       pointSixY <- max(subsetForFit$y,na.rm=TRUE) * 0.6
       estimatedA <- subsetForFit$x[which.min(abs(subsetForFit$y - pointSixY))]
       rMod <- nlmrt::nlxb(
+        y ~ b-exp(-x/a),
         data = subsetForFit,
-        start = list(a=estimatedA),
+        start = list(a=estimatedA,b=1),
         control = nlsControl)
       z$"Fit Constant (a)" <- coef(rMod)[["a"]]
       z$"PPR at P = 0.5" <- -coef(rMod)[["a"]] * log(1-0.5)
