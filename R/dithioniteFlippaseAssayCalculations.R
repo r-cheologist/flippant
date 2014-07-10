@@ -1,3 +1,4 @@
+#' @importFrom nlmrt nlxb
 dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
 # Set parameters ----------------------------------------------------------
   nlsControl <- list(minFactor=1/20480,maxit=100)
@@ -89,12 +90,12 @@ dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
         ### Determine a sensible start point for 'a'
         pointSixYRange <- max(subsetForFit$y,na.rm=TRUE) * 0.6
         estimatedA <- subsetForFit$x[which.min(abs(subsetForFit$y - pointSixYRange))]
-        rMod <- nlrob(
+        rMod <- nlmrt::nlxb(
           y ~ b-exp(-x/a),
           data = subsetForFit, 
           start = list(a=estimatedA,b=max(z$"Relative Fluorescense Reduction",na.rm=TRUE)),
           control = nlsControl)
-        yMax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE) * rMod$coefficient["b"]
+        yMax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE) * coef(rMod)[["b"]]
       } else {
         yMax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE)
       }
@@ -143,27 +144,24 @@ dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
         x=z$"Protein per Phospholipid (mg/mmol)",
         y=z$"Probability >= 1 Flippase in Vesicle")
       ### Determine a sensible start point for 'a'
-      rMod <- nlrob(
         y ~ 1-exp(-x/a),
       pointSixY <- max(subsetForFit$y,na.rm=TRUE) * 0.6
       estimatedA <- subsetForFit$x[which.min(abs(subsetForFit$y - pointSixY))]
+      rMod <- nlmrt::nlxb(
         data = subsetForFit,
         start = list(a=estimatedA),
         control = nlsControl)
-      z$"Fit Constant (a)" <- rMod$coefficients
-      z$"PPR at P = 0.5" <- -rMod$coefficients * log(1-0.5)
+      z$"Fit Constant (a)" <- coef(rMod)[["a"]]
+      z$"PPR at P = 0.5" <- -coef(rMod)[["a"]] * log(1-0.5)
       output <- list(Raw=z)
       ## Generate data to plot the results of the fit
-      xPredictedFromFit <- data.frame(
-        x=seq(
-          from=min(z$"Protein per Phospholipid (mg/mmol)",na.rm=TRUE),
-          to=max(z$"Protein per Phospholipid (mg/mmol)",na.rm=TRUE),
-          length.out=200))
-      yPredictedFromFit <- predict(
-        object=rMod,
-        newdata=xPredictedFromFit)
+      xPredictedFromFit <- seq(
+        from=min(z$"Protein per Phospholipid (mg/mmol)",na.rm=TRUE),
+        to=max(z$"Protein per Phospholipid (mg/mmol)",na.rm=TRUE),
+        length.out=200)
+      yPredictedFromFit <-  coef(rMod)[["b"]]- exp(-xPredictedFromFit/coef(rMod)[["a"]])
       output$Fit <- data.frame(
-        "Protein per Phospholipid (mg/mmol)"=xPredictedFromFit$x,
+        "Protein per Phospholipid (mg/mmol)"=xPredictedFromFit,
         "Probability >= 1 Flippase in Vesicle"=yPredictedFromFit,
         "Experimental Series"=unique(z$"Experimental Series"),
         "Experiment"=unique(z$"Experiment"),
