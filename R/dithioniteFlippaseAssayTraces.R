@@ -1,17 +1,18 @@
 #' @rdname dithioniteFlippaseAssayPlot
-#' @import assertive
+#' @import ggplot2
+#' @importFrom assertive assert_is_a_number
 #' @importFrom plyr rbind.fill
 #' @export
 dithioniteFlippaseAssayTraces <- function(x,timeMax=NA_real_){
 # Check Prerequisites -----------------------------------------------------
-  validatedParams <- flippant:::dithioniteFlippaseAssayInputValidation(x=x,scaleTo="data",forceThroughOrigin=TRUE)
+  validatedParams <- dithioniteFlippaseAssayInputValidation(x=x,scaleTo="data",forceThroughOrigin=TRUE)
   x <- validatedParams[["x"]]
-  assertive::assert_is_a_number(timeMax)
+  assert_is_a_number(timeMax)
 
 # Processing --------------------------------------------------------------
   # Perform assay calculations to retrive PPR
   processedX <- x
-  processedX$"Protein per Phospholipid (mg/mmol)" <- flippant:::calculatePpr(x)
+  processedX$"Protein per Phospholipid (mg/mmol)" <- calculatePpr(x)
   processedX <- processedX[c("Path","Experimental Series","Experiment","Protein per Phospholipid (mg/mmol)")]
   # Parse the fluorometer data and whip it into shape
   rawFlourometerOutput <- lapply(processedX$Path,parseFluorometerOutput)

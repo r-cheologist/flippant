@@ -110,18 +110,17 @@
 #' @seealso \code{\link{parseFluorometerOutput}}
 #' @import ggplot2
 #' @importFrom plyr rbind.fill
-#' @import robustbase
 #' @examples
 #' stop("Add citation to Mike's manuscript!")
 #' stop("Add example using actually published data.")
 dithioniteFlippaseAssayPlot <- function(x,scaleTo=c("model","data"),forceThroughOrigin=TRUE){
 # Check Prerequisites -----------------------------------------------------
-  validatedParams <- flippant:::dithioniteFlippaseAssayInputValidation(x=x,scaleTo=scaleTo,forceThroughOrigin=forceThroughOrigin)
+  validatedParams <- dithioniteFlippaseAssayInputValidation(x=x,scaleTo=scaleTo,forceThroughOrigin=forceThroughOrigin)
   x <- validatedParams[["x"]]
   scaleTo <- validatedParams[["scaleTo"]]
   forceThroughOrigin <- validatedParams[["forceThroughOrigin"]]
 # Processing --------------------------------------------------------------
-  processedListFromX <- flippant:::dithioniteFlippaseAssayCalculations(x=x,scaleTo=scaleTo,forceThroughOrigin=forceThroughOrigin)
+  processedListFromX <- dithioniteFlippaseAssayCalculations(x=x,scaleTo=scaleTo,forceThroughOrigin=forceThroughOrigin)
 
 # Recombine the processed data --------------------------------------------
   x <- plyr::rbind.fill(lapply(processedListFromX,function(z){z$Raw}))

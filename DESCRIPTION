@@ -8,17 +8,17 @@ Authors@R: person("Johannes", "Graumann", role = c("aut","cre"),
     email="johannes_graumann@web.de")
 Depends:
     R (>= 3.0.3),
-    assertive (>= 0.1-8),
-    ggplot2 (>= 1.0.0),
-    pdapbase (>= 0.0-1),
-    plyr (>= 1.8.1),
-    robustbase (>= 0.91-1),
-    wmtsa (>= 2.0-0)
+    ggplot2 (>= 1.0.0)
 Suggests:
     roxygen2,
     testthat
 Imports:
-    RcppRoll (>= 0.1.0)
+    assertive (>= 0.1-8),
+    nlmrt (>= 2013-9.24),
+    pdapbase (>= 0.0-1),
+    plyr (>= 1.8.1),
+    RcppRoll (>= 0.1.0),
+    wmtsa (>= 2.0-0)
 #Enhances: 
 License: GPL (>= 3)
 LazyData: true

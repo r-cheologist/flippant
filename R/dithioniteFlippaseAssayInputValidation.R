@@ -1,4 +1,5 @@
-#' @import assertive
+#' @importFrom assertive assert_is_data.frame
+#' @importFrom assertive assert_is_a_bool
 dithioniteFlippaseAssayInputValidation <- function(x,scaleTo,forceThroughOrigin){
   # Check x
   ## General DF characteristics
@@ -73,17 +74,10 @@ dithioniteFlippaseAssayInputValidation <- function(x,scaleTo,forceThroughOrigin)
   missingFacultativeColumnsInX <- which(!(facultativeColumnsInX$Name %in% names(x)))
   if(length(missingFacultativeColumnsInX) != 0){
     for (y in missingFacultativeColumnsInX){
-#       if(facultativeColumnsInX$Name[y] == "Timepoint of Measurement (s)"){
-#         warning(
-#           "Providing missing column '",
-#           facultativeColumnsInX$Name[y],
-#           "' from spectra ('Path').")
-#         toBeAddedOn <- timepointOfMeasurement(x$Path)
-#       } else 
       if(facultativeColumnsInX$Name[y] %in% c("Experiment","Experimental Series")) {
         toBeAddedOn <- facultativeColumnsInX$Default[[y]]
       } else {
-        warning(
+        message(
           "Providing missing column '",
           facultativeColumnsInX$Name[y],
           "' from defaults (",
@@ -121,10 +115,10 @@ dithioniteFlippaseAssayInputValidation <- function(x,scaleTo,forceThroughOrigin)
     choices=c("model","data"),
     several.ok=FALSE)
   if(scaleTo == "model"){
-    warning("Data will be scaled to the plateau of its monoexponential fit.")
+    message("Data will be scaled to the plateau of its monoexponential fit.")
   }
   # Check forceThroughOrigin
-  assertive::assert_is_a_bool(forceThroughOrigin)
+  assert_is_a_bool(forceThroughOrigin)
   # Return
   return(list(x=x,scaleTo=scaleTo,forceThroughOrigin=forceThroughOrigin))
 }

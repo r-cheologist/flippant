@@ -42,9 +42,11 @@
 #' @keywords manip IO file
 #' @examples
 #' stop("Function is missing examples!")
-#' @import assertive
-#' @import wmtsa
+#' @importFrom assertive assert_is_a_string
 #' @importFrom RcppRoll roll_mean
+#' @importFrom wmtsa wavCWT
+#' @importFrom wmtsa wavCWTTree
+#' @importFrom wmtsa wavCWTPeaks
 #' @export
 parseFluorometerOutput <- function(specFile=NA){
   #######################
@@ -86,11 +88,11 @@ parseFluorometerOutput <- function(specFile=NA){
   # Extract data
   ##############
   if(formatOfSpecFile == "FelixGXv4.1.0.3096"){
-    output <- flippant:::parseFelixGxOutput(linesInSpecFile)
+    output <- parseFelixGxOutput(linesInSpecFile)
   } else if(formatOfSpecFile == "Felix32v1.20"){
-    output <- flippant:::parseFelix32Output(linesInSpecFile)
+    output <- parseFelix32Output(linesInSpecFile)
   } else if(formatOfSpecFile == "Manual"){
-    output <- flippant:::parseManualOutput(linesInSpecFile)
+    output <- parseManualOutput(linesInSpecFile)
   }
   # Determine timepoint of dithionite addition and adjust time axis accordingly
   #############################################################################
