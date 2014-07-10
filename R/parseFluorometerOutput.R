@@ -82,11 +82,11 @@ parseFluorometerOutput <- function(specFile=NA){
   # Extract data
   ##############
   if(formatOfSpecFile == "FelixGXv4.1.0.3096"){
-    output <- parseFelixGxOutput(linesInSpecFile)
+    output <- flippant:::parseFelixGxOutput(linesInSpecFile)
   } else if(formatOfSpecFile == "Felix32v1.20"){
-    output <- parseFelix32Output(linesInSpecFile)
+    output <- flippant:::parseFelix32Output(linesInSpecFile)
   } else if(formatOfSpecFile == "Manual"){
-    output <- parseManualOutput(linesInSpecFile)
+    output <- flippant:::parseManualOutput(linesInSpecFile)
   }
   # Determine timepoint of dithionite addition and adjust time axis accordingly
   #############################################################################
@@ -94,7 +94,7 @@ parseFluorometerOutput <- function(specFile=NA){
   
   # Smooth the intensity using a simple rolling mean
   n <- 10
-  smoothedTmpData <- roll_mean(output$Data$Fluorescense.Intensity, n)
+  smoothedTmpData <- RcppRoll::roll_mean(output$Data$Fluorescense.Intensity, n)
   # Wavelet-based peak detection
   gradient <- -diff(smoothedTmpData)
   cwt <- wavCWT(gradient)
