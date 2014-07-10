@@ -8,6 +8,10 @@
 #' (see \code{\link{parseFelixGxOutput}}) and \code{Felix32 v1.20} (see 
 #' \code{\link{parseFelix32Output}}). The version is devined from the data 
 #' structure and appropriate internal parsing functions called.
+#' 
+#' The time point of dithionite addition to the sample is determined using
+#' \pkg{wmtsa}-supplied methodology and the acquisition time reset
+#' accordingly (\code{0} henceforth corresponds to the time of addition).
 #' @param specFile Path to a \file{*.txt} file as a \code{\link{character}} 
 #' object.
 #' @return Returns a \code{\link{list}} with the follwoing keys:
