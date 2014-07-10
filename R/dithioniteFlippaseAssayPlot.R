@@ -9,7 +9,7 @@
 #'    supported formats.}
 #'  \item{\code{Protein in Reconstitution (mg)}:}{Self-explanatory.}}
 #' 
-#' Further (facultative) columns are:
+#' Further (\bold{facultative}) columns are:
 #' \describe{
 #'  \item{\code{Fluorescence Assay Vol. w/o DT (ul)}:}{Volume of the 
 #'    fluorescence assay prior to addition of fluorescense-quenching ditihionite
