@@ -99,14 +99,9 @@ parseFluorometerOutput <- function(specFile=NA){
   gradient <- -diff(smoothedTmpData)
   cwt <- wavCWT(gradient)
   tree <- wavCWTTree(cwt)
-  peakMax <- wavCWTPeaks(tree)$x
-  # (Clunky) safeguard against early artifact(s)
-  minPeakDelay <-10
-  earlyPeakMax <- output$Data$Time.in.sec[peakMax] < minPeakDelay
-  if(any(earlyPeakMax)){
-    warning("Early slope fluctuation(s) (<= ",minPeakDelay," s) detected in '",specFile,"' and discarded as artifactual.")
-  }
-  peakMax <- peakMax[!earlyPeakMax]
+  peaks <- wavCWTPeaks(tree)
+  # Safeguard against artifact peaks (based on incomplete understanding of wmtsa)
+  peakMax <- peaks$x[which.max(peaks$y)]
   # Reset acquisition time
   if(length(peakMax) < 1){
     stop("No ditionite addition detected in '",specFile,"'.")
