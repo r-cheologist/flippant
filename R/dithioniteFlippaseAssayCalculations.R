@@ -79,7 +79,7 @@ dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
       ## Calcualte the relative fluorescence reduction
       z$"Relative Fluorescense Reduction" <- z$"Fluorescense Reduction" - z$"Fluorescense Reduction"[indexOfLiposomesOnlyData]
       ## Calculate PPR
-      z$"Protein per Phospholipid (mg/mmol)" <- (z$"Protein in Reconstitution (mg)"/z$"Egg PC in Reconstitution (mmol)")
+      z$"Protein per Phospholipid (mg/mmol)" <- calculatePpr(z)
       ## Calculate p>=1Flippase/Liposome
       y <- z$"Relative Fluorescense Reduction"
       y0 <- z$"Relative Fluorescense Reduction"[indexOfLiposomesOnlyData]
@@ -175,4 +175,8 @@ dithioniteFlippaseAssayCalculations <- function(x,scaleTo){
 # Output ------------------------------------------------------------------
   return(processedListFromX)
 
+}
+
+calculatePpr <- function(x){
+  return(x$"Protein in Reconstitution (mg)"/x$"Egg PC in Reconstitution (mmol)")
 }

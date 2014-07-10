@@ -11,16 +11,12 @@ dithioniteFlippaseAssayTraces <- function(x,scaleTo=c("model","data"),timeMax=NA
 
 # Processing --------------------------------------------------------------
   # Perform assay calculations to retrive PPR
-  processedListFromX <- flippant:::dithioniteFlippaseAssayCalculations(x=x,scaleTo=scaleTo)
-  trimmedProcessedListFromX <- plyr::rbind.fill(
-      lapply(
-        names(processedListFromX),
-        function(y){
-          processedListFromX[[y]][["Raw"]][c("Path","Experimental Series","Experiment","Protein per Phospholipid (mg/mmol)")]
-        }))
+  processedX <- x
+  processedX$"Protein per Phospholipid (mg/mmol)" <- flippant:::calculatePpr(x)
+  processedX <- processedX[c("Path","Experimental Series","Experiment","Protein per Phospholipid (mg/mmol)")]
   # Parse the fluorometer data and whip it into shape
-  rawFlourometerOutput <- lapply(x$Path,parseFluorometerOutput)
-  names(rawFlourometerOutput) <- x$Path
+  rawFlourometerOutput <- lapply(processedX$Path,parseFluorometerOutput)
+  names(rawFlourometerOutput) <- processedX$Path
   dataFromRawFlourometerOutput <- plyr::rbind.fill(
     lapply(
       names(rawFlourometerOutput),
@@ -35,7 +31,7 @@ dithioniteFlippaseAssayTraces <- function(x,scaleTo=c("model","data"),timeMax=NA
             Fluorescense.Intensity=fluorescenseIntensity))
     }))
   # Merge spectral data and analysis
-  mergedData <- merge(x=dataFromRawFlourometerOutput,y=trimmedProcessedListFromX,by="Path")
+  mergedData <- merge(x=dataFromRawFlourometerOutput,y=processedX,by="Path")
   names(mergedData) <- make.names(names(mergedData))
   timeMin <- min(mergedData$Time.in.sec, na.rm=TRUE)
   # Use corresponding PPR as path
