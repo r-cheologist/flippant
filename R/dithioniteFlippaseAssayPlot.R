@@ -114,12 +114,12 @@
 #' stop("Add example using actually published data.")
 dithioniteFlippaseAssayPlot <- function(x,scaleTo=c("model","data")){
 # Check Prerequisites -----------------------------------------------------
-  validatedParams <- dithioniteFlippaseAssayInputValidation(x=x,scaleTo=scaleTo)
+  validatedParams <- flippant:::dithioniteFlippaseAssayInputValidation(x=x,scaleTo=scaleTo)
   x <- validatedParams[["x"]]
   scaleTo <- validatedParams[["scaleTo"]]
 
 # Processing --------------------------------------------------------------
-  processedListFromX <- dithioniteFlippaseAssayCalculations(x=x,scaleTo=scaleTo)
+  processedListFromX <- flippant:::dithioniteFlippaseAssayCalculations(x=x,scaleTo=scaleTo)
 
 # Recombine the processed data --------------------------------------------
   x <- plyr::rbind.fill(lapply(processedListFromX,function(z){z$Raw}))
