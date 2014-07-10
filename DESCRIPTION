@@ -1,7 +1,7 @@
 Package: flippant
-Title: flippant - Dithionite Flippase Assay Analysis
-Description: A package for the analysis of data provided by dithionite flippase
-    assays.
+Title: flippant - Dithionite Scramblase Assay Analysis
+Description: A package for the analysis of data provided by dithionite
+    scramblase assays.
 URL: http://chili.qatar-med.cornell.edu/projects/flippant
 Version: 0.1
 Authors@R: person("Johannes", "Graumann", role = c("aut","cre"),

@@ -1,15 +1,21 @@
-#' @rdname dithioniteFlippaseAssayPlot
+#' @rdname scramblaseAssayPlot
 #' @importFrom plyr rbind.fill
 #' @export
-dithioniteFlippaseAssayStats <- function(x,scaleTo=c("model","data"),forceThroughOrigin=TRUE){
+scramblaseAssayStats <- function(x,scaleTo=c("model","data"),forceThroughOrigin=TRUE){
 # Check Prerequisites -----------------------------------------------------
-  validatedParams <- dithioniteFlippaseAssayInputValidation(x=x,scaleTo=scaleTo,forceThroughOrigin=forceThroughOrigin)
+  validatedParams <- scramblaseAssayInputValidation(
+    x = x,
+    scaleTo = scaleTo,
+    forceThroughOrigin = forceThroughOrigin)
   x <- validatedParams[["x"]]
   scaleTo <- validatedParams[["scaleTo"]]
   forceThroughOrigin <- validatedParams[["forceThroughOrigin"]]
 
 # Processing --------------------------------------------------------------
-  processedListFromX <- dithioniteFlippaseAssayCalculations(x=x,scaleTo=scaleTo,forceThroughOrigin=forceThroughOrigin)
+  processedListFromX <- scramblaseAssayCalculations(
+    x = x,
+    scaleTo = scaleTo,
+    forceThroughOrigin = forceThroughOrigin)
   processedListFromX <- lapply(processedListFromX,function(y){y[["Raw"]]})
 
 # Assemble the output -----------------------------------------

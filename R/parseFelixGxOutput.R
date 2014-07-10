@@ -1,11 +1,11 @@
 #' @title parseFelixGxOutput
 #' @description Parse spectra from files provided by a Photon QuantMaster 
-#' fluorometer using \code{FelixGX v4.1}
-#' @details A helper function to \code{\link{parseFluorometerOutput}}.
+#' fluorimeter using \code{FelixGX v4.1}
+#' @details A helper function to \code{\link{parseFluorimeterOutput}}.
 #' @param x \code{\link{character}} vector resulting from 
 #' \code{\link{readLines}} of the corresponding data file.
-#' @return See \code{\link{parseFluorometerOutput}}.
-#' @seealso \code{\link{parseFluorometerOutput}}, 
+#' @return See \code{\link{parseFluorimeterOutput}}.
+#' @seealso \code{\link{parseFluorimeterOutput}}, 
 #' \code{\link{parseFelix32Output}},
 #' \code{\link{parseManualOutput}}
 #' @author Johannes Graumann
@@ -77,15 +77,15 @@ parseFelixGxOutput <- function(x=NA){
   # Combine into DF & name
   output$Data <- data.frame(
     "Time.in.sec"=sapply(output$Data,function(y){y[1]}),
-    "Fluorescense.Intensity"=sapply(output$Data,function(y){y[2]}))
+    "Fluorescence.Intensity"=sapply(output$Data,function(y){y[2]}))
   # Extract/create metadata
   #########################
   # Create data point count
   output$Data.Points <- nrow(output$Data)
-  # Create fluorescense max
-  output$Max.Fluorescence.Intensity <- max(output$Data$Fluorescense.Intensity,na.rm=TRUE)
-  # Create fluorescense min
-  output$Min.Fluorescence.Intensity <- min(output$Data$Fluorescense.Intensity,na.rm=TRUE)
+  # Create fluorescence max
+  output$Max.Fluorescence.Intensity <- max(output$Data$Fluorescence.Intensity,na.rm=TRUE)
+  # Create fluorescence min
+  output$Min.Fluorescence.Intensity <- min(output$Data$Fluorescence.Intensity,na.rm=TRUE)
   # Extract file name
   output$File.Name <- blocksInX[["<Trace>"]][2]
   # Extract/check acquisition time  max

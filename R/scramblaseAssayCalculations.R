@@ -1,11 +1,11 @@
 #' @importFrom nlmrt nlxb
-dithioniteFlippaseAssayCalculations <- function(x,scaleTo,forceThroughOrigin=TRUE){
+scramblaseAssayCalculations <- function(x,scaleTo,forceThroughOrigin=TRUE){
 # Set parameters ----------------------------------------------------------
   nlsControl <- list(minFactor=1/20480,maxit=100)
 # Parsing spectra ---------------------------------------------------------
   spectralData <- lapply(
     x$Path,
-    parseFluorometerOutput)
+    parseFluorimeterOutput)
 
 # Read out data -----------------------------------------------------------
   # What spectral time windows to extract?
@@ -21,31 +21,31 @@ dithioniteFlippaseAssayCalculations <- function(x,scaleTo,forceThroughOrigin=TRU
     maxAcquisitionTime <- unique(x$"Timepoint of Measurement (s)")
   }
   # Average over 10 values before dithionite addition for activity baseline
-  x$"Baseline Fluorescense" <- vapply(
+  x$"Baseline Fluorescence" <- vapply(
     spectralData,
     function(z){
       indexesForAveraging <- tail(which(z$Data$Time.in.sec < 0),n=10)
-      return(median(z$Data$Fluorescense.Intensity[indexesForAveraging],na.rm=TRUE))
+      return(median(z$Data$Fluorescence.Intensity[indexesForAveraging],na.rm=TRUE))
     },
     1)
   # Average over last 10 values (in common time range) for activity
-  x$"Minimum Fluorescense" <- vapply(
+  x$"Minimum Fluorescence" <- vapply(
     spectralData,
     function(z){
       stopIndexForAveraging <- max(which(z$Data$Time.in.sec <= maxAcquisitionTime))
       indexesForAveraging <- seq(
         from=stopIndexForAveraging-9,
         to=stopIndexForAveraging)
-      return(median(z$Data$Fluorescense.Intensity[indexesForAveraging],na.rm=TRUE))
+      return(median(z$Data$Fluorescence.Intensity[indexesForAveraging],na.rm=TRUE))
     },
     1)
   # Apply volume correction factors as needed
   volumeCorrectionFactor <- x$"Fluorescence Assay Vol. with DT (ul)"/x$"Fluorescence Assay Vol. w/o DT (ul)"
-  x$"Minimum Fluorescense, Volume Corrected" <- x$"Minimum Fluorescense" * volumeCorrectionFactor
+  x$"Minimum Fluorescence, Volume Corrected" <- x$"Minimum Fluorescence" * volumeCorrectionFactor
   ## Calculate activity reduction
-  x$"Fluorescense Reduction" <- 1-x$"Minimum Fluorescense, Volume Corrected"/x$"Baseline Fluorescense"
+  x$"Fluorescence Reduction" <- 1-x$"Minimum Fluorescence, Volume Corrected"/x$"Baseline Fluorescence"
 
-# Generate PPR v.s P(>=1 Flippase/Liposome) -------------------------------
+# Generate PPR v.s P(>=1 Scramblase/Liposome) -------------------------------
   # Split by Experiment
   x$CombinedId <- paste(x$"Experimental Series",x$"Experiment",sep="_")
   inputListFromX <- split(x,x$CombinedId)
@@ -77,29 +77,29 @@ dithioniteFlippaseAssayCalculations <- function(x,scaleTo,forceThroughOrigin=TRU
       ##> particular vesicle in the ensemble is ‘flippase-active’, i.e it 
       ##> possesses at least one flippase.
       ## Calcualte the relative fluorescence reduction
-      z$"Relative Fluorescense Reduction" <- z$"Fluorescense Reduction" - z$"Fluorescense Reduction"[indexOfLiposomesOnlyData]
+      z$"Relative Fluorescence Reduction" <- z$"Fluorescence Reduction" - z$"Fluorescence Reduction"[indexOfLiposomesOnlyData]
       ## Calculate PPR
       z$"Protein per Phospholipid (mg/mmol)" <- calculatePpr(z)
-      ## Calculate p>=1Flippase/Liposome
-      y <- z$"Relative Fluorescense Reduction"
-      y0 <- z$"Relative Fluorescense Reduction"[indexOfLiposomesOnlyData]
+      ## Calculate p>=1Scramblase/Liposome
+      y <- z$"Relative Fluorescence Reduction"
+      y0 <- z$"Relative Fluorescence Reduction"[indexOfLiposomesOnlyData]
       if(scaleTo == "model"){
         subsetForFit <- data.frame(
           x=z$"Protein per Phospholipid (mg/mmol)",
-          y=z$"Relative Fluorescense Reduction")
+          y=z$"Relative Fluorescence Reduction")
         ### Determine a sensible start point for 'a'
         pointSixYRange <- max(subsetForFit$y,na.rm=TRUE) * 0.6
         estimatedA <- subsetForFit$x[which.min(abs(subsetForFit$y - pointSixYRange))]
         rMod <- nlmrt::nlxb(
           y ~ b * (1 - exp(-x/a)),
           data = subsetForFit, 
-          start = list(a=estimatedA,b=max(z$"Relative Fluorescense Reduction",na.rm=TRUE)),
+          start = list(a=estimatedA,b=max(z$"Relative Fluorescence Reduction",na.rm=TRUE)),
           control = nlsControl)
         yMax <- coef(rMod)[["b"]]
       } else {
-        yMax <- max(z$"Relative Fluorescense Reduction",na.rm=TRUE)
+        yMax <- max(z$"Relative Fluorescence Reduction",na.rm=TRUE)
       }
-      z$"Probability >= 1 Flippase in Vesicle" <- (y-y0)/(yMax-y0)
+      z$"Probability >= 1 Scramblase in Vesicle" <- (y-y0)/(yMax-y0)
       ##> The dependence of p(≥1 flippase) on PPR was analyzed as follows.
       ##> Definitions:
       ##>   f, number of flippases used for reconstitution
@@ -142,7 +142,7 @@ dithioniteFlippaseAssayCalculations <- function(x,scaleTo,forceThroughOrigin=TRU
       ## Fit a monoexponential curve to the data
       subsetForFit <- data.frame(
         x=z$"Protein per Phospholipid (mg/mmol)",
-        y=z$"Probability >= 1 Flippase in Vesicle")
+        y=z$"Probability >= 1 Scramblase in Vesicle")
       ### Determine a sensible start point for 'a'
       pointSixY <- max(subsetForFit$y,na.rm=TRUE) * 0.6
       estimatedA <- subsetForFit$x[which.min(abs(subsetForFit$y - pointSixY))]
@@ -174,7 +174,7 @@ dithioniteFlippaseAssayCalculations <- function(x,scaleTo,forceThroughOrigin=TRU
       yPredictedFromFit <-  coef(rMod)[["b"]]- exp(-xPredictedFromFit/coef(rMod)[["a"]])
       output$Fit <- data.frame(
         "Protein per Phospholipid (mg/mmol)"=xPredictedFromFit,
-        "Probability >= 1 Flippase in Vesicle"=yPredictedFromFit,
+        "Probability >= 1 Scramblase in Vesicle"=yPredictedFromFit,
         "Experimental Series"=unique(z$"Experimental Series"),
         "Experiment"=unique(z$"Experiment"),
         check.names=FALSE,

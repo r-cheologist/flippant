@@ -1,15 +1,15 @@
-#' @title parseFluorometerOutput
-#' @description Parse fluorometer spectra
-#' @details A function to read fluorometer output directly. Intended as a helper
-#' function to flippase activity determinations from dithionite assays.
+#' @title parseFluorimeterOutput
+#' @description Parse fluorimeter spectra
+#' @details A function to read fluorimeter output directly. Intended as a helper
+#' function to scramblase activity determinations from dithionite assays.
 #' 
 #' The function is currently capable to deal with input derived from QuantMaster
 #' instruments running software versions \code{FelixGX v4.1} 
 #' (see \code{\link{parseFelixGxOutput}}) and \code{Felix32 v1.20} (see 
-#' \code{\link{parseFelix32Output}}). The version is devined from the data 
-#' structure and appropriate internal parsing functions called.
+#' \code{\link{parseFelix32Output}}). The format is devined from the data 
+#' structure and appropriate internal parsing functions are called.
 #' 
-#' The time point of dithionite addition to the sample is determined using
+#' The time point of dithionite addition to a sample is determined using
 #' \pkg{wmtsa}-supplied methodology and the acquisition time reset
 #' accordingly (\code{0} henceforth corresponds to the time of addition).
 #' @param specFile Path to a \file{*.txt} file as a \code{\link{character}} 
@@ -18,7 +18,7 @@
 #' \describe{
 #'  \item{\code{Data}}{A \code{\link{data.frame}} representing the actual 
 #'    spectrum with the columns \code{Time.in.sec} and 
-#'    \code{Fluorescense.Intensity} (all \code{\link{numeric}}).}
+#'    \code{Fluorescence.Intensity} (all \code{\link{numeric}}).}
 #'  \item{\code{Data.Points}}{Number of data points in the spectrum as a 
 #'    \code{\link{numeric}}. Ecquivalent to \code{\link{nrow}} of the 
 #'    \code{link{data.frame}} in \code{Data}.}
@@ -35,20 +35,20 @@
 #'  \item{\code{File.Name}}{\code{\link{character}} representation of the 
 #'    file name (as saved by the instrument).}
 #' }
-#' @seealso \code{flippant:::dithioniteFlippaseAssayInputValidation}
+#' @seealso \code{flippant:::scramblaseAssayInputValidation}
 #' \code{\link{parseFelixGxOutput}} \code{\link{parseFelix32Output}}
 #' \code{\link{parseManualOutput}}
 #' @author Johannes Graumann
 #' @keywords manip IO file
 #' @examples
-#' stop("Function is missing examples!")
+#' # stop("Function is missing examples!")
 #' @importFrom assertive assert_is_a_string
 #' @importFrom RcppRoll roll_mean
 #' @importFrom wmtsa wavCWT
 #' @importFrom wmtsa wavCWTTree
 #' @importFrom wmtsa wavCWTPeaks
 #' @export
-parseFluorometerOutput <- function(specFile=NA){
+parseFluorimeterOutput <- function(specFile=NA){
   #######################
   # Check Prerequisites #
   #######################
@@ -65,7 +65,7 @@ parseFluorometerOutput <- function(specFile=NA){
   # Aspirate the file
   ###################
   linesInSpecFile <- readLines(specFile)
-  # Divine the output-producing fluorometer
+  # Divine the output-producing fluorimeter
   #########################################
   if(
     grepl(pattern="^<Trace>\\s*$",x=linesInSpecFile[1],ignore.case=TRUE) &
@@ -100,7 +100,7 @@ parseFluorometerOutput <- function(specFile=NA){
   
   # Smooth the intensity using a simple rolling mean
   n <- 10
-  smoothedTmpData <- RcppRoll::roll_mean(output$Data$Fluorescense.Intensity, n)
+  smoothedTmpData <- RcppRoll::roll_mean(output$Data$Fluorescence.Intensity, n)
   # Wavelet-based peak detection
   gradient <- -diff(smoothedTmpData)
   cwt <- wavCWT(gradient)

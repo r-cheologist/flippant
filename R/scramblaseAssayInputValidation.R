@@ -1,6 +1,6 @@
 #' @importFrom assertive assert_is_data.frame
 #' @importFrom assertive assert_is_a_bool
-dithioniteFlippaseAssayInputValidation <- function(x,scaleTo,forceThroughOrigin){
+scramblaseAssayInputValidation <- function(x,scaleTo,forceThroughOrigin){
   # Check x
   ## General DF characteristics
   assert_is_data.frame(x)

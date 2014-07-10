@@ -1,6 +1,6 @@
 #' @title flippant
 #' @description A package for the analysis of data provided by dithionite 
-#' flippase assays.
+#' scramblase assays.
 #' @author Johannes Graumann
 #' @keywords package
 #' @docType package

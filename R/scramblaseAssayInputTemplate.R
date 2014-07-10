@@ -1,8 +1,8 @@
-#' @rdname dithioniteFlippaseAssayPlot
+#' @rdname scramblaseAssayPlot
 #' @importFrom assertive assert_is_a_non_empty_string
 #' @importFrom plyr rbind.fill
 #' @export
-dithioniteFlippaseAssayInputTemplate <- function(path="dithioniteFlippaseAssayInputTemplate.txt"){
+scramblaseAssayInputTemplate <- function(path="scramblaseAssayInputTemplate.txt"){
 # Check input -------------------------------------------------------------
   assert_is_a_non_empty_string(path)
   if(file.exists(path)){
