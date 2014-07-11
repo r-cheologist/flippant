@@ -88,12 +88,21 @@ scramblaseAssayCalculations <- function(x,scaleTo,forceThroughOrigin=TRUE){
           x=z$"Protein per Phospholipid (mg/mmol)",
           y=z$"Relative Fluorescence Reduction")
         ### Determine a sensible start point for 'a'
-        pointSixYRange <- max(subsetForFit$y,na.rm=TRUE) * 0.6
-        estimatedA <- subsetForFit$x[which.min(abs(subsetForFit$y - pointSixYRange))]
+        pointSixY <- max(subsetForFit$y,na.rm=TRUE) * 0.6
+        estimatedA <- subsetForFit$x[which.min(abs(subsetForFit$y - pointSixY))]
+        estimatedB <- max(z$"Relative Fluorescence Reduction",na.rm=TRUE)
         rMod <- nlmrt::nlxb(
-          y ~ b * (1 - exp(-x/a)),
-          data = subsetForFit, 
-          start = list(a=estimatedA,b=max(z$"Relative Fluorescence Reduction",na.rm=TRUE)),
+          formula = if(forceThroughOrigin){
+            y ~ b * (1 - exp(-x/a))
+          } else {
+            y ~ b-c*exp(-x/a)
+          },
+          data = subsetForFit,
+          start = if(forceThroughOrigin){
+            list(a=estimatedA,b=estimatedB)
+          } else {        
+            start = list(a=estimatedA,b=estimatedB,c=estimatedB)
+          },
           control = nlsControl)
         yMax <- coef(rMod)[["b"]]
       } else {
