@@ -8,7 +8,8 @@ scramblaseAssayTraces <- function(x,timeMax=NA_real_){
   validatedParams <- scramblaseAssayInputValidation(
     x = x,
     scaleTo = "data",
-    forceThroughOrigin = TRUE)
+    forceThroughOrigin = TRUE,
+    verbose = FALSE)
   x <- validatedParams[["x"]]
   assert_is_a_number(timeMax)
 

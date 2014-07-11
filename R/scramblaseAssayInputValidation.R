@@ -1,6 +1,12 @@
 #' @importFrom assertive assert_is_data.frame
 #' @importFrom assertive assert_is_a_bool
-scramblaseAssayInputValidation <- function(x,scaleTo,forceThroughOrigin){
+scramblaseAssayInputValidation <- function(
+  x,
+  scaleTo,
+  forceThroughOrigin,
+  verbose=TRUE){
+  # Check verbose
+  assert_is_a_bool(verbose)
   # Check x
   ## General DF characteristics
   assert_is_data.frame(x)
@@ -77,12 +83,14 @@ scramblaseAssayInputValidation <- function(x,scaleTo,forceThroughOrigin){
       if(facultativeColumnsInX$Name[y] %in% c("Experiment","Experimental Series")) {
         toBeAddedOn <- facultativeColumnsInX$Default[[y]]
       } else {
-        message(
-          "Providing missing column '",
-          facultativeColumnsInX$Name[y],
-          "' from defaults (",
-          facultativeColumnsInX$Default[[y]],
-          "). Make sure this is correct.")
+        if(verbose){
+          message(
+            "Providing missing column '",
+            facultativeColumnsInX$Name[y],
+            "' from defaults (",
+            facultativeColumnsInX$Default[[y]],
+            "). Make sure this is correct.")
+        }
         toBeAddedOn <- facultativeColumnsInX$Default[[y]]
       }
       output <- cbind(
@@ -114,7 +122,7 @@ scramblaseAssayInputValidation <- function(x,scaleTo,forceThroughOrigin){
     arg=scaleTo,
     choices=c("model","data"),
     several.ok=FALSE)
-  if(scaleTo == "model"){
+  if(scaleTo == "model" & verbose){
     message("Data will be scaled to the plateau of its monoexponential fit.")
   }
   # Check forceThroughOrigin
