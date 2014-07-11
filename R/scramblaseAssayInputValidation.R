@@ -59,7 +59,7 @@ scramblaseAssayInputValidation <- function(
     Name = c(
       "Fluorescence Assay Vol. w/o DT (ul)",
       "Fluorescence Assay Vol. with DT (ul)",
-      "Egg PC in Reconstitution (mmol)",
+      "Lipid in Reconstitution (mmol)",
       "Timepoint of Measurement (s)",
       "Experiment",
       "Experimental Series"),

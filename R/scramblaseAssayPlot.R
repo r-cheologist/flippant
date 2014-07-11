@@ -19,16 +19,19 @@
 #'  \item{\code{Fluorescence Assay Vol. with DT (ul)}:}{Volume of the 
 #'    fluorescence assay after the addition of fluorescence-quenching 
 #'    ditihionite (defaulting to \code{2040}).}
-#'  \item{\code{Egg PC in Reconstitution (mmol)}:}{Self-explanatory. Defaulting to 
-#'    \code{0.0045} (1 ml of a 1 mM solution.}
+#'  \item{\code{Lipid in Reconstitution (mmol)}:}{Self-explanatory. For the 
+#'    standard phospholipid experiment defaulting to \code{0.0045} (1 ml of a 
+#'    4.5 mM solution).}
 #'  \item{\code{Timepoint of Measurement (s)}:}{Timepoint (in seconds) used as 
 #'    an anchor for the extraction of terminal fluorescence (defaulting to 
 #'    \code{400}).}
 #'  \item{\code{Experiment}:}{Identifier for any given experiment. Used for 
-#'    \code{\link{facet_wrap}} during generation of \code{\link{ggplot}} output.}
+#'    \code{\link{facet_wrap}} during generation of \code{\link{ggplot}} output.
+#'    All data with one \code{Experiment} identifier ends up on one plot/facet.}
 #'  \item{\code{Experimental Series}:}{Identifier for a given series/graph (e.g.
 #'    \code{Extract} and \code{Depleted Extract}). Used by \code{color} during 
-#'    generation of \code{\link{ggplot}} output.}}
+#'    generation of \code{\link{ggplot}} output to differentiate lines in the
+#'    same plot/facet.}}
 #'    
 #' Based on MIKE PAPER data is processed as follows (the majority of the 
 #' processing is split off into the internal function 
@@ -55,7 +58,7 @@
 #'    \code{Reaction Volume w/o DT (ul)} and \code{Reaction Volume with DT (ul)}
 #'    (see above).}
 #'  \item{For each spectrum/datapoint a measured \code{Fluorescence Reduction} 
-#'    is calculated as \code{1 - Minimum Fluorescence/Baseline Fluorescence}.}
+#'    is calculated as \code{1 - (Minimum Fluorescence/Baseline Fluorescence)}.}
 #'  \item{Data are \code{\link{split}} for parallel treatment using a combined 
 #'    \code{Experimental Series}/\code{Experiment} identifier (see above).}
 #'  \item{A \code{Relative Fluorescence Reduction} is calculated in comparison
@@ -71,10 +74,11 @@
 #'    in the series (\code{scaleTo = "data"}) or derived from a 
 #'    mono-exponential fit to the data (\code{scaleTo = "model"}). The latter 
 #'    (default) is a precaution for the case where the protein/phospholipid
-#'    titration did not reach the plateau of the saturation curve (yet).}
+#'    titration did not reach the plateau of the saturation curve.}
 #'  \item{A monoexponential curve is fitted unsig \code{\link{nlxb}} to either
 #'    \code{p(>=1) = b - c*(exp(-PPR/a))} (if \code{forceThroughOrigin = FALSE})
-#'    or  \code{p(>=1) = b * (1 - exp(-PPR/a))}.}
+#'    or  \code{p(>=1) = b * (1 - exp(-PPR/a))} 
+#'    (if \code{forceThroughOrigin = TRUE}).}
 #'  \item{Data \code{\link{split}} apart above are recombined and a 
 #'    \code{\link{ggplot}} object is assembled with the following layers:
 #'    \itemize{

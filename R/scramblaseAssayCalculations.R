@@ -199,5 +199,5 @@ scramblaseAssayCalculations <- function(x,scaleTo,forceThroughOrigin=TRUE){
 }
 
 calculatePpr <- function(x){
-  return(x$"Protein in Reconstitution (mg)"/x$"Egg PC in Reconstitution (mmol)")
+  return(x$"Protein in Reconstitution (mg)"/x$"Lipid in Reconstitution (mmol)")
 }
