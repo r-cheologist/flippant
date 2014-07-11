@@ -3,7 +3,7 @@
 #' @importFrom assertive assert_is_a_number
 #' @importFrom plyr rbind.fill
 #' @export
-scramblaseAssayTraces <- function(x,timeMax=NA_real_){
+scramblaseAssayTraces <- function(x,timeMin=NA_real_,timeMax=NA_real_){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- scramblaseAssayInputValidation(
     x = x,
@@ -11,6 +11,7 @@ scramblaseAssayTraces <- function(x,timeMax=NA_real_){
     forceThroughOrigin = TRUE,
     verbose = FALSE)
   x <- validatedParams[["x"]]
+  assert_is_a_number(timeMin)
   assert_is_a_number(timeMax)
 
 # Processing --------------------------------------------------------------
@@ -37,7 +38,6 @@ scramblaseAssayTraces <- function(x,timeMax=NA_real_){
   # Merge spectral data and analysis
   mergedData <- merge(x=dataFromRawFluorimeterOutput,y=processedX,by="Path")
   names(mergedData) <- make.names(names(mergedData))
-  timeMin <- min(mergedData$Time.in.sec, na.rm=TRUE)
   # Use corresponding PPR as path
   mergedData$Path <- round(mergedData$Protein.per.Phospholipid..mg.mmol.,2)
 # Assemble the output -----------------------------------------
@@ -52,8 +52,11 @@ scramblaseAssayTraces <- function(x,timeMax=NA_real_){
   # Plot traces with lines
   plotOutput <- plotOutput + geom_line()
   # Restrict x axis as requested
-  if(!is.na(timeMax)){
-    plotOutput <- plotOutput + xlim(timeMin,timeMax)
+  if(any(!is.na(c(timeMin,timeMax)))){
+    xRange <- range(mergedData$Time.in.sec, na.rm=TRUE)
+    if(!is.na(timeMin)){xRange[1] <- timeMin}
+    if(!is.na(timeMax)){xRange[2] <- timeMax}
+    plotOutput <- plotOutput + xlim(xRange)
   }
   # Prettify
   plotOutput <- plotOutput +
