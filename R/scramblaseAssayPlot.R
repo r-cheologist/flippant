@@ -1,4 +1,6 @@
 #' @title scramblaseAssayPlot
+#' @aliases scrambalseAssayCalculations scramblaseAssayInputTemplate 
+#' scramblaseAssayPlot scramblaseAssayStats scramblaseAssayTraces
 #' @description Functions for the presentation and evaluaton of dithionite 
 #' scramblase assays
 #' @details The \code{\link{data.frame}} accepted by the majority of the 
@@ -47,8 +49,8 @@
 #'    values preceding dithionite addition.}
 #'  \item{Post-dithinonite-addition \code{Minimum Fluorescence} is determined 
 #'    for each spectrum by averaging (\code{\link{median}}) over the last 10 
-#'    preceding \code{400 s} (or \code{Timepoint of Measurement (s)}, see 
-#'    above).}
+#'    smaller or equal to \code{400 s} (or \code{Timepoint of Measurement (s)},
+#'    see above).}
 #'  \item{The \code{Minimum Fluorescence} is volume-corrected based on 
 #'    \code{Reaction Volume w/o DT (ul)} and \code{Reaction Volume with DT (ul)}
 #'    (see above).}
@@ -96,7 +98,7 @@
 #' @param scaleTo Defines the source of \code{ymax}, defaulting to 
 #' \code{model}. See "Details".
 #' @param forceThroughOrigin \code{\link{logical}} indicating whether to force 
-#' the fitted courve(s) to penetrate the origin.
+#' the fitted curve(s) to penetrate the origin.
 #' @param timeMax A single \code{\link{numeric}}. If given, 
 #' \code{\link{scramblaseAssayTraces}} produces a time/x axis trimmed to
 #' this value.

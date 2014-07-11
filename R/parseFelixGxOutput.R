@@ -6,8 +6,8 @@
 #' \code{\link{readLines}} of the corresponding data file.
 #' @return See \code{\link{parseFluorimeterOutput}}.
 #' @seealso \code{\link{parseFluorimeterOutput}}, 
-#' \code{\link{parseFelix32Output}},
-#' \code{\link{parseManualOutput}}
+#' \code{\link[flippant]{parseFelix32Output}},
+#' \code{\link[flippant]{parseManualOutput}}
 #' @author Johannes Graumann
 #' @keywords manip IO file
 parseFelixGxOutput <- function(x=NA){

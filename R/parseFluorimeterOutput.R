@@ -6,8 +6,9 @@
 #' The function is currently capable to deal with input derived from QuantMaster
 #' instruments running software versions \code{FelixGX v4.1} 
 #' (see \code{\link{parseFelixGxOutput}}) and \code{Felix32 v1.20} (see 
-#' \code{\link{parseFelix32Output}}). The format is devined from the data 
-#' structure and appropriate internal parsing functions are called.
+#' \code{\link{parseFelix32Output}}). The format used in a given file is devined
+#' from the data structure and appropriate internal parsing functions are 
+#' called.
 #' 
 #' The time point of dithionite addition to a sample is determined using
 #' \pkg{wmtsa}-supplied methodology and the acquisition time reset
@@ -35,9 +36,10 @@
 #'  \item{\code{File.Name}}{\code{\link{character}} representation of the 
 #'    file name (as saved by the instrument).}
 #' }
-#' @seealso \code{flippant:::scramblaseAssayInputValidation}
-#' \code{\link{parseFelixGxOutput}} \code{\link{parseFelix32Output}}
-#' \code{\link{parseManualOutput}}
+#' @seealso \code{scramblaseAssayInputValidation},
+#' \code{\link[flippant]{parseFelixGxOutput}}, 
+#' \code{\link[flippant]{parseFelix32Output}},
+#' \code{\link[flippant]{parseManualOutput}}
 #' @author Johannes Graumann
 #' @keywords manip IO file
 #' @examples
