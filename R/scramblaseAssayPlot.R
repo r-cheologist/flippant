@@ -118,14 +118,28 @@
 #' @export
 #' @seealso \code{\link{parseFluorimeterOutput}}
 #' @import ggplot2
+#' @importFrom assertive assert_is_a_string
 #' @importFrom plyr rbind.fill
 #' @examples
 #' #stop("Add citation to Mike's manuscript!")
 #' #stop("Add example using actually published data.")
-scramblaseAssayPlot <- function(x,scaleTo=c("model","data"),forceThroughOrigin=TRUE){
+#' 
+scramblaseAssayPlot <- function(x, scaleTo=c("model","data"),forceThroughOrigin=TRUE){
+  UseMethod("scramblaseAssayPlot",x)
+}
+#' @export
+scramblaseAssayPlot.data.frame <- function(x, ...){
+  baseFunctionScramblaseAssayPlot(x, ...)
+}
+#' @export
+scramblaseAssayPlot.character <- function(x, ...){
+  parsedInputFile <- readScramblaseInputFile(x)
+  baseFunctionScramblaseAssayPlot(x=parsedInputFile, ...)
+}
+baseFunctionScramblaseAssayPlot <- function(x,scaleTo=c("model","data"),forceThroughOrigin=TRUE){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- scramblaseAssayInputValidation(
-    x =x ,
+    x = x ,
     scaleTo = scaleTo,
     forceThroughOrigin = forceThroughOrigin)
   x <- validatedParams[["x"]]

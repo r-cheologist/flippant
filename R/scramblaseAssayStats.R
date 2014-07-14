@@ -1,7 +1,19 @@
 #' @rdname scramblaseAssayPlot
 #' @importFrom plyr rbind.fill
 #' @export
-scramblaseAssayStats <- function(x,scaleTo=c("model","data"),forceThroughOrigin=TRUE){
+scramblaseAssayStats <- function(x, timeMin=NA_real_, timeMax=NA_real_){
+  UseMethod("scramblaseAssayStats",x)
+}
+#' @export
+scramblaseAssayStats.data.frame <- function(x, ...){
+  baseFunctionScramblaseAssayStats(x, ...)
+}
+#' @export
+scramblaseAssayStats.character <- function(x, ...){
+  parsedInputFile <- readScramblaseInputFile(x)
+  baseFunctionScramblaseAssayStats(x=parsedInputFile, ...)
+}
+baseFunctionScramblaseAssayStats <- function(x,scaleTo=c("model","data"),forceThroughOrigin=TRUE){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- scramblaseAssayInputValidation(
     x = x,
