@@ -34,13 +34,12 @@
 #'    same plot/facet.}}
 #'    
 #' Based on MIKE PAPER data is processed as follows (the majority of the 
-#' processing is split off into the internal function 
-#' \code{flippant:::scramblaseAssayCalculations}):
+#' processing is split off into the internal function \code{scramblaseAssayCalculations}):
 #' \itemize{
 #'  \item{Input is format checked and defaults are injected for facultative 
 #'    parameters/columns as appropriate (see input \code{\link{data.frame}} 
 #'    format above). The internal function 
-#'    \code{flippant:::scramblaseAssayInputValidation} supplies this 
+#'    \code{scramblaseAssayInputValidation} supplies this 
 #'    functionality.}
 #'  \item{Fluorescence spectra are parsed using 
 #'    \code{\link{parseFluorimeterOutput}}. This includes automated 
@@ -51,33 +50,36 @@
 #'    each spectrum by averaging (\code{\link{median}}) over the 10 
 #'    values preceding dithionite addition.}
 #'  \item{Post-dithinonite-addition \code{Minimum Fluorescence} is determined 
-#'    for each spectrum by averaging (\code{\link{median}}) over the last 10 
-#'    smaller or equal to \code{400 s} (or \code{Timepoint of Measurement (s)},
-#'    see above).}
+#'    for each spectrum by averaging (\code{\link{median}}) over the last ten
+#'    datapoints \eqn{\leq 400\,\mbox{s}}{\le 400 s} (or 
+#'    \code{Timepoint of Measurement (s)}, see above).}
 #'  \item{The \code{Minimum Fluorescence} is volume-corrected based on 
 #'    \code{Reaction Volume w/o DT (ul)} and \code{Reaction Volume with DT (ul)}
 #'    (see above).}
 #'  \item{For each spectrum/datapoint a measured \code{Fluorescence Reduction} 
-#'    is calculated as \code{1 - (Minimum Fluorescence/Baseline Fluorescence)}.}
+#'    is calculated as 
+#'    \deqn{1 - \left(\frac{\mbox{\small Minimum Fluorescence}}{\mbox{\small Baseline Fluorescence}}\right)}{1 - (Minimum Fluorescence/Baseline Fluorescence)}}
 #'  \item{Data are \code{\link{split}} for parallel treatment using a combined 
 #'    \code{Experimental Series}/\code{Experiment} identifier (see above).}
 #'  \item{A \code{Relative Fluorescence Reduction} is calculated in comparison
 #'    to the liposomes-only/no-protein control).}
 #'  \item{A \code{Protein per Phospholipid (mg/mmol)} ratio (\code{PPR}) is 
 #'    calculated.}
-#'  \item{A probability for a liposome holding >= 1 scramblase molecule are 
-#'    calculated using \code{(y - y0)/(ymax - y0)}, where \code{y} is the 
-#'    \code{Relative Fluorescence Reduction} and \code{y0} is the 
-#'    \code{Relative Fluorescence Reduction} in an experiment without addition 
-#'    of protein extract. Depending on the \code{scaleTo} parameter, 
-#'    \code{ymax} is either the maximal \code{Relative Fluorescence Reduction} 
+#'  \item{A probability for a liposome holding \eqn{\leq 1}{\le 1} scramblase 
+#'    molecules is calculated using 
+#'    \deqn{\frac{y-y_0}{y_{\mbox{\scriptsize max}}-y_0}}{(y - y0)/(ymax - y0)}
+#'    where \eqn{y} is the \code{Relative Fluorescence Reduction} and \eqn{y_0}{y0}
+#'    is the \code{Relative Fluorescence Reduction} in an experiment without
+#'    addition of protein extract. Depending on the \code{scaleTo} parameter, 
+#'    \eqn{y_{\mbox{\scriptsize max}}}{ymax} is either the maximal \code{Relative Fluorescence Reduction} 
 #'    in the series (\code{scaleTo = "data"}) or derived from a 
 #'    mono-exponential fit to the data (\code{scaleTo = "model"}). The latter 
 #'    (default) is a precaution for the case where the protein/phospholipid
 #'    titration did not reach the plateau of the saturation curve.}
 #'  \item{A monoexponential curve is fitted unsig \code{\link{nlxb}} to either
-#'    \code{p(>=1) = b - c*(exp(-PPR/a))} (if \code{forceThroughOrigin = FALSE})
-#'    or  \code{p(>=1) = b * (1 - exp(-PPR/a))} 
+#'    \deqn{p(\leq 1)=b-c\cdot e^{-\frac{\mbox{\tiny PPR}}{a}}}{p(\le 1) = b - c*exp(-PPR/a)}
+#'    (if \code{forceThroughOrigin = FALSE}) or  
+#'    \deqn{p(\leq 1)=b\cdot(1-e^{-\frac{\mbox{\tiny PPR}}{a}})}{p(\le 1) = b * (1 - exp(-PPR/a))} 
 #'    (if \code{forceThroughOrigin = TRUE}).}
 #'  \item{Data \code{\link{split}} apart above are recombined and a 
 #'    \code{\link{ggplot}} object is assembled with the following layers:
@@ -86,10 +88,11 @@
 #'        fit(s). \code{color} is used to differentiate 
 #'        \code{Experimental Series}.}
 #'      \item{Segments (\code{\link{geom_segment}}) representing the \code{PPR}
-#'        at which the fit constant a is equal to \code{PPR}. This tau value 
-#'        has the implication that at this PPR all vesicles on average have 1 
-#'        scramblase and 63\% have 1 or more (i.e. are active). \code{color} is 
-#'        used to differentiate \code{Experimental Series}.}
+#'        at which the fit constant \eqn{a} is equal to \code{PPR}. This 
+#'        \eqn{\tau}{tau} value has the implication that at this \code{PPR} all 
+#'        vesicles on average have one scramblase and 63\% have one or more 
+#'        (i.e. are active). \code{color} is used to differentiate 
+#'        \code{Experimental Series}.}
 #'      \item{Points (\code{\link{geom_point}}) representing the corresponding 
 #'        datapoints. \code{color} is used to differentiate 
 #'        \code{Experimental Series}.}
