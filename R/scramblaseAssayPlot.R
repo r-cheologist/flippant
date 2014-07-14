@@ -4,7 +4,8 @@
 #' @description Functions for the presentation and evaluaton of dithionite 
 #' scramblase assays
 #' @details The \code{\link{data.frame}} accepted by the majority of the 
-#' functions (\code{x}) must have the following \bold{mandatory} columns:
+#' functions a an \code{R} object or path to a corresponding file (\code{x}) 
+#' must have the following \bold{mandatory} columns:
 #' \describe{
 #'  \item{\code{Path}:}{Paths to existing and readable \code{ASCII} output files 
 #'    of a fluorimeter. See \code{\link{parseFluorimeterOutput}} for details and
@@ -101,7 +102,8 @@
 #'  }}
 #' @param path \code{\link{character}} object giving the path of an \bold{empty}
 #' template for a spreadsheet that can provide \code{x}.
-#' @param x \code{\link{data.frame}} as described in "Details".
+#' @param x \code{\link{data.frame}} or path to a tab delimited file 
+#' representing it (see "Details").
 #' @param scaleTo Defines the source of \code{ymax}, defaulting to 
 #' \code{model}. See "Details".
 #' @param forceThroughOrigin \code{\link{logical}} indicating whether to force 
@@ -112,7 +114,11 @@
 #' @param timeMax A single \code{\link{numeric}}. If given, 
 #' \code{\link{scramblaseAssayTraces}} produces a time/x axis trimmed to
 #' this value.
-#' @return Returns a \code{\link{ggplot}} object.
+#' @return \code{scrambalseAssayTraces} and \code{scramblaseAssayPlot} return 
+#' \code{\link{ggplot}} objects representing the raw fluorescence traces and a
+#' complete PPR plot, respectively. \code{scrambalseAssayInputTamplate} 
+#' generates a tab-delimited \code{ASCII} file in the file system and does not
+#' provide further output. \code{scrambalseAssayStats} prints assay statistics.
 #' @author Johannes Graumann
 #' @references Menon, I., Huber, T., Sanyal, S., Banerjee, S., Barre, P., Canis, 
 #' S., Warren, J.D., Hwa, J., Sakmar, T.P., and Menon, A.K. (2011). Opsin Is a 
