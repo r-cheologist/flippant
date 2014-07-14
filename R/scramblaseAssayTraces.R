@@ -70,6 +70,9 @@ baseFunctionScramblaseAssayTraces <- function(x,timeMin=NA_real_,timeMax=NA_real
     if(!is.na(timeMax)){xRange[2] <- timeMax}
     plotOutput <- plotOutput + xlim(xRange)
   }
+  # Render color scale friendly to the color blind
+  plotOutput <- plotOutput + 
+    scale_color_continuous(low="#0072B2",high="#E69F00")
   # Prettify
   plotOutput <- plotOutput +
     labs(
