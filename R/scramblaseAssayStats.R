@@ -1,7 +1,7 @@
 #' @rdname scramblaseAssayPlot
 #' @importFrom plyr rbind.fill
 #' @export
-scramblaseAssayStats <- function(x, timeMin=NA_real_, timeMax=NA_real_){
+scramblaseAssayStats <- function(x, scaleTo=c("model","data"), forceThroughOrigin=TRUE){
   UseMethod("scramblaseAssayStats",x)
 }
 #' @export
