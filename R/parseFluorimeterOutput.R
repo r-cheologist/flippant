@@ -44,11 +44,9 @@
 #' @keywords manip IO file
 #' @examples
 #' # stop("Function is missing examples!")
+#' @import wmtsa
 #' @importFrom assertive assert_is_a_string
 #' @importFrom RcppRoll roll_mean
-#' @importFrom wmtsa wavCWT
-#' @importFrom wmtsa wavCWTTree
-#' @importFrom wmtsa wavCWTPeaks
 #' @export
 parseFluorimeterOutput <- function(specFile=NA){
   #######################
