@@ -44,7 +44,6 @@
 #' @keywords manip IO file
 #' @examples
 #' # stop("Function is missing examples!")
-#' @import splus2R
 #' @importFrom assertive assert_is_a_string
 #' @importFrom RcppRoll roll_mean
 #' @importFrom wmtsa wavCWT

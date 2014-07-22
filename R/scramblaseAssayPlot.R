@@ -130,8 +130,8 @@
 #' @importFrom assertive assert_is_a_string
 #' @importFrom plyr rbind.fill
 #' @examples
-#' #stop("Add citation to Mike's manuscript!")
-#' #stop("Add example using actually published data.")
+#' stop("Add citation to Mike's manuscript!")
+#' stop("Add example using actually published data.")
 #' 
 scramblaseAssayPlot <- function(x, scaleTo=c("model","data"),forceThroughOrigin=TRUE){
   UseMethod("scramblaseAssayPlot",x)
