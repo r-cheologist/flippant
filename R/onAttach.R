@@ -1,7 +1,7 @@
 #' @importFrom pdapbase checkVersion
 .onAttach <- function(...){
   vC <- checkVersion(
-    expectedR = package_version("3.1.0"),
+    expectedR = package_version("3.1.1"),
     expectedPackages = list(
       assertive = package_version("0.1-8"),
       ggplot2 = package_version("1.0.0"),
