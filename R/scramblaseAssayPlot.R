@@ -107,7 +107,7 @@
 #' @param scaleTo Defines the source of \code{ymax}, defaulting to 
 #' \code{model}. See "Details".
 #' @param forceThroughOrigin \code{\link{logical}} indicating whether to force 
-#' the fitted curve(s) to penetrate the origin.
+#' the fitted curve(s) to penetrate the origin (defaulting to \code{TRUE}).
 #' @param timeMin A single \code{\link{numeric}}. If given, 
 #' \code{\link{scramblaseAssayTraces}} produces a time/x axis trimmed to
 #' this value.
