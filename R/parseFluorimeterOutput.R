@@ -51,7 +51,7 @@
 #' @importFrom wmtsa wavCWTPeaks
 #' @importFrom wmtsa wavCWTTree
 #' @export
-parseFluorimeterOutput <- function(specFile=NA){
+parseFluorimeterOutput <- function(specFile = NULL){
   #######################
   # Check Prerequisites #
   #######################

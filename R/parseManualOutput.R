@@ -14,7 +14,7 @@
 #' @importFrom assertive assert_is_not_null
 #' @author Johannes Graumann
 #' @keywords manip IO file
-parseManualOutput <- function(x=NA){
+parseManualOutput <- function(x = NULL){
   #######################
   # Check Prerequisites #
   #######################

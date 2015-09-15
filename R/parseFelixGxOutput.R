@@ -12,7 +12,7 @@
 #' @importFrom assertive assert_is_not_null
 #' @author Johannes Graumann
 #' @keywords manip IO file
-parseFelixGxOutput <- function(x=NA){
+parseFelixGxOutput <- function(x = NULL){
   #######################
   # Check Prerequisites #
   #######################
