@@ -1,12 +1,8 @@
-#' @importFrom assertive assert_is_a_string
+#' @importFrom assertive assert_all_are_readable_files
+#' @importFrom assertive assert_is_a_non_empty_string
 readScramblaseInputFile <- function(x){
-  assert_is_a_string(x)
-  if(!file.exists(x)){
-    stop("'x' must represent an existing path.")
-  }
-  if(file.access(names=x,mode=4) != 0){
-    stop("'x' must be readable.")
-  }
+  assert_is_a_non_empty_string(x)
+  assert_all_are_readable_files(x)
   output <- read.delim(
     file=x,
     header=TRUE,

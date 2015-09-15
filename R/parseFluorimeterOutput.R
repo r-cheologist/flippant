@@ -44,6 +44,7 @@
 #' @keywords manip IO file
 #' @examples
 #' # stop("Function is missing examples!")
+#' @importFrom assertive assert_all_are_readable_files
 #' @importFrom assertive assert_is_a_string
 #' @importFrom RcppRoll roll_mean
 #' @importFrom wmtsa wavCWT
@@ -55,12 +56,7 @@ parseFluorimeterOutput <- function(specFile=NA){
   # Check Prerequisites #
   #######################
   assert_is_a_string(specFile)
-  if(!file.exists(specFile)){
-    stop("'specFile' must represent an existing path.")
-  }
-  if(file.access(names=specFile,mode=4) != 0){
-    stop("'specFile' must be readable.")
-  }
+  assert_all_are_readable_files(specFile)
   ##############
   # Processing #
   ##############

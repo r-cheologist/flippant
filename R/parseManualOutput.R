@@ -10,18 +10,16 @@
 #' @seealso \code{\link{parseFluorimeterOutput}},
 #' \code{\link[flippant]{parseFelixGxOutput}}, 
 #' \code{\link[flippant]{parseFelix32Output}}
+#' @importFrom assertive assert_any_are_not_missing_nor_empty_characters
+#' @importFrom assertive assert_is_not_null
 #' @author Johannes Graumann
 #' @keywords manip IO file
 parseManualOutput <- function(x=NA){
   #######################
   # Check Prerequisites #
   #######################
-  if(is.na(x[1])){
-    stop("'x' must be defined.")
-  }
-  if(!is.character(x)){
-    stop("'x' must be of class 'character'.")
-  }
+  assert_is_not_null(x)
+  assert_any_are_not_missing_nor_empty_characters(x)
   ##############
   # Processing #
   ##############

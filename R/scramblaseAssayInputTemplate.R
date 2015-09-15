@@ -1,13 +1,12 @@
 #' @rdname scramblaseAssayPlot
+#' @importFrom assertive assert_any_are_existing_files
 #' @importFrom assertive assert_is_a_non_empty_string
 #' @importFrom plyr rbind.fill
 #' @export
 scramblaseAssayInputTemplate <- function(path="scramblaseAssayInputTemplate.txt"){
 # Check input -------------------------------------------------------------
   assert_is_a_non_empty_string(path)
-  if(file.exists(path)){
-    stop("File '",path,"' exists. Chickening out.")
-  }
+  assert_any_are_existing_files(path)
 
 # Generate template data.frame --------------------------------------------
   # Create data structure in list form

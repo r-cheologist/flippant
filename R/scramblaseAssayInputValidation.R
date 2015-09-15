@@ -1,3 +1,4 @@
+#' @importFrom assertive assert_has_rows
 #' @importFrom assertive assert_is_data.frame
 #' @importFrom assertive assert_is_a_bool
 scramblaseAssayInputValidation <- function(
@@ -10,9 +11,7 @@ scramblaseAssayInputValidation <- function(
   # Check x
   ## General DF characteristics
   assert_is_data.frame(x)
-  if(nrow(x)==0){
-    stop("'x' must have rows.")
-  }
+  assert_has_rows(x)
   if(any(is.na(x))){
     stop("'x' cannot contain 'NA'.")
   }
