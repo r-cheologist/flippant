@@ -7,8 +7,6 @@ date: "September 16, 2015"
 output: 
 #  word_document
   pdf_document:
-    toc: false
-    toc_depth: 2
     fig_caption: yes
 #bibliography: flippant.bib
 #csl: cell.csl
