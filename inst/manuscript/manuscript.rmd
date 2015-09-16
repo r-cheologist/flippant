@@ -114,7 +114,59 @@ all data analysis and graphing needs from raw fluorescence spectra produced by
 scramblase assays. A simple parametrizing spreadsheet is the sole required user 
 input.
 
-#Main Features
+#Installation, Input Requirements and Main Features
+##Installation
+`flippant` has been integrated into the `bioconductor` collection of tools for 
+biomedical data analysis [@huber_orchestrating_2015] and is thus installable and
+loadable as follows from within a functioning `R` environment:
+```{r eval = FALSE}
+source("http://bioconductor.org/biocLite.R")
+biocLite(pkgs = "flippant")
+library(flippant)
+```
+The package depends on the following, automatically satisfied extensions to `R`
+base functionality: `r flippant_dependencies`
+
+##Input Data
+To analyse raw data stemming from dithionite scramblase assays, `flippant` 
+requires for each data point information as the path to the 
+fluorometer-generated spectrum, the amount of protein used to reconstitute 
+proteoliposomes, the volume used in the assay before and after addition of 
+dithionite (to calculate a volume correction factor), the amount of lips 
+present (to calculate a proteine to phospholipid ratio or PPR) etc. The 
+following function generates a spreadsheet program-compatible tab-delimited 
+`ASCII` template including column names, commentary, expected data type and the 
+default used when ommited, supporting the user in providing the data needed in 
+one table row per data point.
+```{r echo = FALSE, comment = ""}
+make.usage.section("scramblaseAssayInputTemplate", env = asNamespace("flippant"))
+```
+The application agnostic tab-delimited format must be maintained for the 
+completed table, which is subjected to extensive input checks when read by 
+`flippant`.
+
+Spectral input data is read by `flippant` using the information provided in the
+input template raw spectra produced by QuantaMaster fluorometer instruments 
+(Photon Technology International,Inc., Edison, New Jersey) running software 
+versions FelixGX v4.1 and Felix32 v1.20, respectively, as well as simple generic
+tab-delimited spectrum representing file format with time (s) and fluorescence 
+intensity containing columns are currently supported. File type determination is
+handled algorythmically.
+
+##Graphic Representation of Spectral Traces
+```{r echo = FALSE, comment = ""}
+make.usage.section("scramblaseAssayTraces", env = asNamespace("flippant"))
+```
+
+##Producing Protein To Phospholipid (PPR) Plots
+```{r echo = FALSE, comment = ""}
+make.usage.section("scramblaseAssayPlot", env = asNamespace("flippant"))
+```
+
+##Non-graphical Output of Analysis Results
+```{r echo = FALSE, comment = ""}
+make.usage.section("scramblaseAssayStats", env = asNamespace("flippant"))
+```
 
 #Case Study
 
