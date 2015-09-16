@@ -89,6 +89,11 @@ sole required input.
 
 #Funding
 J.G., R.J.C. and the Proteomics Core at WCMC-Q were supported by ``Biomedical 
+Research Program'' funds at Weill Cornell Medical College in Qatar, a program 
+funded by Qatar Foundation. B.P. was supported by a grant from Qatar National 
+Research Fund’s National Priority Research Program (5-669-1-112) to J.G. and
+A.K.M.
+
 #Acknowledgements
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
