@@ -50,6 +50,36 @@ in scramblase identification and characterization. Molecules shown to have
 scramblase activity include opsin/rhodopsin <CITE INDU, MIKE, BIRGIT>, X <CITE> 
 and Y <CITE>.
 
+Following work by X <CITE>, Y<CITE> and Z<CITE>, we have develloped an assay 
+suited to characterize scramblase activity in purified proteins and protein 
+extracts <CITE OPSIN PAPER, MIKE, BIRGIT>, based on the reconstitution of 
+scramblases or candidate proteins into large synthetic vesicles with a lipid
+composition that includes the fluorescent lipid XYC. Upon exposure of these 
+vesicles to membrane-impermeable reducing agents such as dithionite, 
+fluorophores in the external sheet of the vesicles are quenched and fluorescence
+in scramblase-free vesicles accordingly quickly drops to approximately 50% of 
+the initial value. However, for vesicles reconstituted with proteins conferring 
+a scramblase activity, fluorescence dissapears entirely, as fast 
+scramblase-mediated equilibration between outer (exposed) and inner (protected)
+sheet of the vesicle membrane renders all fluorescent lipids accessible to 
+reduction. By titration of the protein amount reconstituted into the vesicle 
+membranes it is thus possible to characterize scramblases and probe their 
+activity. Beyond functional validation of candidate scramblases 
+<CITE OPSIN, Birgit>, the assay has for example also been used to characterize 
+the stoichiometry of scramblase homo-multimers reconstituting into the vesicles
+<CITE BIRGIT>.
+
+From the identification of baseline and post-reduction fluorescense from 
+fluorometer-generated spectra, via the calculation of the underlying statistics
+and through publication-grade representation of the results, data analysis in 
+the context of this assay has until now involved an extensive series of manual 
+steps, at most supported by spread sheet calculation facilities. Based on the
+`R` free software environment for statistical computing and graphics <CITE CORE>
+and prominently drawing on the power and elegance of the `ggplot2` plotting 
+system <CITE the book>, we here provide `flippant` a comprehensive package
+covering fast, reproducible data analysis and graphing for scramblase assays 
+from raw fluorescense spectra with a simple parametrizing spreadsheet as the
+sole required input.
 
 #Main Features
 
