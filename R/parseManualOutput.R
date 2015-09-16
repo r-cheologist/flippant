@@ -3,7 +3,7 @@
 #' format.
 #' @details A helper function to \code{\link{parseFluorimeterOutput}}.
 #' The file in question is supposed to contain a tab-delimited table
-#' with the columns \code{Time (sec)} and \code{Blank}.
+#' with the columns \code{Time (sec)} and \code{Fluorescense Intensity}.
 #' @param x \code{\link{character}} vector resulting from 
 #' \code{\link{readLines}} of the corresponding data file.
 #' @return See \code{\link{parseFluorimeterOutput}}.
