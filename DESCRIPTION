@@ -16,7 +16,6 @@ Suggests:
 Imports:
     assertive (>= 0.3-0),
     nlmrt (>= 2013-9.25),
-    pdapbase (>= 0.5.2),
     plyr (>= 1.8.3),
     RcppRoll (>= 0.2.2)
 #Enhances: 
