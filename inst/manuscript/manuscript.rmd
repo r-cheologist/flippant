@@ -25,6 +25,15 @@ output:
 
 #Abstract
 
+##Summary
+
+##Availability and Implementation
+
+##Contact
+jog2030@qatar-med.cornell.edu
+
+##Supplementary Information
+
 # Introduction
 Scramblases are proteins mediating the mass-action driven equilibration of 
 lipids between the sheets of lipid bilayers representing biological membranes
@@ -42,6 +51,15 @@ scramblase activity include opsin/rhodopsin <CITE INDU, MIKE, BIRGIT>, X <CITE>
 and Y <CITE>.
 
 
+#Main Features
+
+#Case Study
+
+#Conclusion
+
+#Funding
+J.G., R.J.C. and the Proteomics Core at WCMC-Q were supported by ``Biomedical 
+#Acknowledgements
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
