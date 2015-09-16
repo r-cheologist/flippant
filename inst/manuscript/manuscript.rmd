@@ -1,0 +1,65 @@
+---
+title: "`flippant` -- An `R` package for the automated  analysis of dithionite 
+  scramblase assays"
+author: "Johannes Graumann ^†,^*, Birgit Ploier ^‡^, Richard J. Cotton ^†^,
+  Mike A. Goren ^‡^ and Anant K. Menon ^‡^"
+date: "September 16, 2015"
+output: 
+#  word_document
+  pdf_document:
+    toc: false
+    toc_depth: 2
+    fig_caption: yes
+#bibliography: flippant.bib
+#csl: cell.csl
+---
+
+†
+
+:    \
+    Weill Cornell Medical College in Qatar, P.O.Box 24144, Doha, State of Qatar
+
+‡
+
+:   Department of Biochemistry, Weill Cornell Medical College, New York, NY 
+    10065, USA
+
+\*
+
+:   To whom correspondence should be addresse: jog2030@qatar-med.cornell.edu
+
+#Abstract
+
+# Introduction
+Scramblases are proteins mediating the mass-action driven equilibration of 
+lipids between the sheets of lipid bilayers representing biological membranes
+<CITE SOME REVIEW>. Indipendent of ATP or other energy equivalents they 
+facilitate this ``flipping'' by providing a mechanism of transition through the 
+hydrophobic environment of membranes to polar lipid head groups, thus 
+reducing the massive energetic cost that process would carry otherwise <CITE 
+ANANT HALF TIME>. While the underlying molecular mechanisms remain enigmatic 
+<CITE SOMETHING>, and molecules supporting flipping processes as central as the 
+equilibration of the ubiquitous phosphoglycerolipids across the membrane of the 
+endoplasmic reticulum, where they are synthesized in the cytoplasmicfrom sheet, 
+have yet to be identified <CITE SOMETHING>, there has been much recent progress 
+in scramblase identification and characterization. Molecules shown to have 
+scramblase activity include opsin/rhodopsin <CITE INDU, MIKE, BIRGIT>, X <CITE> 
+and Y <CITE>.
+
+
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+summary(cars)
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
