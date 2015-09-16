@@ -8,8 +8,8 @@ output:
 #  word_document
   pdf_document:
     fig_caption: yes
-#bibliography: flippant.bib
-#csl: bioinformatics.csl
+bibliography: flippant.bib
+csl: bioinformatics.csl
 ---
 
 †
@@ -36,8 +36,8 @@ jog2030@qatar-med.cornell.edu
 
 # Introduction
 Scramblases are proteins mediating the mass-action driven equilibration of 
-<CITE SOME REVIEW>. Indipendent of energy equivalents such as ATP they 
 lipids between the leaflets of lipid bilayers representing biological membranes
+[@waechter_flippases_2013]. Indipendent of energy equivalents such as ATP they 
 facilitate this ``flipping'' by providing a mechanism of transition through the 
 hydrophobic environment of membranes to polar lipid head groups, thus 
 reducing the massive energetic cost that process would carry otherwise <CITE 
@@ -47,36 +47,45 @@ equilibration of the ubiquitous phosphoglycerolipids across the membrane of the
 endoplasmic reticulum, where they are synthesized in the cytoplasmic leaflet, 
 have yet to be identified <CITE SOMETHING>, there has been much recent progress 
 in scramblase identification and characterization. Molecules shown to have 
-scramblase activity include opsin/rhodopsin <CITE INDU, MIKE, BIRGIT>, X <CITE> 
-and Y <CITE>.
+scramblase activity include opsin/rhodopsin 
+[@menon_opsin_2011;@goren_constitutive_2014], TMEM16 
+[@malvezzi_ca2-dependent_2013], $\beta$ 2-adrenergic and adenosine A2A 
+receptors [both @goren_constitutive_2014]. **Would be good to include/replace some 
+with non-in-house identifications/characterizations. What else is out there?**
 
-Following work by X <CITE>, Y<CITE> and Z<CITE>, we have develloped an assay 
-suited to characterize scramblase activity in purified proteins and protein 
-extracts <CITE OPSIN PAPER, MIKE, BIRGIT>, based on the reconstitution of 
-scramblases or candidate proteins into large synthetic vesicles with a lipid
-composition that includes the fluorescent lipid XYC. Upon exposure of these 
-vesicles to membrane-impermeable reducing agents such as dithionite, 
-fluorophores in the external sheet of the vesicles are quenched and fluorescence
-in scramblase-free vesicles accordingly quickly drops to approximately 50% of 
-the initial value. However, for vesicles reconstituted with proteins conferring 
-a scramblase activity, fluorescence dissapears entirely, as fast 
-scramblase-mediated equilibration between outer (exposed) and inner (protected)
-sheet of the vesicle membrane renders all fluorescent lipids accessible to 
-reduction. By titration of the protein amount reconstituted into the vesicle 
-membranes it is thus possible to characterize scramblases and probe their 
-activity. Beyond functional validation of candidate scramblases 
-<CITE OPSIN, Birgit>, the assay has for example also been used to characterize 
-the stoichiometry of scramblase homo-multimers reconstituting into the vesicles
-<CITE BIRGIT>.
+To interrogate factors of this functional class, we have developed a biochemical 
+assay suited to characterize scramblase activity in purified proteins and protein 
+extracts [@chang_chemical_2004], based on the reconstitution of scramblases or 
+candidate proteins into large synthetic vesicles with a lipid
+composition that includes nitrobenzoxadiazole (NBD) labeled fluorescent lipids.
+Upon exposure of these vesicles to membrane-impermeable reducing agents such as 
+dithionite, fluorophores in the external leaflet of the vesicles are quenched and 
+fluorescence in scramblase-free vesicles accordingly quickly drops to 
+approximately 50% of the initial value. However, for vesicles reconstituted with
+proteins conferring a scramblase activity, fluorescence dissapears entirely, as
+fast scramblase-mediated equilibration between outer (exposed) and inner
+(protected) leaflet of the vesicle membrane renders all fluorescent lipids
+accessible to reduction. By titration of the protein amount reconstituted into
+the vesicle membranes it is thus possible to characterize scramblases and probe
+their activity. Beyond the identification of scramblase activities in crude 
+membrane preparations [@chang_chemical_2004;@rajasekharan_flip-flop_2011] and 
+functional validation of candidate scramblases [@menon_opsin_2011;@goren_constitutive_2014;@malvezzi_ca2-dependent_2013;@goren_constitutive_2014],
+the assay has for example 
+also been used to characterize the stoichiometry of scramblase homo-multimers 
+reconstituting into the vesicles [@ploier_perturbed_submitted] and probe the 
+ATP-dependence of flippases, molecules that under energy-consumption flip lipids
+against a concentration gradient between bilayer leaflets [@soupene_atp8a1_2008].
+**Are you aware of further use? More adoption would fortify the need for the package ...**
 
 From the identification of baseline and post-reduction fluorescense from 
 fluorometer-generated spectra, via the calculation of the underlying statistics
 and through publication-grade representation of the results, data analysis in 
 the context of this assay has until now involved an extensive series of manual 
-steps, at most supported by spread sheet calculation facilities. Based on the
-`R` free software environment for statistical computing and graphics <CITE CORE>
+steps, at most supported by spreadsheet calculation facilities [see the 
+supplementary material of @menon_opsin_2011 for extensive stepwise discussion]. Based on the
+`R` free software environment for statistical computing and graphics [@r_core_team_r:_2015]
 and prominently drawing on the power and elegance of the `ggplot2` plotting 
-system <CITE the book>, we here provide `flippant` a comprehensive package
+system [@wickham_ggplot2_2009], we here provide `flippant`, a comprehensive package
 covering fast, reproducible data analysis and graphing for scramblase assays 
 from raw fluorescense spectra with a simple parametrizing spreadsheet as the
 sole required input.
@@ -111,3 +120,4 @@ plot(cars)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+#References
