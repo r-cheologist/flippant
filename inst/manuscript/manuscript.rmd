@@ -13,18 +13,15 @@ output:
 ---
 
 †
-
 :    \
     Weill Cornell Medical College in Qatar, P.O.Box 24144, Doha, State of Qatar
 
 ‡
-
 :   Department of Biochemistry, Weill Cornell Medical College, New York, NY 
     10065, USA
 
 \*
-
-:   To whom correspondence should be addresse: jog2030@qatar-med.cornell.edu
+:   To whom correspondence should be addressed: jog2030@qatar-med.cornell.edu
 
 #Abstract
 
