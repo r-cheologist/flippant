@@ -23,6 +23,30 @@ csl: bioinformatics.csl
 \*
 :   To whom correspondence should be addressed: jog2030@qatar-med.cornell.edu
 
+```{r, echo = FALSE}
+library(magrittr)
+library(stringi)
+flippant_dependencies <- packageDescription("flippant",fields=c("Depends","Imports")) %>%
+  unlist(use.names = FALSE) %>%
+  stri_split(regex = ",", omit_empty = TRUE) %>%
+  unlist(use.names = FALSE) %>%
+  stri_replace_all(replacement = "", regex = "\\s*\\(.*\\)\\s*", omit_empty = TRUE) %>%
+  stri_replace_all(replacement = "", regex = "\\s*", omit_empty = TRUE) %>%
+  tail(n=length(.) - 1) %>%
+  sort() %>%
+  ( function(x){
+    paste0(
+      c(
+        "`",
+        paste0(head(x, n = length(x) - 1), collapse = "`, `"),
+        "` and `",
+        tail(x, n = 1),
+        "`"),
+      collapse = "")} )
+
+library(mvbutils)
+```
+
 #Abstract
 
 ##Summary
