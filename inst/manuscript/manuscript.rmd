@@ -77,7 +77,7 @@ ATP-dependence of flippases, molecules that under energy-consumption flip lipids
 against a concentration gradient between bilayer leaflets [@soupene_atp8a1_2008].
 **Are you aware of further use? More adoption would fortify the need for the package ...**
 
-From the identification of baseline and post-reduction fluorescense from 
+Starting with the identification of baseline and post-reduction fluorescense from 
 fluorometer-generated spectra, via the calculation of the underlying statistics
 and through publication-grade representation of the results, data analysis in 
 the context of this assay has until now involved an extensive series of manual 
@@ -88,7 +88,7 @@ and prominently drawing on the power and elegance of the `ggplot2` plotting
 system [@wickham_ggplot2_2009], we here provide `flippant`, a comprehensive package
 covering fast, reproducible data analysis and graphing for scramblase assays 
 from raw fluorescense spectra with a simple parametrizing spreadsheet as the
-sole required input.
+sole required user input.
 
 #Main Features
 
