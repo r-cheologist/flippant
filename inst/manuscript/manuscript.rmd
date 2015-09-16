@@ -36,15 +36,15 @@ jog2030@qatar-med.cornell.edu
 
 # Introduction
 Scramblases are proteins mediating the mass-action driven equilibration of 
-lipids between the sheets of lipid bilayers representing biological membranes
 <CITE SOME REVIEW>. Indipendent of energy equivalents such as ATP they 
+lipids between the leaflets of lipid bilayers representing biological membranes
 facilitate this ``flipping'' by providing a mechanism of transition through the 
 hydrophobic environment of membranes to polar lipid head groups, thus 
 reducing the massive energetic cost that process would carry otherwise <CITE 
 ANANT HALF TIME>. While the underlying molecular mechanisms remain enigmatic 
 <CITE SOMETHING>, and molecules supporting flipping processes as central as the 
 equilibration of the ubiquitous phosphoglycerolipids across the membrane of the 
-endoplasmic reticulum, where they are synthesized in the cytoplasmic sheet, 
+endoplasmic reticulum, where they are synthesized in the cytoplasmic leaflet, 
 have yet to be identified <CITE SOMETHING>, there has been much recent progress 
 in scramblase identification and characterization. Molecules shown to have 
 scramblase activity include opsin/rhodopsin <CITE INDU, MIKE, BIRGIT>, X <CITE> 
