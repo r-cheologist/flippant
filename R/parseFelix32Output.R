@@ -1,6 +1,7 @@
 #' @title parseFelix32Output
-#' @description Parse spectra from files provided by a Photon QuantMaster 
-#' fluorimeter using \code{Felix32 v1.20}
+#' @description Parse spectra from files provided by a QuantaMaster fluorimeter 
+#' (Photon Technology International, Inc., Edison, New Jersey) using 
+#' \code{Felix32 v1.20}
 #' @details A helper function to \code{\link{parseFluorimeterOutput}}.
 #' @param x \code{\link{character}} vector resulting from 
 #' \code{\link{readLines}} of the corresponding data file.

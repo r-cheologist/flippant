@@ -1,6 +1,7 @@
 #' @title parseFelixGxOutput
-#' @description Parse spectra from files provided by a Photon QuantMaster 
-#' fluorimeter using \code{FelixGX v4.1}
+#' @description Parse spectra from files provided by a QuantaMaster fluorimeter 
+#' (Photon Technology International, Inc., Edison, New Jersey) using 
+#' \code{FelixGX v4.1}
 #' @details A helper function to \code{\link{parseFluorimeterOutput}}.
 #' @param x \code{\link{character}} vector resulting from 
 #' \code{\link{readLines}} of the corresponding data file.

@@ -3,8 +3,9 @@
 #' @details A function to read fluorimeter output directly. Intended as a helper
 #' function to scramblase activity determinations from dithionite assays.
 #' 
-#' The function is currently capable to deal with input derived from QuantMaster
-#' instruments running software versions \code{FelixGX v4.1} 
+#' The function is currently capable to deal with input derived from 
+#' QuantaMaster instruments (Photon Technology International, Inc., Edison, 
+#' New Jersey)running software versions \code{FelixGX v4.1} 
 #' (see \code{\link{parseFelixGxOutput}}) and \code{Felix32 v1.20} (see 
 #' \code{\link{parseFelix32Output}}). The format used in a given file is devined
 #' from the data structure and appropriate internal parsing functions are 
