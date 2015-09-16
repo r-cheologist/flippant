@@ -9,7 +9,7 @@ output:
   pdf_document:
     fig_caption: yes
 #bibliography: flippant.bib
-#csl: cell.csl
+#csl: bioinformatics.csl
 ---
 
 †
