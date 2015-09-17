@@ -119,15 +119,16 @@ input.
 
 #Installation
 `flippant` has been integrated into the `bioconductor` collection of tools for 
-biomedical data analysis [@huber_orchestrating_2015] and is thus installable and
-loadable as follows from within a functioning `R` environment:
-```{r eval = FALSE}
+biomedical data analysis [@huber_orchestrating_2015] and is thus install- and
+loadable as follows from within a functional `R` environment:
+```{r, eval = FALSE}
 source("http://bioconductor.org/biocLite.R")
 biocLite(pkgs = "flippant")
 library(flippant)
 ```
-The package depends on the following, automatically satisfied extensions to `R`
-base functionality: `r flippant_dependencies`
+The package depends on the following packaged extensions to `R` base 
+functionality, which are automatically satisfied on installation: 
+`r flippant_dependencies`.
 
 #Input Data and Data Processing
 To analyse raw data stemming from dithionite scramblase assays, `flippant` 
