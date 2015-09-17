@@ -118,8 +118,7 @@ all data analysis and graphing needs from raw fluorescence spectra produced by
 scramblase assays. A simple parametrizing spreadsheet is the sole required user 
 input.
 
-#Installation, Input Requirements and Main Features
-##Installation
+#Installation
 `flippant` has been integrated into the `bioconductor` collection of tools for 
 biomedical data analysis [@huber_orchestrating_2015] and is thus installable and
 loadable as follows from within a functioning `R` environment:
@@ -131,7 +130,7 @@ library(flippant)
 The package depends on the following, automatically satisfied extensions to `R`
 base functionality: `r flippant_dependencies`
 
-##Input Data
+#Input Data and Data Processing
 To analyse raw data stemming from dithionite scramblase assays, `flippant` 
 requires for each data point information as the path to the 
 fluorometer-generated spectrum, the amount of protein used to reconstitute 
@@ -139,6 +138,9 @@ proteoliposomes, the volume used in the assay before and after addition of
 dithionite (to calculate a volume correction factor), the amount of lips 
 present (to calculate a proteine to phospholipid ratio or PPR) etc. The 
 following function generates a spreadsheet program-compatible tab-delimited 
+#Main Features
+##Template Generation for Data Input
+The following function generates a spreadsheet program-compatible tab-delimited 
 `ASCII` template including column names, commentary, expected data type and the 
 default used when ommited, supporting the user in providing the data needed in 
 one table row per data point.
