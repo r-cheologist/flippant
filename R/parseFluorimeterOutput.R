@@ -11,11 +11,14 @@
 #' from the data structure and appropriate internal parsing functions are 
 #' called.
 #' 
-#' The time point of dithionite addition to a sample is determined using
-#' \pkg{wmtsa}-supplied methodology and the acquisition time reset
+#' If requested the time point of dithionite addition to a sample is determined 
+#' using \pkg{wmtsa}-supplied methodology and the acquisition time reset
 #' accordingly (\code{0} henceforth corresponds to the time of addition).
 #' @param specFile Path to a \file{*.txt} file as a \code{\link{character}} 
 #' object.
+#' @param adjust A \code{\link{logical}} indicating of whether (default) or not
+#' acquisition time should be reset to have \code{0} (zero) coincide with the 
+#' addition of dithionite (see 'Details' section).
 #' @return Returns a \code{\link{list}} with the follwoing keys:
 #' \describe{
 #'  \item{\code{Data}}{A \code{\link{data.frame}} representing the actual 
@@ -46,18 +49,22 @@
 #' @examples
 #' # stop("Function is missing examples!")
 #' @importFrom assertive assert_all_are_readable_files
+#' @importFrom assertive assert_is_a_bool
 #' @importFrom assertive assert_is_a_string
 #' @importFrom RcppRoll roll_mean
 #' @importFrom wmtsa wavCWT
 #' @importFrom wmtsa wavCWTPeaks
 #' @importFrom wmtsa wavCWTTree
 #' @export
-parseFluorimeterOutput <- function(specFile = NULL){
+parseFluorimeterOutput <- function(
+  specFile = NULL,
+  adjust = TRUE){
   #######################
   # Check Prerequisites #
   #######################
   assert_is_a_string(specFile)
   assert_all_are_readable_files(specFile)
+  assert_is_a_bool(adjust)
   ##############
   # Processing #
   ##############
@@ -96,23 +103,24 @@ parseFluorimeterOutput <- function(specFile = NULL){
   # Determine timepoint of dithionite addition and adjust time axis accordingly
   #############################################################################
   # Following http://stackoverflow.com/a/24560355/2103880
-  
-  # Smooth the intensity using a simple rolling mean
-  n <- 10
-  smoothedTmpData <- RcppRoll::roll_mean(output$Data$Fluorescence.Intensity, n)
-  # Wavelet-based peak detection
-  gradient <- -diff(smoothedTmpData)
-  cwt <- wavCWT(gradient)
-  tree <- wavCWTTree(cwt)
-  peaks <- wavCWTPeaks(tree)
-  # Safeguard against artifact peaks (based on incomplete understanding of wmtsa)
-  peakMax <- peaks$x[which.max(peaks$y)]
-  # Reset acquisition time
-  if(length(peakMax) < 1){
-    stop("No ditionite addition detected in '",specFile,"'.")
+  if(adjust){
+    # Smooth the intensity using a simple rolling mean
+    n <- 10
+    smoothedTmpData <- RcppRoll::roll_mean(output$Data$Fluorescence.Intensity, n)
+    # Wavelet-based peak detection
+    gradient <- -diff(smoothedTmpData)
+    cwt <- wavCWT(gradient)
+    tree <- wavCWTTree(cwt)
+    peaks <- wavCWTPeaks(tree)
+    # Safeguard against artifact peaks (based on incomplete understanding of wmtsa)
+    peakMax <- peaks$x[which.max(peaks$y)]
+    # Reset acquisition time
+    if(length(peakMax) < 1){
+      stop("No ditionite addition detected in '",specFile,"'.")
+    }
+    zeroTimePoint <- output$Data$Time.in.sec[peakMax[1]]
+    output$Data$Time.in.sec <- output$Data$Time.in.sec - zeroTimePoint
   }
-  zeroTimePoint <- output$Data$Time.in.sec[peakMax[1]]
-  output$Data$Time.in.sec <- output$Data$Time.in.sec - zeroTimePoint
   output$Max.Acquisition.Time.in.sec <- max(output$Data$Time.in.sec,na.rm=TRUE)
   output$Min.Acquisition.Time.in.sec <- min(output$Data$Time.in.sec,na.rm=TRUE)
   #################

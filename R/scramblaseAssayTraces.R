@@ -3,11 +3,17 @@
 #' @importFrom assertive assert_is_a_number
 #' @importFrom plyr rbind.fill
 #' @export
-scramblaseAssayTraces <- function(x, timeMin=NA_real_, timeMax=NA_real_){
-  UseMethod("scramblaseAssayTraces",x)
+scramblaseAssayTraces <- function(
+  x,
+  timeMin=NA_real_,
+  timeMax=NA_real_,
+  adjust = TRUE){
+  UseMethod("scramblaseAssayTraces", x)
 }
 #' @export
-scramblaseAssayTraces.data.frame <- function(x, ...){
+scramblaseAssayTraces.data.frame <- function(
+  x,
+  ...){
   baseFunctionScramblaseAssayTraces(x, ...)
 }
 #' @export
@@ -15,7 +21,11 @@ scramblaseAssayTraces.character <- function(x, ...){
   parsedInputFile <- readScramblaseInputFile(x)
   baseFunctionScramblaseAssayTraces(x=parsedInputFile, ...)
 }
-baseFunctionScramblaseAssayTraces <- function(x,timeMin=NA_real_,timeMax=NA_real_){
+baseFunctionScramblaseAssayTraces <- function(
+  x,
+  timeMin=NA_real_,
+  timeMax=NA_real_,
+  adjust = TRUE){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- scramblaseAssayInputValidation(
     x = x,
@@ -32,7 +42,7 @@ baseFunctionScramblaseAssayTraces <- function(x,timeMin=NA_real_,timeMax=NA_real
   processedX$"Protein per Phospholipid (mg/mmol)" <- calculatePpr(x)
   processedX <- processedX[c("Path","Experimental Series","Experiment","Protein per Phospholipid (mg/mmol)")]
   # Parse the fluorimeter data and whip it into shape
-  rawFluorimeterOutput <- lapply(processedX$Path,parseFluorimeterOutput)
+  rawFluorimeterOutput <- lapply(processedX$Path,parseFluorimeterOutput,adjust = adjust)
   names(rawFluorimeterOutput) <- processedX$Path
   dataFromRawFluorimeterOutput <- plyr::rbind.fill(
     lapply(
