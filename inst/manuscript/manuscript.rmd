@@ -95,7 +95,9 @@ accessible to reduction. By titration of the protein amount reconstituted into
 the liposome membranes it is thus possible to characterize scramblases and probe
 their activity. Beyond the identification of scramblase activities in crude 
 membrane preparations [@chang_chemical_2004;@rajasekharan_flip-flop_2011] and 
-functional validation of candidate scramblases [@menon_opsin_2011;@goren_constitutive_2014;@malvezzi_ca2-dependent_2013;@goren_constitutive_2014], the assay has also been used to characterize the stoichiometry of scramblase homo-multimers reconstituting into the proteoliposomes 
+functional validation of candidate scramblases [@menon_opsin_2011;@malvezzi_ca2-dependent_2013;@goren_constitutive_2014], the 
+assay has also been used to characterize the stoichiometry of scramblase 
+homo-multimers reconstituting into the proteoliposomes 
 [@ploier_perturbed_submitted] and probe the ATP-dependence of flippases, 
 molecules that under energy-consumption flip lipids against a concentration 
 gradient between bilayer leaflets [@soupene_atp8a1_2008].
