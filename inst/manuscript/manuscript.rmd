@@ -147,12 +147,14 @@ generic tab-delimited spectrum representing file format with time (s) and
 fluorescence intensity representing columns are currently supported. 
 File type determination is handled algorythmically.
 
-Based on @menon_opsin_2011 and @goren_constitutive_2014, <CHECK THAT THERE'S INFO IN THE LATTER> data is processed as 
+Based on @menon_opsin_2011 and @goren_constitutive_2014, data is processed as 
 follows. Input is format checked and defaults are injected for facultative 
 parameters/columns as appropriate. Fluorescence spectra are parsed, including 
-determination of when dithionite was added to the sample using `wmtsa`-supplied
-methodology <CITE AND MORE DETAIL> and resetting the acquisition time 
-accordingly. The zero time point henceforth corresponds to the time of addition. 
+determination of when dithionite was added to the sample using peak detection by
+continuous wavelet transformation as implemented by the `wmtsa` `R` package 
+[@percival_wavelet_2000;@constantine_wmtsa:_2013] and resetting the acquisition 
+time accordingly. The zero time point henceforth corresponds to the time of 
+addition. 
 Pre-dithionite-addition baseline fluorescence $F_{\text{baseline}}$ is 
 determined for each spectrum by averaging (median) over the ten values preceding
 dithionite addition. Post-dithinonite-addition minimum fluorescence 
@@ -166,37 +168,21 @@ $$
 y_{\text{raw}} = 1 - \frac{F_{\text{min}}}{F_{\text{baseline}}}
 $$
 <!--
-Data are split for parallel treatment using a combined Experimental Series/Experiment identifier (see above).
-
-A Relative Fluorescence Reduction is calculated in comparison to the liposomes-only/no-protein control).
-
-A Protein per Phospholipid (mg/mmol) ratio (PPR) is calculated.
-
-A probability for a liposome holding ≤ 1 scramblase molecules is calculated using
-
-(y - y0)/(ymax - y0)
-
-where y is the Relative Fluorescence Reduction and y0 is the Relative Fluorescence Reduction in an experiment without addition of protein extract. Depending on the scaleTo parameter, ymax is either the maximal Relative Fluorescence Reduction in the series (scaleTo = "data") or derived from a mono-exponential fit to the data (scaleTo = "model"). The latter (default) is a precaution for the case where the protein/phospholipid titration did not reach the plateau of the saturation curve.
-
-A monoexponential curve is fitted unsig nlxb to either
-
-p(≤ 1) = b - c*exp(-PPR/a)
-
-(if forceThroughOrigin = FALSE) or
-
-p(≤ 1) = b * (1 - exp(-PPR/a))
-
-(if forceThroughOrigin = TRUE).
-
-Data split apart above are recombined and a ggplot object is assembled with the following layers:
-
-Lines (geom_line) representing the monoexponential fit(s). color is used to differentiate Experimental Series.
-
-Segments (geom_segment) representing the PPR at which the fit constant a is equal to PPR. This tau value has the implication that at this PPR all vesicles on average have one scramblase and 63% have one or more (i.e. are active). color is used to differentiate Experimental Series.
-
-Points (geom_point) representing the corresponding datapoints. color is used to differentiate Experimental Series.
-
-Plots are finally facet_wraped by Experiment and labels adjusted cosmetically.-->
+Data are split for parallel treatment using a combined Experimental Series/Experiment identifier (see above).-->
+A relative fluorescence reduction $y$ is calculated scaled to a (required) liposomes-only/no-protein control and the probability $P_{\geq 1}$ for a 
+liposome to contain at least one scramblase molecules is calculated using
+$$
+P_{\geq 1} = \frac{(y - y_0)}{(y_{\text{max}} - y_0)}
+$$
+where $y$ is the relative fluorescence reduction for the proteoliposome 
+measurement and $y_0$ for a measurement of protein-free liposomes. 
+$y_{\text{max}}$ refers to either the maximal $y$ in the experiment or is 
+derived from a monoexponential fit to the data (default) as a precaution for the 
+case where the protein/phospholipid titration did not reach the plateau of the 
+saturation curve. The behavior is adjustable using the `scaleTo` parameter of 
+the corresponding functions (see below). Next a monoexponential curve is fitted
+to the realtionship of $P_{\geq 1}$ to the protein to phospholipid ratio (PPR; 
+(mg/mmol)), providing the scramblase-characterizing fit factor $\alpha$.
 
 #Main Features
 ##Template Generation for Data Input
