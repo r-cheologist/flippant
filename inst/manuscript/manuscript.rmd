@@ -135,9 +135,69 @@ To analyse raw data stemming from dithionite scramblase assays, `flippant`
 requires for each data point information as the path to the 
 fluorometer-generated spectrum, the amount of protein used to reconstitute 
 proteoliposomes, the volume used in the assay before and after addition of 
-dithionite (to calculate a volume correction factor), the amount of lips 
-present (to calculate a proteine to phospholipid ratio or PPR) etc. The 
-following function generates a spreadsheet program-compatible tab-delimited 
+dithionite (to calculate a volume correction factor), the amount of lipids 
+present (to calculate a protein to phospholipid ratio or PPR) etc. The user 
+supplies this information in one row of a spreadsheet (see below for supporting functionality).
+
+Spectral input data is read by `flippant` using the information provided in the
+input template. Raw spectra produced by QuantaMaster fluorometer instruments 
+(Photon Technology International, Inc., Edison, New Jersey) running software 
+versions FelixGX v4.1 and Felix32 v1.20, respectively, as well as a simple 
+generic tab-delimited spectrum representing file format with time (s) and 
+fluorescence intensity representing columns are currently supported. 
+File type determination is handled algorythmically.
+
+Based on @menon_opsin_2011 and @goren_constitutive_2014, <CHECK THAT THERE'S INFO IN THE LATTER> data is processed as 
+follows. Input is format checked and defaults are injected for facultative 
+parameters/columns as appropriate. Fluorescence spectra are parsed, including 
+determination of when dithionite was added to the sample using `wmtsa`-supplied
+methodology <CITE AND MORE DETAIL> and resetting the acquisition time 
+accordingly. The zero time point henceforth corresponds to the time of addition. 
+Pre-dithionite-addition baseline fluorescence $F_{\text{baseline}}$ is 
+determined for each spectrum by averaging (median) over the ten values preceding
+dithionite addition. Post-dithinonite-addition minimum fluorescence 
+$F_{\text{min}}$ is analogously calculated from the last ten datapoints after 
+the default 400 s or the timepoint of measurement supplied by the user in the 
+parameter file. $F_{\text{min}}$ is volume-corrected based on supplied reaction 
+volumes
+with and without dithionite and for each spectrum/datapoint a fluorescence 
+reduction is calculated as follows:
+$$
+y_{\text{raw}} = 1 - \frac{F_{\text{min}}}{F_{\text{baseline}}}
+$$
+<!--
+Data are split for parallel treatment using a combined Experimental Series/Experiment identifier (see above).
+
+A Relative Fluorescence Reduction is calculated in comparison to the liposomes-only/no-protein control).
+
+A Protein per Phospholipid (mg/mmol) ratio (PPR) is calculated.
+
+A probability for a liposome holding ≤ 1 scramblase molecules is calculated using
+
+(y - y0)/(ymax - y0)
+
+where y is the Relative Fluorescence Reduction and y0 is the Relative Fluorescence Reduction in an experiment without addition of protein extract. Depending on the scaleTo parameter, ymax is either the maximal Relative Fluorescence Reduction in the series (scaleTo = "data") or derived from a mono-exponential fit to the data (scaleTo = "model"). The latter (default) is a precaution for the case where the protein/phospholipid titration did not reach the plateau of the saturation curve.
+
+A monoexponential curve is fitted unsig nlxb to either
+
+p(≤ 1) = b - c*exp(-PPR/a)
+
+(if forceThroughOrigin = FALSE) or
+
+p(≤ 1) = b * (1 - exp(-PPR/a))
+
+(if forceThroughOrigin = TRUE).
+
+Data split apart above are recombined and a ggplot object is assembled with the following layers:
+
+Lines (geom_line) representing the monoexponential fit(s). color is used to differentiate Experimental Series.
+
+Segments (geom_segment) representing the PPR at which the fit constant a is equal to PPR. This tau value has the implication that at this PPR all vesicles on average have one scramblase and 63% have one or more (i.e. are active). color is used to differentiate Experimental Series.
+
+Points (geom_point) representing the corresponding datapoints. color is used to differentiate Experimental Series.
+
+Plots are finally facet_wraped by Experiment and labels adjusted cosmetically.-->
+
 #Main Features
 ##Template Generation for Data Input
 The following function generates a spreadsheet program-compatible tab-delimited 
@@ -148,14 +208,6 @@ default used when ommited, supporting the user in providing the data needed.
 The application agnostic tab-delimited format must be maintained for the 
 completed table, which is subjected to extensive input checks when read by 
 `flippant`.
-
-Spectral input data is read by `flippant` using the information provided in the
-input template raw spectra produced by QuantaMaster fluorometer instruments 
-(Photon Technology International,Inc., Edison, New Jersey) running software 
-versions FelixGX v4.1 and Felix32 v1.20, respectively, as well as simple generic
-tab-delimited spectrum representing file format with time (s) and fluorescence 
-intensity containing columns are currently supported. File type determination is
-handled algorythmically.
 
 ##Graphic Representation of Spectral Traces
 ```{r, code = formatR::usage('scramblaseAssayTraces'), eval = FALSE}
