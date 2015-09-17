@@ -34,8 +34,9 @@
 #'    generation of \code{\link{ggplot}} output to differentiate lines in the
 #'    same plot/facet.}}
 #'    
-#' Based on MIKE PAPER data is processed as follows (the majority of the 
-#' processing is split off into the internal function \code{scramblaseAssayCalculations}):
+#' Based on Goren et al. (2014) data is processed as follows (the majority of 
+#' the processing is split off into the internal function 
+#' \code{scramblaseAssayCalculations}):
 #' \itemize{
 #'  \item{Input is format checked and defaults are injected for facultative 
 #'    parameters/columns as appropriate (see input \code{\link{data.frame}} 
@@ -123,16 +124,18 @@
 #' @references Menon, I., Huber, T., Sanyal, S., Banerjee, S., Barre, P., Canis, 
 #' S., Warren, J.D., Hwa, J., Sakmar, T.P., and Menon, A.K. (2011). Opsin Is a 
 #' Phospholipid Flippase. Current Biology 21, 149-153.
-#' MIKE PAPER
+#' 
+#' Goren, M.A., Morizumi, T., Menon, I., Joseph, J.S., Dittman, J.S., 
+#' Cherezov, V., Stevens, R.C., Ernst, O.P., and Menon, A.K. (2014). 
+#' Constitutive phospholipid scramblase activity of a G Protein-coupled 
+#' receptor. Nat Commun 5, 5115.
 #' @export
 #' @seealso \code{\link{parseFluorimeterOutput}}
 #' @import ggplot2
 #' @importFrom assertive assert_is_a_string
 #' @importFrom plyr rbind.fill
 #' @examples
-#' stop("Add citation to Mike's manuscript!")
 #' stop("Add example using actually published data.")
-#' 
 scramblaseAssayPlot <- function(x, scaleTo=c("model","data"),forceThroughOrigin=TRUE){
   UseMethod("scramblaseAssayPlot",x)
 }
