@@ -85,7 +85,7 @@ parseFluorimeterOutput <- function(
   ){
     formatOfSpecFile <- "Felix32v1.20"
   } else if(
-    grepl(pattern="^Time \\(sec\\)\tBlank\\s*$",x=linesInSpecFile[1],ignore.case=TRUE)
+    grepl(pattern="^Time \\(sec\\)\tFluorescense Intensity\\s*$",x=linesInSpecFile[1],ignore.case=TRUE)
   ){
     formatOfSpecFile <- "Manual"
   } else {
