@@ -46,7 +46,6 @@ flippant_dependencies <- packageDescription("flippant",fields=c("Depends","Impor
         "`"),
       collapse = "")} )
 
-library(mvbutils)
 ```
 
 #Abstract
@@ -142,10 +141,8 @@ following function generates a spreadsheet program-compatible tab-delimited
 ##Template Generation for Data Input
 The following function generates a spreadsheet program-compatible tab-delimited 
 `ASCII` template including column names, commentary, expected data type and the 
-default used when ommited, supporting the user in providing the data needed in 
-one table row per data point.
-```{r echo = FALSE, comment = ""}
-make.usage.section("scramblaseAssayInputTemplate", env = asNamespace("flippant"))
+default used when ommited, supporting the user in providing the data needed.
+```{r, code=formatR::usage('scramblaseAssayInputTemplate'), eval=FALSE}
 ```
 The application agnostic tab-delimited format must be maintained for the 
 completed table, which is subjected to extensive input checks when read by 
@@ -160,18 +157,15 @@ intensity containing columns are currently supported. File type determination is
 handled algorythmically.
 
 ##Graphic Representation of Spectral Traces
-```{r echo = FALSE, comment = ""}
-make.usage.section("scramblaseAssayTraces", env = asNamespace("flippant"))
+```{r, code = formatR::usage('scramblaseAssayTraces'), eval = FALSE}
 ```
 
 ##Producing Protein To Phospholipid (PPR) Plots
-```{r echo = FALSE, comment = ""}
-make.usage.section("scramblaseAssayPlot", env = asNamespace("flippant"))
+```{r, code = formatR::usage('scramblaseAssayPlot'), eval = FALSE}
 ```
 
 ##Non-graphical Output of Analysis Results
-```{r echo = FALSE, comment = ""}
-make.usage.section("scramblaseAssayStats", env = asNamespace("flippant"))
+```{r, code = formatR::usage('scramblaseAssayStats'), eval = FALSE}
 ```
 
 #Case Study
