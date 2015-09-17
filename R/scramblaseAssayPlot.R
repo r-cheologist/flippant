@@ -53,7 +53,7 @@
 #'    values preceding dithionite addition.}
 #'  \item{Post-dithinonite-addition \code{Minimum Fluorescence} is determined 
 #'    for each spectrum by averaging (\code{\link{median}}) over the last ten
-#'    datapoints \eqn{\leq 400\,\mbox{s}}{\le 400 s} (or 
+#'    datapoints \eqn{\leq 400\,\mbox{s}}{\ge 400 s} (or 
 #'    \code{Timepoint of Measurement (s)}, see above).}
 #'  \item{The \code{Minimum Fluorescence} is volume-corrected based on 
 #'    \code{Reaction Volume w/o DT (ul)} and \code{Reaction Volume with DT (ul)}
@@ -67,7 +67,7 @@
 #'    to the liposomes-only/no-protein control).}
 #'  \item{A \code{Protein per Phospholipid (mg/mmol)} ratio (\code{PPR}) is 
 #'    calculated.}
-#'  \item{A probability for a liposome holding \eqn{\leq 1}{\le 1} scramblase 
+#'  \item{A probability for a liposome holding \eqn{\geq 1}{\ge 1} scramblase 
 #'    molecules is calculated using 
 #'    \deqn{\frac{y-y_0}{y_{\mbox{\scriptsize max}}-y_0}}{(y - y0)/(ymax - y0)}
 #'    where \eqn{y} is the \code{Relative Fluorescence Reduction} and \eqn{y_0}{y0}
@@ -79,9 +79,9 @@
 #'    (default) is a precaution for the case where the protein/phospholipid
 #'    titration did not reach the plateau of the saturation curve.}
 #'  \item{A monoexponential curve is fitted unsig \code{\link{nlxb}} to either
-#'    \deqn{p(\leq 1)=b-c\cdot e^{-\frac{\mbox{\tiny PPR}}{a}}}{p(\le 1) = b - c*exp(-PPR/a)}
+#'    \deqn{p(\geq 1)=b-c\cdot e^{-\frac{\mbox{\tiny PPR}}{a}}}{p(\ge 1) = b - c*exp(-PPR/a)}
 #'    (if \code{forceThroughOrigin = FALSE}) or  
-#'    \deqn{p(\leq 1)=b\cdot(1-e^{-\frac{\mbox{\tiny PPR}}{a}})}{p(\le 1) = b * (1 - exp(-PPR/a))} 
+#'    \deqn{p(\geq 1)=b\cdot(1-e^{-\frac{\mbox{\tiny PPR}}{a}})}{p(\ge 1) = b * (1 - exp(-PPR/a))} 
 #'    (if \code{forceThroughOrigin = TRUE}).}
 #'  \item{Data \code{\link{split}} apart above are recombined and a 
 #'    \code{\link{ggplot}} object is assembled with the following layers:
