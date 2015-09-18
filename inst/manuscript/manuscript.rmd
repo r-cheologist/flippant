@@ -24,10 +24,8 @@ csl: bioinformatics.csl
 :   To whom correspondence should be addressed: jog2030@qatar-med.cornell.edu
 
 ```{r, echo = FALSE}
-suppressMessages(
-  library(magrittr))
-suppressMessages(
-  library(stringi))
+library(magrittr, quietly = TRUE)
+library(stringi, quietly = TRUE)
 flippant_dependencies <- packageDescription("flippant",fields=c("Depends","Imports")) %>%
   unlist(use.names = FALSE) %>%
   stri_split(regex = ",", omit_empty = TRUE) %>%
@@ -45,8 +43,7 @@ flippant_dependencies <- packageDescription("flippant",fields=c("Depends","Impor
         tail(x, n = 1),
         "`"),
       collapse = "")} )
-suppressMessages(
-  library(flippant))
+library(flippant, quietly = TRUE)
 ```
 
 #Abstract
