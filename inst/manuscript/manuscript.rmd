@@ -45,7 +45,8 @@ flippant_dependencies <- packageDescription("flippant",fields=c("Depends","Impor
         tail(x, n = 1),
         "`"),
       collapse = "")} )
-
+suppressMessages(
+  library(flippant))
 ```
 
 #Abstract
