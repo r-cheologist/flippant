@@ -136,43 +136,41 @@ functionality, which are automatically satisfied on installation:
 
 #Input Data and Data Processing
 To analyse raw data stemming from dithionite scramblase assays, `flippant` 
-requires for each data point information as the path to the 
+requires for each data point information on the path to the 
 fluorometer-generated spectrum, the amount of protein used to reconstitute 
-proteoliposomes, the volume used in the assay before and after addition of 
+proteoliposomes, the assay volume before and after addition of 
 dithionite (to calculate a volume correction factor), the amount of lipids 
 present (to calculate a protein to phospholipid ratio or PPR) etc. The user 
-supplies this information in one row of a spreadsheet (see below for supporting functionality).
+supplies this information in a spreadsheet (see below for supporting 
+functionality).
 
-Spectral input data is read by `flippant` using the information provided in the
-input template. Raw spectra produced by QuantaMaster fluorometer instruments 
+Spectral input data is read by `flippant` using the file paths provided in the
+spreadsheet. Raw spectra produced by QuantaMaster fluorometer instruments 
 (Photon Technology International, Inc., Edison, New Jersey) running software 
 versions FelixGX v4.1 and Felix32 v1.20, respectively, as well as a simple 
-generic tab-delimited spectrum representing file format with time (s) and 
-fluorescence intensity representing columns are currently supported. 
+generic tab-delimited spectrum representing file format with time (in seconds) 
+and fluorescence intensity representing columns are currently supported. 
 File type determination is handled algorythmically.
 
 Based on @menon_opsin_2011 and @goren_constitutive_2014, data is processed as 
 follows. Input is format checked and defaults are injected for facultative 
-parameters/columns as appropriate. Fluorescence spectra are parsed, including 
-determination of when dithionite was added to the sample using peak detection by
-continuous wavelet transformation as implemented by the `wmtsa` `R` package 
-[@percival_wavelet_2000;@constantine_wmtsa:_2013] and resetting the acquisition 
-time accordingly. The zero time point henceforth corresponds to the time of 
-addition. 
+parameters/columns as appropriate. Fluorescence spectra are parsed. This includes 
+algorithmic determination of when dithionite was added to the sample using peak
+detection by continuous wavelet transformation as implemented in the 
+`wmtsa` `R` package [@percival_wavelet_2000;@constantine_wmtsa:_2013]. The 
+acquisition time is reset such that the zero time point henceforth corresponds 
+to the time of addition. 
 Pre-dithionite-addition baseline fluorescence $F_{\text{baseline}}$ is 
 determined for each spectrum by averaging (median) over the ten values preceding
 dithionite addition. Post-dithinonite-addition minimum fluorescence 
 $F_{\text{min}}$ is analogously calculated from the last ten datapoints after 
 the default 400 s or the timepoint of measurement supplied by the user in the 
-parameter file. $F_{\text{min}}$ is volume-corrected based on supplied reaction 
-volumes
-with and without dithionite and for each spectrum/datapoint a fluorescence 
-reduction is calculated as follows:
+parameter spreadsheet. $F_{\text{min}}$ is volume-corrected based on supplied 
+reaction volumes with and without dithionite and for each spectrum/datapoint a 
+fluorescence reduction is calculated as follows:
 $$
 y_{\text{raw}} = 1 - \frac{F_{\text{min}}}{F_{\text{baseline}}}
 $$
-<!--
-Data are split for parallel treatment using a combined Experimental Series/Experiment identifier (see above).-->
 A relative fluorescence reduction $y$ is calculated scaled to a (required) liposomes-only/no-protein control and the probability $P_{\geq 1}$ for a 
 liposome to contain at least one scramblase molecules is calculated using
 $$
