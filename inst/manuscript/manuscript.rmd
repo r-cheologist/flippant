@@ -66,26 +66,30 @@ lipids between the leaflets of lipid bilayers that constitute biological membran
 facilitate this ``flipping'' by providing to polar lipid head groups a mechanism
 of transition through the hydrophobic environment of membranes, thus reducing 
 the massive energetic cost that process would carry otherwise 
-[@kornberg_inside-outside_1971]. While the underlying molecular mechanisms in 
-many cases remain enigmatic [for a discussion including exceptions see @ernst_phospholipid_2015], and molecules supporting flipping processes as 
-central as the equilibration of the ubiquitous phosphoglycerolipids across the 
-membrane of the endoplasmic reticulum, where they are synthesized in the 
-cytoplasmic monolayer, have yet to be identified **(I was looking for a recent 
-citation that clearly spelled that out - in vain. Do you have a proposal?)**, 
-there has been much recent progress in scramblase identification and 
-characterization. Molecules shown to have scramblase activity include 
-opsin/rhodopsin [@menon_opsin_2011;@goren_constitutive_2014], TMEM16 
+[@kornberg_inside-outside_1971]. The underlying molecular mechanisms remain 
+largely enigmatic [for a discussion including exceptions see @ernst_phospholipid_2015].
+Proteins supporting flipping processes as central as the equilibration of the 
+ubiquitous phosphoglycerolipids across the membrane of the endoplasmic 
+reticulum, where they are synthesized in the cytoplasmic monolayer, have yet to 
+be identified **(I was looking for a recent 
+citation that clearly spelled that out - in vain. Do you have a proposal?)**. 
+None the less, there has been much recent progress in scramblase identification 
+and characterization. Proteins shown to have scramblase activity include 
+FtsW [@mohammadi_identification_2011], opsin/rhodopsin
+[@menon_opsin_2011;@goren_constitutive_2014], TMEM16 
 [@malvezzi_ca2-dependent_2013], $\beta$ 2-adrenergic and adenosine A2A 
-receptors [both @goren_constitutive_2014]. **Would be good to include/replace some 
-with non-in-house identifications/characterizations. What else is out there?**
+receptors [both @goren_constitutive_2014]. Extrapolating from the latter findings 
+and the opsin/rhodopsin case, we speculate that lipid scrambling may, in fact, 
+be an intrinsic property of G-protein coupled receptors in general 
+[@goren_constitutive_2014].
 
 To interrogate factors of this functional class, we have developed a biochemical 
-assay suited to characterize scramblase activity in purified proteins and protein 
+assay suited to characterize scramblase activity of purified proteins and protein 
 extracts [@chang_chemical_2004] based on the reconstitution of scramblases or 
-candidate proteins into synthetic liposomes with a lipid
-composition that includes nitrobenzoxadiazole (NBD) labeled fluorescent lipids.
-Upon exposure of these liposomes to membrane-impermeable reducing agents such as 
-dithionite, fluorophores in the external leaflet are quenched and fluorescence in scramblase-free liposomes accordingly quickly drops to approximately 50% of the 
+candidate proteins into preformed synthetic liposomes that contain trace amounts
+of nitrobenzoxadiazole (NBD) labeled fluorescent lipids.
+Upon addition of membrane-impermeable reducing agents such as dithionite to 
+these liposomes, fluorophores in the external leaflet are quenched and fluorescence in scramblase-free liposomes accordingly quickly drops to approximately 50% of the 
 initial value. However, for proteoliposomes reconstituted with proteins 
 conferring a scramblase activity, fluorescence disappears entirely, as
 fast scramblase-mediated equilibration between outer (exposed) and inner
