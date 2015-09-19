@@ -197,8 +197,18 @@ completed table, which is subjected to extensive input checks when read by
 `flippant`.
 
 ##Graphic Representation of Spectral Traces
+In a first, graphical data analytics step of a scramblase assay-derived data 
+set, fluorescent spectra or traces may be plotted in publication-appropriate
+quality with acquisition time in the x- and fluorescense intensity on the y-axis
+using
 ```{r, code = formatR::usage('scramblaseAssayTraces'), eval = FALSE}
 ```
+and handing the function the path to the user assembled spreadsheet of input 
+data (`x`). The `adjust` argument to the function call serves to selectively 
+inactivate `wmtsa`-provided (see above) alignment of multiple spectra to the 
+time of dithionite addition. Acquisition time coverage of the plot may be tuned 
+by user-provided minimal (`timeMin` ) and maximal (`timeMax`) time points to be
+included.
 
 ##Producing Protein To Phospholipid (PPR) Plots
 ```{r, code = formatR::usage('scramblaseAssayPlot'), eval = FALSE}
