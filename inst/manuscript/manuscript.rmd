@@ -160,11 +160,11 @@ Acquisition time is aligned for all spectra in the data set such that the zero
 time point henceforth corresponds to the time of addition. 
 Pre-dithionite-addition baseline fluorescence $F_{\text{baseline}}$ is 
 determined for each spectrum by averaging (median) over the ten values preceding
-dithionite addition. Post-dithinonite-addition minimum fluorescence 
-$F_{\text{min}}$ is analogously calculated from the last ten datapoints after 
-a default 400 s or the timepoint of measurement supplied by the user in the 
+dithionite addition. Post-dithionite-addition minimum fluorescence 
+$F_{\text{min}}$ is analogously calculated from the last ten data points after 
+a default 400 s or the time point of measurement supplied by the user in the 
 parameter spreadsheet. $F_{\text{min}}$ is volume-corrected based on supplied 
-reaction volumes with and without dithionite and for each spectrum/datapoint a 
+reaction volumes with and without dithionite and for each spectrum/data point a 
 fluorescence reduction is calculated as follows:
 $$
 y_{\text{raw}} = 1 - \frac{F_{\text{min}}}{F_{\text{baseline}}}
@@ -181,7 +181,7 @@ derived from a monoexponential fit to the data (default) as a precaution for the
 case where the protein/phospholipid titration did not reach the plateau of the 
 saturation curve. The behavior is adjustable using the `scaleTo` parameter of 
 the corresponding functions (see below). Next a monoexponential curve is fitted
-to the realtionship of $P_{\geq 1}$ to the protein to phospholipid ratio (PPR; 
+to the relationship of $P_{\geq 1}$ to the protein to phospholipid ratio (PPR; 
 (mg/mmol)), providing the scramblase-characterizing fit factor $\alpha$.
 
 #Main Features
@@ -189,7 +189,7 @@ to the realtionship of $P_{\geq 1}$ to the protein to phospholipid ratio (PPR;
 Supporting the user in providing the input data needed, the following function 
 generates a spreadsheet program-compatible tab-delimited `ASCII` template, 
 including column names, commentary, expected data type and the default used when
-ommited.
+omitted.
 ```{r, code=formatR::usage('scramblaseAssayInputTemplate'), eval=FALSE}
 ```
 The application agnostic tab-delimited format must be maintained for the 
@@ -197,9 +197,9 @@ completed table, which is subjected to extensive input checks when read by
 `flippant`.
 
 ##Graphic Representation of Spectral Traces
-In a first, graphical data analytics step of a scramblase assay-derived data 
+In a first, graphical data analytic step of a scramblase assay-derived data 
 set, fluorescent spectra or traces may be plotted in publication-appropriate
-quality with acquisition time in the x- and fluorescense intensity on the y-axis
+quality with acquisition time in the x- and fluorescence intensity on the y-axis
 using
 ```{r, code = formatR::usage('scramblaseAssayTraces'), eval = FALSE}
 ```
@@ -211,7 +211,7 @@ by user-provided minimal (`timeMin` ) and maximal (`timeMax`) time points to be
 included.
 
 ##Scramblase Assay Analysis
-Plotting protein to phospholipid ratio (PPR) against the likelyhood for a given
+Plotting protein to phospholipid ratio (PPR) against the likelihood for a given
 proteoliposome to contain one or more scramblases, the PPR plot is at the heart 
 of the analysis of dithionite scramblase assays, allowing for the visual 
 comparison of specific scramblase activity between interrogated experimental 
@@ -225,7 +225,7 @@ the user assembled spreadsheet of input data (`x`), including automatically
 added graphical representations of $\tau$, the PPR value equal to the fit 
 constant $\alpha$, which implies all liposomes on average carrying one 
 scramblase and 63% have one or more (i.e. are active). The behavior of the 
-function may be adjusted to use scramblase-mediated fluorescense reduction 
+function may be adjusted to use scramblase-mediated fluorescence reduction 
 normalized to either the maximum measurement in the series (`scaleTo = "data"`)
 or the plateau of an exponential fit to it (`scaleTo = "model"`; for reasoning
 see above) and whether or not to require the exponential curve fitted to the 
@@ -259,7 +259,7 @@ Figure 5b in @ploier_perturbed_submitted.
 #Conclusion
 
 #Funding
-J.G., R.J.C. and the Proteomics Core at WCMC-Q were supported by ``Biomedical 
+J.G., R.J.C. and the Proteomics Core at WCMC-Q are supported by ``Biomedical 
 Research Program'' funds at Weill Cornell Medical College in Qatar, a program 
 funded by Qatar Foundation. B.P. was supported by a grant from Qatar National 
 Research Fund’s National Priority Research Program (5-669-1-112) to J.G. and
