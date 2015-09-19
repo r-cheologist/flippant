@@ -138,6 +138,19 @@
 #' @importFrom assertive assert_is_a_string
 #' @importFrom plyr rbind.fill
 #' @examples
+#' # Extract the packaged example data
+#' tmpDir <- tempdir()
+#' unzip(
+#'   system.file(
+#'     file.path("extdata", "PloierEtAl_Data.zip"),
+#'     package = "flippant",
+#'     mustWork = TRUE),
+#'   overwrite = TRUE,
+#'   exdir = tmpDir)
+#' # Plot the spectal traces
+#' scramblaseAssayTraces(
+#'   file.path(tmpDir, "inputTable.txt"),
+#'   timeMax = 350)
 #' stop("Add example using actually published data.")
 scramblaseAssayPlot <- function(x, scaleTo=c("model","data"),forceThroughOrigin=TRUE){
   UseMethod("scramblaseAssayPlot",x)
