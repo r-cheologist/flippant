@@ -61,8 +61,8 @@ jog2030@qatar-med.cornell.edu
 Scramblases are proteins mediating the mass-action driven equilibration of 
 lipids between the leaflets of lipid bilayers that constitute biological membranes
 [@waechter_flippases_2013]. Independent of energy equivalents such as ATP they 
-facilitate this ``flipping'' by providing to polar lipid head groups a mechanism
-of transition through the hydrophobic environment of membranes, thus reducing 
+facilitate this ``flipping'' by providing a mechanism of transition through the 
+hydrophobic environment of membranes to polar lipid head groups, thus reducing 
 the massive energetic cost that process would carry otherwise 
 [@kornberg_inside-outside_1971]. The underlying molecular mechanisms remain 
 largely enigmatic [for a discussion including exceptions see @ernst_phospholipid_2015].
@@ -81,11 +81,11 @@ and the opsin/rhodopsin case, we speculate that lipid scrambling may, in fact,
 be an intrinsic property of G-protein coupled receptors in general 
 [@goren_constitutive_2014].
 
-To interrogate factors of this functional class, we have developed a biochemical 
+To interrogate this functional class of proteins, we have developed a biochemical 
 assay suited to characterize scramblase activity of purified proteins and protein 
-extracts [@chang_chemical_2004] based on the reconstitution of scramblases or 
-candidate proteins into preformed synthetic liposomes that contain trace amounts
-of nitrobenzoxadiazole (NBD) labeled fluorescent lipids.
+extracts based on the reconstitution of scramblases or candidate proteins into 
+preformed synthetic liposomes that contain trace amounts of nitrobenzoxadiazole 
+(NBD) labeled fluorescent lipids [@chang_chemical_2004].
 Upon addition of membrane-impermeable reducing agents such as dithionite to 
 these liposomes, fluorophores in the external leaflet are quenched and fluorescence in scramblase-free liposomes accordingly quickly drops to approximately 50% of the 
 initial value. However, for proteoliposomes reconstituted with proteins 
@@ -110,7 +110,7 @@ from fluorometer-generated spectra, via the calculation of the underlying
 statistics and through publication-grade representation of the results, data 
 analysis in the context of this assay has until now involved an extensive series
 of manual steps, at most supported by spreadsheet calculation facilities
-[see the supplementary material of @menon_opsin_2011 for extensive step-wise discussion].
+[see @menon_opsin_2011;@goren_constitutive_2014 for extensive step-wise discussion].
 Based on the `R` free software environment for statistical computing and 
 graphics [@r_core_team_r:_2015] and prominently drawing on the power and 
 elegance of the `ggplot2` plotting system [@wickham_ggplot2_2009], we here 
@@ -155,14 +155,14 @@ follows. Input is format checked and defaults are injected for facultative
 parameters/columns as appropriate. Fluorescence spectra are parsed. This includes 
 algorithmic determination of when dithionite was added to the sample using peak
 detection by continuous wavelet transformation as implemented in the 
-`wmtsa` `R` package [@percival_wavelet_2000;@constantine_wmtsa:_2013]. The 
-acquisition time is reset such that the zero time point henceforth corresponds 
-to the time of addition. 
+`wmtsa` `R` package [@percival_wavelet_2000;@constantine_wmtsa:_2013]. 
+Acquisition time is aligned for all spectra in the data set such that the zero 
+time point henceforth corresponds to the time of addition. 
 Pre-dithionite-addition baseline fluorescence $F_{\text{baseline}}$ is 
 determined for each spectrum by averaging (median) over the ten values preceding
 dithionite addition. Post-dithinonite-addition minimum fluorescence 
 $F_{\text{min}}$ is analogously calculated from the last ten datapoints after 
-the default 400 s or the timepoint of measurement supplied by the user in the 
+a default 400 s or the timepoint of measurement supplied by the user in the 
 parameter spreadsheet. $F_{\text{min}}$ is volume-corrected based on supplied 
 reaction volumes with and without dithionite and for each spectrum/datapoint a 
 fluorescence reduction is calculated as follows:
@@ -186,9 +186,10 @@ to the realtionship of $P_{\geq 1}$ to the protein to phospholipid ratio (PPR;
 
 #Main Features
 ##Template Generation for Data Input
-The following function generates a spreadsheet program-compatible tab-delimited 
-`ASCII` template including column names, commentary, expected data type and the 
-default used when ommited, supporting the user in providing the data needed.
+Supporting the user in providing the input data needed, the following function 
+generates a spreadsheet program-compatible tab-delimited `ASCII` template, 
+including column names, commentary, expected data type and the default used when
+ommited.
 ```{r, code=formatR::usage('scramblaseAssayInputTemplate'), eval=FALSE}
 ```
 The application agnostic tab-delimited format must be maintained for the 
