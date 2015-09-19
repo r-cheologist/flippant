@@ -18,8 +18,7 @@ scramblaseAssayCalculations <- function(x,scaleTo,forceThroughOrigin=TRUE){
     stop("'Timepoint of Measurement (s)' is larger than the shortest spectrum 
          acquisition. Aborting.")
   } else {
-    stop("Implement individual timepoints of measurement!")
-    maxAcquisitionTime <- unique(x$"Timepoint of Measurement (s)")
+    maxAcquisitionTime <- max(x$"Timepoint of Measurement (s)")
   }
   # Average over 10 values before dithionite addition for activity baseline
   x$"Baseline Fluorescence" <- vapply(
@@ -31,13 +30,15 @@ scramblaseAssayCalculations <- function(x,scaleTo,forceThroughOrigin=TRUE){
     1)
   # Average over last 10 values (in common time range) for activity
   x$"Minimum Fluorescence" <- vapply(
-    spectralData,
+    seq_along(spectralData),
     function(z){
-      stopIndexForAveraging <- max(which(z$Data$Time.in.sec <= maxAcquisitionTime))
+      stopIndexForAveraging <- max(
+        which(
+          spectralData[[z]]$Data$Time.in.sec <= x[z,"Timepoint of Measurement (s)"]))
       indexesForAveraging <- seq(
         from=stopIndexForAveraging-9,
         to=stopIndexForAveraging)
-      return(median(z$Data$Fluorescence.Intensity[indexesForAveraging],na.rm=TRUE))
+      return(median(spectralData[[z]]$Data$Fluorescence.Intensity[indexesForAveraging],na.rm=TRUE))
     },
     1)
   # Apply volume correction factors as needed
