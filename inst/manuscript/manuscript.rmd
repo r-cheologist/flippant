@@ -1,15 +1,15 @@
 ---
-title: "`flippant` -- An `R` package for the automated  analysis of dithionite 
-  scramblase assays"
-author: "Johannes Graumann ^†,^*, Birgit Ploier ^‡^, Richard J. Cotton ^†^,
-  Mike A. Goren ^‡^ and Anant K. Menon ^‡^"
-date: "September 16, 2015"
-output: 
+title: '`flippant` -- An `R` package for the automated  analysis of dithionite scramblase
+  assays'
+author: Johannes Graumann ^†,^*, Birgit Ploier ^‡^, Richard J. Cotton ^†^, Mike A.
+  Goren ^‡^ and Anant K. Menon ^‡^
+date: "September 19, 2015"
+output:
 #  word_document
   pdf_document:
     fig_caption: yes
-bibliography: flippant.bib
 csl: bioinformatics.csl
+bibliography: flippant.bib
 ---
 
 †
