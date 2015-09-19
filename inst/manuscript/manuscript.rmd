@@ -238,6 +238,23 @@ using
 with the same modifying arguments to the function as for `scramblaseAssayPlot`.
 
 #Case Study
+*Retinitis pigmentosa* is a degenerative disease of the retina, of which the 
+majority of cases is linked to mutant forms of the G-protein coupled receptor 
+rhodopsin [@mendes_mechanisms_2005]. Motivated by our recent discovery that 
+opsin/rhodopsin has scramblase activity [@menon_opsin_2011;@goren_constitutive_2014],
+we hypothesized that a class of enigmatic rhodopsin mutations, which are known
+to cause *retinitis pigmentosa* yet do not display the commonly associated 
+molecular phenotypes of impaired binding of retinal, folding and/or trafficking or 
+transducin activation, may in fact be impacted in their scramblase activity.
+This hypothesis was disproved when tested using the dithionite scramblase assay
+among other techniques. However, the same set of experiments pointed at a defect 
+in rhodopsin dimerization prior to insertion into liposomes, generating the new 
+hypothesis that the mutations may cause disease by interfering with the highly 
+ordered quarternary structure of the molecule in the retina 
+[@ploier_perturbed_submitted].
+
+`flippant`s capabilities are demonstrated here by reanalyzing the data underlying 
+Figure 5b in @ploier_perturbed_submitted.
 
 #Conclusion
 
