@@ -115,6 +115,9 @@
 #' @param timeMax A single \code{\link{numeric}}. If given, 
 #' \code{\link{scramblaseAssayTraces}} produces a time/x axis trimmed to
 #' this value.
+#' @param adjust A single \code{\link{logical}}, indicating of whether (default) or 
+#' not spectral traces to be plotted are algorithmically aligned at the time
+#' point of dithionite addition.
 #' @return \code{scrambalseAssayTraces} and \code{scramblaseAssayPlot} return 
 #' \code{\link{ggplot}} objects representing the raw fluorescence traces and a
 #' complete PPR plot, respectively. \code{scrambalseAssayInputTamplate} 
