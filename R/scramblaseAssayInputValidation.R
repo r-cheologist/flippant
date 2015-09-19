@@ -111,11 +111,7 @@ scramblaseAssayInputValidation <- function(
       paste(facultativeColumnsInX$Class,collapse="', '"),
       "'.")
   }
-  ## Check "Timepoint of Measurement (s)" consistency
-  if(length(unique(x$"Timepoint of Measurement (s)")) != 1){
-    stop("Column 'Timepoint of Measurement (s)' contains multiple values. Exiting.")
-  }
-  
+
   # Check scaleTo
   scaleTo <- match.arg(
     arg=scaleTo,

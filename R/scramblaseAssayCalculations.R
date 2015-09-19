@@ -18,6 +18,7 @@ scramblaseAssayCalculations <- function(x,scaleTo,forceThroughOrigin=TRUE){
     stop("'Timepoint of Measurement (s)' is larger than the shortest spectrum 
          acquisition. Aborting.")
   } else {
+    stop("Implement individual timepoints of measurement!")
     maxAcquisitionTime <- unique(x$"Timepoint of Measurement (s)")
   }
   # Average over 10 values before dithionite addition for activity baseline
