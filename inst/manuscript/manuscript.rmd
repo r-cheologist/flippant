@@ -63,7 +63,12 @@ figure1 <- multipanelfigure(
   columns = 2, 
   rows = 2)
 
-knitr::opts_chunk$set(fig.width=6.78, fig.height=6.78, warning=FALSE, message=FALSE)
+knitr::opts_chunk$set(
+  fig.width=6.78, 
+  fig.height=6.78, 
+  warning=FALSE, 
+  message=FALSE,
+  dev = 'pdf')
 ```
 
 #Abstract
