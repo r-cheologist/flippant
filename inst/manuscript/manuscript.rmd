@@ -210,13 +210,32 @@ time of dithionite addition. Acquisition time coverage of the plot may be tuned
 by user-provided minimal (`timeMin` ) and maximal (`timeMax`) time points to be
 included.
 
-##Producing Protein To Phospholipid (PPR) Plots
+##Scramblase Assay Analysis
+Plotting protein to phospholipid ratio (PPR) against the likelyhood for a given
+proteoliposome to contain one or more scramblases, the PPR plot is at the heart 
+of the analysis of dithionite scramblase assays, allowing for the visual 
+comparison of specific scramblase activity between interrogated experimental 
+series, which may e.g. be representative of protein preparations including 
+mutant protein forms or crude extracts with or without depletion of a candidate
+scramblase. 
 ```{r, code = formatR::usage('scramblaseAssayPlot'), eval = FALSE}
 ```
+allows for the complete generation of the PPR plot in publication quality from 
+the user assembled spreadsheet of input data (`x`), including automatically 
+added graphical representations of $\tau$, the PPR value equal to the fit 
+constant $\alpha$, which implies all liposomes on average carrying one 
+scramblase and 63% have one or more (i.e. are active). The behavior of the 
+function may be adjusted to use scramblase-mediated fluorescense reduction 
+normalized to either the maximum measurement in the series (`scaleTo = "data"`)
+or the plateau of an exponential fit to it (`scaleTo = "model"`; for reasoning
+see above) and whether or not to require the exponential curve fitted to the 
+data to go through the origin.
 
-##Non-graphical Output of Analysis Results
+Numeric scramblase assay results such as $\tau$ may be generated in tabular form
+using
 ```{r, code = formatR::usage('scramblaseAssayStats'), eval = FALSE}
 ```
+with the same modifying arguments to the function as for `scramblaseAssayPlot`.
 
 #Case Study
 
