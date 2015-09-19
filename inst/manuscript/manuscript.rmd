@@ -24,7 +24,10 @@ bibliography: flippant.bib
 :   To whom correspondence should be addressed: jog2030@qatar-med.cornell.edu
 
 ```{r, echo = FALSE}
+library(flippant, quietly = TRUE)
+library(grid, quietly = TRUE)
 library(magrittr, quietly = TRUE)
+library(multipanelfigure, quietly = TRUE)
 library(stringi, quietly = TRUE)
 flippant_dependencies <- packageDescription("flippant",fields=c("Depends","Imports")) %>%
   unlist(use.names = FALSE) %>%
@@ -43,7 +46,24 @@ flippant_dependencies <- packageDescription("flippant",fields=c("Depends","Impor
         tail(x, n = 1),
         "`"),
       collapse = "")} )
-library(flippant, quietly = TRUE)
+
+tmpDir <- tempdir()
+file.path("extdata", "PloierEtAl_Data.zip") %>%
+  system.file(
+    package = "flippant",
+    mustWork = TRUE) %>%
+  unzip(
+    overwrite = TRUE,
+    exdir = tmpDir)
+
+figure1 <- multipanelfigure(
+  width = 17.22, 
+  height = 18, 
+  units = "cm", 
+  columns = 2, 
+  rows = 2)
+
+knitr::opts_chunk$set(fig.width=6.78, fig.height=6.78, warning=FALSE, message=FALSE)
 ```
 
 #Abstract
@@ -254,7 +274,28 @@ ordered quarternary structure of the molecule in the retina
 [@ploier_perturbed_submitted].
 
 `flippant`s capabilities are demonstrated here by reanalyzing the data underlying 
-Figure 5b in @ploier_perturbed_submitted.
+Figure 5b in @ploier_perturbed_submitted. The following work flow in a first 
+step plots spectral traces for all points of the data set (Figure 1A). Note that
+alorithmic alignment to the time of dithionite addition is employed (default) as
+well as custom trimming of the time axis to account for divergent acquisition 
+times between experiments.
+<!-- Fix F220CEx1_E.txt to F220CEx1_D.txt -->
+```{r, eval = FALSE}
+# Plot spectral traces (Figure 1A)
+scramblaseAssayTraces("inputTable.txt", timeMax = 350)
+```
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap = "**`flippant`-based reanalysis of data in Figure 5b from @ploier_perturbed_submitted.** (A) represents spectral traces as produced by a call to the function `scramblaseAssayTraces`."}
+setwd(tmpDir)
+figure1 <- addpanel(
+  figure = figure1,
+  topPanel = 1, 
+  leftPanel = 1, 
+  rightPanel = 2, 
+  panel = scramblaseAssayTraces("inputTable.txt", timeMax = 350)
+)
+grid.draw(figure1)
+```
+
 
 #Conclusion
 
