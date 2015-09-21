@@ -147,9 +147,10 @@
 #'     mustWork = TRUE),
 #'   overwrite = TRUE,
 #'   exdir = tmpDir)
+#' setwd(tmpDir)
 #' # Plot the spectal traces
 #' scramblaseAssayTraces(
-#'   file.path(tmpDir, "inputTable.txt"),
+#'   "inputTable.txt",
 #'   timeMax = 350)
 #' stop("Add example using actually published data.")
 scramblaseAssayPlot <- function(x, scaleTo=c("model","data"),forceThroughOrigin=TRUE){
