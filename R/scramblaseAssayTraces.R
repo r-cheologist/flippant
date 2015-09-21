@@ -86,7 +86,7 @@ baseFunctionScramblaseAssayTraces <- function(
   # Prettify
   plotOutput <- plotOutput +
     labs(
-      x="Time (s)",
+      x="Acquisition Time (s)",
       y="Relative Fluorescence Intensity",
       colour=expression("PPR "*bgroup("(",frac("mg","mmol"),")")))
   # Facetting
