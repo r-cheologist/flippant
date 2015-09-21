@@ -15,8 +15,8 @@ scramblaseAssayCalculations <- function(x,scaleTo,forceThroughOrigin=TRUE){
   }
   maxAcquisitionTime <- vapply(spectralData,function(y){y$Max.Acquisition.Time.in.sec},1)
   if(any(maxAcquisitionTime < x$"Timepoint of Measurement (s)")){
-    stop("'Timepoint of Measurement (s)' is larger than the shortest spectrum 
-         acquisition. Aborting.")
+    stop("At least one 'Timepoint of Measurement' is larger than the 
+      corresponding spectrum acquisition. Aborting.")
   } else {
     maxAcquisitionTime <- max(x$"Timepoint of Measurement (s)")
   }
