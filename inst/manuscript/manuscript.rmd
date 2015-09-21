@@ -333,8 +333,8 @@ publication-grade graphics that offer extensive facilities for individual
 optimization and adaptation [@wickham_ggplot2_2009]. On a system running `Linux`
 and `R` version `r paste(R.version[c("major","minor")], collapse = ".")`, the
 statements generating equivalents to the plots and calculations presented here
-take a mere `r analysis_timing_median` seconds (median; IQR: 
-`r analysis_timing_iqr` s; $n=`r analysis_timing_n`$).
+take a mere `r analysis_timing_median` seconds (median; 
+$\text{IQR}=`r analysis_timing_iqr` \text{s}$; $n=`r analysis_timing_n`$).
 
 
 #Funding
