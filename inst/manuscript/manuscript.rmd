@@ -61,7 +61,8 @@ figure1 <- multipanelfigure(
   height = 18, 
   units = "cm", 
   columns = 2, 
-  rows = 2)
+  rows = 2,
+  interPanelSpacing = 0.25)
 
 knitr::opts_chunk$set(
   fig.width = 6.78, 
