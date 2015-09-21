@@ -27,6 +27,7 @@ bibliography: flippant.bib
 library(flippant, quietly = TRUE)
 library(grid, quietly = TRUE)
 library(magrittr, quietly = TRUE)
+library(microbenchmark, quietly = TRUE)
 library(multipanelfigure, quietly = TRUE)
 library(stringi, quietly = TRUE)
 flippant_dependencies <- packageDescription("flippant",fields=c("Depends","Imports")) %>%
@@ -301,8 +302,41 @@ figure1 <- addpanel(
 grid.draw(figure1)
 ```
 
-
 #Conclusion
+```{r, echo = FALSE}
+setwd(tmpDir)
+analysis_timing_n <- 100
+analysis_timing_function <- function(){
+  
+  scramblaseAssayTraces("inputTable.txt", timeMax = 350)
+}
+analysis_timing <- microbenchmark(
+  analysis_timing_function(),
+  times = analysis_timing_n)
+
+analysis_timing_median <- round(
+  summary(
+    analysis_timing)$median,
+  2)
+
+analysis_timing_iqr <- round(
+  diff(
+    unlist(
+      summary(analysis_timing)[c("lq", "uq")],
+      use.names = FALSE)),
+  2)
+```
+With `flippant` we present an integrated solution for data analysis in the 
+context of dithionite scramblase assays. Requiring only basic familiarity with 
+`R` [@r_core_team_r:_2015] as an environment for statistical computing and
+graphics, scientists can quickly analyse such data and arrive at 
+publication-grade graphics that offer extensive facilities for individual 
+optimization and adaptation [@wickham_ggplot2_2009]. On a system running `Linux`
+and `R` version `r paste(R.version[c("major","minor")], collapse = ".")`, the
+statements generating equivalents to the plots and calculations presented here
+take a mere `r analysis_timing_median` seconds (IQR: `r analysis_timing__iqr` s;
+$n==`r analysis_timing_n`$).
+
 
 #Funding
 J.G., R.J.C. and the Proteomics Core at WCMC-Q are supported by ``Biomedical 
