@@ -1,5 +1,5 @@
 ---
-title: '`flippant` -- An `R` package for the automated  analysis of dithionite scramblase
+title: '`flippant` -- An `R` package for the automated analysis of dithionite scramblase
   assays'
 author: Johannes Graumann ^†,^*, Birgit Ploier ^‡^, Richard J. Cotton ^†^, Mike A.
   Goren ^‡^ and Anant K. Menon ^‡^
@@ -106,11 +106,11 @@ and the opsin/rhodopsin case, we speculate that lipid scrambling may, in fact,
 be an intrinsic property of G-protein coupled receptors in general 
 [@goren_constitutive_2014].
 
-To interrogate this functional class of proteins, we have developed a biochemical 
-assay suited to characterize scramblase activity of purified proteins and protein 
-extracts based on the reconstitution of scramblases or candidate proteins into 
-preformed synthetic liposomes that contain trace amounts of nitrobenzoxadiazole 
-(NBD) labeled fluorescent lipids [@chang_chemical_2004].
+To interrogate scramblases as a functional class of proteins, we have developed 
+a biochemical assay suited to characterize scramblase activity of purified 
+proteins and protein extracts based on the reconstitution of scramblases or 
+candidate proteins into preformed synthetic liposomes that contain trace amounts
+of nitrobenzoxadiazole (NBD) labeled fluorescent lipids [@chang_chemical_2004].
 Upon addition of membrane-impermeable reducing agents such as dithionite to 
 these liposomes, fluorophores in the external leaflet are quenched and fluorescence in scramblase-free liposomes accordingly quickly drops to approximately 50% of the 
 initial value. However, for proteoliposomes reconstituted with proteins 
@@ -186,11 +186,11 @@ time point henceforth corresponds to the time of addition.
 Pre-dithionite-addition baseline fluorescence $F_{\text{baseline}}$ is 
 determined for each spectrum by averaging (median) over the ten values preceding
 dithionite addition. Post-dithionite-addition minimum fluorescence 
-$F_{\text{min}}$ is analogously calculated from the last ten data points after 
-a default 400 s or the time point of measurement supplied by the user in the 
-parameter spreadsheet. $F_{\text{min}}$ is volume-corrected based on supplied 
-reaction volumes with and without dithionite and for each spectrum/data point a 
-fluorescence reduction is calculated as follows:
+$F_{\text{min}}$ is analogously calculated from the last ten data points before 
+(and including) a default 400 s or the time point of measurement supplied by the
+user in the parameter spreadsheet. $F_{\text{min}}$ is volume-corrected based on
+supplied reaction volumes with and without dithionite and for each spectrum/data
+point a fluorescence reduction is calculated as follows:
 $$
 y_{\text{raw}} = 1 - \frac{F_{\text{min}}}{F_{\text{baseline}}}
 $$
@@ -263,8 +263,8 @@ using
 with the same modifying arguments to the function as for `scramblaseAssayPlot`.
 
 #Case Study
-*Retinitis pigmentosa* is a degenerative disease of the retina, of which the 
-majority of cases is linked to mutant forms of the G-protein coupled receptor 
+*Retinitis pigmentosa* is a degenerative disease of the retina, the majority of 
+cases of which is linked to mutant forms of the G-protein coupled receptor 
 rhodopsin [@mendes_mechanisms_2005]. Motivated by our recent discovery that 
 opsin/rhodopsin has scramblase activity [@menon_opsin_2011;@goren_constitutive_2014],
 we hypothesized that a class of enigmatic rhodopsin mutations, which are known
