@@ -303,7 +303,7 @@ grid.draw(figure1)
 ```
 
 #Conclusion
-```{r, echo = FALSE}
+```{r, echo = FALSE, cache = TRUE}
 setwd(tmpDir)
 analysis_timing_n <- 100
 analysis_timing_function <- function(){
