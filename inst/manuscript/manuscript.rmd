@@ -285,7 +285,6 @@ step plots spectral traces for all points of the data set (Figure 1A). Note that
 alorithmic alignment to the time of dithionite addition is employed (default) as
 well as custom trimming of the time axis to account for divergent acquisition 
 times between experiments.
-<!-- Fix F220CEx1_E.txt to F220CEx1_D.txt -->
 ```{r, eval = FALSE}
 # Plot spectral traces (Figure 1A)
 scramblaseAssayTraces("inputTable.txt", timeMax = 350)
