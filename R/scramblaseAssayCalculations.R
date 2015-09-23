@@ -1,5 +1,5 @@
 #' @importFrom nlmrt nlxb
-scramblaseAssayCalculations <- function(x,scaleTo,forceThroughOrigin=TRUE){
+scramblaseAssayCalculations <- function(x,scaleTo,forceThroughOrigin=FALSE){
 # Set parameters ----------------------------------------------------------
   nlsControl <- list(minFactor=1/20480,maxit=100)
 # Parsing spectra ---------------------------------------------------------

@@ -108,7 +108,7 @@
 #' @param scaleTo Defines the source of \code{ymax}, defaulting to 
 #' \code{model}. See "Details".
 #' @param forceThroughOrigin \code{\link{logical}} indicating whether to force 
-#' the fitted curve(s) to penetrate the origin (defaulting to \code{TRUE}).
+#' the fitted curve(s) to penetrate the origin (defaulting to \code{FALSE}).
 #' @param timeMin A single \code{\link{numeric}}. If given, 
 #' \code{\link{scramblaseAssayTraces}} produces a time/x axis trimmed to
 #' this value.
@@ -153,7 +153,7 @@
 #'   "inputTable.txt",
 #'   timeMax = 350)
 #' stop("Add example using actually published data.")
-scramblaseAssayPlot <- function(x, scaleTo=c("model","data"),forceThroughOrigin=TRUE){
+scramblaseAssayPlot <- function(x, scaleTo=c("model","data"),forceThroughOrigin=FALSE){
   UseMethod("scramblaseAssayPlot",x)
 }
 #' @export
@@ -165,7 +165,7 @@ scramblaseAssayPlot.character <- function(x, ...){
   parsedInputFile <- readScramblaseInputFile(x)
   baseFunctionScramblaseAssayPlot(x=parsedInputFile, ...)
 }
-baseFunctionScramblaseAssayPlot <- function(x,scaleTo=c("model","data"),forceThroughOrigin=TRUE){
+baseFunctionScramblaseAssayPlot <- function(x,scaleTo=c("model","data"),forceThroughOrigin=FALSE){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- scramblaseAssayInputValidation(
     x = x ,

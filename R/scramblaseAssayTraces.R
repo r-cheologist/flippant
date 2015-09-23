@@ -30,7 +30,7 @@ baseFunctionScramblaseAssayTraces <- function(
   validatedParams <- scramblaseAssayInputValidation(
     x = x,
     scaleTo = "data",
-    forceThroughOrigin = TRUE,
+    forceThroughOrigin = FALSE,
     verbose = FALSE)
   x <- validatedParams[["x"]]
   assert_is_a_number(timeMin)
