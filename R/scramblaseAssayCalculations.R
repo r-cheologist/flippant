@@ -170,6 +170,7 @@ scramblaseAssayCalculations <- function(x,scaleTo,forceThroughOrigin=FALSE){
           start = list(a=estimatedA,b=1,c=1)
         },
         control = nlsControl)
+      gc()
       z$"Fit Constant (a)" <- coef(rMod)[["a"]]
       z$"PPR at P = 0.5" <- if(forceThroughOrigin){
         -coef(rMod)[["a"]] * log(1 - 0.5/coef(rMod)[["b"]])
