@@ -279,11 +279,11 @@ hypothesis that the mutations may cause disease by interfering with the highly
 ordered quarternary structure of the molecule in the retina 
 [@ploier_perturbed_submitted].
 
-`flippant`s capabilities are demonstrated here by reanalyzing the data underlying 
+`flippant`s capabilities are demonstrated here by reanalyzing data underlying 
 Figure 4C/D in @ploier_perturbed_submitted. The following work flow in a first 
-step plots spectral traces for all points of the data set (Figure 1A). Note that
-alorithmic alignment to the time of dithionite addition is employed (default) as
-well as custom trimming of the time axis to account for divergent acquisition 
+step plots the corresponding spectral traces (Figure 1A). Note that alorithmic
+alignment to the time of dithionite addition is employed (default) as well as 
+custom trimming of the time axis to account for divergent acquisition 
 times between experiments.
 ```{r, eval = FALSE}
 # Plot spectral traces (Figure 1A)
