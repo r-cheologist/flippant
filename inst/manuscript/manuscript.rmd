@@ -58,11 +58,9 @@ file.path("extdata", "PloierEtAl_Data.zip") %>%
     exdir = tmpDir)
 
 figure1 <- multipanelfigure(
-  width = 17.22, 
-  height = 18, 
-  units = "cm", 
-  columns = 2, 
-  rows = 2,
+  widths = rep(17.22/3-2*0.25, 3), 
+  heights = rep(18/5-4*0.25, 5), 
+  units = "cm",
   interPanelSpacing = 0.25)
 
 knitr::opts_chunk$set(
