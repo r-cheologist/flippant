@@ -255,8 +255,8 @@ or the plateau of an exponential fit to it (`scaleTo = "model"`; for reasoning
 see above) and whether or not to require the exponential curve fitted to the 
 data to go through the origin.
 
-Numeric scramblase assay results such as $\tau$ may be generated in tabular form
-using
+Numeric scramblase assay results such as $\tau$/$\alpha$ may be generated in 
+tabular form using
 ```{r, code = formatR::usage('scramblaseAssayStats'), eval = FALSE}
 ```
 with the same modifying arguments to the function as for `scramblaseAssayPlot`.
@@ -287,25 +287,105 @@ times between experiments.
 # Plot spectral traces (Figure 1A)
 scramblaseAssayTraces("inputTable.txt", timeMax = 350)
 ```
-```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap = "**`flippant`-based reanalysis of data in Figure 4C/D from @ploier_perturbed_submitted.** (A) represents spectral traces as produced by a call to the function `scramblaseAssayTraces`."}
+```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "**`flippant`-based reanalysis of data in Figure 4C/D from @ploier_perturbed_submitted.** (A) represents spectral traces as produced by a call to the function `scramblaseAssayTraces`, while (B) shows protein to phospholipid ration (PPR) plots for the data using a x-axis trimmed to a maximum value of 2 (see text for details)."}
 setwd(tmpDir)
 figure1 <- addpanel(
   figure = figure1,
-  topPanel = 1, 
+  topPanel = 1,
+  bottomPanel = 3,
   leftPanel = 1, 
-  rightPanel = 2, 
-  panel = scramblaseAssayTraces("inputTable.txt", timeMax = 350)
-)
+  rightPanel = 3, 
+  panel = scramblaseAssayTraces("inputTable.txt", timeMax = 350) + theme_bw())
+figure1 <- addpanel(
+  figure = figure1,
+  topPanel = 4,
+  bottomPanel = 5,
+  leftPanel = 1, 
+  rightPanel = 3, 
+  panel = scramblaseAssayPlot("inputTable.txt") + 
+    theme_bw() + 
+    xlim(0, 2) + 
+    xlab(expression("PPR"~~("mg"/"mmol"))) +
+    ylab(expression(P[{phantom()>=1}])))
 grid.draw(figure1)
 ```
+
+Scramblase activity analysis as described above is performed on the data set with
+the following calls.
+```{r, eval = FALSE}
+# Plot PPR plot (Figure 1B)
+scramblaseAssayPlot("inputTable.txt") + xlim(0, 2)
+# Write out results in tabular manner
+scramblaseAssayStats("inputTable.txt")
+```
+```{r, echo = FALSE}
+setwd(tmpDir)
+max_PPR <- read.delim(
+    "inputTable.txt",
+    check.names = FALSE) %>%
+  flippant:::calculatePpr() %>%
+  max(
+    na.rm = TRUE) %>%
+  round(
+    digits = 2
+  )
+```
+The first call results in the protein to phospholipid ratio (PPR) plot shown in
+Figure 1B. Using the customization facilities provided by `ggplot2` 
+[@wickham_ggplot2_2009] as a plotting system the plot's x-axis is trimmed to
+avoid visual compression of all data by a single data point from the wild type 
+rhodopsin series in experiment 1, where $\text{PPR}=`r max_PPR`$. Dashed lines
+are added automatically as graphical representations of the fit constant 
+$\alpha$ or $\tau$, but are difficult to evaluate visually.
+
+Recapitulation of the calculations underlying PPR plot generation by 
+`scramblaseAssayPlot` in a call to `scramblaseAssayStats` produces tabular 
+output represented in Table 1, which includes series-specific fit constants 
+$\alpha$ in numeric and easily accessible form.
+```{r, echo = FALSE}
+setwd(tmpDir)
+ppr_results <- scramblaseAssayStats("inputTable.txt")
+ppr_results_tau_average <- ppr_results %>%
+  split(ppr_results$`Experimental Series`) %>% 
+  sapply(function(y){mean(y$`Fit Constant`, na.rm = TRUE)}) %>%
+  round(2)
+ppr_results_tau_average_names <- names(ppr_results_tau_average) %>%
+  head(n = length(ppr_results_tau_average) - 1) %>%
+  paste(collapse = ", ") %>%
+  paste("and") %>%
+  paste(tail(names(ppr_results_tau_average), n = 1))
+ppr_results_tau_average_print <- ppr_results_tau_average %>%
+  unname() %>%
+  head(n = length(ppr_results_tau_average) - 1) %>%
+  paste(collapse = ", ") %>%
+  paste("and") %>%
+  paste(tail(ppr_results_tau_average, n = 1))
+knitr::kable(
+  ppr_results,
+  row.names = FALSE,
+  caption = "**Tabular output of `flippant`-based reanalysis of data in Figure 4C/D from @ploier_perturbed_submitted.** An `ASCII`-version of this output is produced by calling `scramblaseAssayStats`.")
+```
+
+Mean $\tau$ values (or fit constants $\alpha$) correspond with `r ppr_results_tau_average_print` for `r ppr_results_tau_average_names`, 
+respectively, very well to the prior manual analyis by 
+@ploier_perturbed_submitted, where $\tau \approx 0.12$ was reported for mustant 
+and $\tau \approx 0.26$ for wild type rhodopsin. Based on the manual analysis of
+the data we conclude in @ploier_perturbed_submitted that the mutant rhodopsins
+investigated are reconsituted into proteoliposomes in monomeric form, contrary 
+to the wild type, which is reconstituting as a homodimer. `flippant` analysis of
+the data, shows identical trends and close matches of the results, supporting 
+identical conclusions.
 
 #Conclusion
 ```{r, echo = FALSE, cache = TRUE}
 setwd(tmpDir)
 analysis_timing_n <- 100
 analysis_timing_function <- function(){
-  
-  scramblaseAssayTraces("inputTable.txt", timeMax = 350)
+  scramblaseAssayTraces(
+    "inputTable.txt",
+    timeMax = 350)
+  scramblaseAssayPlot("inputTable.txt")
+  scramblaseAssayStats("inputTable.txt")
 }
 analysis_timing <- microbenchmark(
   analysis_timing_function(),
@@ -328,11 +408,13 @@ context of dithionite scramblase assays. Requiring only basic familiarity with
 `R` [@r_core_team_r:_2015] as an environment for statistical computing and
 graphics, scientists can quickly analyse such data and arrive at 
 publication-grade graphics that offer extensive facilities for individual 
-optimization and adaptation [@wickham_ggplot2_2009]. On a system running `Linux`
-and `R` version `r paste(R.version[c("major","minor")], collapse = ".")`, the
+optimization and adaptation [@wickham_ggplot2_2009]. On a laptop system with 
+`r parallel::detectCores()` cores and 8 GB RAM (no SSD), running `Linux` and 
+`R` version `r paste(R.version[c("major","minor")], collapse = ".")`, the
 statements generating equivalents to the plots and calculations presented here
 take a mere `r analysis_timing_median` seconds (median; 
-$\text{IQR}=`r analysis_timing_iqr` \text{s}$; $n=`r analysis_timing_n`$).
+$\text{IQR}=`r analysis_timing_iqr`~\text{s}$; $n=`r analysis_timing_n`$).
+
 
 
 #Funding
