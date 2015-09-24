@@ -172,7 +172,7 @@ spreadsheet. Raw spectra produced by QuantaMaster fluorometer instruments
 versions FelixGX v4.1 and Felix32 v1.20, respectively, as well as a simple 
 generic tab-delimited spectrum representing file format with time (in seconds) 
 and fluorescence intensity representing columns are currently supported. 
-File type determination is handled algorythmically.
+File type determination is handled algorithmically.
 
 Based on @menon_opsin_2011 and @goren_constitutive_2014, data is processed as 
 follows. Input is format checked and defaults are injected for facultative 
@@ -279,7 +279,7 @@ ordered quarternary structure of the molecule in the retina
 
 `flippant`s capabilities are demonstrated here by reanalyzing data underlying 
 Figure 4C/D in @ploier_perturbed_submitted. The following work flow in a first 
-step plots the corresponding spectral traces (Figure 1A). Note that alorithmic
+step plots the corresponding spectral traces (Figure 1A). Note that algorithmic
 alignment to the time of dithionite addition is employed (default) as well as 
 custom trimming of the time axis to account for divergent acquisition 
 times between experiments.
@@ -367,11 +367,11 @@ knitr::kable(
 ```
 
 Mean $\tau$ values (or fit constants $\alpha$) correspond with `r ppr_results_tau_average_print` for `r ppr_results_tau_average_names`, 
-respectively, very well to the prior manual analyis by 
-@ploier_perturbed_submitted, where $\tau \approx 0.12$ was reported for mustant 
+respectively, very well to the prior manual analysis by 
+@ploier_perturbed_submitted, where $\tau \approx 0.12$ was reported for mutant 
 and $\tau \approx 0.26$ for wild type rhodopsin. Based on the manual analysis of
 the data we conclude in @ploier_perturbed_submitted that the mutant rhodopsins
-investigated are reconsituted into proteoliposomes in monomeric form, contrary 
+investigated are reconstituted into proteoliposomes in monomeric form, contrary 
 to the wild type, which is reconstituting as a homodimer. `flippant` analysis of
 the data, shows identical trends and close matches of the results, supporting 
 identical conclusions.
@@ -406,8 +406,8 @@ analysis_timing_iqr <- round(
 ```
 With `flippant` we present an integrated solution for data analysis in the 
 context of dithionite scramblase assays. Requiring only basic familiarity with 
-`R` [@r_core_team_r:_2015] as an environment for statistical computing and
-graphics, scientists can quickly analyse such data and arrive at 
+`R` as an environment for statistical computing and graphics 
+[@r_core_team_r:_2015], scientists can quickly analyse such data and arrive at 
 publication-grade graphics that offer extensive facilities for individual 
 optimization and adaptation [@wickham_ggplot2_2009]. On a laptop system with 
 `r parallel::detectCores()` cores and 8 GB RAM (no SSD), running `Linux` and 
@@ -416,7 +416,7 @@ statements generating equivalents to the plots and calculations presented here
 take a mere `r analysis_timing_median` seconds (median; 
 $\text{IQR}=`r analysis_timing_iqr`~\text{s}$; $n=`r analysis_timing_n`$).
 
-Results from `flippant`-driven analysis track well prior manual analysis. 
+Results from `flippant`-driven analysis track prior manual analysis well. 
 Deviations observed may stem from algorithmic differences such as the fitting 
 routine used (`flippant` uses the Nash variant of the Marquardt 
 nonlinear least squares algorithm as implemented by @nash_nlmrt:_2014) and 
