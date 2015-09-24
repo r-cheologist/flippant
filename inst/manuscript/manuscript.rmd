@@ -82,14 +82,14 @@ jog2030@qatar-med.cornell.edu
 ##Supplementary Information
 
 # Introduction
-Scramblases are proteins mediating the mass-action driven equilibration of 
-lipids between the leaflets of lipid bilayers that constitute biological membranes
-[@waechter_flippases_2013]. Independent of energy equivalents such as ATP they 
-facilitate this ``flipping'' by providing a mechanism of transition through the 
-hydrophobic environment of membranes to polar lipid head groups, thus reducing 
-the massive energetic cost that process would carry otherwise 
-[@kornberg_inside-outside_1971]. The underlying molecular mechanisms remain 
-largely enigmatic [for a discussion including exceptions see @ernst_phospholipid_2015].
+Scramblases are proteins mediating the bidirectional, mass-action driven 
+equilibration of lipids between the leaflets of lipid bilayers that constitute 
+biological membranes [@waechter_flippases_2013]. Independent of energy 
+equivalents such as ATP they facilitate this ``flipping'' by providing a 
+mechanism of transition through the hydrophobic environment of membranes to 
+polar lipid head groups, thus reducing the massive energetic cost that process 
+would carry otherwise [@kornberg_inside-outside_1971]. The underlying molecular 
+mechanisms remain largely enigmatic [for a discussion including exceptions see @ernst_phospholipid_2015].
 Proteins supporting flipping processes as central as the equilibration of the 
 ubiquitous phosphoglycerolipids across the membrane of the endoplasmic 
 reticulum, where they are synthesized in the cytoplasmic monolayer, have yet to 
@@ -246,7 +246,7 @@ scramblase.
 ```
 allows for the complete generation of the PPR plot in publication quality from 
 the user assembled spreadsheet of input data (`x`), including automatically 
-added graphical representations of $\tau$, the PPR value equal to the fit 
+added graphical representations the PPR value equal to the fit 
 constant $\alpha$, which implies all liposomes on average carrying one 
 scramblase and 63% have one or more (i.e. are active). The behavior of the 
 function may be adjusted to use scramblase-mediated fluorescence reduction 
@@ -255,7 +255,7 @@ or the plateau of an exponential fit to it (`scaleTo = "model"`; for reasoning
 see above) and whether or not to require the exponential curve fitted to the 
 data to go through the origin.
 
-Numeric scramblase assay results such as $\tau$/$\alpha$ may be generated in 
+Numeric scramblase assay results such as $\alpha$ may be generated in 
 tabular form using
 ```{r, code = formatR::usage('scramblaseAssayStats'), eval = FALSE}
 ```
@@ -336,7 +336,7 @@ Figure 1B. Using the customization facilities provided by `ggplot2`
 avoid visual compression of all data by a single data point from the wild type 
 rhodopsin series in experiment 1, where $\text{PPR}=`r max_PPR`$. Dashed lines
 are added automatically as graphical representations of the fit constant 
-$\alpha$ or $\tau$, but are difficult to evaluate visually.
+$\alpha$, but are difficult to evaluate visually.
 
 Recapitulation of the calculations underlying PPR plot generation by 
 `scramblaseAssayPlot` in a call to `scramblaseAssayStats` produces tabular 
@@ -345,36 +345,37 @@ $\alpha$ in numeric and easily accessible form.
 ```{r, echo = FALSE}
 setwd(tmpDir)
 ppr_results <- scramblaseAssayStats("inputTable.txt")
-ppr_results_tau_average <- ppr_results %>%
+ppr_results_alpha_average <- ppr_results %>%
   split(ppr_results$`Experimental Series`) %>% 
   sapply(function(y){mean(y$`Fit Constant`, na.rm = TRUE)}) %>%
   round(2)
-ppr_results_tau_average_names <- names(ppr_results_tau_average) %>%
-  head(n = length(ppr_results_tau_average) - 1) %>%
+ppr_results_alpha_average_names <- names(ppr_results_alpha_average) %>%
+  head(n = length(ppr_results_alpha_average) - 1) %>%
   paste(collapse = ", ") %>%
   paste("and") %>%
-  paste(tail(names(ppr_results_tau_average), n = 1))
-ppr_results_tau_average_print <- ppr_results_tau_average %>%
+  paste(tail(names(ppr_results_alpha_average), n = 1))
+ppr_results_alpha_average_print <- ppr_results_alpha_average %>%
   unname() %>%
-  head(n = length(ppr_results_tau_average) - 1) %>%
+  head(n = length(ppr_results_alpha_average) - 1) %>%
   paste(collapse = ", ") %>%
   paste("and") %>%
-  paste(tail(ppr_results_tau_average, n = 1))
+  paste(tail(ppr_results_alpha_average, n = 1))
 knitr::kable(
   ppr_results,
   row.names = FALSE,
   caption = "**Tabular output of `flippant`-based reanalysis of data in Figure 4C/D from @ploier_perturbed_submitted.** An `ASCII`-version of this output is produced by calling `scramblaseAssayStats`.")
 ```
 
-Mean $\tau$ values (or fit constants $\alpha$) correspond with `r ppr_results_tau_average_print` for `r ppr_results_tau_average_names`, 
+Mean values of fit constant $\alpha$) correspond with 
+`r ppr_results_alpha_average_print` for `r ppr_results_alpha_average_names`, 
 respectively, very well to the prior manual analysis by 
-@ploier_perturbed_submitted, where $\tau \approx 0.12$ was reported for mutant 
-and $\tau \approx 0.26$ for wild type rhodopsin. Based on the manual analysis of
-the data we conclude in @ploier_perturbed_submitted that the mutant rhodopsins
-investigated are reconstituted into proteoliposomes in monomeric form, contrary 
-to the wild type, which is reconstituting as a homodimer. `flippant` analysis of
-the data, shows identical trends and close matches of the results, supporting 
-identical conclusions.
+@ploier_perturbed_submitted, where $\alpha \approx 0.13$ was reported for mutant 
+and $\alpha \approx 0.26$ for wild type rhodopsin. Based on the manual analysis 
+of the data we conclude in @ploier_perturbed_submitted that the mutant 
+rhodopsins investigated are reconstituted into proteoliposomes in monomeric 
+form, contrary to the wild type, which is reconstituting as a homodimer. 
+`flippant` analysis of the data, shows identical trends and close matches of the
+results, supporting identical conclusions.
 
 #Conclusion
 ```{r, echo = FALSE, cache = TRUE}
