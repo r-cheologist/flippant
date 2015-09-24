@@ -422,7 +422,15 @@ routine used (`flippant` uses the Nash variant of the Marquardt
 nonlinear least squares algorithm as implemented by @nash_nlmrt:_2014) and 
 general handling of significant digits and rounding.
 
+The choice of `R` for the implementation is not only motivated by the extensive
+tool kit for statistic methodology and exquisite plotting environment it 
+provides, but also by the fact that it is a scripting language, rendering the
+implementation unequivocally open to scrutiny and adaptation or extension by 
+users.
 
+`flippant`, in conclusion, provides means for quick, reproducible data analysis
+in the context of dithionite scramblase analysis and a platform for review, 
+dissemination and extension of the strategies it employs.
 
 #Funding
 J.G., R.J.C. and the Proteomics Core at WCMC-Q are supported by ``Biomedical 
