@@ -1,9 +1,9 @@
 ---
 title: '`flippant` -- An `R` package for the automated analysis of dithionite scramblase
   assays'
-author: Johannes Graumann ^†,^*, Birgit Ploier ^‡^, Richard J. Cotton ^†^, Mike A.
-  Goren ^‡^ and Anant K. Menon ^‡^
-date: "September 19, 2015"
+author: Johannes Graumann ^†,^*, Birgit Ploier ^‡^, Richard J. Cotton ^†^,
+  Michael A. Goren ^‡^ and Anant K. Menon ^‡^
+date: "September 24, 2015"
 output:
 #  word_document
   pdf_document:
