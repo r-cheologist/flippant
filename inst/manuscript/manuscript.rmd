@@ -72,14 +72,8 @@ knitr::opts_chunk$set(
 
 #Abstract
 
-##Summary
-
-##Availability and Implementation
-
 ##Contact
 jog2030@qatar-med.cornell.edu
-
-##Supplementary Information
 
 # Introduction
 Scramblases are proteins mediating the bidirectional, mass-action driven 
@@ -143,10 +137,10 @@ all data analysis and graphing needs from raw fluorescence spectra produced by
 scramblase assays. A simple parametrizing spreadsheet is the sole required user 
 input.
 
-#Installation
-`flippant` has been integrated into the `bioconductor` collection of tools for 
-biomedical data analysis [@huber_orchestrating_2015] and is thus install- and
-loadable as follows from within a functional `R` environment:
+#Availablility and Implementation
+`flippant` has been implemented in `R` [@r_core_team_r:_2015] and integrated 
+into the `bioconductor` collection of tools for biomedical data analysis [@huber_orchestrating_2015]. It is thus install- and loadable as follows from 
+within a functional `R` environment:
 ```{r, eval = FALSE}
 source("http://bioconductor.org/biocLite.R")
 biocLite(pkgs = "flippant")
