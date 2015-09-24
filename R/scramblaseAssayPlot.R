@@ -138,7 +138,8 @@
 #' @importFrom assertive assert_is_a_string
 #' @importFrom plyr rbind.fill
 #' @examples
-#' # Extract the packaged example data
+#' stop("Cite Birgit's paper.")
+#' # Extract the packaged example data from Ploier et al (2016)
 #' tmpDir <- tempdir()
 #' unzip(
 #'   system.file(
@@ -153,6 +154,10 @@
 #'   "inputTable.txt",
 #'   timeMax = 350)
 #' stop("Add example using actually published data.")
+#' # Plot the PPR plot(s)
+#' scramblaseAssayPlot("inputTable.txt")
+#' # Generate tabulr results
+#' scramblaseAssayStats("inputTable.txt")
 scramblaseAssayPlot <- function(x, scaleTo=c("model","data"),forceThroughOrigin=FALSE){
   UseMethod("scramblaseAssayPlot",x)
 }
