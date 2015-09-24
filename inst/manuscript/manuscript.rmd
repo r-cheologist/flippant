@@ -71,9 +71,17 @@ knitr::opts_chunk$set(
 ```
 
 #Abstract
-
-##Contact
-jog2030@qatar-med.cornell.edu
+Dithionite scramblase assays are an established means of probing the lipid 
+scrambling activity of protein extracts and purified proteins. While the assay
+has yielded insight into the scramblase activity in crude membrane preparations,
+functional validation of candidate scramblases, stoichiometry of scramblase 
+complexes and probe ATP-dependence of flippases, data analysis in its context 
+has remained a task involving many manual steps. With the extension package 
+`flippant` to `R`, a free software environment for statistical computing and 
+graphics, we introduce an integrated solution for the analysis and 
+publication-grade graphical presentation of dithionite scramblase assays and 
+demonstrate its utility in a reanalysis of manual analysis from the publication
+record, closely reproducing the reported results.
 
 # Introduction
 Scramblases are proteins mediating the bidirectional, mass-action driven 
