@@ -386,6 +386,7 @@ analysis_timing_function <- function(){
     timeMax = 350)
   scramblaseAssayPlot("inputTable.txt")
   scramblaseAssayStats("inputTable.txt")
+  gc()
 }
 analysis_timing <- microbenchmark(
   analysis_timing_function(),
