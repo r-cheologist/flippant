@@ -415,6 +415,12 @@ statements generating equivalents to the plots and calculations presented here
 take a mere `r analysis_timing_median` seconds (median; 
 $\text{IQR}=`r analysis_timing_iqr`~\text{s}$; $n=`r analysis_timing_n`$).
 
+Results from `flippant`-driven analysis track well prior manual analysis. 
+Deviations observed may stem from algorithmic differences such as the fitting 
+routine used (`flippant` uses the Nash variant of the Marquardt 
+nonlinear least squares algorithm as implemented by @nash_nlmrt:_2014) and 
+general handling of significant digits and rounding.
+
 
 
 #Funding
