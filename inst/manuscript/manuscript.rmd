@@ -368,7 +368,7 @@ knitr::kable(
   caption = "**Tabular output of `flippant`-based reanalysis of data in Figure 4C/D from @ploier_perturbed_submitted.** An `ASCII`-version of this output is produced by calling `scramblaseAssayStats`.")
 ```
 
-Mean values of fit constant $\alpha$) correspond with 
+Mean values of fit constant $\alpha$ correspond with 
 `r ppr_results_alpha_average_print` for `r ppr_results_alpha_average_names`, 
 respectively, very well to the prior manual analysis by 
 @ploier_perturbed_submitted, where $\alpha \approx 0.13$ was reported for mutant 
