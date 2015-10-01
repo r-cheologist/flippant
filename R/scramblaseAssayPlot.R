@@ -122,7 +122,8 @@
 #' \code{\link{ggplot}} objects representing the raw fluorescence traces and a
 #' complete PPR plot, respectively. \code{scrambalseAssayInputTemplate} 
 #' generates a tab-delimited \code{ASCII} file in the file system and does not
-#' provide further output. \code{scrambalseAssayStats} prints assay statistics.
+#' provide further output. \code{scrambalseAssayStats} assembles (and prints) 
+#' assay statistics as a \code{\link{data.frame}}.
 #' @author Johannes Graumann
 #' @references Menon, I., Huber, T., Sanyal, S., Banerjee, S., Barre, P., Canis, 
 #' S., Warren, J.D., Hwa, J., Sakmar, T.P., and Menon, A.K. (2011). Opsin Is a 
