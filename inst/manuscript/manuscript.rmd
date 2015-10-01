@@ -374,7 +374,7 @@ and $\alpha \approx 0.26$ for wild type rhodopsin. Based on the manual analysis
 of the data we conclude in @ploier_perturbed_submitted that the mutant 
 rhodopsins investigated are reconstituted into proteoliposomes in monomeric 
 form, contrary to the wild type, which is reconstituting as a homodimer. 
-`flippant` analysis of the data, shows identical trends and close matches of the
+`flippant` analysis of the data shows identical trends and close matches of the
 results, supporting identical conclusions.
 
 #Conclusion
