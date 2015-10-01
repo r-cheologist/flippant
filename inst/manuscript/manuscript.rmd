@@ -126,9 +126,7 @@ assay has also been used to characterize the stoichiometry of scramblase
 homo-multimers reconstituting into the proteoliposomes 
 [@ploier_perturbed_submitted] and probe the ATP-dependence of flippases, 
 molecules that under energy-consumption flip lipids against a concentration 
-gradient between bilayer leaflets [@soupene_atp8a1_2008].
-**Are you aware of further use? More adoption would fortify the need for the 
-package ...**
+gradient between bilayer leaflets [@soupene_atp8a1_2008]. 
 
 Starting with the identification of baseline and post-reduction fluorescence 
 from fluorometer-generated spectra, via the calculation of the underlying 
@@ -432,7 +430,11 @@ users.
 
 `flippant`, in conclusion, provides means for quick, reproducible data analysis
 in the context of dithionite scramblase analysis and a platform for review, 
-dissemination and extension of the strategies it employs.
+dissemination and extension of the strategies it employs. As BSA-back 
+extraction, a different assay for lipid translocation across liposome bilayers
+[@kubelt_transbilayer_2002;@vehring_flip-flop_2007], can utilize an essentially 
+identical data analysis workflow, `flippant` is expected to facilitate analysis
+of such experiments as well.
 
 #Funding
 J.G., R.J.C. and the Proteomics Core at WCMC-Q are supported by ``Biomedical 
