@@ -95,8 +95,7 @@ mechanisms remain largely enigmatic [for a discussion including exceptions see @
 Proteins supporting flipping processes as central as the equilibration of the 
 ubiquitous phosphoglycerolipids across the membrane of the endoplasmic 
 reticulum, where they are synthesized in the cytoplasmic monolayer, have yet to 
-be identified **(I was looking for a recent 
-citation that clearly spelled that out - in vain. Do you have a proposal?)**. 
+be identified [@menon_specific_2000]. 
 None the less, there has been much recent progress in scramblase identification 
 and characterization. Proteins shown to have scramblase activity include 
 FtsW [@mohammadi_identification_2011], opsin/rhodopsin
