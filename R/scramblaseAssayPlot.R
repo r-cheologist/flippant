@@ -120,7 +120,7 @@
 #' point of dithionite addition.
 #' @return \code{scrambalseAssayTraces} and \code{scramblaseAssayPlot} return 
 #' \code{\link{ggplot}} objects representing the raw fluorescence traces and a
-#' complete PPR plot, respectively. \code{scrambalseAssayInputTamplate} 
+#' complete PPR plot, respectively. \code{scrambalseAssayInputTemplate} 
 #' generates a tab-delimited \code{ASCII} file in the file system and does not
 #' provide further output. \code{scrambalseAssayStats} prints assay statistics.
 #' @author Johannes Graumann
