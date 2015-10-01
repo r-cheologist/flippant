@@ -33,8 +33,8 @@ baseFunctionScramblaseAssayStats <- function(x,scaleTo=c("model","data"),forceTh
 # Assemble the output -----------------------------------------
   output <- plyr::rbind.fill(processedListFromX)
   output <- output[!duplicated(output$CombinedId),]
-  output <- output[which(names(output) %in% c("Fit Constant (a)","PPR at P = 0.5","Experimental Series","Experiment"))]
-  output[c("Fit Constant (a)","PPR at P = 0.5")] <- round(output[c("Fit Constant (a)","PPR at P = 0.5")],digits=2)
+  output <- output[which(names(output) %in% c("Fit Constant (a)","Experimental Series","Experiment"))]
+  output["Fit Constant (a)"] <- round(output["Fit Constant (a)"],digits=2)
   names(output)[which(names(output) == "Fit Constant (a)")] <- "Fit Constant"
 # Return ------------------------------------------------------------------
   return(output)
