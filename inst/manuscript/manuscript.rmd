@@ -170,8 +170,9 @@ spreadsheet. Raw spectra produced by QuantaMaster fluorometer instruments
 (Photon Technology International, Inc., Edison, New Jersey) running software 
 versions FelixGX v4.1 and Felix32 v1.20, respectively, as well as a simple 
 generic tab-delimited spectrum representing file format with time (in seconds) 
-and fluorescence intensity representing columns are currently supported. 
-File type determination is handled algorithmically.
+and fluorescence intensity representing columns are currently supported. The 
+latter is trivially assembled from any fluorescence data using a spreadsheet 
+program. File type determination is handled algorithmically.
 
 Based on @menon_opsin_2011 and @goren_constitutive_2014, data is processed as 
 follows. Input is format checked and defaults are injected for facultative 
