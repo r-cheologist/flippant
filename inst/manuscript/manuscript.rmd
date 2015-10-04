@@ -144,7 +144,7 @@ input.
 
 #Availablility and Implementation
 `flippant` has been implemented in `R` [@r_core_team_r:_2015] and integrated 
-into the `bioconductor` collection of tools for biomedical data analysis [@huber_orchestrating_2015]. It is thus install- and loadable as follows from 
+into the `Bioconductor` collection of tools for biomedical data analysis [@huber_orchestrating_2015]. It is thus install- and loadable as follows from 
 within a functional `R` environment:
 ```{r, eval = FALSE}
 source("http://bioconductor.org/biocLite.R")
@@ -231,7 +231,7 @@ and handing the function the path to the user assembled spreadsheet of input
 data (`x`). The `adjust` argument to the function call serves to selectively 
 inactivate `wmtsa`-provided (see above) alignment of multiple spectra to the 
 time of dithionite addition. Acquisition time coverage of the plot may be tuned 
-by user-provided minimal (`timeMin` ) and maximal (`timeMax`) time points to be
+by user-provided minimal (`timeMin`) and maximal (`timeMax`) time points to be
 included.
 
 ##Scramblase Assay Analysis
@@ -277,7 +277,7 @@ hypothesis that the mutations may cause disease by interfering with the highly
 ordered quarternary structure of the molecule in the retina 
 [@ploier_perturbed_submitted].
 
-`flippant`s capabilities are demonstrated here by reanalyzing data underlying 
+`flippant`'s capabilities are demonstrated here by reanalyzing data underlying 
 Figure 4C/D in @ploier_perturbed_submitted. The following work flow in a first 
 step plots the corresponding spectral traces (Figure 1A). Note that algorithmic
 alignment to the time of dithionite addition is employed (default) as well as 
