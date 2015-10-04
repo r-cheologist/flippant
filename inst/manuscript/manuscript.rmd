@@ -14,7 +14,7 @@ bibliography: flippant.bib
 
 †
 :    \
-    Weill Cornell Medical College in Qatar, P.O.Box 24144, Doha, State of Qatar
+    Research Division, Weill Cornell Medical College in Qatar, P.O.Box 24144, Doha, State of Qatar
 
 ‡
 :   Department of Biochemistry, Weill Cornell Medical College, New York, NY 
