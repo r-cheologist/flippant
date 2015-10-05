@@ -247,13 +247,14 @@ scramblase.
 allows for the complete generation of the PPR plot in publication quality from 
 the user assembled spreadsheet of input data (`x`), including automatically 
 added graphical representations the PPR value equal to the fit constant 
-$\alpha$, which implies all liposomes on average carrying one scramblase and 63%
-have one or more [i.e. are active; @goren_constitutive_2014]. The behavior of the 
-function may be adjusted to use scramblase-mediated fluorescence reduction 
-normalized to either the maximum measurement in the series (`scaleTo = "data"`)
-or the plateau of an exponential fit to it (`scaleTo = "model"`; for reasoning
-see above) and whether or not to require the exponential curve fitted to the 
-data to go through the origin.
+$\alpha$ ($P_{\geq 1} = 1 - e^{-1}$), which implies all liposomes on average 
+carrying one scramblase and 63% have one or more 
+[i.e. are active; @goren_constitutive_2014]. The behavior of the function may be
+adjusted to use scramblase-mediated fluorescence reduction normalized to either
+the maximum measurement in the series (`scaleTo = "data"`) or the plateau of an
+exponential fit to it (`scaleTo = "model"`; for reasoning see above) and whether
+or not to require the exponential curve fitted to the data to go through the
+origin.
 
 Numeric scramblase assay results such as $\alpha$ may be generated in 
 tabular form using
