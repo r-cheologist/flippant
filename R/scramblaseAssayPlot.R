@@ -109,12 +109,12 @@
 #' \code{model}. See "Details".
 #' @param forceThroughOrigin \code{\link{logical}} indicating whether to force 
 #' the fitted curve(s) to penetrate the origin (defaulting to \code{FALSE}).
-#' @param timeMin A single \code{\link{numeric}}. If given, 
+#' @param timeMinSec A single \code{\link{numeric}}. If given, 
 #' \code{\link{scramblaseAssayTraces}} produces a time/x axis trimmed to
-#' this value.
-#' @param timeMax A single \code{\link{numeric}}. If given, 
+#' this value (in seconds).
+#' @param timeMaxSec A single \code{\link{numeric}}. If given, 
 #' \code{\link{scramblaseAssayTraces}} produces a time/x axis trimmed to
-#' this value.
+#' this value (in seconds).
 #' @param adjust A single \code{\link{logical}}, indicating of whether (default) or 
 #' not spectral traces to be plotted are algorithmically aligned at the time
 #' point of dithionite addition.
@@ -153,7 +153,7 @@
 #' # Plot the spectal traces
 #' scramblaseAssayTraces(
 #'   "inputTable.txt",
-#'   timeMax = 350)
+#'   timeMaxSec = 350)
 #' stop("Add example using actually published data.")
 #' # Plot the PPR plot(s)
 #' scramblaseAssayPlot("inputTable.txt")

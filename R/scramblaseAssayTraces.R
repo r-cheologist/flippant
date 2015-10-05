@@ -5,8 +5,8 @@
 #' @export
 scramblaseAssayTraces <- function(
   x,
-  timeMin=NA_real_,
-  timeMax=NA_real_,
+  timeMinSec=NA_real_,
+  timeMaxSec=NA_real_,
   adjust = TRUE){
   UseMethod("scramblaseAssayTraces", x)
 }
@@ -23,8 +23,8 @@ scramblaseAssayTraces.character <- function(x, ...){
 }
 baseFunctionScramblaseAssayTraces <- function(
   x,
-  timeMin=NA_real_,
-  timeMax=NA_real_,
+  timeMinSec=NA_real_,
+  timeMaxSec=NA_real_,
   adjust = TRUE){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- scramblaseAssayInputValidation(
@@ -33,8 +33,8 @@ baseFunctionScramblaseAssayTraces <- function(
     forceThroughOrigin = FALSE,
     verbose = FALSE)
   x <- validatedParams[["x"]]
-  assert_is_a_number(timeMin)
-  assert_is_a_number(timeMax)
+  assert_is_a_number(timeMinSec)
+  assert_is_a_number(timeMaxSec)
 
 # Processing --------------------------------------------------------------
   # Perform assay calculations to retrive PPR
@@ -74,10 +74,10 @@ baseFunctionScramblaseAssayTraces <- function(
   # Plot traces with lines
   plotOutput <- plotOutput + geom_line()
   # Restrict x axis as requested
-  if(any(!is.na(c(timeMin,timeMax)))){
+  if(any(!is.na(c(timeMinSec,timeMaxSec)))){
     xRange <- range(mergedData$Time.in.sec, na.rm=TRUE)
-    if(!is.na(timeMin)){xRange[1] <- timeMin}
-    if(!is.na(timeMax)){xRange[2] <- timeMax}
+    if(!is.na(timeMinSec)){xRange[1] <- timeMinSec}
+    if(!is.na(timeMaxSec)){xRange[2] <- timeMaxSec}
     plotOutput <- plotOutput + xlim(xRange)
   }
   # Render color scale friendly to the color blind

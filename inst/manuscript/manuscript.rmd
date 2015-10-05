@@ -231,8 +231,8 @@ and handing the function the path to the user assembled spreadsheet of input
 data (`x`). The `adjust` argument to the function call serves to selectively 
 inactivate `wmtsa`-provided (see above) alignment of multiple spectra to the 
 time of dithionite addition. Acquisition time coverage of the plot may be tuned 
-by user-provided minimal (`timeMin` ) and maximal (`timeMax`) time points to be
-included.
+by user-provided minimal (`timeMinSec` ) and maximal (`timeMaxSec`) time points
+to be (in seconds) included.
 
 ##Scramblase Assay Analysis
 Plotting protein to phospholipid ratio (PPR) against the likelihood for a given
@@ -295,7 +295,7 @@ figure1 <- addpanel(
   bottomPanel = 3,
   leftPanel = 1, 
   rightPanel = 3, 
-  panel = scramblaseAssayTraces("inputTable.txt", timeMax = 350) + theme_bw())
+  panel = scramblaseAssayTraces("inputTable.txt", timeMaxSec = 350) + theme_bw())
 figure1 <- addpanel(
   figure = figure1,
   topPanel = 4,
@@ -384,7 +384,7 @@ analysis_timing_n <- 100
 analysis_timing_function <- function(){
   scramblaseAssayTraces(
     "inputTable.txt",
-    timeMax = 350)
+    timeMaxSec = 350)
   scramblaseAssayPlot("inputTable.txt")
   scramblaseAssayStats("inputTable.txt")
   gc()
