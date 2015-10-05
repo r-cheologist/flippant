@@ -1,5 +1,5 @@
 ---
-title: '`flippant` -- An `R` package for the automated analysis of dithionite scramblase
+title: '*flippant* -- An R package for the automated analysis of dithionite scramblase
   assays'
 author: Johannes Graumann ^†,^*, Birgit Ploier ^‡^, Richard J. Cotton ^†^,
   Michael A. Goren ^‡^ and Anant K. Menon ^‡^
@@ -41,11 +41,11 @@ flippant_dependencies <- packageDescription("flippant",fields=c("Depends","Impor
   ( function(x){
     paste0(
       c(
-        "`",
-        paste0(head(x, n = length(x) - 1), collapse = "`, `"),
-        "` and `",
+        "*",
+        paste0(head(x, n = length(x) - 1), collapse = "*, *"),
+        "* and *",
         tail(x, n = 1),
-        "`"),
+        "*"),
       collapse = "")} )
 
 tmpDir <- tempdir()
@@ -77,7 +77,7 @@ has yielded insight into the scramblase activity in crude membrane preparations,
 functional validation of candidate scramblases, stoichiometry of scramblase 
 complexes and probe ATP-dependence of flippases, data analysis in its context 
 has remained a task involving many manual steps. With the extension package 
-`flippant` to `R`, a free software environment for statistical computing and 
+*flippant* to R, a free software environment for statistical computing and 
 graphics, we introduce an integrated solution for the analysis and 
 publication-grade graphical presentation of dithionite scramblase assays and 
 demonstrate its utility in revisiting an originally manual analysis from the 
@@ -134,29 +134,29 @@ statistics and through publication-grade representation of the results, data
 analysis in the context of this assay has until now involved an extensive series
 of manual steps, at most supported by spreadsheet calculation facilities
 [see @menon_opsin_2011;@goren_constitutive_2014 for extensive step-wise discussion].
-Based on the `R` free software environment for statistical computing and 
+Based on the R free software environment for statistical computing and 
 graphics [@r_core_team_r:_2015] and prominently drawing on the power and 
 elegance of the `ggplot2` plotting system [@wickham_ggplot2_2009], we here 
-provide `flippant`, a package that comprehensively, fast and reproducibly covers
+provide *flippant*, a package that comprehensively, fast and reproducibly covers
 all data analysis and graphing needs from raw fluorescence spectra produced by 
 scramblase assays. A simple parametrizing spreadsheet is the sole required user 
 input.
 
 #Availablility and Implementation
-`flippant` has been implemented in `R` [@r_core_team_r:_2015] and integrated 
+*flippant* has been implemented in R [@r_core_team_r:_2015] and integrated 
 into the `bioconductor` collection of tools for biomedical data analysis [@huber_orchestrating_2015]. It is thus install- and loadable as follows from 
-within a functional `R` environment:
+within a functional R environment:
 ```{r, eval = FALSE}
 source("http://bioconductor.org/biocLite.R")
 biocLite(pkgs = "flippant")
 library(flippant)
 ```
-The package depends on the following packaged extensions to `R` base 
+The package depends on the following packaged extensions to R base 
 functionality, which are automatically satisfied on installation: 
 `r flippant_dependencies`.
 
 #Input Data and Data Processing
-To analyse raw data stemming from dithionite scramblase assays, `flippant` 
+To analyse raw data stemming from dithionite scramblase assays, *flippant* 
 requires for each data point information on the path to the 
 fluorometer-generated spectrum, the amount of protein used to reconstitute 
 proteoliposomes, the assay volume before and after addition of 
@@ -165,7 +165,7 @@ present (to calculate a protein to phospholipid ratio or PPR) etc. The user
 supplies this information in a spreadsheet (see below for supporting 
 functionality).
 
-Spectral input data is read by `flippant` using the file paths provided in the
+Spectral input data is read by *flippant* using the file paths provided in the
 spreadsheet. Raw spectra produced by QuantaMaster fluorometer instruments 
 (Photon Technology International, Inc., Edison, New Jersey) running software 
 versions FelixGX v4.1 and Felix32 v1.20, respectively, as well as a simple 
@@ -174,12 +174,12 @@ and fluorescence intensity representing columns are currently supported. The
 latter is trivially assembled from any fluorescence data using a spreadsheet 
 program. File type determination is handled algorithmically.
 
-Based on @menon_opsin_2011 and @goren_constitutive_2014, data is processed as 
-follows. Input is format checked and defaults are injected for facultative 
-parameters/columns as appropriate. Fluorescence spectra are parsed. This includes 
-algorithmic determination of when dithionite was added to the sample using peak
-detection by continuous wavelet transformation as implemented in the 
-`wmtsa` `R` package [@percival_wavelet_2000;@constantine_wmtsa:_2013]. 
+Based on @menon_opsin_2011 and @goren_constitutive_2014 and largly keeping with
+nomenclature used therein, data is processed as follows. Input is format checked
+and defaults are injected for facultative parameters/columns as appropriate. 
+Fluorescence spectra are parsed. This includes algorithmic determination of when 
+dithionite was added to the sample using peak detection by continuous wavelet
+transformation as implemented in the *wmtsa* R package [@percival_wavelet_2000;@constantine_wmtsa:_2013]. 
 Acquisition time is aligned for all spectra in the data set such that the zero 
 time point henceforth corresponds to the time of addition. 
 Pre-dithionite-addition baseline fluorescence $F_{\text{baseline}}$ is 
@@ -211,14 +211,14 @@ to the relationship of $P_{\geq 1}$ to the protein to phospholipid ratio (PPR;
 #Main Features
 ##Template Generation for Data Input
 Supporting the user in providing the input data needed, the following function 
-generates a spreadsheet program-compatible tab-delimited `ASCII` template, 
+generates a spreadsheet program-compatible tab-delimited plain text template, 
 including column names, commentary, expected data type and the default used when
 omitted.
 ```{r, code=formatR::usage('scramblaseAssayInputTemplate'), eval=FALSE}
 ```
 The application agnostic tab-delimited format must be maintained for the 
 completed table, which is subjected to extensive input checks when read by 
-`flippant`.
+*flippant*.
 
 ##Graphic Representation of Spectral Traces
 In a first, graphical data analytic step of a scramblase assay-derived data 
@@ -229,7 +229,7 @@ using
 ```
 and handing the function the path to the user assembled spreadsheet of input 
 data (`x`). The `adjust` argument to the function call serves to selectively 
-inactivate `wmtsa`-provided (see above) alignment of multiple spectra to the 
+inactivate *wmtsa*-provided (see above) alignment of multiple spectra to the 
 time of dithionite addition. Acquisition time coverage of the plot may be tuned 
 by user-provided minimal (`timeMinSec` ) and maximal (`timeMaxSec`) time points
 to be (in seconds) included.
@@ -239,16 +239,16 @@ Plotting protein to phospholipid ratio (PPR) against the likelihood for a given
 proteoliposome to contain one or more scramblases, the PPR plot is at the heart 
 of the analysis of dithionite scramblase assays, allowing for the visual 
 comparison of specific scramblase activity between interrogated experimental 
-series, which may e.g. be representative of protein preparations including 
+series, which may, for example, be representative of protein preparations including 
 mutant protein forms or crude extracts with or without depletion of a candidate
 scramblase. 
 ```{r, code = formatR::usage('scramblaseAssayPlot'), eval = FALSE}
 ```
 allows for the complete generation of the PPR plot in publication quality from 
 the user assembled spreadsheet of input data (`x`), including automatically 
-added graphical representations the PPR value equal to the fit 
-constant $\alpha$, which implies all liposomes on average carrying one 
-scramblase and 63% have one or more (i.e. are active). The behavior of the 
+added graphical representations the PPR value equal to the fit constant 
+$\alpha$, which implies all liposomes on average carrying one scramblase and 63%
+have one or more [i.e. are active; @goren_constitutive_2014]. The behavior of the 
 function may be adjusted to use scramblase-mediated fluorescence reduction 
 normalized to either the maximum measurement in the series (`scaleTo = "data"`)
 or the plateau of an exponential fit to it (`scaleTo = "model"`; for reasoning
@@ -277,7 +277,7 @@ hypothesis that the mutations may cause disease by interfering with the highly
 ordered quarternary structure of the molecule in the retina 
 [@ploier_perturbed_submitted].
 
-`flippant`s capabilities are demonstrated here by reanalyzing data underlying 
+*flippant*s capabilities are demonstrated here by reanalyzing data underlying 
 Figure 4C/D in @ploier_perturbed_submitted. The following work flow in a first 
 step plots the corresponding spectral traces (Figure 1A). Note that algorithmic
 alignment to the time of dithionite addition is employed (default) as well as 
@@ -285,9 +285,9 @@ custom trimming of the time axis to account for divergent acquisition
 times between experiments.
 ```{r, eval = FALSE}
 # Plot spectral traces (Figure 1A)
-scramblaseAssayTraces("inputTable.txt", timeMax = 350)
+scramblaseAssayTraces("inputTable.txt", timeMaxSec = 350)
 ```
-```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "**`flippant`-based reanalysis of data in Figure 4C/D from @ploier_perturbed_submitted.** (A) represents spectral traces as produced by a call to the function `scramblaseAssayTraces`, while (B) shows protein to phospholipid ration (PPR) plots for the data using a x-axis trimmed to a maximum value of 2 (see text for details)."}
+```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "***flippant*-based reanalysis of data in Figure 4C/D from @ploier_perturbed_submitted.** (A) represents spectral traces as produced by a call to the function `scramblaseAssayTraces`, while (B) shows protein to phospholipid ration (PPR) plots for the data using a x-axis trimmed to a maximum value of 2 (see text for details)."}
 setwd(tmpDir)
 figure1 <- addpanel(
   figure = figure1,
@@ -363,7 +363,7 @@ ppr_results_alpha_average_print <- ppr_results_alpha_average %>%
 knitr::kable(
   ppr_results,
   row.names = FALSE,
-  caption = "**Tabular output of `flippant`-based reanalysis of data in Figure 4C/D from @ploier_perturbed_submitted.** An `ASCII`-version of this output is produced by calling `scramblaseAssayStats`.")
+  caption = "**Tabular output of *flippant*-based reanalysis of data in Figure 4C/D from @ploier_perturbed_submitted.** An plain text-version of this output is produced by calling `scramblaseAssayStats`.")
 ```
 
 Mean values of fit constant $\alpha$ correspond with 
@@ -374,7 +374,7 @@ and $\alpha \approx 0.26$ for wild type rhodopsin. Based on the manual analysis
 of the data we conclude in @ploier_perturbed_submitted that the mutant 
 rhodopsins investigated are reconstituted into proteoliposomes in monomeric 
 form, contrary to the wild type, which is reconstituting as a homodimer. 
-`flippant` analysis of the data shows identical trends and close matches of the
+*flippant* analysis of the data shows identical trends and close matches of the
 results, supporting identical conclusions.
 
 #Conclusion
@@ -405,36 +405,36 @@ analysis_timing_iqr <- round(
       use.names = FALSE)),
   2)
 ```
-With `flippant` we present an integrated solution for data analysis in the 
+With *flippant* we present an integrated solution for data analysis in the 
 context of dithionite scramblase assays. Requiring only basic familiarity with 
-`R` as an environment for statistical computing and graphics 
+R as an environment for statistical computing and graphics 
 [@r_core_team_r:_2015], scientists can quickly analyse such data and arrive at 
 publication-grade graphics that offer extensive facilities for individual 
 optimization and adaptation [@wickham_ggplot2_2009]. On a laptop system with 
 `r parallel::detectCores()` cores and 8 GB RAM (no SSD), running `Linux` and 
-`R` version `r paste(R.version[c("major","minor")], collapse = ".")`, the
+R version `r paste(R.version[c("major","minor")], collapse = ".")`, the
 statements generating equivalents to the plots and calculations presented here
 take a mere `r analysis_timing_median` seconds (median; 
 $\text{IQR}=`r analysis_timing_iqr`~\text{s}$; $n=`r analysis_timing_n`$).
 
-Results from `flippant`-driven analysis track prior manual analysis well. 
+Results from *flippant*-driven analysis track prior manual analysis well. 
 Deviations observed may stem from algorithmic differences such as the fitting 
-routine used (`flippant` uses the Nash variant of the Marquardt 
+routine used (*flippant* uses the Nash variant of the Marquardt 
 nonlinear least squares algorithm as implemented by @nash_nlmrt:_2014) and 
 general handling of significant digits and rounding.
 
-The choice of `R` for the implementation is not only motivated by the extensive
+The choice of R for the implementation is not only motivated by the extensive
 tool kit for statistic methodology and exquisite plotting environment it 
 provides, but also by the fact that it is a scripting language, rendering the
 implementation unequivocally open to scrutiny and adaptation or extension by 
 users.
 
-`flippant`, in conclusion, provides means for quick, reproducible data analysis
+*flippant*, in conclusion, provides means for quick, reproducible data analysis
 in the context of dithionite scramblase analysis and a platform for review, 
 dissemination and extension of the strategies it employs. As BSA-back 
 extraction, a different assay for lipid translocation across liposome bilayers
 [@kubelt_transbilayer_2002;@vehring_flip-flop_2007], can utilize an essentially 
-identical data analysis workflow, `flippant` is expected to facilitate analysis
+identical data analysis workflow, *flippant* is expected to facilitate analysis
 of such experiments as well.
 
 #Funding
