@@ -146,11 +146,13 @@ input.
 *flippant* has been implemented in R [@r_core_team_r:_2015] and integrated 
 into the `bioconductor` collection of tools for biomedical data analysis [@huber_orchestrating_2015]. It is thus install- and loadable as follows from 
 within a functional R environment:
+
 ```{r, eval = FALSE}
 source("http://bioconductor.org/biocLite.R")
 biocLite(pkgs = "flippant")
 library(flippant)
 ```
+
 The package depends on the following packaged extensions to R base 
 functionality, which are automatically satisfied on installation: 
 `r flippant_dependencies`.
@@ -214,8 +216,10 @@ Supporting the user in providing the input data needed, the following function
 generates a spreadsheet program-compatible tab-delimited plain text template, 
 including column names, commentary, expected data type and the default used when
 omitted.
+
 ```{r, code=formatR::usage('scramblaseAssayInputTemplate'), eval=FALSE}
 ```
+
 The application agnostic tab-delimited format must be maintained for the 
 completed table, which is subjected to extensive input checks when read by 
 *flippant*.
@@ -225,8 +229,10 @@ In a first, graphical data analytic step of a scramblase assay-derived data
 set, fluorescent spectra or traces may be plotted in publication-appropriate
 quality with acquisition time in the x- and fluorescence intensity on the y-axis
 using
+
 ```{r, code = formatR::usage('scramblaseAssayTraces'), eval = FALSE}
 ```
+
 and handing the function the path to the user assembled spreadsheet of input 
 data (`x`). The `adjust` argument to the function call serves to selectively 
 inactivate *wmtsa*-provided (see above) alignment of multiple spectra to the 
@@ -242,8 +248,10 @@ comparison of specific scramblase activity between interrogated experimental
 series, which may, for example, be representative of protein preparations including 
 mutant protein forms or crude extracts with or without depletion of a candidate
 scramblase. 
+
 ```{r, code = formatR::usage('scramblaseAssayPlot'), eval = FALSE}
 ```
+
 allows for the complete generation of the PPR plot in publication quality from 
 the user assembled spreadsheet of input data (`x`), including automatically 
 added graphical representations the PPR value equal to the fit constant 
@@ -258,8 +266,10 @@ origin.
 
 Numeric scramblase assay results such as $\alpha$ may be generated in 
 tabular form using
+
 ```{r, code = formatR::usage('scramblaseAssayStats'), eval = FALSE}
 ```
+
 with the same modifying arguments to the function as for `scramblaseAssayPlot`.
 
 #Case Study
@@ -284,10 +294,12 @@ step plots the corresponding spectral traces (Figure 1A). Note that algorithmic
 alignment to the time of dithionite addition is employed (default) as well as 
 custom trimming of the time axis to account for divergent acquisition 
 times between experiments.
+
 ```{r, eval = FALSE}
 # Plot spectral traces (Figure 1A)
 scramblaseAssayTraces("inputTable.txt", timeMaxSec = 350)
 ```
+
 ```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "***flippant*-based reanalysis of data in Figure 4C/D from @ploier_perturbed_submitted.** (A) represents spectral traces as produced by a call to the function `scramblaseAssayTraces`, while (B) shows protein to phospholipid ration (PPR) plots for the data using a x-axis trimmed to a maximum value of 2 (see text for details)."}
 setwd(tmpDir)
 figure1 <- addpanel(
@@ -313,12 +325,14 @@ grid.draw(figure1)
 
 Scramblase activity analysis as described above is performed on the data set with
 the following calls.
+
 ```{r, eval = FALSE}
 # Plot PPR plot (Figure 1B)
 scramblaseAssayPlot("inputTable.txt") + xlim(0, 2)
 # Write out results in tabular manner
 scramblaseAssayStats("inputTable.txt")
 ```
+
 ```{r, echo = FALSE}
 setwd(tmpDir)
 max_PPR <- read.delim(
@@ -331,6 +345,7 @@ max_PPR <- read.delim(
     digits = 2
   )
 ```
+
 The first call results in the protein to phospholipid ratio (PPR) plot shown in
 Figure 1B. Using the customization facilities provided by `ggplot2` 
 [@wickham_ggplot2_2009] as a plotting system the plot's x-axis is trimmed to
@@ -343,6 +358,7 @@ Recapitulation of the calculations underlying PPR plot generation by
 `scramblaseAssayPlot` in a call to `scramblaseAssayStats` produces tabular 
 output represented in Table 1, which includes series-specific fit constants 
 $\alpha$ in numeric and easily accessible form.
+
 ```{r, echo = FALSE}
 setwd(tmpDir)
 ppr_results <- scramblaseAssayStats("inputTable.txt")
@@ -379,6 +395,7 @@ form, contrary to the wild type, which is reconstituting as a homodimer.
 results, supporting identical conclusions.
 
 #Conclusion
+
 ```{r, echo = FALSE, cache = TRUE}
 setwd(tmpDir)
 analysis_timing_n <- 100
@@ -406,6 +423,7 @@ analysis_timing_iqr <- round(
       use.names = FALSE)),
   2)
 ```
+
 With *flippant* we present an integrated solution for data analysis in the 
 context of dithionite scramblase assays. Requiring only basic familiarity with 
 R as an environment for statistical computing and graphics 
