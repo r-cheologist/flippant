@@ -112,6 +112,8 @@ parseFluorimeterOutput <- function(
     cwt <- wavCWT(gradient)
     tree <- wavCWTTree(cwt)
     peaks <- wavCWTPeaks(tree)
+    # Functionality appears to have memory mapping issues ...
+    gc()
     # Safeguard against artifact peaks (based on incomplete understanding of wmtsa)
     peakMax <- peaks$x[which.max(peaks$y)]
     # Reset acquisition time
