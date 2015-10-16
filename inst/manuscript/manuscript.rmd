@@ -176,7 +176,7 @@ and fluorescence intensity representing columns are currently supported. The
 latter is trivially assembled from any fluorescence data using a spreadsheet 
 program. File type determination is handled algorithmically.
 
-Based on @menon_opsin_2011 and @goren_constitutive_2014 and largly keeping with
+Based on @menon_opsin_2011 and @goren_constitutive_2014 and largely keeping with
 nomenclature used therein, data is processed as follows. Input is format checked
 and defaults are injected for facultative parameters/columns as appropriate. 
 Fluorescence spectra are parsed. This includes algorithmic determination of when 
@@ -227,7 +227,7 @@ completed table, which is subjected to extensive input checks when read by
 ##Graphic Representation of Spectral Traces
 In a first, graphical data analytic step of a scramblase assay-derived data 
 set, fluorescent spectra or traces may be plotted in publication-appropriate
-quality with acquisition time in the x- and fluorescence intensity on the y-axis
+quality with acquisition time on the x- and fluorescence intensity on the y-axis
 using
 
 ```{r, code = formatR::usage('scramblaseAssayTraces'), eval = FALSE}
@@ -238,7 +238,7 @@ data (`x`). The `adjust` argument to the function call serves to selectively
 inactivate *wmtsa*-provided (see above) alignment of multiple spectra to the 
 time of dithionite addition. Acquisition time coverage of the plot may be tuned 
 by user-provided minimal (`timeMinSec` ) and maximal (`timeMaxSec`) time points
-to be (in seconds) included.
+to be included (in seconds).
 
 ##Scramblase Assay Analysis
 Plotting protein to phospholipid ratio (PPR) against the likelihood for a given
@@ -365,7 +365,7 @@ rhodopsin series in experiment 1, where $\text{PPR}=`r max_PPR`$. Dashed lines
 are added automatically as graphical representations of the fit constant 
 $\alpha$.
 
-Figure 1B emphasizes reproducebility between independent experiments
+Figure 1B emphasizes reproducibility between independent experiments
 ("Experiment 1" and "Experiment 2") on the four probed rhodopsins. Forgoing
 reproducibility analysis in favor of a potentially more reliable result and
 following more closely the analysis in Figure 4C/D by
@@ -378,7 +378,7 @@ scramblaseAssayPlot("inputTable.txt", splitByExperiment = FALSE) + xlim(0, 2)
 ```
 
 The graphical representation of the fit constant $\alpha$ in the PPR plots is
-difficult to visually evaluate and easy access to the numeric values desireable.
+difficult to visually evaluate and easy access to the numeric values desirable.
 Recapitulation of the calculations underlying PPR plot generation for Figure 1C
 by `scramblaseAssayPlot` in a call to `scramblaseAssayStats`, this is achieved
 and produces tabular output represented in Table 1.
