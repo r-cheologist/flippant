@@ -3,7 +3,7 @@ Title: flippant - Dithionite Scramblase Assay Analysis
 Description: A package for the analysis of data provided by dithionite
     scramblase assays.
 URL: http://chili.qatar-med.cornell.edu/projects/flippant
-Version: 0.4.5
+Version: 0.5.0
 Authors@R: person("Johannes", "Graumann", role = c("aut","cre"),
     email="johannes_graumann@web.de")
 Depends:

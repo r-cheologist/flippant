@@ -61,12 +61,15 @@
 #'  \item{For each spectrum/datapoint a measured \code{Fluorescence Reduction} 
 #'    is calculated as 
 #'    \deqn{1 - \left(\frac{\mbox{\small Minimum Fluorescence}}{\mbox{\small Baseline Fluorescence}}\right)}{1 - (Minimum Fluorescence/Baseline Fluorescence)}}
-#'  \item{Data are \code{\link{split}} for parallel treatment using a combined 
-#'    \code{Experimental Series}/\code{Experiment} identifier (see above).}
 #'  \item{A \code{Relative Fluorescence Reduction} is calculated in comparison
 #'    to the liposomes-only/no-protein control).}
 #'  \item{A \code{Protein per Phospholipid (mg/mmol)} ratio (\code{PPR}) is 
 #'    calculated.}
+#'  \item{Depending on \code{splitByExperiment}, data are \code{\link{split}} 
+#'    for parallel treatment using either \code{Experimental Series}
+#'    (\code{splitByExperiment = TRUE}) or a combined
+#'     \code{Experimental Series}/\code{Experiment}
+#'     (\code{splitByExperiment = FALSE}) identifier (see above).}
 #'  \item{A probability for a liposome holding \eqn{\geq 1}{\ge 1} scramblase 
 #'    molecules is calculated using 
 #'    \deqn{\frac{y-y_0}{y_{\mbox{\scriptsize max}}-y_0}}{(y - y0)/(ymax - y0)}
@@ -99,7 +102,8 @@
 #'        datapoints. \code{color} is used to differentiate 
 #'        \code{Experimental Series}.}
 #'      \item{Plots are finally \code{\link{facet_wrap}}ed by \code{Experiment} 
-#'        and labels adjusted cosmetically.}}
+#'        (if \code{splitByExperiment = TRUE}) and labels adjusted
+#'        cosmetically.}}
 #'  }}
 #' @param path \code{\link{character}} object giving the path of an \bold{empty}
 #' template for a spreadsheet that can provide \code{x}.
@@ -115,9 +119,15 @@
 #' @param timeMaxSec A single \code{\link{numeric}}. If given, 
 #' \code{\link{scramblaseAssayTraces}} produces a time/x axis trimmed to
 #' this value (in seconds).
-#' @param adjust A single \code{\link{logical}}, indicating of whether (default) or 
+#' @param adjust A single \code{\link{logical}}, indicating whether (default) or 
 #' not spectral traces to be plotted are algorithmically aligned at the time
 #' point of dithionite addition.
+#' @param splitByExperiment A single \code{\link{logical}}, indicating whether or
+#' not calculations and plots will treat experimental series from different
+#' experiments separately (\code{TRUE}, default) or whether data from all
+#' experiments included is used for a single calculation/plot per experimental
+#' series (\code{FALSE}). While the former emphasizes reproducibility, the
+#' latter likely produces a more reliable fit.
 #' @return \code{scrambalseAssayTraces} and \code{scramblaseAssayPlot} return 
 #' \code{\link{ggplot}} objects representing the raw fluorescence traces and a
 #' complete PPR plot, respectively. \code{scrambalseAssayInputTemplate} 
@@ -154,12 +164,19 @@
 #' scramblaseAssayTraces(
 #'   "inputTable.txt",
 #'   timeMaxSec = 350)
-#' stop("Add example using actually published data.")
-#' # Plot the PPR plot(s)
+#' # Plot the PPR plot(s) faceting by experiment
 #' scramblaseAssayPlot("inputTable.txt")
-#' # Generate tabulr results
+#' # Generate tabular results
 #' scramblaseAssayStats("inputTable.txt")
-scramblaseAssayPlot <- function(x, scaleTo=c("model","data"),forceThroughOrigin=FALSE){
+#' # Plot the PPR plot(s) forgoing faceting by experiment
+#' scramblaseAssayPlot("inputTable.txt", splitByExperiment = FALSE)
+#' # Generate tabular results
+#' scramblaseAssayStats("inputTable.txt", splitByExperiment = FALSE)
+scramblaseAssayPlot <- function(
+  x,
+  scaleTo = c("model","data"),
+  forceThroughOrigin = FALSE,
+  splitByExperiment = TRUE){
   UseMethod("scramblaseAssayPlot",x)
 }
 #' @export
@@ -171,26 +188,33 @@ scramblaseAssayPlot.character <- function(x, ...){
   parsedInputFile <- readScramblaseInputFile(x)
   baseFunctionScramblaseAssayPlot(x=parsedInputFile, ...)
 }
-baseFunctionScramblaseAssayPlot <- function(x,scaleTo=c("model","data"),forceThroughOrigin=FALSE){
+baseFunctionScramblaseAssayPlot <- function(
+  x,
+  scaleTo = c("model","data"),
+  forceThroughOrigin = FALSE,
+  splitByExperiment = TRUE){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- scramblaseAssayInputValidation(
     x = x ,
     scaleTo = scaleTo,
-    forceThroughOrigin = forceThroughOrigin)
+    forceThroughOrigin = forceThroughOrigin,
+    splitByExperiment = splitByExperiment)
   x <- validatedParams[["x"]]
   scaleTo <- validatedParams[["scaleTo"]]
   forceThroughOrigin <- validatedParams[["forceThroughOrigin"]]
+  splitByExperiment <- validatedParams[["splitByExperiment"]]
+  
 # Processing --------------------------------------------------------------
   processedListFromX <- scramblaseAssayCalculations(
     x = x,
     scaleTo = scaleTo,
-    forceThroughOrigin = forceThroughOrigin)
+    forceThroughOrigin = forceThroughOrigin,
+    splitByExperiment = splitByExperiment)
 
 # Recombine the processed data --------------------------------------------
   x <- plyr::rbind.fill(lapply(processedListFromX,function(z){z$Raw}))
   fitResultsFromX <- plyr::rbind.fill(lapply(processedListFromX,function(z){z$Fit}))
   annotationsForX <- x[c("Experiment","Experimental Series","Fit Constant (a)")]
-  #   annotationsForX <- x[c("Experiment","Experimental Series","PPR at P = 0.5")]
   names(annotationsForX) <- c("Experiment", "Experimental Series", "x1")
   annotationsForX$x2 <- annotationsForX$x1
   annotationsForX$y1 <- 1-exp(-1)
@@ -253,8 +277,10 @@ baseFunctionScramblaseAssayPlot <- function(x,scaleTo=c("model","data"),forceThr
   }
   # Faceting by "Experiment"
   if(any(!is.na(x$"Experiment"))){
-    plotOutput <- plotOutput + 
-      facet_wrap(~Experiment)
+    if(splitByExperiment){
+      plotOutput <- plotOutput + 
+        facet_wrap(~Experiment)
+    }
   }
   # Prettifications
   plotOutput <- plotOutput +

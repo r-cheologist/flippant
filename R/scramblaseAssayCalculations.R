@@ -1,7 +1,14 @@
 #' @importFrom nlmrt nlxb
-scramblaseAssayCalculations <- function(x,scaleTo,forceThroughOrigin=FALSE){
+scramblaseAssayCalculations <- function(
+  x,
+  scaleTo,
+  forceThroughOrigin = FALSE,
+  splitByExperiment = TRUE){
 # Set parameters ----------------------------------------------------------
-  nlsControl <- list(minFactor=1/20480,maxit=100)
+  nlsControl <- list(
+    minFactor=1/20480,
+    maxit=100)
+
 # Parsing spectra ---------------------------------------------------------
   spectralData <- lapply(
     x$Path,
@@ -52,7 +59,7 @@ scramblaseAssayCalculations <- function(x,scaleTo,forceThroughOrigin=FALSE){
   x$CombinedId <- paste(x$"Experimental Series",x$"Experiment",sep="_")
   inputListFromX <- split(x,x$CombinedId)
 
-  # Calculations
+  # Calculations A
   processedListFromX <- lapply(
     inputListFromX,
     function(z){
@@ -111,6 +118,17 @@ scramblaseAssayCalculations <- function(x,scaleTo,forceThroughOrigin=FALSE){
         yMax <- max(z$"Relative Fluorescence Reduction",na.rm=TRUE)
       }
       z$"Probability >= 1 Scramblase in Vesicle" <- (y-y0)/(yMax-y0)
+      return(z)
+    })
+    # Is separate handling of experiments required?
+    if(!splitByExperiment){
+      processedListFromX <- rbind.fill(processedListFromX)
+      processedListFromX <- split(processedListFromX,processedListFromX$"Experimental Series")
+    }
+    # Calculatons B
+    processedListFromX <- lapply(
+      processedListFromX,
+      function(z){
       ##> The dependence of p(≥1 flippase) on PPR was analyzed as follows.
       ##> Definitions:
       ##>   f, number of flippases used for reconstitution
