@@ -9,7 +9,7 @@
 #' @seealso \code{\link{parseFluorimeterOutput}}, 
 #' \code{\link[flippant]{parseFelixGxOutput}},
 #' \code{\link[flippant]{parseManualOutput}}
-#' @importFrom assertive assert_any_are_not_missing_nor_empty_characters
+#' @importFrom assertive assert_all_are_non_missing_nor_empty_character
 #' @importFrom assertive assert_is_not_null
 #' @author Johannes Graumann
 #' @keywords manip IO file
@@ -18,7 +18,7 @@ parseFelix32Output <- function(x = NULL){
   # Check Prerequisites #
   #######################
   assert_is_not_null(x)
-  assert_any_are_not_missing_nor_empty_characters(x)
+  assert_all_are_non_missing_nor_empty_character(x)
   ##############
   # Processing #
   ##############
