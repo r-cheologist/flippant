@@ -3,7 +3,7 @@ title: '*flippant* -- An R package for the automated analysis of dithionite scra
   assays'
 author: Johannes Graumann ^†,^*, Birgit Ploier ^‡^, Richard J. Cotton ^†^,
   Michael A. Goren ^‡^ and Anant K. Menon ^‡^
-date: "September 24, 2015"
+date: '`r format(Sys.Date(), "%B %d,%Y")`'
 output:
 #  word_document
   pdf_document:
