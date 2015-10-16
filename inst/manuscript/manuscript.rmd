@@ -102,12 +102,12 @@ FtsW [@mohammadi_identification_2011], opsin/rhodopsin
 [@menon_opsin_2011;@goren_constitutive_2014], TMEM16 
 [@malvezzi_ca2-dependent_2013], $\beta$ 2-adrenergic and adenosine A2A 
 receptors [both @goren_constitutive_2014]. Extrapolating from the latter findings 
-and the opsin/rhodopsin case, we speculate that lipid scrambling may, in fact, 
-be an intrinsic property of G-protein coupled receptors in general 
+and the opsin/rhodopsin case, one may speculate that lipid scrambling may, in
+fact, be an intrinsic property of G-protein coupled receptors in general 
 [@goren_constitutive_2014].
 
-To interrogate scramblases as a functional class of proteins, we have developed 
-a biochemical assay suited to characterize scramblase activity of purified 
+To interrogate scramblases as a functional class of proteins, a biochemical
+assay was developed suited to characterize scramblase activity of purified 
 proteins and protein extracts based on the reconstitution of scramblases or 
 candidate proteins into preformed synthetic liposomes that contain trace amounts
 of nitrobenzoxadiazole (NBD) labeled fluorescent lipids [@chang_chemical_2004].
@@ -275,7 +275,7 @@ with the same modifying arguments to the function as for `scramblaseAssayPlot`.
 #Case Study
 *Retinitis pigmentosa* is a degenerative disease of the retina, the majority of 
 cases of which is linked to mutant forms of the G-protein coupled receptor 
-rhodopsin [@mendes_mechanisms_2005]. Motivated by our recent discovery that 
+rhodopsin [@mendes_mechanisms_2005]. Motivated by the recent discovery that 
 opsin/rhodopsin has scramblase activity [@menon_opsin_2011;@goren_constitutive_2014],
 we hypothesized that a class of enigmatic rhodopsin mutations, which are known
 to cause *retinitis pigmentosa* yet do not display the commonly associated 
