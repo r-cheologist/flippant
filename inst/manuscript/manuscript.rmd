@@ -29,6 +29,9 @@ bibliography: flippant.bib
 Current Git Hash
 :   `r system("git log -1 --format='%H'", intern = TRUE)`
 
+Git Clean
+:   `r ifelse(length(system("git status -s", intern = TRUE)) == 0, "TRUE", "FALSE")`
+
 ```{r, echo = FALSE}
 library(flippant, quietly = TRUE)
 library(grid, quietly = TRUE)
