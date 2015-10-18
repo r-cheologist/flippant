@@ -23,6 +23,9 @@ bibliography: flippant.bib
 \*
 :   To whom correspondence should be addressed: jog2030@qatar-med.cornell.edu
 
+Current Git Hash
+:   `r system("git log -1 --format='%H'", intern = TRUE)`
+
 ```{r, echo = FALSE}
 library(flippant, quietly = TRUE)
 library(grid, quietly = TRUE)
