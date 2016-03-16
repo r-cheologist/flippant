@@ -11,53 +11,76 @@ scramblaseAssayCalculations <- function(
 
 # Parsing spectra ---------------------------------------------------------
   spectralData <- lapply(
-    x$Path,
+    x[["Path"]],
     parseFluorimeterOutput)
 
 # Read out data -----------------------------------------------------------
   # What spectral time windows to extract?
-  minAcquisitionTime <- vapply(spectralData,function(y){y$Min.Acquisition.Time.in.sec},1)
+  minAcquisitionTime <- vapply(
+    spectralData,
+    function(y){
+      y[["Min.Acquisition.Time.in.sec"]]},
+    1)
   if(!all(minAcquisitionTime < 0)){
     stop("Minimum acquisition times are not all negative - aborting.")
   }
-  maxAcquisitionTime <- vapply(spectralData,function(y){y$Max.Acquisition.Time.in.sec},1)
-  if(any(maxAcquisitionTime < x$"Timepoint of Measurement (s)")){
+  maxAcquisitionTime <- vapply(
+    spectralData,
+    function(y){
+      y[["Max.Acquisition.Time.in.sec"]]
+      },
+    1)
+  if(any(maxAcquisitionTime < x[["Timepoint of Measurement (s)"]])){
     stop("At least one 'Timepoint of Measurement' is larger than the 
       corresponding spectrum acquisition. Aborting.")
   } else {
-    maxAcquisitionTime <- max(x$"Timepoint of Measurement (s)")
+    maxAcquisitionTime <- max(x[["Timepoint of Measurement (s)"]])
   }
   # Average over 10 values before dithionite addition for activity baseline
-  x$"Baseline Fluorescence" <- vapply(
+  x[["Baseline Fluorescence"]] <- vapply(
     spectralData,
     function(z){
-      indexesForAveraging <- tail(which(z$Data$Time.in.sec < 0),n=10)
-      return(median(z$Data$Fluorescence.Intensity[indexesForAveraging],na.rm=TRUE))
+      indexesForAveraging <- tail(
+        which(
+          z[["Data"]][["Time.in.sec"]] < 0),
+        n=10)
+      return(
+        median(
+          z[["Data"]][["Fluorescence.Intensity"]][indexesForAveraging],
+          na.rm=TRUE))
     },
     1)
   # Average over last 10 values (in common time range) for activity
-  x$"Minimum Fluorescence" <- vapply(
+  x[["Minimum Fluorescence"]] <- vapply(
     seq_along(spectralData),
     function(z){
       stopIndexForAveraging <- max(
         which(
-          spectralData[[z]]$Data$Time.in.sec <= x[z,"Timepoint of Measurement (s)"]))
+          spectralData[[z]][["Data"]][["Time.in.sec"]] <= x[z,"Timepoint of Measurement (s)"]))
       indexesForAveraging <- seq(
         from=stopIndexForAveraging-9,
         to=stopIndexForAveraging)
-      return(median(spectralData[[z]]$Data$Fluorescence.Intensity[indexesForAveraging],na.rm=TRUE))
+      return(
+        median(
+          spectralData[[z]][["Data"]][["Fluorescence.Intensity"]][indexesForAveraging],
+          na.rm=TRUE))
     },
     1)
   # Apply volume correction factors as needed
-  volumeCorrectionFactor <- x$"Fluorescence Assay Vol. with DT (ul)"/x$"Fluorescence Assay Vol. w/o DT (ul)"
-  x$"Minimum Fluorescence, Volume Corrected" <- x$"Minimum Fluorescence" * volumeCorrectionFactor
+  volumeCorrectionFactor <- x[["Fluorescence Assay Vol. with DT (ul)"]]/x[["Fluorescence Assay Vol. w/o DT (ul)"]]
+  x[["Minimum Fluorescence, Volume Corrected"]] <- x[["Minimum Fluorescence"]] * volumeCorrectionFactor
   ## Calculate activity reduction
-  x$"Fluorescence Reduction" <- 1-x$"Minimum Fluorescence, Volume Corrected"/x$"Baseline Fluorescence"
+  x[["Fluorescence Reduction"]] <- 1 - x[["Minimum Fluorescence, Volume Corrected"]]/x[["Baseline Fluorescence"]]
 
 # Generate PPR v.s P(>=1 Scramblase/Liposome) -------------------------------
   # Split by Experiment
-  x$CombinedId <- paste(x$"Experimental Series",x$"Experiment",sep="_")
-  inputListFromX <- split(x,x$CombinedId)
+  x[["CombinedId"]] <- paste(
+    x[["Experimental Series"]],
+    x[["Experiment"]],
+    sep="_")
+  inputListFromX <- split(
+    x,
+    x[["CombinedId"]])
 
   # Calculations A
   processedListFromX <- lapply(
@@ -65,14 +88,14 @@ scramblaseAssayCalculations <- function(
     function(z){
       ## Ensure that there's a data point with liposomes ONLY as a unique 
       ## reference point
-      indexOfLiposomesOnlyData <- which(z$"Protein in Reconstitution (mg)" == 0)
+      indexOfLiposomesOnlyData <- which(z[["Protein in Reconstitution (mg)"]] == 0)
       if(length(indexOfLiposomesOnlyData) == 0){
-        stop("Experimental series '",unique(z["Experimental Series"]),"' does 
+        stop("Experimental series '",unique(z[["Experimental Series"]]),"' does 
           not have the required liposomes-ONLY ('Extract Volume (ul)' of '0') 
           data point. Aborting.")
       }
       if(length(indexOfLiposomesOnlyData) > 1){
-        stop("Experimental series '",unique(z["Experimental Series"]),"' has 
+        stop("Experimental series '",unique(z[["Experimental Series"]]),"' has 
           more than one liposomes-ONLY ('Extract Volume (ul)' of '0') data 
           point.")
       }  
@@ -86,16 +109,16 @@ scramblaseAssayCalculations <- function(
       ##> particular vesicle in the ensemble is ‘flippase-active’, i.e it 
       ##> possesses at least one flippase.
       ## Calcualte the relative fluorescence reduction
-      z$"Relative Fluorescence Reduction" <- z$"Fluorescence Reduction" - z$"Fluorescence Reduction"[indexOfLiposomesOnlyData]
+      z[["Relative Fluorescence Reduction"]] <- z[["Fluorescence Reduction"]] - z[["Fluorescence Reduction"]][indexOfLiposomesOnlyData]
       ## Calculate PPR
-      z$"Protein per Phospholipid (mg/mmol)" <- calculatePpr(z)
+      z[["Protein per Phospholipid (mg/mmol)"]] <- flippant:::calculatePpr(z)
       ## Calculate p>=1Scramblase/Liposome
-      y <- z$"Relative Fluorescence Reduction"
-      y0 <- z$"Relative Fluorescence Reduction"[indexOfLiposomesOnlyData]
+      y <- z[["Relative Fluorescence Reduction"]]
+      y0 <- z[["Relative Fluorescence Reduction"]][indexOfLiposomesOnlyData]
       if(scaleTo == "model"){
         subsetForFit <- data.frame(
-          x=z$"Protein per Phospholipid (mg/mmol)",
-          y=z$"Relative Fluorescence Reduction")
+          x=z[["Protein per Phospholipid (mg/mmol)"]],
+          y=z[["Relative Fluorescence Reduction"]])
         ### Determine a sensible start point for 'a'
         pointSixY <- max(subsetForFit$y,na.rm=TRUE) * 0.6
         estimatedA <- subsetForFit$x[which.min(abs(subsetForFit$y - pointSixY))]
@@ -115,9 +138,11 @@ scramblaseAssayCalculations <- function(
           control = nlsControl)
         yMax <- coef(rMod)[["b"]]
       } else {
-        yMax <- max(z$"Relative Fluorescence Reduction",na.rm=TRUE)
+        yMax <- max(
+          z[["Relative Fluorescence Reduction"]],
+          na.rm=TRUE)
       }
-      z$"Probability >= 1 Scramblase in Vesicle" <- (y-y0)/(yMax-y0)
+      z[["Probability >= 1 Scramblase in Vesicle"]] <- (y-y0)/(yMax-y0)
       return(z)
     })
     # Is separate handling of experiments required?
@@ -198,21 +223,25 @@ scramblaseAssayCalculations <- function(
       output <- list(Raw=z)
       ## Generate data to plot the results of the fit
       xPredictedFromFit <- seq(
-        from=min(z$"Protein per Phospholipid (mg/mmol)",na.rm=TRUE),
-        to=max(z$"Protein per Phospholipid (mg/mmol)",na.rm=TRUE),
+        from = min(
+          z[["Protein per Phospholipid (mg/mmol)"]],
+          na.rm=TRUE),
+        to = max(
+          z[["Protein per Phospholipid (mg/mmol)"]],
+          na.rm=TRUE),
         length.out=200)
       yPredictedFromFit <-  coef(rMod)[["b"]]- exp(-xPredictedFromFit/coef(rMod)[["a"]])
       output$Fit <- data.frame(
+      output[["Fit"]] <- data.frame(
         "Protein per Phospholipid (mg/mmol)"=xPredictedFromFit,
         "Probability >= 1 Scramblase in Vesicle"=yPredictedFromFit,
-        "Experimental Series"=unique(z$"Experimental Series"),
-        "Experiment"=unique(z$"Experiment"),
+        "Experimental Series"=unique(z[["Experimental Series"]]),
+        "Experiment"=unique(z[["Experiment"]]),
         check.names=FALSE,
         stringsAsFactors=FALSE)
       ## Return
       return(output)
-    }
-  )
+    })
 
 # Output ------------------------------------------------------------------
   return(processedListFromX)
@@ -220,5 +249,5 @@ scramblaseAssayCalculations <- function(
 }
 
 calculatePpr <- function(x){
-  return(x$"Protein in Reconstitution (mg)"/x$"Lipid in Reconstitution (mmol)")
+  return(x[["Protein in Reconstitution (mg)"]]/x[["Lipid in Reconstitution (mmol)"]])
 }
