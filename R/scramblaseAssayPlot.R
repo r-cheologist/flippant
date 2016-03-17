@@ -212,8 +212,14 @@ baseFunctionScramblaseAssayPlot <- function(
     splitByExperiment = splitByExperiment)
 
 # Recombine the processed data --------------------------------------------
-  x <- plyr::rbind.fill(lapply(processedListFromX,function(z){z$Raw}))
-  fitResultsFromX <- plyr::rbind.fill(lapply(processedListFromX,function(z){z$Fit}))
+  x <- plyr::rbind.fill(
+    lapply(
+      processedListFromX,
+      function(z){z[["Raw"]]}))
+  fitResultsFromX <- plyr::rbind.fill(
+    lapply(
+      processedListFromX,
+      function(z){z[["Fit"]]}))
   annotationsForX <- x[c("Experiment","Experimental Series","Fit Constant (a)")]
   names(annotationsForX) <- c("Experiment", "Experimental Series", "x1")
   annotationsForX$x2 <- annotationsForX$x1
