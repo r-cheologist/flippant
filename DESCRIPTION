@@ -7,17 +7,17 @@ Version: 0.5.1
 Authors@R: person("Johannes", "Graumann", role = c("aut","cre"),
     email="johannes_graumann@web.de")
 Depends:
-    R (>= 3.2.2),
-    ggplot2 (>= 1.0.1),
+    R (>= 3.2.3),
+    ggplot2 (>= 2.1.0),
     wmtsa (>= 2.0-0)
 Suggests:
     roxygen2,
     testthat
 Imports:
-    assertive (>= 0.3-1),
     assertive (>= 0.3-2),
     minpack.lm (>= 1.2-0),
     plyr (>= 1.8.3),
     RcppRoll (>= 0.2.2)
 License: GPL (>= 3)
 LazyData: true
+RoxygenNote: 5.0.1
