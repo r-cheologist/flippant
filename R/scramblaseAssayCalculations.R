@@ -1,4 +1,4 @@
-#' @importFrom nlmrt nlxb
+#' @importFrom minpack.lm nlsLM
 scramblaseAssayCalculations <- function(
   x,
   scaleTo,
@@ -121,10 +121,14 @@ scramblaseAssayCalculations <- function(
           x=z[["Protein per Phospholipid (mg/mmol)"]],
           y=z[["Relative Fluorescence Reduction"]])
         ### Determine a sensible start point for 'a'
-        pointSixY <- max(subsetForFit$y,na.rm=TRUE) * 0.6
-        estimatedA <- subsetForFit$x[which.min(abs(subsetForFit$y - pointSixY))]
-        estimatedB <- max(z$"Relative Fluorescence Reduction",na.rm=TRUE)
-        rMod <- nlmrt::nlxb(
+        pointSixY <- max(
+          subsetForFit[["y"]],
+          na.rm=TRUE) * 0.6
+        estimatedA <- subsetForFit[["x"]][which.min(abs(subsetForFit[["y"]] - pointSixY))]
+        estimatedB <- max(
+          z[["Relative Fluorescence Reduction"]],
+          na.rm=TRUE)
+        rMod <- minpack.lm::nlsLM(
           formula = if(forceThroughOrigin){
             y ~ b * (1 - exp(-x/a))
           } else {
@@ -146,82 +150,101 @@ scramblaseAssayCalculations <- function(
       z[["Probability >= 1 Scramblase in Vesicle"]] <- (y-y0)/(yMax-y0)
       return(z)
     })
-    # Is separate handling of experiments required?
-    if(!splitByExperiment){
-      processedListFromX <- rbind.fill(processedListFromX)
-      processedListFromX <- split(processedListFromX,processedListFromX$"Experimental Series")
-    }
-    # Calculatons B
-    processedListFromX <- lapply(
-      processedListFromX,
-      function(z){
-      ##> The dependence of p(≥1 flippase) on PPR was analyzed as follows.
-      ##> Definitions:
-      ##>   f, number of flippases used for reconstitution
-      ##>   v, number of vesicles(
-      ##>   m, number of flippases per vesicle (=f/v)
-      ##>   PPR, mg protein per mmol phospholipid
-      ##> To calculate p(≥1 flippase) as a function of the PPR, we assume that 
-      ##> reconstitution of opsin/rhodopsin molecules into vesicles occurs 
-      ##> independently and that the vesicles are identical and may have more
-      ##> than one flippase. The probability that a flippase will be 
-      ##> reconstituted into a particular vesicle is therefore 1/v. On 
-      ##> reconstituting f flippases into an ensemble of v vesicles, the 
-      ##> probability p(k) that a particular vesicle contains k flippases is 
-      ##> given by the binomial formula:
-      ##>   
-      ##>   p(k) = C(f,k)(1/v)k(1-1/v)f-k(
-      ##> 
-      ##> Because f and v are both large, it is convenient to use the Poisson 
-      ##> approximation:
-      ##>   
-      ##>   p(k) = (mk/k!)e-m, where m = f/v is the average number of flippases
-      ##> per vesicle
-      ##>
-      ##> The probability of a particular vesicle having no flippases is 
-      ##> p(0) = e-m; therefore, the probability that a vesicle has one or more
-      ##> flippases, i.e isactive in the flippase assay, is
-      ##> 
-      ##> p(≥1) = 1-p(0) = 1 - e-m 
-      ##> 
-      ##> The average number of flippases per vesicle, m, is proportional to PPR
-      ##> and can be written as m = PPR/α, where α is a constant with units of
-      ##> mg/mmol. 
-      ##> Thus,
-      ##> 
-      ##> p(≥1) = 1 - e-m = 1 – exp(-PPR/α)
-      ##> 
-      ##> The mono-exponential fit constant for a graph of p(≥1) vs PPR is 
-      ##> α mg/mmol; at this PPR value, m = 1 and ~63% of the vesicles in the 
-      ##> population possess ≥1 flippase.
-      ## Fit a monoexponential curve to the data
+  # Is separate handling of experiments required?
+  if(!splitByExperiment){
+    processedListFromX <- rbind.fill(processedListFromX)
+    processedListFromX <- split(processedListFromX,processedListFromX$"Experimental Series")
+  }
+  # Calculatons B
+  processedListFromX <- lapply(
+    processedListFromX,
+    function(z){
       subsetForFit <- data.frame(
-        x=z$"Protein per Phospholipid (mg/mmol)",
-        y=z$"Probability >= 1 Scramblase in Vesicle")
-      ### Determine a sensible start point for 'a'
-      pointSixY <- max(subsetForFit$y,na.rm=TRUE) * 0.6
-      estimatedA <- subsetForFit$x[which.min(abs(subsetForFit$y - pointSixY))]
-      rMod <- nlmrt::nlxb(
-        formula = if(forceThroughOrigin){
-          y ~ b * (1 - exp(-x/a))
-        } else {
-          y ~ b-c*exp(-x/a)
-        },
-        data = subsetForFit,
-        start = if(forceThroughOrigin){
-          list(a=estimatedA,b=1)
-        } else {        
-          start = list(a=estimatedA,b=1,c=1)
-        },
-        control = nlsControl)
-      gc()
-      z$"Fit Constant (a)" <- coef(rMod)[["a"]]
-      z$"PPR at P = 0.5" <- if(forceThroughOrigin){
-        -coef(rMod)[["a"]] * log(1 - 0.5/coef(rMod)[["b"]])
-      } else {
-        -coef(rMod)[["a"]] * log((coef(rMod)[["b"]] - 0.5)/coef(rMod)[["c"]])
+        x=z[["Protein per Phospholipid (mg/mmol)"]],
+        y=z[["Probability >= 1 Scramblase in Vesicle"]])
+      ## Determine a sensible start point for 'a' in the monoexponential fit
+      pointSixY <- max(
+        subsetForFit[["y"]],
+        na.rm=TRUE) * 0.6
+      estimatedA <- subsetForFit[["x"]][which.min(abs(subsetForFit[["y"]] - pointSixY))]
+      if(formulaGeneration == 1){
+        ##> The dependence of p(≥1 flippase) on PPR was analyzed as follows.
+        ##> Definitions:
+        ##>   f, number of flippases used for reconstitution
+        ##>   v, number of vesicles(
+        ##>   m, number of flippases per vesicle (=f/v)
+        ##>   PPR, mg protein per mmol phospholipid
+        ##> To calculate p(≥1 flippase) as a function of the PPR, we assume that 
+        ##> reconstitution of opsin/rhodopsin molecules into vesicles occurs 
+        ##> independently and that the vesicles are identical and may have more
+        ##> than one flippase. The probability that a flippase will be 
+        ##> reconstituted into a particular vesicle is therefore 1/v. On 
+        ##> reconstituting f flippases into an ensemble of v vesicles, the 
+        ##> probability p(k) that a particular vesicle contains k flippases is 
+        ##> given by the binomial formula:
+        ##>   
+        ##>   p(k) = C(f,k)(1/v)k(1-1/v)f-k(
+        ##> 
+        ##> Because f and v are both large, it is convenient to use the Poisson 
+        ##> approximation:
+        ##>   
+        ##>   p(k) = (mk/k!)e-m, where m = f/v is the average number of flippases
+        ##> per vesicle
+        ##>
+        ##> The probability of a particular vesicle having no flippases is 
+        ##> p(0) = e-m; therefore, the probability that a vesicle has one or more
+        ##> flippases, i.e isactive in the flippase assay, is
+        ##> 
+        ##> p(≥1) = 1-p(0) = 1 - e-m 
+        ##> 
+        ##> The average number of flippases per vesicle, m, is proportional to PPR
+        ##> and can be written as m = PPR/α, where α is a constant with units of
+        ##> mg/mmol. 
+        ##> Thus,
+        ##> 
+        ##> p(≥1) = 1 - e-m = 1 – exp(-PPR/α)
+        ##> 
+        ##> The mono-exponential fit constant for a graph of p(≥1) vs PPR is 
+        ##> α mg/mmol; at this PPR value, m = 1 and ~63% of the vesicles in the 
+        ##> population possess ≥1 flippase.
+        ## Fit a monoexponential curve to the data
+        rMod <- minpack.lm::nlsLM(
+          formula = if(forceThroughOrigin){
+            y ~ b * (1 - exp(-x/a))
+          } else {
+            y ~ b-c*exp(-x/a)
+          },
+          data = subsetForFit,
+          start = if(forceThroughOrigin){
+            list(a = estimatedA, b = 1)
+          } else {        
+            list(a = estimatedA, b = 1, c = 1)
+          },
+          control = nlsControl)
+        gc()
+      } else if(formulaGeneration == 2){
+        ## p(≥1) = 1-(1/sqrt(1+784*α*PPR))*exp(-3872*α*PPR/(1+784*α*PPR))
+        ## p(≥1) = 1 - e-m = 1 – exp(-PPR/α)
+        # ## Fit a monoexponential curve to the data
+        rMod <- minpack.lm::nlsLM(
+          formula = if(forceThroughOrigin){
+            y ~ b * (1 - (1/sqrt(1 + 784 * a * x)) * exp(-3873 * a * x / (1 + 784 * a * x)))
+          } else {
+            y ~ b - c * (1/sqrt(1 + 784 * a * x)) * exp(-3873 * a * x / (1 + 784 * a * x))
+          },
+          data = subsetForFit,
+          start = if(forceThroughOrigin){
+            list(a=estimatedA,b=1)
+          } else {        
+            list(a=estimatedA,b=1,c=1)
+          },
+          control = nlsControl)
+        gc()
       }
-      output <- list(Raw=z)
+      z[["Fit Constant (a)"]] <- coef(rMod)[["a"]]
+      output <- list(
+        Raw = z,
+        FitObject = rMod)
       ## Generate data to plot the results of the fit
       xPredictedFromFit <- seq(
         from = min(

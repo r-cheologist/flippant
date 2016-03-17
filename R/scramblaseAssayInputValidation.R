@@ -136,6 +136,9 @@ scramblaseAssayInputValidation <- function(
   } else if(formulaGeneration %in% c("second", "2")){
     formulaGeneration <- 2
   }
+  if(verbose){
+    message("Data will be fitted to formula generation ", formulaGeneration, ".")
+  }
   # Check forceThroughOrigin
   assert_is_a_bool(forceThroughOrigin)
   # Check splitByExperiment

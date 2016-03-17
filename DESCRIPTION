@@ -15,7 +15,8 @@ Suggests:
     testthat
 Imports:
     assertive (>= 0.3-1),
-    nlmrt (>= 2013-9.25),
+    assertive (>= 0.3-2),
+    minpack.lm (>= 1.2-0),
     plyr (>= 1.8.3),
     RcppRoll (>= 0.2.2)
 License: GPL (>= 3)

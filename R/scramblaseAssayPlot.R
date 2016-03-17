@@ -81,7 +81,7 @@
 #'    mono-exponential fit to the data (\code{scaleTo = "model"}). The latter 
 #'    (default) is a precaution for the case where the protein/phospholipid
 #'    titration did not reach the plateau of the saturation curve.}
-#'  \item{A monoexponential curve is fitted unsig \code{\link{nlxb}} to either
+#'  \item{A monoexponential curve is fitted unsig \code{\link{nlsLM}} to either
 #'    \deqn{p(\geq 1)=b-c\cdot e^{-\frac{\mbox{\tiny PPR}}{a}}}{p(\ge 1) = b - c*exp(-PPR/a)}
 #'    (if \code{forceThroughOrigin = FALSE}) or  
 #'    \deqn{p(\geq 1)=b\cdot(1-e^{-\frac{\mbox{\tiny PPR}}{a}})}{p(\ge 1) = b * (1 - exp(-PPR/a))} 
@@ -144,7 +144,7 @@
 #' Constitutive phospholipid scramblase activity of a G Protein-coupled 
 #' receptor. Nat Commun 5, 5115.
 #' @export
-#' @seealso \code{\link{parseFluorimeterOutput}}
+#' @seealso \code{\link{parseFluorimeterOutput}} \code{\link{nlsLM}}
 #' @import ggplot2
 #' @importFrom assertive assert_is_a_string
 #' @importFrom plyr rbind.fill
@@ -196,7 +196,7 @@ baseFunctionScramblaseAssayPlot <- function(
   formulaGeneration = c(2, 1),
   splitByExperiment = TRUE){
 # Check Prerequisites -----------------------------------------------------
-  validatedParams <- scramblaseAssayInputValidation(
+  validatedParams <- flippant:::scramblaseAssayInputValidation(
     x = x ,
     scaleTo = scaleTo,
     forceThroughOrigin = forceThroughOrigin,
@@ -209,7 +209,7 @@ baseFunctionScramblaseAssayPlot <- function(
   splitByExperiment <- validatedParams[["splitByExperiment"]]
   
 # Processing --------------------------------------------------------------
-  processedListFromX <- scramblaseAssayCalculations(
+  processedListFromX <- flippant:::scramblaseAssayCalculations(
     x = x,
     scaleTo = scaleTo,
     forceThroughOrigin = forceThroughOrigin,
@@ -252,7 +252,9 @@ baseFunctionScramblaseAssayPlot <- function(
         stringsAsFactors=FALSE)
     }
   )
-  annotationsForX <- plyr::rbind.fill(annotationsForX,plyr::rbind.fill(processedAnnotationListForX))
+  annotationsForX <- plyr::rbind.fill(
+    annotationsForX,
+    plyr::rbind.fill(processedAnnotationListForX))
 
 # Assemble the (graphical) output -----------------------------------------
   # Groundwork
