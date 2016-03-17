@@ -260,10 +260,13 @@ baseFunctionScramblaseAssayPlot <- function(
   ## First layer: lines/curves representing the monoexponential fit
   if(any(!is.na(fitResultsFromX$"Experimental Series"))){
     plotOutput <- plotOutput +
-      geom_line(data=fitResultsFromX,aes_string(color="`Experimental Series`"),fullRange=TRUE)
+      geom_line(
+        data=fitResultsFromX,
+        aes_string(color = "`Experimental Series`"))
   } else {
     plotOutput <- plotOutput +
-      geom_line(data=fitResultsFromX,fullRange=TRUE)
+      geom_line(
+        data = fitResultsFromX)
   }
   ## Second layer: annotations indicating PPR at tau
   if(any(!is.na(annotationsForX$"Experimental Series"))){
