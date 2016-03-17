@@ -230,8 +230,9 @@ scramblaseAssayCalculations <- function(
           z[["Protein per Phospholipid (mg/mmol)"]],
           na.rm=TRUE),
         length.out=200)
-      yPredictedFromFit <-  coef(rMod)[["b"]]- exp(-xPredictedFromFit/coef(rMod)[["a"]])
-      output$Fit <- data.frame(
+      yPredictedFromFit <- predict(
+        rMod,
+        newdata = list(x = xPredictedFromFit))
       output[["Fit"]] <- data.frame(
         "Protein per Phospholipid (mg/mmol)"=xPredictedFromFit,
         "Probability >= 1 Scramblase in Vesicle"=yPredictedFromFit,
