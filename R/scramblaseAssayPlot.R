@@ -176,6 +176,7 @@ scramblaseAssayPlot <- function(
   x,
   scaleTo = c("model","data"),
   forceThroughOrigin = FALSE,
+  formulaGeneration = c(2, 1),
   splitByExperiment = TRUE){
   UseMethod("scramblaseAssayPlot",x)
 }
@@ -192,16 +193,19 @@ baseFunctionScramblaseAssayPlot <- function(
   x,
   scaleTo = c("model","data"),
   forceThroughOrigin = FALSE,
+  formulaGeneration = c(2, 1),
   splitByExperiment = TRUE){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- scramblaseAssayInputValidation(
     x = x ,
     scaleTo = scaleTo,
     forceThroughOrigin = forceThroughOrigin,
+    formulaGeneration = formulaGeneration,
     splitByExperiment = splitByExperiment)
   x <- validatedParams[["x"]]
   scaleTo <- validatedParams[["scaleTo"]]
   forceThroughOrigin <- validatedParams[["forceThroughOrigin"]]
+  formulaGeneration <- validatedParams[["formulaGeneration"]]
   splitByExperiment <- validatedParams[["splitByExperiment"]]
   
 # Processing --------------------------------------------------------------
@@ -209,6 +213,7 @@ baseFunctionScramblaseAssayPlot <- function(
     x = x,
     scaleTo = scaleTo,
     forceThroughOrigin = forceThroughOrigin,
+    formulaGeneration = formulaGeneration,
     splitByExperiment = splitByExperiment)
 
 # Recombine the processed data --------------------------------------------

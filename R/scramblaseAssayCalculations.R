@@ -2,6 +2,7 @@
 scramblaseAssayCalculations <- function(
   x,
   scaleTo,
+  formulaGeneration = 2,
   forceThroughOrigin = FALSE,
   splitByExperiment = TRUE){
 # Set parameters ----------------------------------------------------------

@@ -4,6 +4,7 @@
 scramblaseAssayInputValidation <- function(
   x,
   scaleTo,
+  formulaGeneration,
   forceThroughOrigin,
   splitByExperiment,
   verbose=TRUE){
@@ -121,6 +122,20 @@ scramblaseAssayInputValidation <- function(
   if(scaleTo == "model" & verbose){
     message("Data will be scaled to the plateau of its monoexponential fit.")
   }
+  # Check formulaGeneration
+  formulaGeneration <- as.character(formulaGeneration)
+  if(identical(formulaGeneration, c("2","1"))){
+    formulaGeneration <- "2"
+  }
+  formulaGeneration <- match.arg(
+    arg = formulaGeneration,
+    choices = c("second","first", "2", "1"),
+    several.ok = FALSE)
+  if(formulaGeneration %in% c("first","1")){
+    formulaGeneration <- 1
+  } else if(formulaGeneration %in% c("second", "2")){
+    formulaGeneration <- 2
+  }
   # Check forceThroughOrigin
   assert_is_a_bool(forceThroughOrigin)
   # Check splitByExperiment
@@ -130,6 +145,7 @@ scramblaseAssayInputValidation <- function(
     list(
       x = x,
       scaleTo = scaleTo,
+      formulaGeneration = formulaGeneration,
       forceThroughOrigin = forceThroughOrigin,
       splitByExperiment = splitByExperiment))
 }

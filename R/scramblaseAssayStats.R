@@ -5,6 +5,7 @@ scramblaseAssayStats <- function(
   x,
   scaleTo = c("model","data"),
   forceThroughOrigin = FALSE,
+  formulaGeneration = c(2, 1),
   splitByExperiment = TRUE){
   UseMethod("scramblaseAssayStats",x)
 }
@@ -27,10 +28,12 @@ baseFunctionScramblaseAssayStats <- function(
     x = x,
     scaleTo = scaleTo,
     forceThroughOrigin = forceThroughOrigin,
+    formulaGeneration = formulaGeneration,
     splitByExperiment = splitByExperiment)
   x <- validatedParams[["x"]]
   scaleTo <- validatedParams[["scaleTo"]]
   forceThroughOrigin <- validatedParams[["forceThroughOrigin"]]
+  formulaGeneration <- validatedParams[["formulaGeneration"]]
   splitByExperiment <- validatedParams[["splitByExperiment"]]
 
 # Processing --------------------------------------------------------------
