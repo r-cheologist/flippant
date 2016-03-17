@@ -22,6 +22,7 @@ baseFunctionScramblaseAssayStats <- function(
   x,
   scaleTo = c("model","data"),
   forceThroughOrigin = FALSE,
+  formulaGeneration = c(2, 1),
   splitByExperiment = TRUE){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- scramblaseAssayInputValidation(
@@ -41,6 +42,7 @@ baseFunctionScramblaseAssayStats <- function(
     x = x,
     scaleTo = scaleTo,
     forceThroughOrigin = forceThroughOrigin,
+    formulaGeneration = formulaGeneration,
     splitByExperiment = splitByExperiment)
   processedListFromX <- lapply(processedListFromX,function(y){y[["Raw"]]})
 
