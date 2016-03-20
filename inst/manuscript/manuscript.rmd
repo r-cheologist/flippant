@@ -505,9 +505,11 @@ of such experiments as well.
 #Funding
 J.G., R.J.C. and the Proteomics Core at WCMC-Q are supported by ``Biomedical 
 Research Program'' funds at Weill Cornell Medical College in Qatar, a program 
-funded by Qatar Foundation. B.P. was supported by a grant from Qatar National 
-Research Fund’s National Priority Research Program (5-669-1-112) to J.G. and
-A.K.M., as well as by the Austrian Science Fund (FWF), project J3686-B21.
+funded by Qatar Foundation. This study was made possible by NPRP grant
+5-669-1-112 from the Qatar National Research Fund (a member of Qatar 
+Foundation).The statements made herein are solely the responsibility of the
+authors. B.P. was also supported by the Austrian Science Fund (FWF), project
+J3686-B21.
 
 #Acknowledgements
 
