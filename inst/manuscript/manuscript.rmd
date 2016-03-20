@@ -362,7 +362,7 @@ max_PPR <- read.delim(
   flippant:::calculatePpr() %>%
   max(
     na.rm = TRUE) %>%
-  round(
+  signif(
     digits = 2
   )
 ```
@@ -407,7 +407,7 @@ ppr_results_names <- ppr_results$`Experimental Series` %>%
   paste("and") %>%
   paste(tail(ppr_results$`Experimental Series`, n = 1))
 ppr_results_alpha_print <- ppr_results$`Fit Constant` %>%
-  round(2) %>%
+  signif(2) %>%
   head(n = nrow(ppr_results) - 1) %>%
   paste(collapse = ", ") %>%
   paste("and") %>%
@@ -448,12 +448,12 @@ analysis_timing <- microbenchmark(
   analysis_timing_function(),
   times = analysis_timing_n)
 
-analysis_timing_median <- round(
+analysis_timing_median <- signif(
   summary(
     analysis_timing)$median,
   2)
 
-analysis_timing_iqr <- round(
+analysis_timing_iqr <- signif(
   diff(
     unlist(
       summary(analysis_timing)[c("lq", "uq")],
