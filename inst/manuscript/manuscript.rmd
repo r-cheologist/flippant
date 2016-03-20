@@ -484,8 +484,8 @@ $\text{IQR}=`r analysis_timing_iqr`~\text{s}$; $n=`r analysis_timing_n`$).
 
 Results from *flippant*-driven analysis track prior manual analysis well. 
 Deviations observed may stem from algorithmic differences such as the fitting 
-routine used (*flippant* uses the Nash variant of the Marquardt 
-nonlinear least squares algorithm as implemented by @nash_nlmrt:_2014) and 
+routine used (*flippant* uses the the Marquardt nonlinear least squares
+algorithm as implemented by @elzhov_minpack.lm:_2015) and 
 general handling of significant digits and rounding.
 
 The choice of R for the implementation is not only motivated by the extensive
