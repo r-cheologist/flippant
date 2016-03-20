@@ -3,3 +3,5 @@
 .RData
 man/*
 NAMESPACE
+packrat/lib*/
+packrat/src/
