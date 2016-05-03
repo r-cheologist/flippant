@@ -1,5 +1,5 @@
 #' @importFrom minpack.lm nlsLM
-scramblaseAssayCalculations <- function(
+scramblase_assay_calculations <- function(
   x,
   scale_to,
   generation_of_algorithm = 2,

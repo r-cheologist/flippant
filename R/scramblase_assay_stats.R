@@ -38,7 +38,7 @@ base_function_scramblase_assay_stats <- function(
   split_by_experiment <- validatedParams[["split_by_experiment"]]
 
 # Processing --------------------------------------------------------------
-  processedListFromX <- scramblaseAssayCalculations(
+  processedListFromX <- scramblase_assay_calculations(
     x = x,
     scale_to = scale_to,
     force_through_origin = force_through_origin,

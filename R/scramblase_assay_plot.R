@@ -36,7 +36,7 @@
 #'    
 #' Based on Goren et al. (2014) data is processed as follows (the majority of 
 #' the processing is split off into the internal function 
-#' \code{scramblaseAssayCalculations}):
+#' \code{scramblase_assay_calculations}):
 #' \itemize{
 #'  \item{Input is format checked and defaults are injected for facultative 
 #'    parameters/columns as appropriate (see input \code{\link{data.frame}} 
@@ -209,7 +209,7 @@ base_function_scramblase_assay_plot <- function(
   split_by_experiment <- validatedParams[["split_by_experiment"]]
   
 # Processing --------------------------------------------------------------
-  processedListFromX <- flippant:::scramblaseAssayCalculations(
+  processedListFromX <- flippant:::scramblase_assay_calculations(
     x = x,
     scale_to = scale_to,
     force_through_origin = force_through_origin,
