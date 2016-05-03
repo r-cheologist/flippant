@@ -2,11 +2,11 @@
 #' @description Parse spectra from files provided by a QuantaMaster fluorimeter 
 #' (Photon Technology International, Inc., Edison, New Jersey) using 
 #' \code{FelixGX v4.1}
-#' @details A helper function to \code{\link{parseFluorimeterOutput}}.
+#' @details A helper function to \code{\link{parse_fluorimeter_output}}.
 #' @param x \code{\link{character}} vector resulting from 
 #' \code{\link{readLines}} of the corresponding data file.
-#' @return See \code{\link{parseFluorimeterOutput}}.
-#' @seealso \code{\link{parseFluorimeterOutput}}, 
+#' @return See \code{\link{parse_fluorimeter_output}}.
+#' @seealso \code{\link{parse_fluorimeter_output}}, 
 #' \code{\link[flippant]{parseFelix32Output}},
 #' \code{\link[flippant]{parse_manual_output}}
 #' @importFrom assertive assert_all_are_non_missing_nor_empty_character

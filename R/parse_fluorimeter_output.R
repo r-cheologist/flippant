@@ -1,4 +1,4 @@
-#' @title parseFluorimeterOutput
+#' @title parse_fluorimeter_output
 #' @description Parse fluorimeter spectra
 #' @details A function to read fluorimeter output directly. Intended as a helper
 #' function to scramblase activity determinations from dithionite assays.
@@ -56,7 +56,7 @@
 #' @importFrom wmtsa wavCWTPeaks
 #' @importFrom wmtsa wavCWTTree
 #' @export
-parseFluorimeterOutput <- function(
+parse_fluorimeter_output <- function(
   specFile = NULL,
   adjust = TRUE){
   #######################

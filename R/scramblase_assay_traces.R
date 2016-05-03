@@ -44,7 +44,7 @@ base_function_scramblase_assay_traces <- function(
   processedX$"Protein per Phospholipid (mg/mmol)" <- calculatePpr(x)
   processedX <- processedX[c("Path","Experimental Series","Experiment","Protein per Phospholipid (mg/mmol)")]
   # Parse the fluorimeter data and whip it into shape
-  rawFluorimeterOutput <- lapply(processedX$Path,parseFluorimeterOutput,adjust = adjust)
+  rawFluorimeterOutput <- lapply(processedX$Path,parse_fluorimeter_output,adjust = adjust)
   names(rawFluorimeterOutput) <- processedX$Path
   dataFromRawFluorimeterOutput <- plyr::rbind.fill(
     lapply(

@@ -8,7 +8,7 @@
 #' must have the following \bold{mandatory} columns:
 #' \describe{
 #'  \item{\code{Path}:}{Paths to existing and readable \code{ASCII} output files 
-#'    of a fluorimeter. See \code{\link{parseFluorimeterOutput}} for details and
+#'    of a fluorimeter. See \code{\link{parse_fluorimeter_output}} for details and
 #'    supported formats.}
 #'  \item{\code{Protein in Reconstitution (mg)}:}{Self-explanatory.}}
 #' 
@@ -44,7 +44,7 @@
 #'    \code{scramblase_assay_input_validation} supplies this 
 #'    functionality.}
 #'  \item{Fluorescence spectra are parsed using 
-#'    \code{\link{parseFluorimeterOutput}}. This includes automated 
+#'    \code{\link{parse_fluorimeter_output}}. This includes automated 
 #'    determination of when dithionite was added to the sample using 
 #'    \pkg{wmtsa}-supplied methodology and resetting the acquisition time 
 #'    accordingly (\code{0} henceforth corresponds to the time of addition).}
@@ -144,7 +144,7 @@
 #' Constitutive phospholipid scramblase activity of a G Protein-coupled 
 #' receptor. Nat Commun 5, 5115.
 #' @export
-#' @seealso \code{\link{parseFluorimeterOutput}} \code{\link{nlsLM}}
+#' @seealso \code{\link{parse_fluorimeter_output}} \code{\link{nlsLM}}
 #' @import ggplot2
 #' @importFrom assertive assert_is_a_string
 #' @importFrom plyr rbind.fill

@@ -13,7 +13,7 @@ scramblaseAssayCalculations <- function(
 # Parsing spectra ---------------------------------------------------------
   spectralData <- lapply(
     x[["Path"]],
-    parseFluorimeterOutput)
+    parse_fluorimeter_output)
 
 # Read out data -----------------------------------------------------------
   # What spectral time windows to extract?
