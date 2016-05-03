@@ -1,6 +1,6 @@
 #' @title scramblaseAssayPlot
 #' @aliases scrambalseAssayCalculations scramblaseAssayInputTemplate 
-#' scramblaseAssayPlot scramblaseAssayStats scramblaseAssayTraces
+#' scramblaseAssayPlot scramblaseAssayStats scramblase_assay_traces
 #' @description Functions for the presentation and evaluaton of dithionite 
 #' scramblase assays
 #' @details The \code{\link{data.frame}} accepted by the majority of the 
@@ -114,10 +114,10 @@
 #' @param forceThroughOrigin \code{\link{logical}} indicating whether to force 
 #' the fitted curve(s) to penetrate the origin (defaulting to \code{FALSE}).
 #' @param timeMinSec A single \code{\link{numeric}}. If given, 
-#' \code{\link{scramblaseAssayTraces}} produces a time/x axis trimmed to
+#' \code{\link{scramblase_assay_traces}} produces a time/x axis trimmed to
 #' this value (in seconds).
 #' @param timeMaxSec A single \code{\link{numeric}}. If given, 
-#' \code{\link{scramblaseAssayTraces}} produces a time/x axis trimmed to
+#' \code{\link{scramblase_assay_traces}} produces a time/x axis trimmed to
 #' this value (in seconds).
 #' @param adjust A single \code{\link{logical}}, indicating whether (default) or 
 #' not spectral traces to be plotted are algorithmically aligned at the time
@@ -161,7 +161,7 @@
 #'   exdir = tmpDir)
 #' setwd(tmpDir)
 #' # Plot the spectal traces
-#' scramblaseAssayTraces(
+#' scramblase_assay_traces(
 #'   "inputTable.txt",
 #'   timeMaxSec = 350)
 #' # Plot the PPR plot(s) faceting by experiment

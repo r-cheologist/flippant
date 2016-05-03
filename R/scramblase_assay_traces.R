@@ -3,25 +3,25 @@
 #' @importFrom assertive assert_is_a_number
 #' @importFrom plyr rbind.fill
 #' @export
-scramblaseAssayTraces <- function(
+scramblase_assay_traces <- function(
   x,
   timeMinSec=NA_real_,
   timeMaxSec=NA_real_,
   adjust = TRUE){
-  UseMethod("scramblaseAssayTraces", x)
+  UseMethod("scramblase_assay_traces", x)
 }
 #' @export
-scramblaseAssayTraces.data.frame <- function(
+scramblase_assay_traces.data.frame <- function(
   x,
   ...){
-  baseFunctionScramblaseAssayTraces(x, ...)
+  base_function_scramblase_assay_traces(x, ...)
 }
 #' @export
-scramblaseAssayTraces.character <- function(x, ...){
+scramblase_assay_traces.character <- function(x, ...){
   parsedInputFile <- readScramblaseInputFile(x)
-  baseFunctionScramblaseAssayTraces(x=parsedInputFile, ...)
+  base_function_scramblase_assay_traces(x=parsedInputFile, ...)
 }
-baseFunctionScramblaseAssayTraces <- function(
+base_function_scramblase_assay_traces <- function(
   x,
   timeMinSec=NA_real_,
   timeMaxSec=NA_real_,

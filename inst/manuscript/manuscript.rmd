@@ -239,7 +239,7 @@ set, fluorescent spectra or traces may be plotted in publication-appropriate
 quality with acquisition time on the x- and fluorescence intensity on the y-axis
 using
 
-```{r, code = formatR::usage('scramblaseAssayTraces'), eval = FALSE}
+```{r, code = formatR::usage('scramblase_assay_traces'), eval = FALSE}
 ```
 
 and handing the function the path to the user assembled spreadsheet of input 
@@ -308,10 +308,10 @@ times between experiments.
 
 ```{r, eval = FALSE}
 # Plot spectral traces (Figure 1A)
-scramblaseAssayTraces("inputTable.txt", timeMaxSec = 350)
+scramblase_assay_traces("inputTable.txt", timeMaxSec = 350)
 ```
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "***flippant*-based reanalysis of data in Figure 4C/D from @ploier_perturbed_submitted.** (A) represents spectral traces as produced by a call to the function `scramblaseAssayTraces`, while (B) and (C) show protein to phospholipid ration (PPR) plots for the data using a x-axis trimmed to a maximum value of 2 (see text for details). In (B) data is separately plotted for independent experiments, while (C) combines all dat points, aiming for reliability of fit."}
+```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "***flippant*-based reanalysis of data in Figure 4C/D from @ploier_perturbed_submitted.** (A) represents spectral traces as produced by a call to the function `scramblase_assay_traces`, while (B) and (C) show protein to phospholipid ration (PPR) plots for the data using a x-axis trimmed to a maximum value of 2 (see text for details). In (B) data is separately plotted for independent experiments, while (C) combines all dat points, aiming for reliability of fit."}
 x <- flippant:::readScramblaseInputFile(
   file.path(tmpDir,"inputTable.txt"))
 x[["Path"]] <- file.path(tmpDir, x[["Path"]])
@@ -321,7 +321,7 @@ figure1 <- AddPanel(
   bottomPanel = 3,
   leftPanel = 1, 
   rightPanel = 3, 
-  panel = scramblaseAssayTraces(x, timeMaxSec = 350) + theme_bw())
+  panel = scramblase_assay_traces(x, timeMaxSec = 350) + theme_bw())
 figure1 <- AddPanel(
   figure = figure1,
   topPanel = 4,
@@ -437,7 +437,7 @@ results, supporting identical conclusions.
 analysis_timing_n <- 100
 
 analysis_timing_function <- function(){
-  scramblaseAssayTraces(
+  scramblase_assay_traces(
     x,
     timeMaxSec = 350)
   scramblaseAssayPlot(
