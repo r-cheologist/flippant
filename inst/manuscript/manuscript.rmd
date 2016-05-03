@@ -66,11 +66,12 @@ file.path("extdata", "PloierEtAl_Data.zip") %>%
     overwrite = TRUE,
     exdir = tmpDir)
 
-figure1 <- MultiPanelFigure(
+figure1 <- multi_panel_figure(
   widths = rep(17.22/3-2*0.25, 3), 
   heights = rep(27/7-5*0.25, 7), 
-  units = "cm",
-  interPanelSpacing = 0.25)
+  unit = "cm",
+  inter_row_spacing = c(0, rep(0.5, 6)),
+  inter_column_spacing = c(0, rep(0.5, 2)))
 
 knitr::opts_chunk$set(
   fig.width = 6.78, 
@@ -315,30 +316,30 @@ scramblase_assay_traces("inputTable.txt", timeMaxSec = 350)
 x <- flippant:::read_scramblase_input_file(
   file.path(tmpDir,"inputTable.txt"))
 x[["Path"]] <- file.path(tmpDir, x[["Path"]])
-figure1 <- AddPanel(
+figure1 <- add_panel(
   figure = figure1,
-  topPanel = 1,
-  bottomPanel = 3,
-  leftPanel = 1, 
-  rightPanel = 3, 
-  panel = scramblase_assay_traces(x, timeMaxSec = 350) + theme_bw())
-figure1 <- AddPanel(
+  top_panel = 1,
+  bottom_panel = 3,
+  left_panel = 1, 
+  right_panel = 3, 
+  panel = scramblase_assay_traces(x, time_max_sec = 350) + theme_bw())
+figure1 <- add_panel(
   figure = figure1,
-  topPanel = 4,
-  bottomPanel = 5,
-  leftPanel = 1, 
-  rightPanel = 3, 
+  top_panel = 4,
+  bottom_panel = 5,
+  left_panel = 1, 
+  right_panel = 3, 
   panel = scramblase_assay_plot(x, generation_of_algorithm = 1) + 
     theme_bw() + 
     xlim(0, 2) + 
     xlab(expression("PPR"~~("mg"/"mmol"))) +
     ylab(expression(P[{phantom()>=1}])))
-figure1 <- AddPanel(
+figure1 <- add_panel(
   figure = figure1,
-  topPanel = 6,
-  bottomPanel = 7,
-  leftPanel = 1,
-  rightPanel = 2,
+  top_panel = 6,
+  bottom_panel = 7,
+  left_panel = 1,
+  right_panel = 2,
   panel = scramblase_assay_plot(x, generation_of_algorithm = 1,  split_by_experiment = FALSE) + 
     theme_bw() + 
     xlim(0, 2) + 

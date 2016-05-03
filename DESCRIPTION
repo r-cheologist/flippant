@@ -12,6 +12,7 @@ Depends:
     wmtsa (>= 2.0-0)
 Suggests:
     devtools,
+    multipanelfigure,
     roxygen2,
     testthat
 Imports:
