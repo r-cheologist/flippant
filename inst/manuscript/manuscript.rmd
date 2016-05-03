@@ -247,7 +247,7 @@ and handing the function the path to the user assembled spreadsheet of input
 data (`x`). The `adjust` argument to the function call serves to selectively 
 inactivate *wmtsa*-provided (see above) alignment of multiple spectra to the 
 time of dithionite addition. Acquisition time coverage of the plot may be tuned 
-by user-provided minimal (`time_min_sec` ) and maximal (`timeMaxSec`) time points
+by user-provided minimal (`time_min_sec` ) and maximal (`time_max_sec`) time points
 to be included (in seconds).
 
 ##Scramblase Assay Analysis
@@ -309,7 +309,7 @@ times between experiments.
 
 ```{r, eval = FALSE}
 # Plot spectral traces (Figure 1A)
-scramblase_assay_traces("inputTable.txt", timeMaxSec = 350)
+scramblase_assay_traces("inputTable.txt", time_max_sec = 350)
 ```
 
 ```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "***flippant*-based reanalysis of data in Figure 4C/D from @ploier_perturbed_submitted.** (A) represents spectral traces as produced by a call to the function `scramblase_assay_traces`, while (B) and (C) show protein to phospholipid ration (PPR) plots for the data using a x-axis trimmed to a maximum value of 2 (see text for details). In (B) data is separately plotted for independent experiments, while (C) combines all dat points, aiming for reliability of fit."}
@@ -440,7 +440,7 @@ analysis_timing_n <- 100
 analysis_timing_function <- function(){
   scramblase_assay_traces(
     x,
-    timeMaxSec = 350)
+    time_max_sec = 350)
   scramblase_assay_plot(
     x,
     generation_of_algorithm = 1)
