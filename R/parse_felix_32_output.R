@@ -1,4 +1,4 @@
-#' @title parseFelix32Output
+#' @title parse_felix_32_output
 #' @description Parse spectra from files provided by a QuantaMaster fluorimeter 
 #' (Photon Technology International, Inc., Edison, New Jersey) using 
 #' \code{Felix32 v1.20}
@@ -13,7 +13,7 @@
 #' @importFrom assertive assert_is_not_null
 #' @author Johannes Graumann
 #' @keywords manip IO file
-parseFelix32Output <- function(x = NULL){
+parse_felix_32_output <- function(x = NULL){
   #######################
   # Check Prerequisites #
   #######################

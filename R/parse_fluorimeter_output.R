@@ -7,7 +7,7 @@
 #' QuantaMaster instruments (Photon Technology International, Inc., Edison, 
 #' New Jersey)running software versions \code{FelixGX v4.1} 
 #' (see \code{\link{parse_felix_gx_output}}) and \code{Felix32 v1.20} (see 
-#' \code{\link{parseFelix32Output}}). The format used in a given file is devined
+#' \code{\link{parse_felix_32_output}}). The format used in a given file is devined
 #' from the data structure and appropriate internal parsing functions are 
 #' called.
 #' 
@@ -42,7 +42,7 @@
 #' }
 #' @seealso \code{scramblase_assay_input_validation},
 #' \code{\link[flippant]{parse_felix_gx_output}}, 
-#' \code{\link[flippant]{parseFelix32Output}},
+#' \code{\link[flippant]{parse_felix_32_output}},
 #' \code{\link[flippant]{parse_manual_output}}
 #' @author Johannes Graumann
 #' @keywords manip IO file
@@ -96,7 +96,7 @@ parse_fluorimeter_output <- function(
   if(formatOfSpecFile == "FelixGXv4.1.0.3096"){
     output <- parse_felix_gx_output(linesInSpecFile)
   } else if(formatOfSpecFile == "Felix32v1.20"){
-    output <- parseFelix32Output(linesInSpecFile)
+    output <- parse_felix_32_output(linesInSpecFile)
   } else if(formatOfSpecFile == "Manual"){
     output <- parse_manual_output(linesInSpecFile)
   }
