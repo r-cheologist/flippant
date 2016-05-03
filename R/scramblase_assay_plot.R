@@ -65,11 +65,11 @@
 #'    to the liposomes-only/no-protein control).}
 #'  \item{A \code{Protein per Phospholipid (mg/mmol)} ratio (\code{PPR}) is 
 #'    calculated.}
-#'  \item{Depending on \code{splitByExperiment}, data are \code{\link{split}} 
+#'  \item{Depending on \code{split_by_experiment}, data are \code{\link{split}} 
 #'    for parallel treatment using either \code{Experimental Series}
-#'    (\code{splitByExperiment = TRUE}) or a combined
+#'    (\code{split_by_experiment = TRUE}) or a combined
 #'     \code{Experimental Series}/\code{Experiment}
-#'     (\code{splitByExperiment = FALSE}) identifier (see above).}
+#'     (\code{split_by_experiment = FALSE}) identifier (see above).}
 #'  \item{A probability for a liposome holding \eqn{\geq 1}{\ge 1} scramblase 
 #'    molecules is calculated using 
 #'    \deqn{\frac{y-y_0}{y_{\mbox{\scriptsize max}}-y_0}}{(y - y0)/(ymax - y0)}
@@ -102,7 +102,7 @@
 #'        datapoints. \code{color} is used to differentiate 
 #'        \code{Experimental Series}.}
 #'      \item{Plots are finally \code{\link{facet_wrap}}ed by \code{Experiment} 
-#'        (if \code{splitByExperiment = TRUE}) and labels adjusted
+#'        (if \code{split_by_experiment = TRUE}) and labels adjusted
 #'        cosmetically.}}
 #'  }}
 #' @param path \code{\link{character}} object giving the path of an \bold{empty}
@@ -122,7 +122,7 @@
 #' @param adjust A single \code{\link{logical}}, indicating whether (default) or 
 #' not spectral traces to be plotted are algorithmically aligned at the time
 #' point of dithionite addition.
-#' @param splitByExperiment A single \code{\link{logical}}, indicating whether or
+#' @param split_by_experiment A single \code{\link{logical}}, indicating whether or
 #' not calculations and plots will treat experimental series from different
 #' experiments separately (\code{TRUE}, default) or whether data from all
 #' experiments included is used for a single calculation/plot per experimental
@@ -169,15 +169,15 @@
 #' # Generate tabular results
 #' scramblase_assay_stats("inputTable.txt")
 #' # Plot the PPR plot(s) forgoing faceting by experiment
-#' scramblase_assay_plot("inputTable.txt", splitByExperiment = FALSE)
+#' scramblase_assay_plot("inputTable.txt", split_by_experiment = FALSE)
 #' # Generate tabular results
-#' scramblase_assay_stats("inputTable.txt", splitByExperiment = FALSE)
+#' scramblase_assay_stats("inputTable.txt", split_by_experiment = FALSE)
 scramblase_assay_plot <- function(
   x,
   scale_to = c("model","data"),
   force_through_origin = FALSE,
   generation_of_algorithm = c(2, 1),
-  splitByExperiment = TRUE){
+  split_by_experiment = TRUE){
   UseMethod("scramblase_assay_plot",x)
 }
 #' @export
@@ -194,19 +194,19 @@ base_function_scramblase_assay_plot <- function(
   scale_to = c("model","data"),
   force_through_origin = FALSE,
   generation_of_algorithm = c(2, 1),
-  splitByExperiment = TRUE){
+  split_by_experiment = TRUE){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- flippant:::scramblaseAssayInputValidation(
     x = x ,
     scale_to = scale_to,
     force_through_origin = force_through_origin,
     generation_of_algorithm = generation_of_algorithm,
-    splitByExperiment = splitByExperiment)
+    split_by_experiment = split_by_experiment)
   x <- validatedParams[["x"]]
   scale_to <- validatedParams[["scale_to"]]
   force_through_origin <- validatedParams[["force_through_origin"]]
   generation_of_algorithm <- validatedParams[["generation_of_algorithm"]]
-  splitByExperiment <- validatedParams[["splitByExperiment"]]
+  split_by_experiment <- validatedParams[["split_by_experiment"]]
   
 # Processing --------------------------------------------------------------
   processedListFromX <- flippant:::scramblaseAssayCalculations(
@@ -214,7 +214,7 @@ base_function_scramblase_assay_plot <- function(
     scale_to = scale_to,
     force_through_origin = force_through_origin,
     generation_of_algorithm = generation_of_algorithm,
-    splitByExperiment = splitByExperiment)
+    split_by_experiment = split_by_experiment)
 
 # Recombine the processed data --------------------------------------------
   x <- plyr::rbind.fill(
@@ -293,7 +293,7 @@ base_function_scramblase_assay_plot <- function(
   }
   # Faceting by "Experiment"
   if(any(!is.na(x$"Experiment"))){
-    if(splitByExperiment){
+    if(split_by_experiment){
       plotOutput <- plotOutput + 
         facet_wrap(~Experiment)
     }

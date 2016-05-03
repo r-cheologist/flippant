@@ -4,7 +4,7 @@ scramblaseAssayCalculations <- function(
   scale_to,
   generation_of_algorithm = 2,
   force_through_origin = FALSE,
-  splitByExperiment = TRUE){
+  split_by_experiment = TRUE){
 # Set parameters ----------------------------------------------------------
   nlsControl <- list(
     minFactor=1/20480,
@@ -151,7 +151,7 @@ scramblaseAssayCalculations <- function(
       return(z)
     })
   # Is separate handling of experiments required?
-  if(!splitByExperiment){
+  if(!split_by_experiment){
     processedListFromX <- rbind.fill(processedListFromX)
     processedListFromX <- split(processedListFromX,processedListFromX$"Experimental Series")
   }

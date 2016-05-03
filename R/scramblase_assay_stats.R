@@ -6,7 +6,7 @@ scramblase_assay_stats <- function(
   scale_to = c("model","data"),
   force_through_origin = FALSE,
   generation_of_algorithm = c(2, 1),
-  splitByExperiment = TRUE){
+  split_by_experiment = TRUE){
   UseMethod("scramblase_assay_stats",x)
 }
 #' @export
@@ -23,19 +23,19 @@ base_function_scramblase_assay_stats <- function(
   scale_to = c("model","data"),
   force_through_origin = FALSE,
   generation_of_algorithm = c(2, 1),
-  splitByExperiment = TRUE){
+  split_by_experiment = TRUE){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- scramblaseAssayInputValidation(
     x = x,
     scale_to = scale_to,
     force_through_origin = force_through_origin,
     generation_of_algorithm = generation_of_algorithm,
-    splitByExperiment = splitByExperiment)
+    split_by_experiment = split_by_experiment)
   x <- validatedParams[["x"]]
   scale_to <- validatedParams[["scale_to"]]
   force_through_origin <- validatedParams[["force_through_origin"]]
   generation_of_algorithm <- validatedParams[["generation_of_algorithm"]]
-  splitByExperiment <- validatedParams[["splitByExperiment"]]
+  split_by_experiment <- validatedParams[["split_by_experiment"]]
 
 # Processing --------------------------------------------------------------
   processedListFromX <- scramblaseAssayCalculations(
@@ -43,17 +43,17 @@ base_function_scramblase_assay_stats <- function(
     scale_to = scale_to,
     force_through_origin = force_through_origin,
     generation_of_algorithm = generation_of_algorithm,
-    splitByExperiment = splitByExperiment)
+    split_by_experiment = split_by_experiment)
   processedListFromX <- lapply(processedListFromX,function(y){y[["Raw"]]})
 
 # Assemble the output -----------------------------------------
   output <- plyr::rbind.fill(processedListFromX)
-  if(splitByExperiment){
+  if(split_by_experiment){
    output <- output[!duplicated(output$CombinedId),]
   } else {
     output <- output[!duplicated(output$`Experimental Series`),]
   }
-  if(splitByExperiment){
+  if(split_by_experiment){
     columns <- c("Fit Constant (a)","Experimental Series","Experiment")
   } else {
     columns <- c("Fit Constant (a)","Experimental Series")

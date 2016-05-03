@@ -271,9 +271,9 @@ adjusted to use scramblase-mediated fluorescence reduction normalized to either
 the maximum measurement in the series (`scale_to = "data"`) or the plateau of an
 exponential fit to it (`scale_to = "model"`; for reasoning see above) and whether
 or not to require the exponential curve fitted to the data to go through the
-origin. The `splitByExperiment` argument is used to indicate whether independent
-experiments are integrated into a single analysis (`splitByExperiment = FALSE`)
-or treated separately (`splitByExperiment = TRUE`; see below for example usage).
+origin. The `split_by_experiment` argument is used to indicate whether independent
+experiments are integrated into a single analysis (`split_by_experiment = FALSE`)
+or treated separately (`split_by_experiment = TRUE`; see below for example usage).
 
 Numeric scramblase assay results such as $\alpha$ may be generated in 
 tabular form using
@@ -339,7 +339,7 @@ figure1 <- AddPanel(
   bottomPanel = 7,
   leftPanel = 1,
   rightPanel = 2,
-  panel = scramblase_assay_plot(x, generation_of_algorithm = 1,  splitByExperiment = FALSE) + 
+  panel = scramblase_assay_plot(x, generation_of_algorithm = 1,  split_by_experiment = FALSE) + 
     theme_bw() + 
     xlim(0, 2) + 
     xlab(expression("PPR"~~("mg"/"mmol"))) +
@@ -386,7 +386,7 @@ from all experiments as follows, resulting in Figure 1C:
 # Plot PPR plot (Figure 1C)
 scramblase_assay_plot("inputTable.txt",
   generation_of_algorithm = 1,
-  splitByExperiment = FALSE) + 
+  split_by_experiment = FALSE) + 
 xlim(0, 2)
 ```
 
@@ -398,11 +398,11 @@ and produces tabular output represented in Table 1.
 
 ```{r, eval = FALSE}
 # Write out results in tabular manner (Table 1)
-scramblase_assay_stats("inputTable.txt", generation_of_algorithm = 1, splitByExperiment = FALSE)
+scramblase_assay_stats("inputTable.txt", generation_of_algorithm = 1, split_by_experiment = FALSE)
 ```
 
 ```{r, echo = FALSE}
-ppr_results <- scramblase_assay_stats(x, generation_of_algorithm = 1, splitByExperiment = FALSE)
+ppr_results <- scramblase_assay_stats(x, generation_of_algorithm = 1, split_by_experiment = FALSE)
 ppr_results_names <- ppr_results$`Experimental Series` %>%
   head(n = nrow(ppr_results) - 1) %>%
   paste(collapse = ", ") %>%
@@ -446,11 +446,11 @@ analysis_timing_function <- function(){
   scramblase_assay_plot(
     x,
     generation_of_algorithm = 1,
-    splitByExperiment = FALSE)
+    split_by_experiment = FALSE)
   scramblase_assay_stats(
     x,
     generation_of_algorithm = 1, 
-    splitByExperiment = FALSE)
+    split_by_experiment = FALSE)
 }
 
 analysis_timing <- microbenchmark(

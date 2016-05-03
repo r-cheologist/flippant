@@ -6,7 +6,7 @@ scramblaseAssayInputValidation <- function(
   scale_to,
   generation_of_algorithm,
   force_through_origin,
-  splitByExperiment,
+  split_by_experiment,
   verbose=TRUE){
   # Check verbose
   assert_is_a_bool(verbose)
@@ -141,8 +141,8 @@ scramblaseAssayInputValidation <- function(
   }
   # Check force_through_origin
   assert_is_a_bool(force_through_origin)
-  # Check splitByExperiment
-  assert_is_a_bool(splitByExperiment)
+  # Check split_by_experiment
+  assert_is_a_bool(split_by_experiment)
   # Return
   return(
     list(
@@ -150,5 +150,5 @@ scramblaseAssayInputValidation <- function(
       scale_to = scale_to,
       generation_of_algorithm = generation_of_algorithm,
       force_through_origin = force_through_origin,
-      splitByExperiment = splitByExperiment))
+      split_by_experiment = split_by_experiment))
 }
