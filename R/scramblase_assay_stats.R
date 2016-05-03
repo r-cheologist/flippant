@@ -4,7 +4,7 @@
 scramblase_assay_stats <- function(
   x,
   scale_to = c("model","data"),
-  forceThroughOrigin = FALSE,
+  force_through_origin = FALSE,
   generation_of_algorithm = c(2, 1),
   splitByExperiment = TRUE){
   UseMethod("scramblase_assay_stats",x)
@@ -21,19 +21,19 @@ scramblase_assay_stats.character <- function(x, ...){
 base_function_scramblase_assay_stats <- function(
   x,
   scale_to = c("model","data"),
-  forceThroughOrigin = FALSE,
+  force_through_origin = FALSE,
   generation_of_algorithm = c(2, 1),
   splitByExperiment = TRUE){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- scramblaseAssayInputValidation(
     x = x,
     scale_to = scale_to,
-    forceThroughOrigin = forceThroughOrigin,
+    force_through_origin = force_through_origin,
     generation_of_algorithm = generation_of_algorithm,
     splitByExperiment = splitByExperiment)
   x <- validatedParams[["x"]]
   scale_to <- validatedParams[["scale_to"]]
-  forceThroughOrigin <- validatedParams[["forceThroughOrigin"]]
+  force_through_origin <- validatedParams[["force_through_origin"]]
   generation_of_algorithm <- validatedParams[["generation_of_algorithm"]]
   splitByExperiment <- validatedParams[["splitByExperiment"]]
 
@@ -41,7 +41,7 @@ base_function_scramblase_assay_stats <- function(
   processedListFromX <- scramblaseAssayCalculations(
     x = x,
     scale_to = scale_to,
-    forceThroughOrigin = forceThroughOrigin,
+    force_through_origin = force_through_origin,
     generation_of_algorithm = generation_of_algorithm,
     splitByExperiment = splitByExperiment)
   processedListFromX <- lapply(processedListFromX,function(y){y[["Raw"]]})

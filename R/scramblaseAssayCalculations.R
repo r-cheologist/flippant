@@ -3,7 +3,7 @@ scramblaseAssayCalculations <- function(
   x,
   scale_to,
   generation_of_algorithm = 2,
-  forceThroughOrigin = FALSE,
+  force_through_origin = FALSE,
   splitByExperiment = TRUE){
 # Set parameters ----------------------------------------------------------
   nlsControl <- list(
@@ -129,13 +129,13 @@ scramblaseAssayCalculations <- function(
           z[["Relative Fluorescence Reduction"]],
           na.rm=TRUE)
         rMod <- minpack.lm::nlsLM(
-          formula = if(forceThroughOrigin){
+          formula = if(force_through_origin){
             y ~ b * (1 - exp(-x/a))
           } else {
             y ~ b-c*exp(-x/a)
           },
           data = subsetForFit,
-          start = if(forceThroughOrigin){
+          start = if(force_through_origin){
             list(a=estimatedA,b=estimatedB)
           } else {        
             start = list(a=estimatedA,b=estimatedB,c=estimatedB)
@@ -209,13 +209,13 @@ scramblaseAssayCalculations <- function(
         ##> population possess ≥1 flippase.
         ## Fit a monoexponential curve to the data
         rMod <- minpack.lm::nlsLM(
-          formula = if(forceThroughOrigin){
+          formula = if(force_through_origin){
             y ~ b * (1 - exp(-x/a))
           } else {
             y ~ b-c*exp(-x/a)
           },
           data = subsetForFit,
-          start = if(forceThroughOrigin){
+          start = if(force_through_origin){
             list(a = estimatedA, b = 1)
           } else {        
             list(a = estimatedA, b = 1, c = 1)
@@ -227,13 +227,13 @@ scramblaseAssayCalculations <- function(
         ## p(≥1) = 1 - e-m = 1 – exp(-PPR/α)
         # ## Fit a monoexponential curve to the data
         rMod <- minpack.lm::nlsLM(
-          formula = if(forceThroughOrigin){
+          formula = if(force_through_origin){
             y ~ b * (1 - (1/sqrt(1 + 784 * a * x)) * exp(-3873 * a * x / (1 + 784 * a * x)))
           } else {
             y ~ b - c * (1/sqrt(1 + 784 * a * x)) * exp(-3873 * a * x / (1 + 784 * a * x))
           },
           data = subsetForFit,
-          start = if(forceThroughOrigin){
+          start = if(force_through_origin){
             list(a=estimatedA,b=1)
           } else {        
             list(a=estimatedA,b=1,c=1)

@@ -5,7 +5,7 @@ scramblaseAssayInputValidation <- function(
   x,
   scale_to,
   generation_of_algorithm,
-  forceThroughOrigin,
+  force_through_origin,
   splitByExperiment,
   verbose=TRUE){
   # Check verbose
@@ -139,8 +139,8 @@ scramblaseAssayInputValidation <- function(
   if(verbose){
     message("Data will be fitted to algorithm generation ", generation_of_algorithm, ".")
   }
-  # Check forceThroughOrigin
-  assert_is_a_bool(forceThroughOrigin)
+  # Check force_through_origin
+  assert_is_a_bool(force_through_origin)
   # Check splitByExperiment
   assert_is_a_bool(splitByExperiment)
   # Return
@@ -149,6 +149,6 @@ scramblaseAssayInputValidation <- function(
       x = x,
       scale_to = scale_to,
       generation_of_algorithm = generation_of_algorithm,
-      forceThroughOrigin = forceThroughOrigin,
+      force_through_origin = force_through_origin,
       splitByExperiment = splitByExperiment))
 }

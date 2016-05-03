@@ -83,9 +83,9 @@
 #'    titration did not reach the plateau of the saturation curve.}
 #'  \item{A monoexponential curve is fitted unsig \code{\link{nlsLM}} to either
 #'    \deqn{p(\geq 1)=b-c\cdot e^{-\frac{\mbox{\tiny PPR}}{a}}}{p(\ge 1) = b - c*exp(-PPR/a)}
-#'    (if \code{forceThroughOrigin = FALSE}) or  
+#'    (if \code{force_through_origin = FALSE}) or  
 #'    \deqn{p(\geq 1)=b\cdot(1-e^{-\frac{\mbox{\tiny PPR}}{a}})}{p(\ge 1) = b * (1 - exp(-PPR/a))} 
-#'    (if \code{forceThroughOrigin = TRUE}).}
+#'    (if \code{force_through_origin = TRUE}).}
 #'  \item{Data \code{\link{split}} apart above are recombined and a 
 #'    \code{\link{ggplot}} object is assembled with the following layers:
 #'    \itemize{
@@ -111,7 +111,7 @@
 #' representing it (see "Details").
 #' @param scale_to Defines the source of \code{ymax}, defaulting to 
 #' \code{model}. See "Details".
-#' @param forceThroughOrigin \code{\link{logical}} indicating whether to force 
+#' @param force_through_origin \code{\link{logical}} indicating whether to force 
 #' the fitted curve(s) to penetrate the origin (defaulting to \code{FALSE}).
 #' @param time_min_sec A single \code{\link{numeric}}. If given, 
 #' \code{\link{scramblase_assay_traces}} produces a time/x axis trimmed to
@@ -175,7 +175,7 @@
 scramblase_assay_plot <- function(
   x,
   scale_to = c("model","data"),
-  forceThroughOrigin = FALSE,
+  force_through_origin = FALSE,
   generation_of_algorithm = c(2, 1),
   splitByExperiment = TRUE){
   UseMethod("scramblase_assay_plot",x)
@@ -192,19 +192,19 @@ scramblase_assay_plot.character <- function(x, ...){
 base_function_scramblase_assay_plot <- function(
   x,
   scale_to = c("model","data"),
-  forceThroughOrigin = FALSE,
+  force_through_origin = FALSE,
   generation_of_algorithm = c(2, 1),
   splitByExperiment = TRUE){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- flippant:::scramblaseAssayInputValidation(
     x = x ,
     scale_to = scale_to,
-    forceThroughOrigin = forceThroughOrigin,
+    force_through_origin = force_through_origin,
     generation_of_algorithm = generation_of_algorithm,
     splitByExperiment = splitByExperiment)
   x <- validatedParams[["x"]]
   scale_to <- validatedParams[["scale_to"]]
-  forceThroughOrigin <- validatedParams[["forceThroughOrigin"]]
+  force_through_origin <- validatedParams[["force_through_origin"]]
   generation_of_algorithm <- validatedParams[["generation_of_algorithm"]]
   splitByExperiment <- validatedParams[["splitByExperiment"]]
   
@@ -212,7 +212,7 @@ base_function_scramblase_assay_plot <- function(
   processedListFromX <- flippant:::scramblaseAssayCalculations(
     x = x,
     scale_to = scale_to,
-    forceThroughOrigin = forceThroughOrigin,
+    force_through_origin = force_through_origin,
     generation_of_algorithm = generation_of_algorithm,
     splitByExperiment = splitByExperiment)
 
