@@ -116,7 +116,7 @@
 #' @param time_min_sec A single \code{\link{numeric}}. If given, 
 #' \code{\link{scramblase_assay_traces}} produces a time/x axis trimmed to
 #' this value (in seconds).
-#' @param timeMaxSec A single \code{\link{numeric}}. If given, 
+#' @param time_max_sec A single \code{\link{numeric}}. If given, 
 #' \code{\link{scramblase_assay_traces}} produces a time/x axis trimmed to
 #' this value (in seconds).
 #' @param adjust A single \code{\link{logical}}, indicating whether (default) or 
@@ -163,7 +163,7 @@
 #' # Plot the spectal traces
 #' scramblase_assay_traces(
 #'   "inputTable.txt",
-#'   timeMaxSec = 350)
+#'   time_max_sec = 350)
 #' # Plot the PPR plot(s) faceting by experiment
 #' scramblase_assay_plot("inputTable.txt")
 #' # Generate tabular results
