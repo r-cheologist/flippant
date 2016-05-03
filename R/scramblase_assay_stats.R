@@ -25,7 +25,7 @@ base_function_scramblase_assay_stats <- function(
   generation_of_algorithm = c(2, 1),
   split_by_experiment = TRUE){
 # Check Prerequisites -----------------------------------------------------
-  validatedParams <- scramblaseAssayInputValidation(
+  validatedParams <- scramblase_assay_input_validation(
     x = x,
     scale_to = scale_to,
     force_through_origin = force_through_origin,

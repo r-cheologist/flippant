@@ -1,7 +1,7 @@
 #' @importFrom assertive assert_has_rows
 #' @importFrom assertive assert_is_a_bool
 #' @importFrom assertive assert_is_data.frame
-scramblaseAssayInputValidation <- function(
+scramblase_assay_input_validation <- function(
   x,
   scale_to,
   generation_of_algorithm,

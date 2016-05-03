@@ -41,7 +41,7 @@
 #'  \item{Input is format checked and defaults are injected for facultative 
 #'    parameters/columns as appropriate (see input \code{\link{data.frame}} 
 #'    format above). The internal function 
-#'    \code{scramblaseAssayInputValidation} supplies this 
+#'    \code{scramblase_assay_input_validation} supplies this 
 #'    functionality.}
 #'  \item{Fluorescence spectra are parsed using 
 #'    \code{\link{parseFluorimeterOutput}}. This includes automated 
@@ -196,7 +196,7 @@ base_function_scramblase_assay_plot <- function(
   generation_of_algorithm = c(2, 1),
   split_by_experiment = TRUE){
 # Check Prerequisites -----------------------------------------------------
-  validatedParams <- flippant:::scramblaseAssayInputValidation(
+  validatedParams <- flippant:::scramblase_assay_input_validation(
     x = x ,
     scale_to = scale_to,
     force_through_origin = force_through_origin,

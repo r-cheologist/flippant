@@ -40,7 +40,7 @@
 #'  \item{\code{File.Name}}{\code{\link{character}} representation of the 
 #'    file name (as saved by the instrument).}
 #' }
-#' @seealso \code{scramblaseAssayInputValidation},
+#' @seealso \code{scramblase_assay_input_validation},
 #' \code{\link[flippant]{parseFelixGxOutput}}, 
 #' \code{\link[flippant]{parseFelix32Output}},
 #' \code{\link[flippant]{parseManualOutput}}

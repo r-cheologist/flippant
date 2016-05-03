@@ -27,7 +27,7 @@ base_function_scramblase_assay_traces <- function(
   time_max_sec=NA_real_,
   adjust = TRUE){
 # Check Prerequisites -----------------------------------------------------
-  validatedParams <- scramblaseAssayInputValidation(
+  validatedParams <- scramblase_assay_input_validation(
     x = x,
     scale_to = "data",
     force_through_origin = FALSE,
