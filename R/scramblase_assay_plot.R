@@ -196,7 +196,7 @@ base_function_scramblase_assay_plot <- function(
   generation_of_algorithm = c(2, 1),
   split_by_experiment = TRUE){
 # Check Prerequisites -----------------------------------------------------
-  validatedParams <- flippant:::scramblase_assay_input_validation(
+  validatedParams <- scramblase_assay_input_validation(
     x = x ,
     scale_to = scale_to,
     force_through_origin = force_through_origin,
@@ -209,7 +209,7 @@ base_function_scramblase_assay_plot <- function(
   split_by_experiment <- validatedParams[["split_by_experiment"]]
   
 # Processing --------------------------------------------------------------
-  processedListFromX <- flippant:::scramblase_assay_calculations(
+  processedListFromX <- scramblase_assay_calculations(
     x = x,
     scale_to = scale_to,
     force_through_origin = force_through_origin,

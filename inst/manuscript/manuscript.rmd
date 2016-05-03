@@ -359,7 +359,7 @@ scramblase_assay_plot("inputTable.txt", generation_of_algorithm = 1) + xlim(0, 2
 max_PPR <- read.delim(
     file.path(tmpDir,"inputTable.txt"),
     check.names = FALSE) %>%
-  flippant:::calculatePpr() %>%
+  flippant:::calculate_ppr() %>%
   max(
     na.rm = TRUE) %>%
   signif(

@@ -41,7 +41,7 @@ base_function_scramblase_assay_traces <- function(
 # Processing --------------------------------------------------------------
   # Perform assay calculations to retrive PPR
   processedX <- x
-  processedX$"Protein per Phospholipid (mg/mmol)" <- calculatePpr(x)
+  processedX$"Protein per Phospholipid (mg/mmol)" <- calculate_ppr(x)
   processedX <- processedX[c("Path","Experimental Series","Experiment","Protein per Phospholipid (mg/mmol)")]
   # Parse the fluorimeter data and whip it into shape
   rawFluorimeterOutput <- lapply(processedX$Path,parse_fluorimeter_output,adjust = adjust)

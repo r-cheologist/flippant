@@ -112,7 +112,7 @@ scramblase_assay_calculations <- function(
       ## Calcualte the relative fluorescence reduction
       z[["Relative Fluorescence Reduction"]] <- z[["Fluorescence Reduction"]] - z[["Fluorescence Reduction"]][indexOfLiposomesOnlyData]
       ## Calculate PPR
-      z[["Protein per Phospholipid (mg/mmol)"]] <- flippant:::calculatePpr(z)
+      z[["Protein per Phospholipid (mg/mmol)"]] <- calculate_ppr(z)
       ## Calculate p>=1Scramblase/Liposome
       y <- z[["Relative Fluorescence Reduction"]]
       y0 <- z[["Relative Fluorescence Reduction"]][indexOfLiposomesOnlyData]
@@ -273,6 +273,6 @@ scramblase_assay_calculations <- function(
 
 }
 
-calculatePpr <- function(x){
+calculate_ppr <- function(x){
   return(x[["Protein in Reconstitution (mg)"]]/x[["Lipid in Reconstitution (mmol)"]])
 }
