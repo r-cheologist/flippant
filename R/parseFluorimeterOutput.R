@@ -43,7 +43,7 @@
 #' @seealso \code{scramblase_assay_input_validation},
 #' \code{\link[flippant]{parseFelixGxOutput}}, 
 #' \code{\link[flippant]{parseFelix32Output}},
-#' \code{\link[flippant]{parseManualOutput}}
+#' \code{\link[flippant]{parse_manual_output}}
 #' @author Johannes Graumann
 #' @keywords manip IO file
 #' @examples
@@ -98,7 +98,7 @@ parseFluorimeterOutput <- function(
   } else if(formatOfSpecFile == "Felix32v1.20"){
     output <- parseFelix32Output(linesInSpecFile)
   } else if(formatOfSpecFile == "Manual"){
-    output <- parseManualOutput(linesInSpecFile)
+    output <- parse_manual_output(linesInSpecFile)
   }
   # Determine timepoint of dithionite addition and adjust time axis accordingly
   #############################################################################

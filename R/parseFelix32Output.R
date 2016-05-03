@@ -8,7 +8,7 @@
 #' @return See \code{\link{parseFluorimeterOutput}}.
 #' @seealso \code{\link{parseFluorimeterOutput}}, 
 #' \code{\link[flippant]{parseFelixGxOutput}},
-#' \code{\link[flippant]{parseManualOutput}}
+#' \code{\link[flippant]{parse_manual_output}}
 #' @importFrom assertive assert_all_are_non_missing_nor_empty_character
 #' @importFrom assertive assert_is_not_null
 #' @author Johannes Graumann

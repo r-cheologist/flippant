@@ -1,4 +1,4 @@
-#' @title parseManualOutput
+#' @title parse_manual_output
 #' @description Parse spectra from files provided in a manually assembled 
 #' format.
 #' @details A helper function to \code{\link{parseFluorimeterOutput}}.
@@ -14,7 +14,7 @@
 #' @importFrom assertive assert_is_not_null
 #' @author Johannes Graumann
 #' @keywords manip IO file
-parseManualOutput <- function(x = NULL){
+parse_manual_output <- function(x = NULL){
   #######################
   # Check Prerequisites #
   #######################
