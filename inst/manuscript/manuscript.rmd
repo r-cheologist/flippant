@@ -32,7 +32,7 @@ Current Git Hash
 Git Clean
 :   `r ifelse(length(system("git status -s", intern = TRUE)) == 0, "TRUE", "FALSE")`
 
-```{r, echo = FALSE}
+```{r setting_up_r, echo = FALSE}
 library(flippant, quietly = TRUE)
 library(grid, quietly = TRUE)
 library(magrittr, quietly = TRUE)
@@ -157,7 +157,7 @@ input.
 into the `bioconductor` collection of tools for biomedical data analysis [@huber_orchestrating_2015]. It is thus install- and loadable as follows from 
 within a functional R environment:
 
-```{r, eval = FALSE}
+```{r noeval_demonstrate_installation, eval = FALSE}
 source("http://bioconductor.org/biocLite.R")
 biocLite(pkgs = "flippant")
 library(flippant)
@@ -227,7 +227,7 @@ generates a spreadsheet program-compatible tab-delimited plain text template,
 including column names, commentary, expected data type and the default used when
 omitted.
 
-```{r, code=formatR::usage('scramblase_assay_input_template'), eval=FALSE}
+```{r noeval_template_generation_call, code=formatR::usage('scramblase_assay_input_template'), eval=FALSE}
 ```
 
 The application agnostic tab-delimited format must be maintained for the 
@@ -240,7 +240,7 @@ set, fluorescent spectra or traces may be plotted in publication-appropriate
 quality with acquisition time on the x- and fluorescence intensity on the y-axis
 using
 
-```{r, code = formatR::usage('scramblase_assay_traces'), eval = FALSE}
+```{r noeval_traces_call, code = formatR::usage('scramblase_assay_traces'), eval = FALSE}
 ```
 
 and handing the function the path to the user assembled spreadsheet of input 
@@ -259,7 +259,7 @@ series, which may, for example, be representative of protein preparations includ
 mutant protein forms or crude extracts with or without depletion of a candidate
 scramblase. 
 
-```{r, code = formatR::usage('scramblase_assay_plot'), eval = FALSE}
+```{r noeval_plot_call, code = formatR::usage('scramblase_assay_plot'), eval = FALSE}
 ```
 
 allows for the complete generation of the PPR plot in publication quality from 
@@ -279,7 +279,7 @@ or treated separately (`split_by_experiment = TRUE`; see below for example usage
 Numeric scramblase assay results such as $\alpha$ may be generated in 
 tabular form using
 
-```{r, code = formatR::usage('scramblase_assay_stats'), eval = FALSE}
+```{r noeval_stats_call, code = formatR::usage('scramblase_assay_stats'), eval = FALSE}
 ```
 
 with the same modifying arguments to the function as for `scramblase_assay_plot`.
@@ -307,12 +307,12 @@ alignment to the time of dithionite addition is employed (default) as well as
 custom trimming of the time axis to account for divergent acquisition 
 times between experiments.
 
-```{r, eval = FALSE}
+```{r noeval_demonstrate_traces, eval = FALSE}
 # Plot spectral traces (Figure 1A)
 scramblase_assay_traces("inputTable.txt", time_max_sec = 350)
 ```
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "***flippant*-based reanalysis of data in Figure 4C/D from @ploier_perturbed_submitted.** (A) represents spectral traces as produced by a call to the function `scramblase_assay_traces`, while (B) and (C) show protein to phospholipid ration (PPR) plots for the data using a x-axis trimmed to a maximum value of 2 (see text for details). In (B) data is separately plotted for independent experiments, while (C) combines all dat points, aiming for reliability of fit."}
+```{r figure1_creation, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "***flippant*-based reanalysis of data in Figure 4C/D from @ploier_perturbed_submitted.** (A) represents spectral traces as produced by a call to the function `scramblase_assay_traces`, while (B) and (C) show protein to phospholipid ration (PPR) plots for the data using a x-axis trimmed to a maximum value of 2 (see text for details). In (B) data is separately plotted for independent experiments, while (C) combines all dat points, aiming for reliability of fit."}
 x <- flippant:::read_scramblase_input_file(
   file.path(tmpDir,"inputTable.txt"))
 x[["Path"]] <- file.path(tmpDir, x[["Path"]])
@@ -351,12 +351,12 @@ grid.draw(figure1)
 Scramblase activity analysis as described above is performed on the data set with
 the following calls.
 
-```{r, eval = FALSE}
+```{r noeval_demonstrate_plot, eval = FALSE}
 # Plot PPR plot (Figure 1B)
 scramblase_assay_plot("inputTable.txt", generation_of_algorithm = 1) + xlim(0, 2)
 ```
 
-```{r, echo = FALSE}
+```{r calculate_pprs, echo = FALSE}
 max_PPR <- read.delim(
     file.path(tmpDir,"inputTable.txt"),
     check.names = FALSE) %>%
@@ -383,7 +383,7 @@ following more closely the analysis in Figure 4C/D by
 @ploier_perturbed_submitted, a single fit may be performed for the combined data
 from all experiments as follows, resulting in Figure 1C:
 
-```{r, eval = FALSE}
+```{r noeval_demonstrate_plot2, eval = FALSE}
 # Plot PPR plot (Figure 1C)
 scramblase_assay_plot("inputTable.txt",
   generation_of_algorithm = 1,
@@ -397,12 +397,12 @@ Recapitulation of the calculations underlying PPR plot generation for Figure 1C
 by `scramblase_assay_plot` in a call to `scramblase_assay_stats`, this is achieved
 and produces tabular output represented in Table 1.
 
-```{r, eval = FALSE}
+```{r noeval_demonstrate_tabular_writeout, eval = FALSE}
 # Write out results in tabular manner (Table 1)
 scramblase_assay_stats("inputTable.txt", generation_of_algorithm = 1, split_by_experiment = FALSE)
 ```
 
-```{r, echo = FALSE}
+```{r analysis_tabular_output, echo = FALSE}
 ppr_results <- scramblase_assay_stats(x, generation_of_algorithm = 1, split_by_experiment = FALSE)
 ppr_results_names <- ppr_results$`Experimental Series` %>%
   head(n = nrow(ppr_results) - 1) %>%
@@ -433,7 +433,7 @@ results, supporting identical conclusions.
 
 # Conclusion
 
-```{r, echo = FALSE, cache = TRUE}
+```{r analysis_timing, echo = FALSE, cache = TRUE}
 
 analysis_timing_n <- 100
 
