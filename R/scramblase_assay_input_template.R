@@ -3,7 +3,7 @@
 #' @importFrom assertive assert_is_a_non_empty_string
 #' @importFrom plyr rbind.fill
 #' @export
-scramblaseAssayInputTemplate <- function(path="scramblaseAssayInputTemplate.txt"){
+scramblase_assay_input_template <- function(path="scramblase_assay_input_template.txt"){
 # Check input -------------------------------------------------------------
   assert_is_a_non_empty_string(path)
   assert_any_are_existing_files(path)

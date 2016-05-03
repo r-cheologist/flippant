@@ -1,5 +1,5 @@
 #' @title scramblase_assay_plot
-#' @aliases scrambalseAssayCalculations scramblaseAssayInputTemplate 
+#' @aliases scrambalseAssayCalculations scramblase_assay_input_template 
 #' scramblase_assay_plot scramblase_assay_stats scramblase_assay_traces
 #' @description Functions for the presentation and evaluaton of dithionite 
 #' scramblase assays

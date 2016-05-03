@@ -226,7 +226,7 @@ generates a spreadsheet program-compatible tab-delimited plain text template,
 including column names, commentary, expected data type and the default used when
 omitted.
 
-```{r, code=formatR::usage('scramblaseAssayInputTemplate'), eval=FALSE}
+```{r, code=formatR::usage('scramblase_assay_input_template'), eval=FALSE}
 ```
 
 The application agnostic tab-delimited format must be maintained for the 
