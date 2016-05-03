@@ -312,7 +312,7 @@ scramblase_assay_traces("inputTable.txt", timeMaxSec = 350)
 ```
 
 ```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "***flippant*-based reanalysis of data in Figure 4C/D from @ploier_perturbed_submitted.** (A) represents spectral traces as produced by a call to the function `scramblase_assay_traces`, while (B) and (C) show protein to phospholipid ration (PPR) plots for the data using a x-axis trimmed to a maximum value of 2 (see text for details). In (B) data is separately plotted for independent experiments, while (C) combines all dat points, aiming for reliability of fit."}
-x <- flippant:::readScramblaseInputFile(
+x <- flippant:::read_scramblase_input_file(
   file.path(tmpDir,"inputTable.txt"))
 x[["Path"]] <- file.path(tmpDir, x[["Path"]])
 figure1 <- AddPanel(

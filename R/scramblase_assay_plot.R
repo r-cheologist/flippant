@@ -186,7 +186,7 @@ scramblase_assay_plot.data.frame <- function(x, ...){
 }
 #' @export
 scramblase_assay_plot.character <- function(x, ...){
-  parsedInputFile <- readScramblaseInputFile(x)
+  parsedInputFile <- read_scramblase_input_file(x)
   base_function_scramblase_assay_plot(x=parsedInputFile, ...)
 }
 base_function_scramblase_assay_plot <- function(

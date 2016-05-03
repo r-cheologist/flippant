@@ -15,7 +15,7 @@ scramblase_assay_stats.data.frame <- function(x, ...){
 }
 #' @export
 scramblase_assay_stats.character <- function(x, ...){
-  parsedInputFile <- readScramblaseInputFile(x)
+  parsedInputFile <- read_scramblase_input_file(x)
   base_function_scramblase_assay_stats(x=parsedInputFile, ...)
 }
 base_function_scramblase_assay_stats <- function(
