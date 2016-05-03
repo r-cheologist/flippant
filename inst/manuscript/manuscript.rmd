@@ -246,7 +246,7 @@ and handing the function the path to the user assembled spreadsheet of input
 data (`x`). The `adjust` argument to the function call serves to selectively 
 inactivate *wmtsa*-provided (see above) alignment of multiple spectra to the 
 time of dithionite addition. Acquisition time coverage of the plot may be tuned 
-by user-provided minimal (`timeMinSec` ) and maximal (`timeMaxSec`) time points
+by user-provided minimal (`time_min_sec` ) and maximal (`timeMaxSec`) time points
 to be included (in seconds).
 
 ##Scramblase Assay Analysis

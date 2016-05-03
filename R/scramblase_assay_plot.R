@@ -113,7 +113,7 @@
 #' \code{model}. See "Details".
 #' @param forceThroughOrigin \code{\link{logical}} indicating whether to force 
 #' the fitted curve(s) to penetrate the origin (defaulting to \code{FALSE}).
-#' @param timeMinSec A single \code{\link{numeric}}. If given, 
+#' @param time_min_sec A single \code{\link{numeric}}. If given, 
 #' \code{\link{scramblase_assay_traces}} produces a time/x axis trimmed to
 #' this value (in seconds).
 #' @param timeMaxSec A single \code{\link{numeric}}. If given, 
