@@ -1,4 +1,4 @@
-#' @title parseFelixGxOutput
+#' @title parse_felix_gx_output
 #' @description Parse spectra from files provided by a QuantaMaster fluorimeter 
 #' (Photon Technology International, Inc., Edison, New Jersey) using 
 #' \code{FelixGX v4.1}
@@ -13,7 +13,7 @@
 #' @importFrom assertive assert_is_not_null
 #' @author Johannes Graumann
 #' @keywords manip IO file
-parseFelixGxOutput <- function(x = NULL){
+parse_felix_gx_output <- function(x = NULL){
   #######################
   # Check Prerequisites #
   #######################

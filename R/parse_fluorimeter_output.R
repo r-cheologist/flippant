@@ -6,7 +6,7 @@
 #' The function is currently capable to deal with input derived from 
 #' QuantaMaster instruments (Photon Technology International, Inc., Edison, 
 #' New Jersey)running software versions \code{FelixGX v4.1} 
-#' (see \code{\link{parseFelixGxOutput}}) and \code{Felix32 v1.20} (see 
+#' (see \code{\link{parse_felix_gx_output}}) and \code{Felix32 v1.20} (see 
 #' \code{\link{parseFelix32Output}}). The format used in a given file is devined
 #' from the data structure and appropriate internal parsing functions are 
 #' called.
@@ -41,7 +41,7 @@
 #'    file name (as saved by the instrument).}
 #' }
 #' @seealso \code{scramblase_assay_input_validation},
-#' \code{\link[flippant]{parseFelixGxOutput}}, 
+#' \code{\link[flippant]{parse_felix_gx_output}}, 
 #' \code{\link[flippant]{parseFelix32Output}},
 #' \code{\link[flippant]{parse_manual_output}}
 #' @author Johannes Graumann
@@ -94,7 +94,7 @@ parse_fluorimeter_output <- function(
   # Extract data
   ##############
   if(formatOfSpecFile == "FelixGXv4.1.0.3096"){
-    output <- parseFelixGxOutput(linesInSpecFile)
+    output <- parse_felix_gx_output(linesInSpecFile)
   } else if(formatOfSpecFile == "Felix32v1.20"){
     output <- parseFelix32Output(linesInSpecFile)
   } else if(formatOfSpecFile == "Manual"){

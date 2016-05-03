@@ -7,7 +7,7 @@
 #' \code{\link{readLines}} of the corresponding data file.
 #' @return See \code{\link{parse_fluorimeter_output}}.
 #' @seealso \code{\link{parse_fluorimeter_output}}, 
-#' \code{\link[flippant]{parseFelixGxOutput}},
+#' \code{\link[flippant]{parse_felix_gx_output}},
 #' \code{\link[flippant]{parse_manual_output}}
 #' @importFrom assertive assert_all_are_non_missing_nor_empty_character
 #' @importFrom assertive assert_is_not_null
