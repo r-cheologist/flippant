@@ -258,7 +258,7 @@ series, which may, for example, be representative of protein preparations includ
 mutant protein forms or crude extracts with or without depletion of a candidate
 scramblase. 
 
-```{r, code = formatR::usage('scramblaseAssayPlot'), eval = FALSE}
+```{r, code = formatR::usage('scramblase_assay_plot'), eval = FALSE}
 ```
 
 allows for the complete generation of the PPR plot in publication quality from 
@@ -281,7 +281,7 @@ tabular form using
 ```{r, code = formatR::usage('scramblaseAssayStats'), eval = FALSE}
 ```
 
-with the same modifying arguments to the function as for `scramblaseAssayPlot`.
+with the same modifying arguments to the function as for `scramblase_assay_plot`.
 
 #Case Study
 *Retinitis pigmentosa* is a degenerative disease of the retina, the majority of 
@@ -328,7 +328,7 @@ figure1 <- AddPanel(
   bottomPanel = 5,
   leftPanel = 1, 
   rightPanel = 3, 
-  panel = scramblaseAssayPlot(x, generation_of_algorithm = 1) + 
+  panel = scramblase_assay_plot(x, generation_of_algorithm = 1) + 
     theme_bw() + 
     xlim(0, 2) + 
     xlab(expression("PPR"~~("mg"/"mmol"))) +
@@ -339,7 +339,7 @@ figure1 <- AddPanel(
   bottomPanel = 7,
   leftPanel = 1,
   rightPanel = 2,
-  panel = scramblaseAssayPlot(x, generation_of_algorithm = 1,  splitByExperiment = FALSE) + 
+  panel = scramblase_assay_plot(x, generation_of_algorithm = 1,  splitByExperiment = FALSE) + 
     theme_bw() + 
     xlim(0, 2) + 
     xlab(expression("PPR"~~("mg"/"mmol"))) +
@@ -352,7 +352,7 @@ the following calls.
 
 ```{r, eval = FALSE}
 # Plot PPR plot (Figure 1B)
-scramblaseAssayPlot("inputTable.txt", generation_of_algorithm = 1) + xlim(0, 2)
+scramblase_assay_plot("inputTable.txt", generation_of_algorithm = 1) + xlim(0, 2)
 ```
 
 ```{r, echo = FALSE}
@@ -384,7 +384,7 @@ from all experiments as follows, resulting in Figure 1C:
 
 ```{r, eval = FALSE}
 # Plot PPR plot (Figure 1C)
-scramblaseAssayPlot("inputTable.txt",
+scramblase_assay_plot("inputTable.txt",
   generation_of_algorithm = 1,
   splitByExperiment = FALSE) + 
 xlim(0, 2)
@@ -393,7 +393,7 @@ xlim(0, 2)
 The graphical representation of the fit constant $\alpha$ in the PPR plots is
 difficult to visually evaluate and easy access to the numeric values desirable.
 Recapitulation of the calculations underlying PPR plot generation for Figure 1C
-by `scramblaseAssayPlot` in a call to `scramblaseAssayStats`, this is achieved
+by `scramblase_assay_plot` in a call to `scramblaseAssayStats`, this is achieved
 and produces tabular output represented in Table 1.
 
 ```{r, eval = FALSE}
@@ -440,10 +440,10 @@ analysis_timing_function <- function(){
   scramblase_assay_traces(
     x,
     timeMaxSec = 350)
-  scramblaseAssayPlot(
+  scramblase_assay_plot(
     x,
     generation_of_algorithm = 1)
-  scramblaseAssayPlot(
+  scramblase_assay_plot(
     x,
     generation_of_algorithm = 1,
     splitByExperiment = FALSE)

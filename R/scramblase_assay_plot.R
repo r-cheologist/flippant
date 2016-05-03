@@ -1,6 +1,6 @@
-#' @title scramblaseAssayPlot
+#' @title scramblase_assay_plot
 #' @aliases scrambalseAssayCalculations scramblaseAssayInputTemplate 
-#' scramblaseAssayPlot scramblaseAssayStats scramblase_assay_traces
+#' scramblase_assay_plot scramblaseAssayStats scramblase_assay_traces
 #' @description Functions for the presentation and evaluaton of dithionite 
 #' scramblase assays
 #' @details The \code{\link{data.frame}} accepted by the majority of the 
@@ -128,7 +128,7 @@
 #' experiments included is used for a single calculation/plot per experimental
 #' series (\code{FALSE}). While the former emphasizes reproducibility, the
 #' latter likely produces a more reliable fit.
-#' @return \code{scrambalseAssayTraces} and \code{scramblaseAssayPlot} return 
+#' @return \code{scrambalse_assay_traces} and \code{scramblase_assay_plot} return 
 #' \code{\link{ggplot}} objects representing the raw fluorescence traces and a
 #' complete PPR plot, respectively. \code{scrambalseAssayInputTemplate} 
 #' generates a tab-delimited \code{ASCII} file in the file system and does not
@@ -165,31 +165,31 @@
 #'   "inputTable.txt",
 #'   timeMaxSec = 350)
 #' # Plot the PPR plot(s) faceting by experiment
-#' scramblaseAssayPlot("inputTable.txt")
+#' scramblase_assay_plot("inputTable.txt")
 #' # Generate tabular results
 #' scramblaseAssayStats("inputTable.txt")
 #' # Plot the PPR plot(s) forgoing faceting by experiment
-#' scramblaseAssayPlot("inputTable.txt", splitByExperiment = FALSE)
+#' scramblase_assay_plot("inputTable.txt", splitByExperiment = FALSE)
 #' # Generate tabular results
 #' scramblaseAssayStats("inputTable.txt", splitByExperiment = FALSE)
-scramblaseAssayPlot <- function(
+scramblase_assay_plot <- function(
   x,
   scaleTo = c("model","data"),
   forceThroughOrigin = FALSE,
   generation_of_algorithm = c(2, 1),
   splitByExperiment = TRUE){
-  UseMethod("scramblaseAssayPlot",x)
+  UseMethod("scramblase_assay_plot",x)
 }
 #' @export
-scramblaseAssayPlot.data.frame <- function(x, ...){
-  baseFunctionScramblaseAssayPlot(x, ...)
+scramblase_assay_plot.data.frame <- function(x, ...){
+  base_function_scramblase_assay_plot(x, ...)
 }
 #' @export
-scramblaseAssayPlot.character <- function(x, ...){
+scramblase_assay_plot.character <- function(x, ...){
   parsedInputFile <- readScramblaseInputFile(x)
-  baseFunctionScramblaseAssayPlot(x=parsedInputFile, ...)
+  base_function_scramblase_assay_plot(x=parsedInputFile, ...)
 }
-baseFunctionScramblaseAssayPlot <- function(
+base_function_scramblase_assay_plot <- function(
   x,
   scaleTo = c("model","data"),
   forceThroughOrigin = FALSE,

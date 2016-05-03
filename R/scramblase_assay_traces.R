@@ -1,4 +1,4 @@
-#' @rdname scramblaseAssayPlot
+#' @rdname scramblase_assay_plot
 #' @import ggplot2
 #' @importFrom assertive assert_is_a_number
 #' @importFrom plyr rbind.fill
