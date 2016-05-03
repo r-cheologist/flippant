@@ -1,6 +1,6 @@
 #' @title scramblase_assay_plot
 #' @aliases scrambalseAssayCalculations scramblaseAssayInputTemplate 
-#' scramblase_assay_plot scramblaseAssayStats scramblase_assay_traces
+#' scramblase_assay_plot scramblase_assay_stats scramblase_assay_traces
 #' @description Functions for the presentation and evaluaton of dithionite 
 #' scramblase assays
 #' @details The \code{\link{data.frame}} accepted by the majority of the 
@@ -167,11 +167,11 @@
 #' # Plot the PPR plot(s) faceting by experiment
 #' scramblase_assay_plot("inputTable.txt")
 #' # Generate tabular results
-#' scramblaseAssayStats("inputTable.txt")
+#' scramblase_assay_stats("inputTable.txt")
 #' # Plot the PPR plot(s) forgoing faceting by experiment
 #' scramblase_assay_plot("inputTable.txt", splitByExperiment = FALSE)
 #' # Generate tabular results
-#' scramblaseAssayStats("inputTable.txt", splitByExperiment = FALSE)
+#' scramblase_assay_stats("inputTable.txt", splitByExperiment = FALSE)
 scramblase_assay_plot <- function(
   x,
   scaleTo = c("model","data"),

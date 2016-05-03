@@ -1,24 +1,24 @@
 #' @rdname scramblase_assay_plot
 #' @importFrom plyr rbind.fill
 #' @export
-scramblaseAssayStats <- function(
+scramblase_assay_stats <- function(
   x,
   scaleTo = c("model","data"),
   forceThroughOrigin = FALSE,
   generation_of_algorithm = c(2, 1),
   splitByExperiment = TRUE){
-  UseMethod("scramblaseAssayStats",x)
+  UseMethod("scramblase_assay_stats",x)
 }
 #' @export
-scramblaseAssayStats.data.frame <- function(x, ...){
-  baseFunctionScramblaseAssayStats(x, ...)
+scramblase_assay_stats.data.frame <- function(x, ...){
+  base_function_scramblase_assay_stats(x, ...)
 }
 #' @export
-scramblaseAssayStats.character <- function(x, ...){
+scramblase_assay_stats.character <- function(x, ...){
   parsedInputFile <- readScramblaseInputFile(x)
-  baseFunctionScramblaseAssayStats(x=parsedInputFile, ...)
+  base_function_scramblase_assay_stats(x=parsedInputFile, ...)
 }
-baseFunctionScramblaseAssayStats <- function(
+base_function_scramblase_assay_stats <- function(
   x,
   scaleTo = c("model","data"),
   forceThroughOrigin = FALSE,
