@@ -29,7 +29,7 @@ base_function_scramblase_assay_traces <- function(
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- scramblaseAssayInputValidation(
     x = x,
-    scaleTo = "data",
+    scale_to = "data",
     forceThroughOrigin = FALSE,
     generation_of_algorithm = 2,
     splitByExperiment = TRUE,

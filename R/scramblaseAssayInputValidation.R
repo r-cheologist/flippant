@@ -3,7 +3,7 @@
 #' @importFrom assertive assert_is_data.frame
 scramblaseAssayInputValidation <- function(
   x,
-  scaleTo,
+  scale_to,
   generation_of_algorithm,
   forceThroughOrigin,
   splitByExperiment,
@@ -114,12 +114,12 @@ scramblaseAssayInputValidation <- function(
       "'.")
   }
 
-  # Check scaleTo
-  scaleTo <- match.arg(
-    arg=scaleTo,
+  # Check scale_to
+  scale_to <- match.arg(
+    arg=scale_to,
     choices=c("model","data"),
     several.ok=FALSE)
-  if(scaleTo == "model" & verbose){
+  if(scale_to == "model" & verbose){
     message("Data will be scaled to the plateau of its monoexponential fit.")
   }
   # Check generation_of_algorithm
@@ -147,7 +147,7 @@ scramblaseAssayInputValidation <- function(
   return(
     list(
       x = x,
-      scaleTo = scaleTo,
+      scale_to = scale_to,
       generation_of_algorithm = generation_of_algorithm,
       forceThroughOrigin = forceThroughOrigin,
       splitByExperiment = splitByExperiment))

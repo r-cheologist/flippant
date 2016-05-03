@@ -1,7 +1,7 @@
 #' @importFrom minpack.lm nlsLM
 scramblaseAssayCalculations <- function(
   x,
-  scaleTo,
+  scale_to,
   generation_of_algorithm = 2,
   forceThroughOrigin = FALSE,
   splitByExperiment = TRUE){
@@ -116,7 +116,7 @@ scramblaseAssayCalculations <- function(
       ## Calculate p>=1Scramblase/Liposome
       y <- z[["Relative Fluorescence Reduction"]]
       y0 <- z[["Relative Fluorescence Reduction"]][indexOfLiposomesOnlyData]
-      if(scaleTo == "model"){
+      if(scale_to == "model"){
         subsetForFit <- data.frame(
           x=z[["Protein per Phospholipid (mg/mmol)"]],
           y=z[["Relative Fluorescence Reduction"]])

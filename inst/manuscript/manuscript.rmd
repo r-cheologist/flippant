@@ -214,7 +214,7 @@ measurement and $y_0$ for a measurement of protein-free liposomes.
 $y_{\text{max}}$ refers to either the maximal $y$ in the experiment or is 
 derived from a monoexponential fit to the data (default) as a precaution for the 
 case where the protein/phospholipid titration did not reach the plateau of the 
-saturation curve. The behavior is adjustable using the `scaleTo` parameter of 
+saturation curve. The behavior is adjustable using the `scale_to` parameter of 
 the corresponding functions (see below). Next a monoexponential curve is fitted
 to the relationship of $P_{\geq 1}$ to the protein to phospholipid ratio (PPR; 
 (mg/mmol)), providing the scramblase-characterizing fit factor $\alpha$.
@@ -268,8 +268,8 @@ $\alpha$ ($P_{\geq 1} = 1 - e^{-1}$), which implies all liposomes on average
 carrying one scramblase and 63% have one or more 
 [i.e. are active; @goren_constitutive_2014]. The behavior of the function may be
 adjusted to use scramblase-mediated fluorescence reduction normalized to either
-the maximum measurement in the series (`scaleTo = "data"`) or the plateau of an
-exponential fit to it (`scaleTo = "model"`; for reasoning see above) and whether
+the maximum measurement in the series (`scale_to = "data"`) or the plateau of an
+exponential fit to it (`scale_to = "model"`; for reasoning see above) and whether
 or not to require the exponential curve fitted to the data to go through the
 origin. The `splitByExperiment` argument is used to indicate whether independent
 experiments are integrated into a single analysis (`splitByExperiment = FALSE`)

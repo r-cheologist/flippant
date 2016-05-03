@@ -75,10 +75,10 @@
 #'    \deqn{\frac{y-y_0}{y_{\mbox{\scriptsize max}}-y_0}}{(y - y0)/(ymax - y0)}
 #'    where \eqn{y} is the \code{Relative Fluorescence Reduction} and \eqn{y_0}{y0}
 #'    is the \code{Relative Fluorescence Reduction} in an experiment without
-#'    addition of protein extract. Depending on the \code{scaleTo} parameter, 
+#'    addition of protein extract. Depending on the \code{scale_to} parameter, 
 #'    \eqn{y_{\mbox{\scriptsize max}}}{ymax} is either the maximal \code{Relative Fluorescence Reduction} 
-#'    in the series (\code{scaleTo = "data"}) or derived from a 
-#'    mono-exponential fit to the data (\code{scaleTo = "model"}). The latter 
+#'    in the series (\code{scale_to = "data"}) or derived from a 
+#'    mono-exponential fit to the data (\code{scale_to = "model"}). The latter 
 #'    (default) is a precaution for the case where the protein/phospholipid
 #'    titration did not reach the plateau of the saturation curve.}
 #'  \item{A monoexponential curve is fitted unsig \code{\link{nlsLM}} to either
@@ -109,7 +109,7 @@
 #' template for a spreadsheet that can provide \code{x}.
 #' @param x \code{\link{data.frame}} or path to a tab delimited file 
 #' representing it (see "Details").
-#' @param scaleTo Defines the source of \code{ymax}, defaulting to 
+#' @param scale_to Defines the source of \code{ymax}, defaulting to 
 #' \code{model}. See "Details".
 #' @param forceThroughOrigin \code{\link{logical}} indicating whether to force 
 #' the fitted curve(s) to penetrate the origin (defaulting to \code{FALSE}).
@@ -174,7 +174,7 @@
 #' scramblase_assay_stats("inputTable.txt", splitByExperiment = FALSE)
 scramblase_assay_plot <- function(
   x,
-  scaleTo = c("model","data"),
+  scale_to = c("model","data"),
   forceThroughOrigin = FALSE,
   generation_of_algorithm = c(2, 1),
   splitByExperiment = TRUE){
@@ -191,19 +191,19 @@ scramblase_assay_plot.character <- function(x, ...){
 }
 base_function_scramblase_assay_plot <- function(
   x,
-  scaleTo = c("model","data"),
+  scale_to = c("model","data"),
   forceThroughOrigin = FALSE,
   generation_of_algorithm = c(2, 1),
   splitByExperiment = TRUE){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- flippant:::scramblaseAssayInputValidation(
     x = x ,
-    scaleTo = scaleTo,
+    scale_to = scale_to,
     forceThroughOrigin = forceThroughOrigin,
     generation_of_algorithm = generation_of_algorithm,
     splitByExperiment = splitByExperiment)
   x <- validatedParams[["x"]]
-  scaleTo <- validatedParams[["scaleTo"]]
+  scale_to <- validatedParams[["scale_to"]]
   forceThroughOrigin <- validatedParams[["forceThroughOrigin"]]
   generation_of_algorithm <- validatedParams[["generation_of_algorithm"]]
   splitByExperiment <- validatedParams[["splitByExperiment"]]
@@ -211,7 +211,7 @@ base_function_scramblase_assay_plot <- function(
 # Processing --------------------------------------------------------------
   processedListFromX <- flippant:::scramblaseAssayCalculations(
     x = x,
-    scaleTo = scaleTo,
+    scale_to = scale_to,
     forceThroughOrigin = forceThroughOrigin,
     generation_of_algorithm = generation_of_algorithm,
     splitByExperiment = splitByExperiment)

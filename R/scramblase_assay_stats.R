@@ -3,7 +3,7 @@
 #' @export
 scramblase_assay_stats <- function(
   x,
-  scaleTo = c("model","data"),
+  scale_to = c("model","data"),
   forceThroughOrigin = FALSE,
   generation_of_algorithm = c(2, 1),
   splitByExperiment = TRUE){
@@ -20,19 +20,19 @@ scramblase_assay_stats.character <- function(x, ...){
 }
 base_function_scramblase_assay_stats <- function(
   x,
-  scaleTo = c("model","data"),
+  scale_to = c("model","data"),
   forceThroughOrigin = FALSE,
   generation_of_algorithm = c(2, 1),
   splitByExperiment = TRUE){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- scramblaseAssayInputValidation(
     x = x,
-    scaleTo = scaleTo,
+    scale_to = scale_to,
     forceThroughOrigin = forceThroughOrigin,
     generation_of_algorithm = generation_of_algorithm,
     splitByExperiment = splitByExperiment)
   x <- validatedParams[["x"]]
-  scaleTo <- validatedParams[["scaleTo"]]
+  scale_to <- validatedParams[["scale_to"]]
   forceThroughOrigin <- validatedParams[["forceThroughOrigin"]]
   generation_of_algorithm <- validatedParams[["generation_of_algorithm"]]
   splitByExperiment <- validatedParams[["splitByExperiment"]]
@@ -40,7 +40,7 @@ base_function_scramblase_assay_stats <- function(
 # Processing --------------------------------------------------------------
   processedListFromX <- scramblaseAssayCalculations(
     x = x,
-    scaleTo = scaleTo,
+    scale_to = scale_to,
     forceThroughOrigin = forceThroughOrigin,
     generation_of_algorithm = generation_of_algorithm,
     splitByExperiment = splitByExperiment)
