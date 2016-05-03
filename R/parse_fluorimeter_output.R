@@ -14,7 +14,7 @@
 #' If requested the time point of dithionite addition to a sample is determined 
 #' using \pkg{wmtsa}-supplied methodology and the acquisition time reset
 #' accordingly (\code{0} henceforth corresponds to the time of addition).
-#' @param specFile Path to a \file{*.txt} file as a \code{\link{character}} 
+#' @param spec_file Path to a \file{*.txt} file as a \code{\link{character}} 
 #' object.
 #' @param adjust A \code{\link{logical}} indicating of whether (default) or not
 #' acquisition time should be reset to have \code{0} (zero) coincide with the 
@@ -57,20 +57,20 @@
 #' @importFrom wmtsa wavCWTTree
 #' @export
 parse_fluorimeter_output <- function(
-  specFile = NULL,
+  spec_file = NULL,
   adjust = TRUE){
   #######################
   # Check Prerequisites #
   #######################
-  assert_is_a_string(specFile)
-  assert_all_are_readable_files(specFile)
+  assert_is_a_string(spec_file)
+  assert_all_are_readable_files(spec_file)
   assert_is_a_bool(adjust)
   ##############
   # Processing #
   ##############
   # Aspirate the file
   ###################
-  linesInSpecFile <- readLines(specFile)
+  linesInSpecFile <- readLines(spec_file)
   # Divine the output-producing fluorimeter
   #########################################
   if(
@@ -89,7 +89,7 @@ parse_fluorimeter_output <- function(
   ){
     formatOfSpecFile <- "Manual"
   } else {
-    stop("Unsupported data format in ",specFile)
+    stop("Unsupported data format in ",spec_file)
   }
   # Extract data
   ##############
@@ -118,7 +118,7 @@ parse_fluorimeter_output <- function(
     peakMax <- peaks$x[which.max(peaks$y)]
     # Reset acquisition time
     if(length(peakMax) < 1){
-      stop("No ditionite addition detected in '",specFile,"'.")
+      stop("No ditionite addition detected in '",spec_file,"'.")
     }
     zeroTimePoint <- output$Data$Time.in.sec[peakMax[1]]
     output$Data$Time.in.sec <- output$Data$Time.in.sec - zeroTimePoint
