@@ -176,7 +176,7 @@ scramblaseAssayPlot <- function(
   x,
   scaleTo = c("model","data"),
   forceThroughOrigin = FALSE,
-  formulaGeneration = c(2, 1),
+  generation_of_algorithm = c(2, 1),
   splitByExperiment = TRUE){
   UseMethod("scramblaseAssayPlot",x)
 }
@@ -193,19 +193,19 @@ baseFunctionScramblaseAssayPlot <- function(
   x,
   scaleTo = c("model","data"),
   forceThroughOrigin = FALSE,
-  formulaGeneration = c(2, 1),
+  generation_of_algorithm = c(2, 1),
   splitByExperiment = TRUE){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- flippant:::scramblaseAssayInputValidation(
     x = x ,
     scaleTo = scaleTo,
     forceThroughOrigin = forceThroughOrigin,
-    formulaGeneration = formulaGeneration,
+    generation_of_algorithm = generation_of_algorithm,
     splitByExperiment = splitByExperiment)
   x <- validatedParams[["x"]]
   scaleTo <- validatedParams[["scaleTo"]]
   forceThroughOrigin <- validatedParams[["forceThroughOrigin"]]
-  formulaGeneration <- validatedParams[["formulaGeneration"]]
+  generation_of_algorithm <- validatedParams[["generation_of_algorithm"]]
   splitByExperiment <- validatedParams[["splitByExperiment"]]
   
 # Processing --------------------------------------------------------------
@@ -213,7 +213,7 @@ baseFunctionScramblaseAssayPlot <- function(
     x = x,
     scaleTo = scaleTo,
     forceThroughOrigin = forceThroughOrigin,
-    formulaGeneration = formulaGeneration,
+    generation_of_algorithm = generation_of_algorithm,
     splitByExperiment = splitByExperiment)
 
 # Recombine the processed data --------------------------------------------

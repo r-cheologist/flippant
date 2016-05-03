@@ -31,7 +31,7 @@ baseFunctionScramblaseAssayTraces <- function(
     x = x,
     scaleTo = "data",
     forceThroughOrigin = FALSE,
-    formulaGeneration = 2,
+    generation_of_algorithm = 2,
     splitByExperiment = TRUE,
     verbose = FALSE)
   x <- validatedParams[["x"]]

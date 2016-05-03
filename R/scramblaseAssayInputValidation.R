@@ -4,7 +4,7 @@
 scramblaseAssayInputValidation <- function(
   x,
   scaleTo,
-  formulaGeneration,
+  generation_of_algorithm,
   forceThroughOrigin,
   splitByExperiment,
   verbose=TRUE){
@@ -122,22 +122,22 @@ scramblaseAssayInputValidation <- function(
   if(scaleTo == "model" & verbose){
     message("Data will be scaled to the plateau of its monoexponential fit.")
   }
-  # Check formulaGeneration
-  formulaGeneration <- as.character(formulaGeneration)
-  if(identical(formulaGeneration, c("2","1"))){
-    formulaGeneration <- "2"
+  # Check generation_of_algorithm
+  generation_of_algorithm <- as.character(generation_of_algorithm)
+  if(identical(generation_of_algorithm, c("2","1"))){
+    generation_of_algorithm <- "2"
   }
-  formulaGeneration <- match.arg(
-    arg = formulaGeneration,
+  generation_of_algorithm <- match.arg(
+    arg = generation_of_algorithm,
     choices = c("second","first", "2", "1"),
     several.ok = FALSE)
-  if(formulaGeneration %in% c("first","1")){
-    formulaGeneration <- 1
-  } else if(formulaGeneration %in% c("second", "2")){
-    formulaGeneration <- 2
+  if(generation_of_algorithm %in% c("first","1")){
+    generation_of_algorithm <- 1
+  } else if(generation_of_algorithm %in% c("second", "2")){
+    generation_of_algorithm <- 2
   }
   if(verbose){
-    message("Data will be fitted to formula generation ", formulaGeneration, ".")
+    message("Data will be fitted to algorithm generation ", generation_of_algorithm, ".")
   }
   # Check forceThroughOrigin
   assert_is_a_bool(forceThroughOrigin)
@@ -148,7 +148,7 @@ scramblaseAssayInputValidation <- function(
     list(
       x = x,
       scaleTo = scaleTo,
-      formulaGeneration = formulaGeneration,
+      generation_of_algorithm = generation_of_algorithm,
       forceThroughOrigin = forceThroughOrigin,
       splitByExperiment = splitByExperiment))
 }

@@ -328,7 +328,7 @@ figure1 <- AddPanel(
   bottomPanel = 5,
   leftPanel = 1, 
   rightPanel = 3, 
-  panel = scramblaseAssayPlot(x, formulaGeneration = 1) + 
+  panel = scramblaseAssayPlot(x, generation_of_algorithm = 1) + 
     theme_bw() + 
     xlim(0, 2) + 
     xlab(expression("PPR"~~("mg"/"mmol"))) +
@@ -339,7 +339,7 @@ figure1 <- AddPanel(
   bottomPanel = 7,
   leftPanel = 1,
   rightPanel = 2,
-  panel = scramblaseAssayPlot(x, formulaGeneration = 1,  splitByExperiment = FALSE) + 
+  panel = scramblaseAssayPlot(x, generation_of_algorithm = 1,  splitByExperiment = FALSE) + 
     theme_bw() + 
     xlim(0, 2) + 
     xlab(expression("PPR"~~("mg"/"mmol"))) +
@@ -352,7 +352,7 @@ the following calls.
 
 ```{r, eval = FALSE}
 # Plot PPR plot (Figure 1B)
-scramblaseAssayPlot("inputTable.txt", formulaGeneration = 1) + xlim(0, 2)
+scramblaseAssayPlot("inputTable.txt", generation_of_algorithm = 1) + xlim(0, 2)
 ```
 
 ```{r, echo = FALSE}
@@ -385,7 +385,7 @@ from all experiments as follows, resulting in Figure 1C:
 ```{r, eval = FALSE}
 # Plot PPR plot (Figure 1C)
 scramblaseAssayPlot("inputTable.txt",
-  formulaGeneration = 1,
+  generation_of_algorithm = 1,
   splitByExperiment = FALSE) + 
 xlim(0, 2)
 ```
@@ -398,11 +398,11 @@ and produces tabular output represented in Table 1.
 
 ```{r, eval = FALSE}
 # Write out results in tabular manner (Table 1)
-scramblaseAssayStats("inputTable.txt", formulaGeneration = 1, splitByExperiment = FALSE)
+scramblaseAssayStats("inputTable.txt", generation_of_algorithm = 1, splitByExperiment = FALSE)
 ```
 
 ```{r, echo = FALSE}
-ppr_results <- scramblaseAssayStats(x, formulaGeneration = 1, splitByExperiment = FALSE)
+ppr_results <- scramblaseAssayStats(x, generation_of_algorithm = 1, splitByExperiment = FALSE)
 ppr_results_names <- ppr_results$`Experimental Series` %>%
   head(n = nrow(ppr_results) - 1) %>%
   paste(collapse = ", ") %>%
@@ -442,14 +442,14 @@ analysis_timing_function <- function(){
     timeMaxSec = 350)
   scramblaseAssayPlot(
     x,
-    formulaGeneration = 1)
+    generation_of_algorithm = 1)
   scramblaseAssayPlot(
     x,
-    formulaGeneration = 1,
+    generation_of_algorithm = 1,
     splitByExperiment = FALSE)
   scramblaseAssayStats(
     x,
-    formulaGeneration = 1, 
+    generation_of_algorithm = 1, 
     splitByExperiment = FALSE)
 }
 

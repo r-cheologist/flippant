@@ -2,7 +2,7 @@
 scramblaseAssayCalculations <- function(
   x,
   scaleTo,
-  formulaGeneration = 2,
+  generation_of_algorithm = 2,
   forceThroughOrigin = FALSE,
   splitByExperiment = TRUE){
 # Set parameters ----------------------------------------------------------
@@ -167,7 +167,7 @@ scramblaseAssayCalculations <- function(
         subsetForFit[["y"]],
         na.rm=TRUE) * 0.6
       estimatedA <- subsetForFit[["x"]][which.min(abs(subsetForFit[["y"]] - pointSixY))]
-      if(formulaGeneration == 1){
+      if(generation_of_algorithm == 1){
         ##> The dependence of p(≥1 flippase) on PPR was analyzed as follows.
         ##> Definitions:
         ##>   f, number of flippases used for reconstitution
@@ -222,7 +222,7 @@ scramblaseAssayCalculations <- function(
           },
           control = nlsControl)
         gc()
-      } else if(formulaGeneration == 2){
+      } else if(generation_of_algorithm == 2){
         ## p(≥1) = 1-(1/sqrt(1+784*α*PPR))*exp(-3872*α*PPR/(1+784*α*PPR))
         ## p(≥1) = 1 - e-m = 1 – exp(-PPR/α)
         # ## Fit a monoexponential curve to the data

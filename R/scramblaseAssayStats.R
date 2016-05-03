@@ -5,7 +5,7 @@ scramblaseAssayStats <- function(
   x,
   scaleTo = c("model","data"),
   forceThroughOrigin = FALSE,
-  formulaGeneration = c(2, 1),
+  generation_of_algorithm = c(2, 1),
   splitByExperiment = TRUE){
   UseMethod("scramblaseAssayStats",x)
 }
@@ -22,19 +22,19 @@ baseFunctionScramblaseAssayStats <- function(
   x,
   scaleTo = c("model","data"),
   forceThroughOrigin = FALSE,
-  formulaGeneration = c(2, 1),
+  generation_of_algorithm = c(2, 1),
   splitByExperiment = TRUE){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- scramblaseAssayInputValidation(
     x = x,
     scaleTo = scaleTo,
     forceThroughOrigin = forceThroughOrigin,
-    formulaGeneration = formulaGeneration,
+    generation_of_algorithm = generation_of_algorithm,
     splitByExperiment = splitByExperiment)
   x <- validatedParams[["x"]]
   scaleTo <- validatedParams[["scaleTo"]]
   forceThroughOrigin <- validatedParams[["forceThroughOrigin"]]
-  formulaGeneration <- validatedParams[["formulaGeneration"]]
+  generation_of_algorithm <- validatedParams[["generation_of_algorithm"]]
   splitByExperiment <- validatedParams[["splitByExperiment"]]
 
 # Processing --------------------------------------------------------------
@@ -42,7 +42,7 @@ baseFunctionScramblaseAssayStats <- function(
     x = x,
     scaleTo = scaleTo,
     forceThroughOrigin = forceThroughOrigin,
-    formulaGeneration = formulaGeneration,
+    generation_of_algorithm = generation_of_algorithm,
     splitByExperiment = splitByExperiment)
   processedListFromX <- lapply(processedListFromX,function(y){y[["Raw"]]})
 
