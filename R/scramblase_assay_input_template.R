@@ -2,6 +2,7 @@
 #' @importFrom assertive assert_any_are_existing_files
 #' @importFrom assertive assert_is_a_non_empty_string
 #' @importFrom plyr rbind.fill
+#' @importFrom utils write.table
 #' @export
 scramblase_assay_input_template <- function(path="scramblase_assay_input_template.txt"){
 # Check input -------------------------------------------------------------

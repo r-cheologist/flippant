@@ -52,6 +52,7 @@
 #' @importFrom assertive assert_is_a_bool
 #' @importFrom assertive assert_is_a_string
 #' @importFrom RcppRoll roll_mean
+#' @importFrom utils tail
 #' @importFrom wmtsa wavCWT
 #' @importFrom wmtsa wavCWTPeaks
 #' @importFrom wmtsa wavCWTTree

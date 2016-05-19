@@ -1,4 +1,7 @@
 #' @importFrom minpack.lm nlsLM
+#' @importFrom stats coef
+#' @importFrom stats median
+#' @importFrom stats predict
 scramblase_assay_calculations <- function(
   x,
   scale_to,

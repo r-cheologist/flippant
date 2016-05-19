@@ -1,5 +1,6 @@
 #' @importFrom assertive assert_all_are_readable_files
 #' @importFrom assertive assert_is_a_non_empty_string
+#' @importFrom utils read.delim
 read_scramblase_input_file <- function(x){
   assert_is_a_non_empty_string(x)
   assert_all_are_readable_files(x)
