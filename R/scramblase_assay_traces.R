@@ -5,6 +5,7 @@
 #' @export
 scramblase_assay_traces <- function(
   x,
+  ppr_scale_factor = 0.65,
   time_min_sec=NA_real_,
   time_max_sec=NA_real_,
   adjust = TRUE){
@@ -23,6 +24,7 @@ scramblase_assay_traces.character <- function(x, ...){
 }
 base_function_scramblase_assay_traces <- function(
   x,
+  ppr_scale_factor = 0.65,
   time_min_sec=NA_real_,
   time_max_sec=NA_real_,
   adjust = TRUE){
@@ -30,7 +32,7 @@ base_function_scramblase_assay_traces <- function(
   validatedParams <- scramblase_assay_input_validation(
     x = x,
     scale_to = "data",
-    ppr_scale_factor = 0.65,
+    ppr_scale_factor = ppr_scale_factor,
     force_through_origin = FALSE,
     generation_of_algorithm = 2,
     split_by_experiment = TRUE,
