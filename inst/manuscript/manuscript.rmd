@@ -17,7 +17,7 @@ bibliography: flippant.bib
 
 †
 :    \
-    Research Division, Weill Cornell Medical College in Qatar, P.O.Box 24144, Doha, State of Qatar
+    Research Division, Weill Cornell Medicine -- Qatar, P.O.Box 24144, Doha, State of Qatar
 
 ‡
 :   Department of Biochemistry, Weill Cornell Medical College, New York, NY 
@@ -504,8 +504,8 @@ identical data analysis workflow, *flippant* is expected to facilitate analysis
 of such experiments as well.
 
 # Funding
-J.G., R.J.C. and the Proteomics Core at WCMC-Q are supported by ``Biomedical 
-Research Program'' funds at Weill Cornell Medical College in Qatar, a program 
+J.G., R.J.C. and the Proteomics Core at WCM--Q are supported by ``Biomedical 
+Research Program'' funds at Weill Cornell Medicine -- Qatar, a program 
 funded by Qatar Foundation. This study was made possible by NPRP grant
 5-669-1-112 from the Qatar National Research Fund (a member of Qatar 
 Foundation).The statements made herein are solely the responsibility of the
