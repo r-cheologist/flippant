@@ -17,6 +17,7 @@ Suggests:
     testthat
 Imports:
     assertive (>= 0.3-3),
+    magrittr (>= 1.5),
     minpack.lm (>= 1.2-0),
     plyr (>= 1.8.3),
     RcppRoll (>= 0.2.2)
