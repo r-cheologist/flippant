@@ -1,9 +1,11 @@
 #' @importFrom assertive assert_has_rows
 #' @importFrom assertive assert_is_a_bool
+#' @importFrom assertive assert_is_a_number
 #' @importFrom assertive assert_is_data.frame
 scramblase_assay_input_validation <- function(
   x,
   scale_to,
+  ppr_scale_factor,
   generation_of_algorithm,
   force_through_origin,
   split_by_experiment,
@@ -122,6 +124,13 @@ scramblase_assay_input_validation <- function(
   if(scale_to == "model" & verbose){
     message("Data will be scaled to the plateau of its monoexponential fit.")
   }
+  # Check ppr_scale_factor
+  if(!is.null(ppr_scale_factor)){
+    assert_is_a_number(ppr_scale_factor)
+    if(verbose){
+      message("PPR will be scaled by a factor of ", ppr_scale_factor, ".")
+    }
+  }
   # Check generation_of_algorithm
   generation_of_algorithm <- as.character(generation_of_algorithm)
   if(identical(generation_of_algorithm, c("2","1"))){
@@ -148,6 +157,7 @@ scramblase_assay_input_validation <- function(
     list(
       x = x,
       scale_to = scale_to,
+      ppr_scale_factor = ppr_scale_factor,
       generation_of_algorithm = generation_of_algorithm,
       force_through_origin = force_through_origin,
       split_by_experiment = split_by_experiment))

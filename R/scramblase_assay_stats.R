@@ -4,6 +4,7 @@
 scramblase_assay_stats <- function(
   x,
   scale_to = c("model","data"),
+  ppr_scale_factor = 0.65,
   force_through_origin = FALSE,
   generation_of_algorithm = c(2, 1),
   split_by_experiment = TRUE){
@@ -21,6 +22,7 @@ scramblase_assay_stats.character <- function(x, ...){
 base_function_scramblase_assay_stats <- function(
   x,
   scale_to = c("model","data"),
+  ppr_scale_factor = 0.65,
   force_through_origin = FALSE,
   generation_of_algorithm = c(2, 1),
   split_by_experiment = TRUE){
@@ -28,11 +30,13 @@ base_function_scramblase_assay_stats <- function(
   validatedParams <- scramblase_assay_input_validation(
     x = x,
     scale_to = scale_to,
+    ppr_scale_factor = ppr_scale_factor,
     force_through_origin = force_through_origin,
     generation_of_algorithm = generation_of_algorithm,
     split_by_experiment = split_by_experiment)
   x <- validatedParams[["x"]]
   scale_to <- validatedParams[["scale_to"]]
+  ppr_scale_factor <- validatedParams[["ppr_scale_factor"]]
   force_through_origin <- validatedParams[["force_through_origin"]]
   generation_of_algorithm <- validatedParams[["generation_of_algorithm"]]
   split_by_experiment <- validatedParams[["split_by_experiment"]]
@@ -41,6 +45,7 @@ base_function_scramblase_assay_stats <- function(
   processedListFromX <- scramblase_assay_calculations(
     x = x,
     scale_to = scale_to,
+    ppr_scale_factor = ppr_scale_factor,
     force_through_origin = force_through_origin,
     generation_of_algorithm = generation_of_algorithm,
     split_by_experiment = split_by_experiment)

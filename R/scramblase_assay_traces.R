@@ -30,6 +30,7 @@ base_function_scramblase_assay_traces <- function(
   validatedParams <- scramblase_assay_input_validation(
     x = x,
     scale_to = "data",
+    ppr_scale_factor = 0.65,
     force_through_origin = FALSE,
     generation_of_algorithm = 2,
     split_by_experiment = TRUE,
@@ -41,7 +42,7 @@ base_function_scramblase_assay_traces <- function(
 # Processing --------------------------------------------------------------
   # Perform assay calculations to retrive PPR
   processedX <- x
-  processedX$"Protein per Phospholipid (mg/mmol)" <- calculate_ppr(x)
+  processedX$"Protein per Phospholipid (mg/mmol)" <- calculate_ppr(x, ppr_scale_factor = validatedParams[["ppr_scale_factor"]])
   processedX <- processedX[c("Path","Experimental Series","Experiment","Protein per Phospholipid (mg/mmol)")]
   # Parse the fluorimeter data and whip it into shape
   rawFluorimeterOutput <- lapply(processedX$Path,parse_fluorimeter_output,adjust = adjust)

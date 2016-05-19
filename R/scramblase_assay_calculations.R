@@ -5,6 +5,7 @@
 scramblase_assay_calculations <- function(
   x,
   scale_to,
+  ppr_scale_factor = 0.65,
   generation_of_algorithm = 2,
   force_through_origin = FALSE,
   split_by_experiment = TRUE){
@@ -115,7 +116,7 @@ scramblase_assay_calculations <- function(
       ## Calcualte the relative fluorescence reduction
       z[["Relative Fluorescence Reduction"]] <- z[["Fluorescence Reduction"]] - z[["Fluorescence Reduction"]][indexOfLiposomesOnlyData]
       ## Calculate PPR
-      z[["Protein per Phospholipid (mg/mmol)"]] <- calculate_ppr(z)
+      z[["Protein per Phospholipid (mg/mmol)"]] <- calculate_ppr(z, ppr_scale_factor = ppr_scale_factor)
       ## Calculate p>=1Scramblase/Liposome
       y <- z[["Relative Fluorescence Reduction"]]
       y0 <- z[["Relative Fluorescence Reduction"]][indexOfLiposomesOnlyData]
@@ -276,6 +277,10 @@ scramblase_assay_calculations <- function(
 
 }
 
-calculate_ppr <- function(x){
-  return(x[["Protein in Reconstitution (mg)"]]/x[["Lipid in Reconstitution (mmol)"]])
+calculate_ppr <- function(x, ppr_scale_factor = 0.65){
+  ppr <- x[["Protein in Reconstitution (mg)"]]/x[["Lipid in Reconstitution (mmol)"]]
+  if(!is.null(ppr_scale_factor)){
+    ppr <- ppr/ppr_scale_factor
+  }
+  return(ppr)
 }
