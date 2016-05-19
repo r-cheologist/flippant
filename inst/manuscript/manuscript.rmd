@@ -242,8 +242,8 @@ completed table, which is subjected to extensive input checks when read by
 ## Graphic Representation of Spectral Traces
 In a first, graphical data analytic step of a scramblase assay--derived data 
 set, fluorescent spectra or traces may be plotted in publication--appropriate
-quality with acquisition time on the x-- and fluorescence intensity on the y--axis
-using
+quality with acquisition time on the x-- and fluorescence intensity on the
+y--axis using
 
 ```{r noeval_traces_call, code = formatR::usage('scramblase_assay_traces'), eval = FALSE}
 ```
@@ -259,20 +259,20 @@ included (in seconds).
 
 ## Scramblase Assay Analysis
 Plotting protein to phospholipid ratio (PPR) against the likelihood for a given
-proteoliposome to contain one or more scramblases, the PPR plot is at the heart 
-of the analysis of dithionite scramblase assays, allowing for the visual 
-comparison of specific scramblase activity between interrogated experimental 
-series, which may, for example, be representative of protein preparations including 
-mutant protein forms or crude extracts with or without depletion of a candidate
-scramblase. 
+proteoliposome to contain one or more scramblases, the PPR plot is at the heart
+of the analysis of dithionite scramblase assays, allowing for the visual
+comparison of specific scramblase activity between interrogated experimental
+series, which may, for example, be representative of protein preparations
+including mutant protein forms or crude extracts with or without depletion of a
+candidate scramblase.
 
 ```{r noeval_plot_call, code = formatR::usage('scramblase_assay_plot'), eval = FALSE}
 ```
 
-allows for the complete generation of the PPR plot in publication quality from 
-the user assembled spreadsheet of input data (`x`), including automatically 
-added graphical representations the PPR value equal to the fit constant 
-$\alpha$ ($P_{\geq 1} = 1 - e^{-1}$), which implies all liposomes on average 
+allows for the complete generation of the PPR plot in publication quality from
+the user assembled spreadsheet of input data (`x`), including automatically
+added graphical representations the PPR value equal to the fit constant
+$\alpha$ ($P_{\geq 1} = 1 - e^{-1}$), which implies all liposomes on average
 carrying one scramblase and 63% have one or more 
 [i.e. are active; @goren_constitutive_2014]. The behavior of the function may be
 adjusted to use scramblase--mediated fluorescence reduction normalized to either
