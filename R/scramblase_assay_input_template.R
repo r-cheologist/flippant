@@ -1,13 +1,18 @@
 #' @rdname scramblase_assay_plot
 #' @importFrom assertive assert_any_are_existing_files
 #' @importFrom assertive assert_is_a_non_empty_string
+#' @importFrom magrittr %>%
+#' @importFrom magrittr extract
+#' @importFrom magrittr extract2
+#' @importFrom magrittr inset2
 #' @importFrom plyr rbind.fill
 #' @importFrom utils write.table
 #' @export
 scramblase_assay_input_template <- function(path="scramblase_assay_input_template.txt"){
 # Check input -------------------------------------------------------------
-  assert_is_a_non_empty_string(path)
-  assert_any_are_existing_files(path)
+  path %>%
+    assert_is_a_non_empty_string() %>%
+    assert_any_are_existing_files()
 
 # Generate template data.frame --------------------------------------------
   # Create data structure in list form
@@ -46,25 +51,37 @@ scramblase_assay_input_template <- function(path="scramblase_assay_input_templat
       "NA",
       "NA"))
   # Outcomment the appropriate lines
-  commentedDataStructure <- lapply(
-    names(dataStructure),
-    function(x){
-      if(x == "columnName"){
-        return(dataStructure[[x]])
-      } else {
-        tmpVec <- dataStructure[[x]]
-        tmpVec[1] <- paste("#",tmpVec[1])
-        return(tmpVec)
-      }
-    })
+  commentedDataStructure <- dataStructure %>%
+    names() %>%
+    lapply(
+      function(x){
+        if(x == "columnName"){
+          dataStructure %>%
+            extract2(x) %>%
+            return()
+        } else {
+          dataStructure %>%
+            extract2(x) %>%
+            inset2(1,paste("#", .[1])) %>%
+            return()
+        }
+      })
   # Assemble the data.frame
-  outputDataFrameAsList <- lapply(
-    commentedDataStructure[2:length(commentedDataStructure)],
-    function(x){as.data.frame(rbind(x),stringsAsFactors=FALSE)})
-  outputDataFrame <- plyr::rbind.fill(outputDataFrameAsList)
-  names(outputDataFrame) <- dataStructure[[1]]
-
-# Write the file out ------------------------------------------------------
-  write.table(x=outputDataFrame,file=path,sep="\t",row.names=FALSE)
-
+  commentedDataStructure %>%
+    extract(2:length(.)) %>%
+    lapply(
+      function(x){
+        x %>%
+          rbind() %>%
+          as.data.frame(stringsAsFactors = FALSE) %>%
+          return()
+      }
+    ) %>%
+    rbind.fill() %>%
+    set_names(dataStructure %>% extract2(1)) %>%
+  # Write the table out
+    write.table(
+      file=path,
+      sep="\t",
+      row.names=FALSE)
 }
