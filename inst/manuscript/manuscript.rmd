@@ -186,9 +186,10 @@ and fluorescence intensity representing columns are currently supported. The
 latter is trivially assembled from any fluorescence data using a spreadsheet 
 program. File type determination is handled algorithmically.
 
-Based on @menon_opsin_2011 and @goren_constitutive_2014 and largely keeping with
-nomenclature used therein, data is processed as follows. Input is format checked
-and defaults are injected for facultative parameters/columns as appropriate. 
+Based on @menon_opsin_2011, @goren_constitutive_2014 and
+@ploier_perturbed_submitted and largely keeping with nomenclature used therein,
+data is processed as follows. Input is format checked and defaults are injected
+for facultative parameters/columns as appropriate. 
 Fluorescence spectra are parsed. This includes algorithmic determination of when 
 dithionite was added to the sample using peak detection by continuous wavelet
 transformation as implemented in the *wmtsa* R package [@percival_wavelet_2000;@constantine_wmtsa:_2013]. 
@@ -218,7 +219,11 @@ case where the protein/phospholipid titration did not reach the plateau of the
 saturation curve. The behavior is adjustable using the `scale_to` parameter of 
 the corresponding functions (see below). Next a monoexponential curve is fitted
 to the relationship of $P_{\geq 1}$ to the protein to phospholipid ratio (PPR; 
-(mg/mmol)), providing the scramblase--characterizing fit factor $\alpha$.
+(mg/mmol)), providing the scramblase--characterizing fit factor $\alpha$. By
+default and following @ploier_perturbed_submitted, PPR is scaled by a factor of
+0.65 to account for a fraction of the vesicle pool used that is refractory to
+scramblase reconstitution. This behavior can be modified using the 
+`ppr_scale_factor` parameter and avoided alltogether setting it to `NULL`.
 
 # Main Features
 ## Template Generation for Data Input
@@ -246,9 +251,11 @@ using
 and handing the function the path to the user assembled spreadsheet of input 
 data (`x`). The `adjust` argument to the function call serves to selectively 
 inactivate *wmtsa*--provided (see above) alignment of multiple spectra to the 
-time of dithionite addition. Acquisition time coverage of the plot may be tuned 
-by user--provided minimal (`time_min_sec` ) and maximal (`time_max_sec`) time points
-to be included (in seconds).
+time of dithionite addition, while the `ppr_scale_factor` parameter is used to
+scale PPR (see above) and is needed here as the traces are colored by that
+measure. Acquisition time coverage of the plot may be tuned  by user--provided
+minimal (`time_min_sec` ) and maximal (`time_max_sec`) time points to be
+included (in seconds).
 
 ## Scramblase Assay Analysis
 Plotting protein to phospholipid ratio (PPR) against the likelihood for a given
@@ -272,7 +279,9 @@ adjusted to use scramblase--mediated fluorescence reduction normalized to either
 the maximum measurement in the series (`scale_to = "data"`) or the plateau of an
 exponential fit to it (`scale_to = "model"`; for reasoning see above) and whether
 or not to require the exponential curve fitted to the data to go through the
-origin. The `split_by_experiment` argument is used to indicate whether independent
+origin. `ppr_scale_factor` allows for the modification of scaling to account for
+a pool of vesicles that is scramblase--inaccessible (see above). The
+`split_by_experiment` argument is used to indicate whether independent
 experiments are integrated into a single analysis (`split_by_experiment = FALSE`)
 or treated separately (`split_by_experiment = TRUE`; see below for example usage).
 
@@ -305,14 +314,14 @@ Figure 4C/D in @ploier_perturbed_submitted. The following work flow in a first
 step plots the corresponding spectral traces (Figure 1A). Note that algorithmic
 alignment to the time of dithionite addition is employed (default) as well as 
 custom trimming of the time axis to account for divergent acquisition 
-times between experiments.
+times between experiments. PPR scaling is used with the default factor of 0.65.
 
 ```{r noeval_demonstrate_traces, eval = FALSE}
 # Plot spectral traces (Figure 1A)
 scramblase_assay_traces("inputTable.txt", time_max_sec = 350)
 ```
 
-```{r figure1_creation, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "***flippant*--based reanalysis of data in Figure 4C/D from @ploier_perturbed_submitted.** (A) represents spectral traces as produced by a call to the function `scramblase_assay_traces`, while (B) and (C) show protein to phospholipid ration (PPR) plots for the data using a x--axis trimmed to a maximum value of 2 (see text for details). In (B) data is separately plotted for independent experiments, while (C) combines all dat points, aiming for reliability of fit."}
+```{r figure1_creation, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "***flippant*--based reanalysis of data in Figure 4C/D from @ploier_perturbed_submitted.** (A) represents spectral traces as produced by a call to the function `scramblase_assay_traces`, while (B) and (C) show protein to phospholipid ration (PPR) plots for the data using a x--axis trimmed to a maximum value of 2 (see text for details). In (B) data is separately plotted for independent experiments, while (C) combines all dat points, aiming for reliability of fit. 'adj. PPR' indicates that the measure has been scaled to account for a vesicle pool refractory to flippase reconsitution."}
 x <- flippant:::read_scramblase_input_file(
   file.path(tmpDir,"inputTable.txt"))
 x[["Path"]] <- file.path(tmpDir, x[["Path"]])
@@ -332,7 +341,7 @@ figure1 <- add_panel(
   panel = scramblase_assay_plot(x, generation_of_algorithm = 1) + 
     theme_bw() + 
     xlim(0, 2) + 
-    xlab(expression("PPR"~~("mg"/"mmol"))) +
+    xlab(expression("adj. PPR"~~("mg"/"mmol"))) +
     ylab(expression(P[{phantom()>=1}])))
 figure1 <- add_panel(
   figure = figure1,
@@ -343,7 +352,7 @@ figure1 <- add_panel(
   panel = scramblase_assay_plot(x, generation_of_algorithm = 1,  split_by_experiment = FALSE) + 
     theme_bw() + 
     xlim(0, 2) + 
-    xlab(expression("PPR"~~("mg"/"mmol"))) +
+    xlab(expression("adj. PPR"~~("mg"/"mmol"))) +
     ylab(expression(P[{phantom()>=1}])))
 grid.draw(figure1)
 ```
