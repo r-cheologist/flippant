@@ -92,8 +92,16 @@ base_function_scramblase_assay_traces <- function(
   plotOutput <- plotOutput +
     labs(
       x="Acquisition Time (s)",
-      y="Relative Fluorescence Intensity",
-      colour=expression("PPR "*bgroup("(",frac("mg","mmol"),")")))
+      y="Relative Fluorescence Intensity")
+  if(is.null(ppr_scale_factor)){
+    plotOutput <- plotOutput +
+      labs(
+        colour=expression("PPR "*bgroup("(",frac("mg","mmol"),")")))
+  } else {
+    plotOutput <- plotOutput +
+      labs(
+        colour=expression("adj. PPR "*bgroup("(",frac("mg","mmol"),")")))
+  }
   # Facetting
   hasExperiment <- any(!is.na(mergedData$Experiment))
   hasSeries <- any(!is.na(mergedData$Experimental.Series))
