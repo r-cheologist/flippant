@@ -1,7 +1,7 @@
-#' @importFrom assertive assert_has_rows
-#' @importFrom assertive assert_is_a_bool
-#' @importFrom assertive assert_is_a_number
-#' @importFrom assertive assert_is_data.frame
+#' @importFrom assertive.properties assert_has_rows
+#' @importFrom assertive.types assert_is_a_bool
+#' @importFrom assertive.types assert_is_a_number
+#' @importFrom assertive.types assert_is_data.frame
 scramblase_assay_input_validation <- function(
   x,
   scale_to,

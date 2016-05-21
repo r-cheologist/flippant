@@ -16,7 +16,10 @@ Suggests:
     roxygen2,
     testthat
 Imports:
-    assertive (>= 0.3-3),
+    assertive.files (>= 0.0-2),
+    assertive.properties (>= 0.0-3),
+    assertive.strings (>= 0.0-3),
+    assertive.types (>= 0.0-2),
     magrittr (>= 1.5),
     minpack.lm (>= 1.2-0),
     plyr (>= 1.8.3),

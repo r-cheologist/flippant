@@ -9,8 +9,8 @@
 #' @seealso \code{\link{parse_fluorimeter_output}}, 
 #' \code{\link[flippant]{parse_felix_gx_output}},
 #' \code{\link[flippant]{parse_manual_output}}
-#' @importFrom assertive assert_all_are_non_missing_nor_empty_character
-#' @importFrom assertive assert_is_not_null
+#' @importFrom assertive.properties assert_is_not_null
+#' @importFrom assertive.strings assert_all_are_non_missing_nor_empty_character
 #' @author Johannes Graumann
 #' @keywords manip IO file
 parse_felix_32_output <- function(x = NULL){

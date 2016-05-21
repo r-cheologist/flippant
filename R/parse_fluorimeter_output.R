@@ -48,9 +48,9 @@
 #' @keywords manip IO file
 #' @examples
 #' # stop("Function is missing examples!")
-#' @importFrom assertive assert_all_are_readable_files
-#' @importFrom assertive assert_is_a_bool
-#' @importFrom assertive assert_is_a_string
+#' @importFrom assertive.files assert_all_are_readable_files
+#' @importFrom assertive.types assert_is_a_bool
+#' @importFrom assertive.types assert_is_a_string
 #' @importFrom RcppRoll roll_mean
 #' @importFrom utils tail
 #' @importFrom wmtsa wavCWT

@@ -1,6 +1,6 @@
 #' @rdname scramblase_assay_plot
-#' @importFrom assertive assert_any_are_existing_files
-#' @importFrom assertive assert_is_a_non_empty_string
+#' @importFrom assertive.files assert_any_are_existing_files
+#' @importFrom assertive.strings assert_is_a_non_empty_string
 #' @importFrom magrittr %>%
 #' @importFrom magrittr extract
 #' @importFrom magrittr extract2

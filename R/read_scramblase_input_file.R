@@ -1,5 +1,5 @@
-#' @importFrom assertive assert_all_are_readable_files
-#' @importFrom assertive assert_is_a_non_empty_string
+#' @importFrom assertive.files assert_all_are_readable_files
+#' @importFrom assertive.strings assert_is_a_non_empty_string
 #' @importFrom magrittr %>%
 #' @importFrom utils read.delim
 read_scramblase_input_file <- function(x){
