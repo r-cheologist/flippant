@@ -1,5 +1,5 @@
 ---
-title: '*flippant* -- An R package for the automated analysis of dithionite scramblase
+title: '*flippant* --- An R package for the automated analysis of dithionite scramblase
   assays'
 author: Johannes Graumann ^†,^*, Birgit Ploier ^‡^, Richard J. Cotton ^†^,
   Michael A. Goren ^‡^ and Anant K. Menon ^‡^
