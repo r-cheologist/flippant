@@ -34,9 +34,9 @@
 #'    generation of \code{\link{ggplot}} output to differentiate lines in the
 #'    same plot/facet.}}
 #'    
-#' Based on Goren et al. (2014) data is processed as follows (the majority of 
-#' the processing is split off into the internal function 
-#' \code{scramblase_assay_calculations}):
+#' Based on Goren et al. (2014) and Ploier et al. (2016) data is processed as
+#' follows (the majority of the processing is split off into the internal
+#' function \code{scramblase_assay_calculations}):
 #' \itemize{
 #'  \item{Input is format checked and defaults are injected for facultative 
 #'    parameters/columns as appropriate (see input \code{\link{data.frame}} 
@@ -64,7 +64,9 @@
 #'  \item{A \code{Relative Fluorescence Reduction} is calculated in comparison
 #'    to the liposomes-only/no-protein control).}
 #'  \item{A \code{Protein per Phospholipid (mg/mmol)} ratio (\code{PPR}) is 
-#'    calculated.}
+#'    calculated. If \code{ppr_scale_factor} is not \code{NULL}, the value is
+#'    scaled (divided) by that value to account for liposomes that remain
+#'    inaccessible to reconstitution with scramblase molecules.}
 #'  \item{Depending on \code{split_by_experiment}, data are \code{\link{split}} 
 #'    for parallel treatment using either \code{Experimental Series}
 #'    (\code{split_by_experiment = TRUE}) or a combined
@@ -81,11 +83,24 @@
 #'    mono-exponential fit to the data (\code{scale_to = "model"}). The latter 
 #'    (default) is a precaution for the case where the protein/phospholipid
 #'    titration did not reach the plateau of the saturation curve.}
-#'  \item{A monoexponential curve is fitted unsig \code{\link{nlsLM}} to either
-#'    \deqn{p(\geq 1)=b-c\cdot e^{-\frac{\mbox{\tiny PPR}}{a}}}{p(\ge 1) = b - c*exp(-PPR/a)}
-#'    (if \code{force_through_origin = FALSE}) or  
+#'  \item{A monoexponential curve is fitted using \code{\link{nlsLM}}.
+#'  
+#'    If \code{generation_of_algorithm} is \code{1}, the underlying formula is
+#'    derived from Goren et al. (2014) and data is fitted to either
 #'    \deqn{p(\geq 1)=b\cdot(1-e^{-\frac{\mbox{\tiny PPR}}{a}})}{p(\ge 1) = b * (1 - exp(-PPR/a))} 
-#'    (if \code{force_through_origin = TRUE}).}
+#'    (if \code{force_through_origin = TRUE}; default) or
+#'    \deqn{p(\geq 1)=b-c\cdot e^{-\frac{\mbox{\tiny PPR}}{a}}}{p(\ge 1) = b - c*exp(-PPR/a)}
+#'    (if \code{force_through_origin = FALSE}). The latter implies more degrees
+#'    of freedom and occasionaly results in better fits to experimental data.
+#'    Mechanistic implication, however, are unclear.
+#'    
+#'    If \code{generation_of_algorithm} is \code{2} (default), the more
+#'    elaborate model put forth in Ploier et al. (2016) is employed, using
+#'    either
+#'    \deqn{p(\geq 1)=b\cdot(\frac{1}{\sqrt{1+784\cdot a \cdot x}})\cdot exp(\frac{-3872\cdot a \cdot x}{1+784\cdot a\cdot x})}{p(\ge 1) = b * (1 - (1/sqrt(1 + 784 * a * x)) * exp((-3872 * a * x)/(1 + 784 * a * x))}
+#'    (if \code{force_through_origin = TRUE}; default) or
+#'    \deqn{p(\geq 1)=b-c\cdot(\frac{1}{\sqrt{1+784\cdot a \cdot x}})\cdot exp(\frac{-3872\cdot a \cdot x}{1+784\cdot a\cdot x})}{p(\ge 1) = b - c (1 - (1/sqrt(1 + 784 * a * x)) * exp((-3872 * a * x)/(1 + 784 * a * x))}
+#'    (if \code{force_through_origin = FALSE}).}
 #'  \item{Data \code{\link{split}} apart above are recombined and a 
 #'    \code{\link{ggplot}} object is assembled with the following layers:
 #'    \itemize{
@@ -109,6 +124,9 @@
 #' template for a spreadsheet that can provide \code{x}.
 #' @param x \code{\link{data.frame}} or path to a tab delimited file 
 #' representing it (see "Details").
+#' @param ppr_scale_factor \code{\link{numeric}} object providing a scale factor
+#' to adjust internally calculated \code{Protein per Phospholipid (mg/mmol)}
+#' ratios (\code{PPR}; see "Details").
 #' @param scale_to Defines the source of \code{ymax}, defaulting to 
 #' \code{model}. See "Details".
 #' @param force_through_origin \code{\link{logical}} indicating whether to force 
@@ -123,6 +141,8 @@
 #' @param adjust A single \code{\link{logical}}, indicating whether (default) or 
 #' not spectral traces to be plotted are algorithmically aligned at the time
 #' point of dithionite addition.
+#' @param generation_of_algorithm Either \code{2} or \code{1}
+#' (\code{\link{numeric}}; defaulting to \code{2}). See "Details".
 #' @param split_by_experiment A single \code{\link{logical}}, indicating whether or
 #' not calculations and plots will treat experimental series from different
 #' experiments separately (\code{TRUE}, default) or whether data from all
