@@ -173,7 +173,7 @@ scramblase_assay_calculations <- function(
           extract(indexOfLiposomesOnlyData)
         if(scale_to == "model"){
           fit_prep <- z %>%
-            .fit_prep()
+            fit_prep()
           fitStart <- if(force_through_origin){
             list(
               a = fit_prep[["estimated_a"]],
@@ -212,7 +212,7 @@ scramblase_assay_calculations <- function(
     lapply(
       function(z){
         fit_prep <- z %>%
-          .fit_prep()
+          fit_prep()
         ##> The dependence of p(≥1 flippase) on PPR was analyzed as follows.
         ##> Definitions:
         ##>   f, number of flippases used for reconstitution
@@ -304,7 +304,7 @@ calculate_ppr <- function(x, ppr_scale_factor = 0.65){
 
 
 # Helper Functions --------------------------------------------------------
-.fit_prep <- function(z){
+fit_prep <- function(z){
   fit_set <- z %>%
     extract2(
       c("Protein per Phospholipid (mg/mmol)",
