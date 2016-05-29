@@ -1,4 +1,16 @@
+#' @importFrom assertive.numbers assert_all_are_less_than
+#' @importFrom magrittr %>%
+#' @importFrom magrittr %<>%
+#' @importFrom magrittr equals
+#' @importFrom magrittr extract
+#' @importFrom magrittr extract2
+#' @importFrom magrittr is_less_than
+#' @importFrom magrittr is_weakly_less_than
+#' @importFrom magrittr multiply_by
+#' @importFrom magrittr set_names
+#' @importFrom magrittr subtract
 #' @importFrom minpack.lm nlsLM
+#' @importFrom stats as.formula
 #' @importFrom stats coef
 #' @importFrom stats median
 #' @importFrom stats predict
@@ -7,70 +19,102 @@ scramblase_assay_calculations <- function(
   scale_to,
   ppr_scale_factor = 0.65,
   generation_of_algorithm = 2,
-  force_through_origin = FALSE,
+  force_through_origin = TRUE,
   split_by_experiment = TRUE){
 # Set parameters ----------------------------------------------------------
   nlsControl <- list(
     minFactor=1/20480,
     maxit=100)
+  formulae <- list(
+    pre_fit = list(
+      "TRUE" = as.formula("y ~ b * ( 1 - exp( -x / a ))"),
+      "FALSE" = as.formula("y ~ b - c * exp( -x / a )")),
+    first_generation_algorithm = list(
+      "TRUE" = as.formula("y ~ b * ( 1 - exp( -x / a ) )"),
+      "FALSE" = as.formula("y ~ b - c * exp( -x / a )")),
+    second_generation_algorithm = list(
+      "TRUE" = as.formula("y ~ b * ( 1 - ( 1 / sqrt( 1 + 784 * a * x ) ) * exp( ( -3872 * a * x ) / ( 1 + 784 * a * x ) ) )"),
+      "FALSE" = as.formula("y ~ b - c * ( ( 1 / sqrt( 1 + 784 * a * x ) ) * exp( ( -3872 * a * x ) / ( 1 + 784 * a * x ) ) )")))
 
+  generation_of_algorithm %<>%
+    switch(
+      "1" = "first_generation_algorithm",
+      "2" = "second_generation_algorithm")
+  
 # Parsing spectra ---------------------------------------------------------
-  spectralData <- lapply(
-    x[["Path"]],
-    parse_fluorimeter_output)
-
+  spectralData <- x %>%
+    extract2("Path") %>%
+    lapply(parse_fluorimeter_output)
+  
 # Read out data -----------------------------------------------------------
   # What spectral time windows to extract?
-  minAcquisitionTime <- vapply(
-    spectralData,
-    function(y){
-      y[["Min.Acquisition.Time.in.sec"]]},
-    1)
-  if(!all(minAcquisitionTime < 0)){
-    stop("Minimum acquisition times are not all negative - aborting.")
-  }
-  maxAcquisitionTime <- vapply(
-    spectralData,
-    function(y){
-      y[["Max.Acquisition.Time.in.sec"]]
-      },
-    1)
-  if(any(maxAcquisitionTime < x[["Timepoint of Measurement (s)"]])){
-    stop("At least one 'Timepoint of Measurement' is larger than the 
-      corresponding spectrum acquisition. Aborting.")
-  } else {
-    maxAcquisitionTime <- max(x[["Timepoint of Measurement (s)"]])
-  }
+  minAcquisitionTime <- spectralData %>%
+    sapply(
+      function(y){
+        y %>%
+          extract2("Min.Acquisition.Time.in.sec") %>%
+          return()
+      }
+    ) %>%
+    assert_all_are_less_than(0)
+  
+  spectralData %>%
+    sapply(
+      function(y){
+        y %>%
+          extract2("Max.Acquisition.Time.in.sec") %>%
+          return()
+      }
+    ) %>%
+    assert_all_are_less_than(x[["Timepoint of Measurement (s)"]])
+  maxAcquisitionTime <- x %>%
+      extract2("Timepoint of Measurement (s)") %>%
+      max(na.rm = TRUE)
+  
   # Average over 10 values before dithionite addition for activity baseline
-  x[["Baseline Fluorescence"]] <- vapply(
-    spectralData,
-    function(z){
-      indexesForAveraging <- tail(
-        which(
-          z[["Data"]][["Time.in.sec"]] < 0),
-        n=10)
-      return(
-        median(
-          z[["Data"]][["Fluorescence.Intensity"]][indexesForAveraging],
-          na.rm=TRUE))
-    },
-    1)
+  x[["Baseline Fluorescence"]] <- spectralData %>%
+    vapply(
+      function(z){
+        indexesForAveraging <- z %>%
+          extract2("Data") %>%
+          extract2("Time.in.sec") %>%
+          is_less_than(0) %>%
+          which() %>%
+          tail(n = 10)
+        z %>%
+          extract2("Data") %>%
+          extract2("Fluorescense.Intensity") %>%
+          extract(indexesForAveraging) %>%
+          median(na.rm = TRUE) %>%
+          return()
+      },
+      1)
   # Average over last 10 values (in common time range) for activity
-  x[["Minimum Fluorescence"]] <- vapply(
-    seq_along(spectralData),
-    function(z){
-      stopIndexForAveraging <- max(
-        which(
-          spectralData[[z]][["Data"]][["Time.in.sec"]] <= x[z,"Timepoint of Measurement (s)"]))
-      indexesForAveraging <- seq(
-        from=stopIndexForAveraging-9,
-        to=stopIndexForAveraging)
-      return(
-        median(
-          spectralData[[z]][["Data"]][["Fluorescence.Intensity"]][indexesForAveraging],
-          na.rm=TRUE))
-    },
-    1)
+  x[["Minimum.Fluorescence"]] <- spectralData %>%
+    seq_along() %>%
+    vapply(
+      function(z){
+        stopIndexForAveraging <- spectralData %>%
+          extract2(z) %>%
+          extract2("Data") %>%
+          extract2("Time.in.sec") %>%
+          is_weakly_less_than(x[z,"Timepoint of Measurement (s)"]) %>%
+          which() %>%
+          max(na.rm = TRUE)
+        indexesForAveraging <- seq(
+          from=stopIndexForAveraging-9,
+          to=stopIndexForAveraging)
+        spectralData %>%
+          extract2(z) %>%
+          extract2("Data") %>%
+          extract2("Fluorescence.Intensity") %>%
+          extract(indexesForAveraging) %>%
+          median(na.rm = TRUE) %>%
+          return()
+      },
+      1
+    )
+
   # Apply volume correction factors as needed
   volumeCorrectionFactor <- x[["Fluorescence Assay Vol. with DT (ul)"]]/x[["Fluorescence Assay Vol. w/o DT (ul)"]]
   x[["Minimum Fluorescence, Volume Corrected"]] <- x[["Minimum Fluorescence"]] * volumeCorrectionFactor
@@ -88,90 +132,87 @@ scramblase_assay_calculations <- function(
     x[["CombinedId"]])
 
   # Calculations A
-  processedListFromX <- lapply(
-    inputListFromX,
-    function(z){
-      ## Ensure that there's a data point with liposomes ONLY as a unique 
-      ## reference point
-      indexOfLiposomesOnlyData <- which(z[["Protein in Reconstitution (mg)"]] == 0)
-      if(length(indexOfLiposomesOnlyData) == 0){
-        stop("Experimental series '",unique(z[["Experimental Series"]]),"' does 
-          not have the required liposomes-ONLY ('Extract Volume (ul)' of '0') 
-          data point. Aborting.")
-      }
-      if(length(indexOfLiposomesOnlyData) > 1){
-        stop("Experimental series '",unique(z[["Experimental Series"]]),"' has 
-          more than one liposomes-ONLY ('Extract Volume (ul)' of '0') data 
-          point.")
-      }  
-      ##> End-point fluorescence reduction data from flippase activity assays 
-      ##> were obtained for proteoliposomes generated over a range of PPR 
-      ##> values.
-      ##> The data were transformed according to the formula
-      ##> p(≥1 flippase) = (y – yo)/(yMax – yo),
-      ##> where yo is the percent reduction obtained with liposomes, yMax is the 
-      ##> maximum percentage reduction observed and p is the probability that a 
-      ##> particular vesicle in the ensemble is ‘flippase-active’, i.e it 
-      ##> possesses at least one flippase.
-      ## Calcualte the relative fluorescence reduction
-      z[["Relative Fluorescence Reduction"]] <- z[["Fluorescence Reduction"]] - z[["Fluorescence Reduction"]][indexOfLiposomesOnlyData]
-      ## Calculate PPR
-      z[["Protein per Phospholipid (mg/mmol)"]] <- calculate_ppr(z, ppr_scale_factor = ppr_scale_factor)
-      ## Calculate p>=1Scramblase/Liposome
-      y <- z[["Relative Fluorescence Reduction"]]
-      y0 <- z[["Relative Fluorescence Reduction"]][indexOfLiposomesOnlyData]
-      if(scale_to == "model"){
-        subsetForFit <- data.frame(
-          x=z[["Protein per Phospholipid (mg/mmol)"]],
-          y=z[["Relative Fluorescence Reduction"]])
-        ### Determine a sensible start point for 'a'
-        pointSixY <- max(
-          subsetForFit[["y"]],
-          na.rm=TRUE) * 0.6
-        estimatedA <- subsetForFit[["x"]][which.min(abs(subsetForFit[["y"]] - pointSixY))]
-        estimatedB <- max(
-          z[["Relative Fluorescence Reduction"]],
-          na.rm=TRUE)
-        rMod <- minpack.lm::nlsLM(
-          formula = if(force_through_origin){
-            y ~ b * (1 - exp(-x/a))
-          } else {
-            y ~ b-c*exp(-x/a)
-          },
-          data = subsetForFit,
-          start = if(force_through_origin){
-            list(a=estimatedA,b=estimatedB)
+  processedListFromX <- inputListFromX %>%
+    lapply(
+      function(z){
+        ## Ensure that there's a data point with liposomes ONLY as a unique 
+        ## reference point
+        indexOfLiposomesOnlyData <- z %>%
+          extract2("Protein in Reconstitution (mg)") %>%
+          equals(0) %>%
+          which()
+        if(length(indexOfLiposomesOnlyData) == 0){
+          stop("Experimental series '",unique(z[["Experimental Series"]]),"' does 
+            not have the required liposomes-ONLY ('Extract Volume (ul)' of '0') 
+            data point. Aborting.")
+        }
+        if(length(indexOfLiposomesOnlyData) > 1){
+          stop("Experimental series '",unique(z[["Experimental Series"]]),"' has 
+            more than one liposomes-ONLY ('Extract Volume (ul)' of '0') data 
+            point.")
+        }  
+        ##> End-point fluorescence reduction data from flippase activity assays 
+        ##> were obtained for proteoliposomes generated over a range of PPR 
+        ##> values.
+        ##> The data were transformed according to the formula
+        ##> p(≥1 flippase) = (y – yo)/(yMax – yo),
+        ##> where yo is the percent reduction obtained with liposomes, yMax is the 
+        ##> maximum percentage reduction observed and p is the probability that a 
+        ##> particular vesicle in the ensemble is ‘flippase-active’, i.e it 
+        ##> possesses at least one flippase.
+        ## Calcualte the relative fluorescence reduction
+        z[["Relative Fluorescence Reduction"]]<- z[["Fluorescence Reduction"]] -
+          z[["Fluorescence Reduction"]][indexOfLiposomesOnlyData]
+        ## Calculate PPR
+        z[["Protein per Phospholipid (mg/mmol)"]] <- z %>%
+          calculate_ppr(ppr_scale_factor = ppr_scale_factor)
+        ## Calculate p>=1Scramblase/Liposome
+        y <- z %>%
+          extract2("Relative Fluorescence Reduction")
+        y0 <- y %>%
+          extract(indexOfLiposomesOnlyData)
+        if(scale_to == "model"){
+          fit_prep <- z %>%
+            .fit_prep()
+          fitStart <- if(force_through_origin){
+            list(
+              a = fit_prep[["estimated_a"]],
+              b = fit_prep[["estimated_b"]])
           } else {        
-            start = list(a=estimatedA,b=estimatedB,c=estimatedB)
-          },
-          control = nlsControl)
-        yMax <- coef(rMod)[["b"]]
-      } else {
-        yMax <- max(
-          z[["Relative Fluorescence Reduction"]],
-          na.rm=TRUE)
-      }
-      z[["Probability >= 1 Scramblase in Vesicle"]] <- (y-y0)/(yMax-y0)
-      return(z)
-    })
+            start = list(
+              a = fit_prep[["estimated_a"]],
+              b = fit_prep[["estimated_b"]],
+              c = fit_prep[["estimated_b"]])
+          }
+          rMod <- minpack.lm::nlsLM(
+            formula = formulae[["pre_fit"]][[as.character(force_through_origin)]],
+            data = fit_prep[["fit_set"]],
+            start = fitStart,
+            control = nlsControl)
+          yMax <- rMod %>%
+            coef() %>%
+            extract2("b")
+        } else {
+          yMax <- z %>%
+            extract2("Relative Fluorescence Reduction") %>%
+            max(na.rm = TRUE)
+        }
+        z[["Probability >= 1 Scramblase in Vesicle"]] <- (y-y0)/(yMax-y0)
+        return(z)
+      })
   # Is separate handling of experiments required?
   if(!split_by_experiment){
-    processedListFromX <- rbind.fill(processedListFromX)
-    processedListFromX <- split(processedListFromX,processedListFromX$"Experimental Series")
+    processedListFromX <- processedListFromX %>%
+      rbind.fill()
+    processedListFromX <- processedListFromX %>%
+      split(processedListFromX$"Experimental Series")
   }
   # Calculatons B
-  processedListFromX <- lapply(
-    processedListFromX,
-    function(z){
-      subsetForFit <- data.frame(
-        x=z[["Protein per Phospholipid (mg/mmol)"]],
-        y=z[["Probability >= 1 Scramblase in Vesicle"]])
-      ## Determine a sensible start point for 'a' in the monoexponential fit
-      pointSixY <- max(
-        subsetForFit[["y"]],
-        na.rm=TRUE) * 0.6
-      estimatedA <- subsetForFit[["x"]][which.min(abs(subsetForFit[["y"]] - pointSixY))]
-      if(generation_of_algorithm == 1){
+  processedListFromX %<>%
+    lapply(
+      function(z){
+        fit_prep <- z %>%
+          .fit_prep()
         ##> The dependence of p(≥1 flippase) on PPR was analyzed as follows.
         ##> Definitions:
         ##>   f, number of flippases used for reconstitution
@@ -213,68 +254,44 @@ scramblase_assay_calculations <- function(
         ##> population possess ≥1 flippase.
         ## Fit a monoexponential curve to the data
         rMod <- minpack.lm::nlsLM(
-          formula = if(force_through_origin){
-            y ~ b * (1 - exp(-x/a))
-          } else {
-            y ~ b-c*exp(-x/a)
-          },
-          data = subsetForFit,
+          formula = formulae[[generation_of_algorithm]][[as.character(force_through_origin)]],
+          data = fit_prep[["fit_set"]],
           start = if(force_through_origin){
-            list(a = estimatedA, b = 1)
+            list(a = fit_prep[["estimated_a"]], b = 1)
           } else {        
-            list(a = estimatedA, b = 1, c = 1)
+            list(a = fit_prep[["estimated_a"]], b = 1, c = 1)
           },
           control = nlsControl)
         gc()
-      } else if(generation_of_algorithm == 2){
-        ## p(≥1) = 1-(1/sqrt(1+784*α*PPR))*exp(-3872*α*PPR/(1+784*α*PPR))
-        ## p(≥1) = 1 - e-m = 1 – exp(-PPR/α)
-        # ## Fit a monoexponential curve to the data
-        rMod <- minpack.lm::nlsLM(
-          formula = if(force_through_origin){
-            y ~ b * (1 - (1/sqrt(1 + 784 * a * x)) * exp(-3873 * a * x / (1 + 784 * a * x)))
-          } else {
-            y ~ b - c * (1/sqrt(1 + 784 * a * x)) * exp(-3873 * a * x / (1 + 784 * a * x))
-          },
-          data = subsetForFit,
-          start = if(force_through_origin){
-            list(a=estimatedA,b=1)
-          } else {        
-            list(a=estimatedA,b=1,c=1)
-          },
-          control = nlsControl)
-        gc()
-      }
-      z[["Fit Constant (a)"]] <- coef(rMod)[["a"]]
-      output <- list(
-        Raw = z,
-        FitObject = rMod)
-      ## Generate data to plot the results of the fit
-      xPredictedFromFit <- seq(
-        from = min(
-          z[["Protein per Phospholipid (mg/mmol)"]],
-          na.rm=TRUE),
-        to = max(
-          z[["Protein per Phospholipid (mg/mmol)"]],
-          na.rm=TRUE),
-        length.out=200)
-      yPredictedFromFit <- predict(
-        rMod,
-        newdata = list(x = xPredictedFromFit))
-      output[["Fit"]] <- data.frame(
-        "Protein per Phospholipid (mg/mmol)"=xPredictedFromFit,
-        "Probability >= 1 Scramblase in Vesicle"=yPredictedFromFit,
-        "Experimental Series"=unique(z[["Experimental Series"]]),
-        "Experiment"=unique(z[["Experiment"]]),
-        check.names=FALSE,
-        stringsAsFactors=FALSE)
-      ## Return
-      return(output)
-    })
-
+        z[["Fit Constant (a)"]] <- coef(rMod)[["a"]]
+        output <- list(
+          Raw = z,
+          FitObject = rMod)
+        ## Generate data to plot the results of the fit
+        xPredictedFromFit <- seq(
+          from = min(
+            z[["Protein per Phospholipid (mg/mmol)"]],
+            na.rm=TRUE),
+          to = max(
+            z[["Protein per Phospholipid (mg/mmol)"]],
+            na.rm=TRUE),
+          length.out=200)
+        yPredictedFromFit <- predict(
+          rMod,
+          newdata = list(x = xPredictedFromFit))
+        output[["Fit"]] <- data.frame(
+          "Protein per Phospholipid (mg/mmol)"=xPredictedFromFit,
+          "Probability >= 1 Scramblase in Vesicle"=yPredictedFromFit,
+          "Experimental Series"=unique(z[["Experimental Series"]]),
+          "Experiment"=unique(z[["Experiment"]]),
+          check.names=FALSE,
+          stringsAsFactors=FALSE)
+        ## Return
+        return(output)
+      })
+  
 # Output ------------------------------------------------------------------
   return(processedListFromX)
-
 }
 
 calculate_ppr <- function(x, ppr_scale_factor = 0.65){
@@ -284,3 +301,36 @@ calculate_ppr <- function(x, ppr_scale_factor = 0.65){
   }
   return(ppr)
 }
+
+
+# Helper Functions --------------------------------------------------------
+.fit_prep <- function(z){
+  fit_set <- z %>%
+    extract2(
+      c("Protein per Phospholipid (mg/mmol)",
+        "Probability >= 1 Scramblase in Vesicle")) %>%
+    set_names(c("x", "y"))
+  ### Determine a sensible start point for 'a'
+  pointSixY <- fit_set %>%
+    extract2("y") %>%
+    max(na.rm = TRUE) %>%
+    multiply_by(0.6)
+  estimated_a <- fit_set %>%
+    extract2("x") %>%
+    extract(
+      fit_set %>%
+        extract2("y") %>%
+        subtract(pointSixY) %>%
+        abs() %>%
+        which.min())
+  estimated_b <- z %>%
+    extract2("Relative Fluorescence Reduction") %>%
+    max(na.rm = TRUE)
+  
+  list(
+    fit_set = fit_set,
+    estimated_a = estimated_a,
+    estimated_b = estimated_b) %>%
+    return()
+}
+

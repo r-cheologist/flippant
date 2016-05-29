@@ -33,7 +33,7 @@ base_function_scramblase_assay_traces <- function(
     x = x,
     scale_to = "data",
     ppr_scale_factor = ppr_scale_factor,
-    force_through_origin = FALSE,
+    force_through_origin = TRUE,
     generation_of_algorithm = 2,
     split_by_experiment = TRUE,
     verbose = FALSE)

@@ -5,7 +5,7 @@ scramblase_assay_stats <- function(
   x,
   scale_to = c("model","data"),
   ppr_scale_factor = 0.65,
-  force_through_origin = FALSE,
+  force_through_origin = TRUE,
   generation_of_algorithm = c(2, 1),
   split_by_experiment = TRUE){
   UseMethod("scramblase_assay_stats",x)
@@ -23,7 +23,7 @@ base_function_scramblase_assay_stats <- function(
   x,
   scale_to = c("model","data"),
   ppr_scale_factor = 0.65,
-  force_through_origin = FALSE,
+  force_through_origin = TRUE,
   generation_of_algorithm = c(2, 1),
   split_by_experiment = TRUE){
 # Check Prerequisites -----------------------------------------------------
