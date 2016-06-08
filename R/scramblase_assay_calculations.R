@@ -83,7 +83,7 @@ scramblase_assay_calculations <- function(
           tail(n = 10)
         z %>%
           extract2("Data") %>%
-          extract2("Fluorescense.Intensity") %>%
+          extract2("Fluorescence.Intensity") %>%
           extract(indexesForAveraging) %>%
           median(na.rm = TRUE) %>%
           return()
