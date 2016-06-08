@@ -91,7 +91,7 @@ scramblase_assay_calculations <- function(
       },
       1)
   # Average over last 10 values (in common time range) for activity
-  x[["Minimum.Fluorescence"]] <- spectralData %>%
+  x[["Minimum Fluorescence"]] <- spectralData %>%
     seq_along() %>%
     vapply(
       function(z){
