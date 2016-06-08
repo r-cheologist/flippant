@@ -1,3 +1,4 @@
+#' @importFrom assertive.numbers assert_all_are_greater_than_or_equal_to
 #' @importFrom assertive.numbers assert_all_are_less_than
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
@@ -66,7 +67,7 @@ scramblase_assay_calculations <- function(
           return()
       }
     ) %>%
-    assert_all_are_less_than(x[["Timepoint of Measurement (s)"]])
+    assert_all_are_greater_than_or_equal_to(x[["Timepoint of Measurement (s)"]])
   maxAcquisitionTime <- x %>%
       extract2("Timepoint of Measurement (s)") %>%
       max(na.rm = TRUE)
