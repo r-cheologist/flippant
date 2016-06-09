@@ -282,8 +282,12 @@ or not to require the exponential curve fitted to the data to go through the
 origin. `ppr_scale_factor` allows for the modification of scaling to account for
 a pool of vesicles that is scramblase--inaccessible (see above). The
 `split_by_experiment` argument is used to indicate whether independent
-experiments are integrated into a single analysis (`split_by_experiment = FALSE`)
-or treated separately (`split_by_experiment = TRUE`; see below for example usage).
+experiments are integrated into a single analysis
+(`split_by_experiment = FALSE`) or treated separately
+(`split_by_experiment = TRUE`; see below for example usage). The
+`force_through_origin` parameter may be used to employ a fit with more degrees
+of freedom. While the non--default `force_through_origin = FALSE` allows for a
+better fit to some experimental data, its mechanistic implications are unclear.
 
 Numeric scramblase assay results such as $\alpha$ may be generated in 
 tabular form using
