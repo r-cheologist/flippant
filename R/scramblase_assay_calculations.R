@@ -49,7 +49,8 @@ scramblase_assay_calculations <- function(
   
 # Read out data -----------------------------------------------------------
   # What spectral time windows to extract?
-  minAcquisitionTime <- spectralData %>%
+  ## Just checking ...
+  spectralData %>%
     sapply(
       function(y){
         y %>%
