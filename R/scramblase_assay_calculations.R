@@ -118,10 +118,14 @@ scramblase_assay_calculations <- function(
     )
 
   # Apply volume correction factors as needed
-  volumeCorrectionFactor <- x[["Fluorescence Assay Vol. with DT (ul)"]]/x[["Fluorescence Assay Vol. w/o DT (ul)"]]
-  x[["Minimum Fluorescence, Volume Corrected"]] <- x[["Minimum Fluorescence"]] * volumeCorrectionFactor
+  volumeCorrectionFactor <- x[["Fluorescence Assay Vol. with DT (ul)"]] / 
+    x[["Fluorescence Assay Vol. w/o DT (ul)"]]
+  x[["Minimum Fluorescence, Volume Corrected"]] <- x[["Minimum Fluorescence"]] *
+    volumeCorrectionFactor
   ## Calculate activity reduction
-  x[["Fluorescence Reduction"]] <- 1 - x[["Minimum Fluorescence, Volume Corrected"]]/x[["Baseline Fluorescence"]]
+  x[["Fluorescence Reduction"]] <- 1 - 
+    x[["Minimum Fluorescence, Volume Corrected"]] / 
+    x[["Baseline Fluorescence"]]
 
 # Generate PPR v.s P(>=1 Scramblase/Liposome) -------------------------------
   # Split by Experiment
