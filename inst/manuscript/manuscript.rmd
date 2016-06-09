@@ -33,6 +33,7 @@ Git Clean
 :   `r ifelse(length(system("git status -s", intern = TRUE)) == 0, "TRUE", "FALSE")`
 
 ```{r setting_up_r, echo = FALSE}
+library(dplyr)
 library(flippant, quietly = TRUE)
 library(grid, quietly = TRUE)
 library(magrittr, quietly = TRUE)
@@ -342,7 +343,7 @@ figure1 <- add_panel(
   bottom_panel = 5,
   left_panel = 1, 
   right_panel = 3, 
-  panel = scramblase_assay_plot(x, generation_of_algorithm = 1) + 
+  panel = scramblase_assay_plot(x, generation_of_algorithm = 2) + 
     theme_bw() + 
     xlim(0, 2) + 
     xlab(expression("adj. PPR"~~("mg"/"mmol"))) +
@@ -352,8 +353,8 @@ figure1 <- add_panel(
   top_panel = 6,
   bottom_panel = 7,
   left_panel = 1,
-  right_panel = 2,
-  panel = scramblase_assay_plot(x, generation_of_algorithm = 1,  split_by_experiment = FALSE) + 
+  right_panel = 3,
+  panel = scramblase_assay_plot(x, generation_of_algorithm = 2, split_by_experiment = FALSE) + 
     theme_bw() + 
     xlim(0, 2) + 
     xlab(expression("adj. PPR"~~("mg"/"mmol"))) +
@@ -366,7 +367,7 @@ the following calls.
 
 ```{r noeval_demonstrate_plot, eval = FALSE}
 # Plot PPR plot (Figure 1B)
-scramblase_assay_plot("inputTable.txt", generation_of_algorithm = 1) + xlim(0, 2)
+scramblase_assay_plot("inputTable.txt", generation_of_algorithm = 2) + xlim(0, 2)
 ```
 
 ```{r calculate_pprs, echo = FALSE}
@@ -399,7 +400,7 @@ from all experiments as follows, resulting in Figure 1C:
 ```{r noeval_demonstrate_plot2, eval = FALSE}
 # Plot PPR plot (Figure 1C)
 scramblase_assay_plot("inputTable.txt",
-  generation_of_algorithm = 1,
+  generation_of_algorithm = 2,
   split_by_experiment = FALSE) + 
 xlim(0, 2)
 ```
@@ -412,22 +413,27 @@ and produces tabular output represented in Table 1.
 
 ```{r noeval_demonstrate_tabular_writeout, eval = FALSE}
 # Write out results in tabular manner (Table 1)
-scramblase_assay_stats("inputTable.txt", generation_of_algorithm = 1, split_by_experiment = FALSE)
+scramblase_assay_stats("inputTable.txt", generation_of_algorithm = 2, split_by_experiment = FALSE)
 ```
 
 ```{r analysis_tabular_output, echo = FALSE}
-ppr_results <- scramblase_assay_stats(x, generation_of_algorithm = 1, split_by_experiment = FALSE)
-ppr_results_names <- ppr_results$`Experimental Series` %>%
+ppr_results <- scramblase_assay_stats(
+    x, generation_of_algorithm = 2, split_by_experiment = FALSE) %>%
+  mutate(`Fit Constant` = round(`Fit Constant` * 10E3, 2)) %>%
+  set_names(c("Experimental Series", "Fit Constant ($\\times 10^3$)"))
+ppr_results_names <- ppr_results %>%
+  extract2("Experimental Series") %>%
   head(n = nrow(ppr_results) - 1) %>%
   paste(collapse = ", ") %>%
   paste("and") %>%
   paste(tail(ppr_results$`Experimental Series`, n = 1))
-ppr_results_alpha_print <- ppr_results$`Fit Constant` %>%
-  signif(2) %>%
+ppr_results_alpha_print <- ppr_results %>%
+  extract2("Fit Constant ($\\times 10^3$)") %>%
+  round(2) %>%
   head(n = nrow(ppr_results) - 1) %>%
   paste(collapse = ", ") %>%
   paste("and") %>%
-  paste(tail(ppr_results$`Fit Constant`, n = 1))
+  paste(tail(ppr_results$`Fit Constant ($\\times 10^3$)`, n = 1))
 knitr::kable(
   ppr_results,
   row.names = FALSE,
@@ -435,10 +441,11 @@ knitr::kable(
 ```
 
 The resulting values for the fit constant $\alpha$ correspond with
-`r ppr_results_alpha_print` for `r ppr_results_names`, respectively, very well
-to the prior manual analysis by @ploier_perturbed_submitted, where
-$\alpha \approx 0.13$ was reported for mutant and $\alpha \approx 0.26$ for wild
-type rhodopsin. Based on the manual analysis of the data we conclude in @ploier_perturbed_submitted that the mutant rhodopsins investigated are
+`r ppr_results_alpha_print` for `r ppr_results_names`, respectively, well to the
+prior manual analysis by @ploier_perturbed_submitted (Table S2), where $\alpha
+\times 10^3 \approx 16$ was reported for mutant and $\alpha \times 10^3 \approx
+7$ for wild type rhodopsin. Based on the manual analysis of the data we conclude
+in @ploier_perturbed_submitted that the mutant rhodopsins investigated are
 reconstituted into proteoliposomes in monomeric form, contrary to the wild type,
 which is reconstituting as a homodimer. 
 *flippant* analysis of the data shows identical trends and close matches of the
@@ -456,14 +463,14 @@ analysis_timing_function <- function(){
     time_max_sec = 350)
   scramblase_assay_plot(
     x,
-    generation_of_algorithm = 1)
+    generation_of_algorithm = 2)
   scramblase_assay_plot(
     x,
-    generation_of_algorithm = 1,
+    generation_of_algorithm = 2,
     split_by_experiment = FALSE)
   scramblase_assay_stats(
     x,
-    generation_of_algorithm = 1, 
+    generation_of_algorithm = 2, 
     split_by_experiment = FALSE)
 }
 
