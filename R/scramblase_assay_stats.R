@@ -64,7 +64,7 @@ base_function_scramblase_assay_stats <- function(
     columns <- c("Fit Constant (a)","Experimental Series")
   }
   output <- output[which(names(output) %in% columns)]
-  output["Fit Constant (a)"] <- signif(output["Fit Constant (a)"], digits = 2)
+  output["Fit Constant (a)"] <- signif(output["Fit Constant (a)"], digits = generation_of_algorithm * 2)
   names(output)[which(names(output) == "Fit Constant (a)")] <- "Fit Constant"
 # Return ------------------------------------------------------------------
   return(output)
