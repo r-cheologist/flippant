@@ -358,7 +358,9 @@ figure1 <- add_panel(
     theme_bw() + 
     xlim(0, 2) + 
     xlab(expression("adj. PPR"~~("mg"/"mmol"))) +
-    ylab(expression(P[{phantom()>=1}])))
+    ylab(expression(P[{phantom()>=1}])) +
+    facet_wrap(c("`Experimental Series`"))+
+    guides(colour = "none"))
 grid.draw(figure1)
 ```
 
