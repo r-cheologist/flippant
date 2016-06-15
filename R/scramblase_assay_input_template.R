@@ -6,6 +6,7 @@
 #' @importFrom magrittr extract2
 #' @importFrom magrittr inset2
 #' @importFrom plyr rbind.fill
+#' @importFrom utils globalVariables
 #' @importFrom utils write.table
 #' @export
 scramblase_assay_input_template <- function(path="scramblase_assay_input_template.txt"){
@@ -85,3 +86,6 @@ scramblase_assay_input_template <- function(path="scramblase_assay_input_templat
       sep="\t",
       row.names=FALSE)
 }
+
+# Add global variables to satisfy 'R CMD check' ---------------------------
+globalVariables(".")

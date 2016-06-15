@@ -171,7 +171,7 @@ scramblase_assay_calculations <- function(
           z[["Fluorescence Reduction"]][indexOfLiposomesOnlyData]
         ## Calculate PPR
         z[["Protein per Phospholipid (mg/mmol)"]] <- z %>%
-          flippant:::calculate_ppr(ppr_scale_factor = ppr_scale_factor)
+          calculate_ppr(ppr_scale_factor = ppr_scale_factor)
         ## Calculate p>=1Scramblase/Liposome
         y <- z %>%
           extract2("Relative Fluorescence Reduction")
@@ -179,7 +179,7 @@ scramblase_assay_calculations <- function(
           extract(indexOfLiposomesOnlyData)
         if(scale_to == "model"){
           fit_prep <- z %>%
-            flippant:::fit_prep(y = "Relative Fluorescence Reduction")
+            fit_prep(y = "Relative Fluorescence Reduction")
           fitStart <- if(force_through_origin){
             list(
               a = fit_prep[["estimated_a"]],
@@ -218,7 +218,7 @@ scramblase_assay_calculations <- function(
     lapply(
       function(z){
         fit_prep <- z %>%
-          flippant:::fit_prep(y = "Probability >= 1 Scramblase in Vesicle")
+          fit_prep(y = "Probability >= 1 Scramblase in Vesicle")
         ##> The dependence of p(≥1 flippase) on PPR was analyzed as follows.
         ##> Definitions:
         ##>   f, number of flippases used for reconstitution
