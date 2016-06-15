@@ -21,7 +21,9 @@ scramblase_assay_calculations <- function(
   ppr_scale_factor = 0.65,
   generation_of_algorithm = 2,
   force_through_origin = TRUE,
-  split_by_experiment = TRUE){
+  split_by_experiment = TRUE,
+  r_bar = 88,
+  sigma_r_bar = 28){
 # Set parameters ----------------------------------------------------------
   nlsControl <- list(
     minFactor=1/20480,
@@ -34,8 +36,10 @@ scramblase_assay_calculations <- function(
       "TRUE" = as.formula("y ~ b * ( 1 - exp( -x / a ) )"),
       "FALSE" = as.formula("y ~ b - c * exp( -x / a )")),
     second_generation_algorithm = list(
-      "TRUE" = as.formula("y ~ b * ( 1 - ( 1 / sqrt( 1 + 784 * a * x ) ) * exp( ( -3872 * a * x ) / ( 1 + 784 * a * x ) ) )"),
-      "FALSE" = as.formula("y ~ b - c * ( ( 1 / sqrt( 1 + 784 * a * x ) ) * exp( ( -3872 * a * x ) / ( 1 + 784 * a * x ) ) )")))
+      # "TRUE" = as.formula("y ~ b * ( 1 - ( 1 / sqrt( 1 + 784 * a * x ) ) * exp( ( -3872 * a * x ) / ( 1 + 784 * a * x ) ) )"),
+      "TRUE" = as.formula("y ~ b * ( 1 - ( 1 / sqrt( 1 + sigma_r_bar^2 * a * x ) ) * exp( ( -a * r_bar^2 / 2 * x ) / ( 1 + sigma_r_bar^2 * a * x ) ) )"),
+      # "FALSE" = as.formula("y ~ b - c * ( ( 1 / sqrt( 1 + 784 * a * x ) ) * exp( ( -3872 * a * x ) / ( 1 + 784 * a * x ) ) )")))
+      "FALSE" = as.formula("y ~ b - c * ( ( 1 / sqrt( 1 + sigma_r_bar^2 * a * x ) ) * exp( ( -a * r_bar^2 / 2 * x ) / ( 1 + sigma_r_bar^2 * a * x ) ) )")))
 
   generation_of_algorithm %<>%
     switch(

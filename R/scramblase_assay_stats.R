@@ -25,7 +25,9 @@ base_function_scramblase_assay_stats <- function(
   ppr_scale_factor = 0.65,
   force_through_origin = TRUE,
   generation_of_algorithm = c(2, 1),
-  split_by_experiment = TRUE){
+  split_by_experiment = TRUE,
+  r_bar = 88,
+  sigma_r_bar = 28){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- scramblase_assay_input_validation(
     x = x,
@@ -33,13 +35,17 @@ base_function_scramblase_assay_stats <- function(
     ppr_scale_factor = ppr_scale_factor,
     force_through_origin = force_through_origin,
     generation_of_algorithm = generation_of_algorithm,
-    split_by_experiment = split_by_experiment)
+    split_by_experiment = split_by_experiment,
+    r_bar = r_bar,
+    sigma_r_bar = sigma_r_bar)
   x <- validatedParams[["x"]]
   scale_to <- validatedParams[["scale_to"]]
   ppr_scale_factor <- validatedParams[["ppr_scale_factor"]]
   force_through_origin <- validatedParams[["force_through_origin"]]
   generation_of_algorithm <- validatedParams[["generation_of_algorithm"]]
   split_by_experiment <- validatedParams[["split_by_experiment"]]
+  r_bar <- validatedParams[["r_bar"]]
+  sigma_r_bar <- validatedParams[["sigma_r_bar"]]
 
 # Processing --------------------------------------------------------------
   processedListFromX <- scramblase_assay_calculations(
@@ -48,7 +54,9 @@ base_function_scramblase_assay_stats <- function(
     ppr_scale_factor = ppr_scale_factor,
     force_through_origin = force_through_origin,
     generation_of_algorithm = generation_of_algorithm,
-    split_by_experiment = split_by_experiment)
+    split_by_experiment = split_by_experiment,
+    r_bar = r_bar,
+    sigma_r_bar = sigma_r_bar)
   processedListFromX <- lapply(processedListFromX,function(y){y[["Raw"]]})
 
 # Assemble the output -----------------------------------------

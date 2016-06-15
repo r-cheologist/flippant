@@ -1,7 +1,10 @@
+#' @importFrom assertive.numbers assert_all_are_greater_than
 #' @importFrom assertive.properties assert_has_rows
 #' @importFrom assertive.types assert_is_a_bool
 #' @importFrom assertive.types assert_is_a_number
 #' @importFrom assertive.types assert_is_data.frame
+#' @importFrom magrittr %>%
+#' @importFrom magrittr %<>%
 scramblase_assay_input_validation <- function(
   x,
   scale_to,
@@ -9,6 +12,8 @@ scramblase_assay_input_validation <- function(
   generation_of_algorithm,
   force_through_origin,
   split_by_experiment,
+  r_bar,
+  sigma_r_bar,
   verbose=TRUE){
   # Check verbose
   assert_is_a_bool(verbose)
@@ -117,29 +122,31 @@ scramblase_assay_input_validation <- function(
   }
 
   # Check scale_to
-  scale_to <- match.arg(
-    arg=scale_to,
-    choices=c("model","data"),
-    several.ok=FALSE)
+  scale_to %<>%
+    match.arg(
+      choices=c("model","data"),
+      several.ok=FALSE)
   if(scale_to == "model" & verbose){
     message("Data will be scaled to the plateau of its monoexponential fit.")
   }
   # Check ppr_scale_factor
   if(!is.null(ppr_scale_factor)){
-    assert_is_a_number(ppr_scale_factor)
+    ppr_scale_factor %>%
+      assert_is_a_number()
     if(verbose){
       message("PPR will be scaled by a factor of ", ppr_scale_factor, ".")
     }
   }
   # Check generation_of_algorithm
-  generation_of_algorithm <- as.character(generation_of_algorithm)
+  generation_of_algorithm %<>% 
+    as.character()
   if(identical(generation_of_algorithm, c("2","1"))){
     generation_of_algorithm <- "2"
   }
-  generation_of_algorithm <- match.arg(
-    arg = generation_of_algorithm,
-    choices = c("second","first", "2", "1"),
-    several.ok = FALSE)
+  generation_of_algorithm %<>%
+    match.arg(
+      choices = c("second","first", "2", "1"),
+      several.ok = FALSE)
   if(generation_of_algorithm %in% c("first","1")){
     generation_of_algorithm <- 1
   } else if(generation_of_algorithm %in% c("second", "2")){
@@ -149,16 +156,28 @@ scramblase_assay_input_validation <- function(
     message("Data will be fitted to algorithm generation ", generation_of_algorithm, ".")
   }
   # Check force_through_origin
-  assert_is_a_bool(force_through_origin)
+  force_through_origin %>%
+    assert_is_a_bool()
   # Check split_by_experiment
-  assert_is_a_bool(split_by_experiment)
+  split_by_experiment %>%
+    assert_is_a_bool()
+  # check r_bar
+  r_bar %>%
+    assert_is_a_number() %>%
+    assert_all_are_greater_than(0)
+  # check sigmar_bar
+  sigma_r_bar %>%
+    assert_is_a_number() %>%
+    assert_all_are_greater_than(0)
   # Return
-  return(
-    list(
-      x = x,
-      scale_to = scale_to,
-      ppr_scale_factor = ppr_scale_factor,
-      generation_of_algorithm = generation_of_algorithm,
-      force_through_origin = force_through_origin,
-      split_by_experiment = split_by_experiment))
+  list(
+    x = x,
+    scale_to = scale_to,
+    ppr_scale_factor = ppr_scale_factor,
+    generation_of_algorithm = generation_of_algorithm,
+    force_through_origin = force_through_origin,
+    split_by_experiment = split_by_experiment,
+    r_bar = r_bar,
+    sigma_r_bar = sigma_r_bar) %>%
+  return()
 }

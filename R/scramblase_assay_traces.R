@@ -36,6 +36,8 @@ base_function_scramblase_assay_traces <- function(
     force_through_origin = TRUE,
     generation_of_algorithm = 2,
     split_by_experiment = TRUE,
+    r_bar = 88,
+    sigma_r_bar = 28,
     verbose = FALSE)
   x <- validatedParams[["x"]]
   assert_is_a_number(time_min_sec)

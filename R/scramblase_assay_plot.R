@@ -97,9 +97,9 @@
 #'    If \code{generation_of_algorithm} is \code{2} (default), the more
 #'    elaborate model put forth in Ploier et al. (2016) is employed, using
 #'    either
-#'    \deqn{p(\geq 1)=b\cdot(\frac{1}{\sqrt{1+784\cdot a \cdot x}})\cdot exp(\frac{-3872\cdot a \cdot x}{1+784\cdot a\cdot x})}{p(\ge 1) = b * (1 - (1/sqrt(1 + 784 * a * x)) * exp((-3872 * a * x)/(1 + 784 * a * x))}
+#'    \deqn{p(\geq 1)=b\cdot(\frac{1}{\sqrt{1+\sigma^2\cdot a \cdot x}})\cdot exp(\frac{-\bar{r}^2\cdot a \cdot x}{1+\sigma^2\cdot a\cdot x})}{p(\ge 1) = b * (1 - (1/\sqrt{1 + \sigma^2 * a * x}) * exp((-\bar{r}^2 * a * x)/(1 + \sigma^2 * a * x))}
 #'    (if \code{force_through_origin = TRUE}; default) or
-#'    \deqn{p(\geq 1)=b-c\cdot(\frac{1}{\sqrt{1+784\cdot a \cdot x}})\cdot exp(\frac{-3872\cdot a \cdot x}{1+784\cdot a\cdot x})}{p(\ge 1) = b - c (1 - (1/sqrt(1 + 784 * a * x)) * exp((-3872 * a * x)/(1 + 784 * a * x))}
+#'    \deqn{p(\geq 1)=b-c\cdot(\frac{1}{\sqrt{1+\sigma^2\cdot a \cdot x}})\cdot exp(\frac{-\bar{r}^2\cdot a \cdot x}{1+\sigma^2\cdot a\cdot x})}{p(\ge 1) = b - c (1 - (1/\sqrt{1 + \sigma^2 * a * x}) * exp((-\bar{r}^2 * a * x)/(1 + \sigma^2 * a * x))}
 #'    (if \code{force_through_origin = FALSE}).}
 #'  \item{Data \code{\link{split}} apart above are recombined and a 
 #'    \code{\link{ggplot}} object is assembled with the following layers:
@@ -152,6 +152,13 @@
 #' experiments included is used for a single calculation/plot per experimental
 #' series (\code{FALSE}). While the former emphasizes reproducibility, the
 #' latter likely produces a more reliable fit.
+#' @param r_bar A \code{\link{numeric}}, representing the average radius of the
+#' liposomes used in the assay. Only used in \code{generatio_of_algorithm = 2}
+#' and defaulting to \code{88} (see Ploier et al. 2016 for details).
+#' @param sigma_r_bar A \code{\link{numeric}}, representing the standard
+#' deviationaverage of the radius distribution  of the liposomes used in the
+#' assay. Only used in \code{generatio_of_algorithm = 2} and defaulting to
+#' \code{28} (see Ploier et al. 2016 for details).
 #' @return \code{scrambalse_assay_traces} and \code{scramblase_assay_plot} return 
 #' \code{\link{ggplot}} objects representing the raw fluorescence traces and a
 #' complete PPR plot, respectively. \code{scrambalseAssayInputTemplate} 
@@ -220,7 +227,9 @@ base_function_scramblase_assay_plot <- function(
   ppr_scale_factor = 0.65,
   force_through_origin = TRUE,
   generation_of_algorithm = c(2, 1),
-  split_by_experiment = TRUE){
+  split_by_experiment = TRUE,
+  r_bar = 88,
+  sigma_r_bar = 28){
 # Check Prerequisites -----------------------------------------------------
   validatedParams <- scramblase_assay_input_validation(
     x = x ,
@@ -228,7 +237,9 @@ base_function_scramblase_assay_plot <- function(
     ppr_scale_factor = ppr_scale_factor,
     force_through_origin = force_through_origin,
     generation_of_algorithm = generation_of_algorithm,
-    split_by_experiment = split_by_experiment)
+    split_by_experiment = split_by_experiment,
+    r_bar = r_bar,
+    sigma_r_bar = sigma_r_bar)
   x <- validatedParams[["x"]]
   scale_to <- validatedParams[["scale_to"]]
   ppr_scale_factor <- validatedParams[["ppr_scale_factor"]]
@@ -243,7 +254,9 @@ base_function_scramblase_assay_plot <- function(
     ppr_scale_factor = ppr_scale_factor,
     force_through_origin = force_through_origin,
     generation_of_algorithm = generation_of_algorithm,
-    split_by_experiment = split_by_experiment)
+    split_by_experiment = split_by_experiment,
+    r_bar = r_bar,
+    sigma_r_bar = sigma_r_bar)
 
 # Recombine the processed data --------------------------------------------
   x <- plyr::rbind.fill(
@@ -356,7 +369,8 @@ base_function_scramblase_assay_plot <- function(
   } else {
     plotOutput <- plotOutput +
       labs(
-        x=expression(frac("Protein","Phospholipid")^"adj."~~bgroup("(",frac("mg","mmol"),")")))
+        x = expression(
+          frac("Protein","Phospholipid")^"adj."~~bgroup("(",frac("mg","mmol"),")")))
   }
   # Return
   return(plotOutput)
