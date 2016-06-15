@@ -107,12 +107,15 @@
 #'      \item{Lines (\code{\link{geom_line}}) representing the monoexponential
 #'        fit(s). \code{color} is used to differentiate 
 #'        \code{Experimental Series}.}
-#'      \item{Segments (\code{\link{geom_segment}}) representing the \code{PPR}
+#'      \item{If \code{generation_of_algorithm} is \code{1}, segments
+#'       (\code{\link{geom_segment}}) representing the \code{PPR}
 #'        at which the fit constant \eqn{a} is equal to \code{PPR}. This 
 #'        \eqn{\tau}{tau} value has the implication that at this \code{PPR} all 
 #'        vesicles on average have one scramblase and 63\% have one or more 
 #'        (i.e. are active). \code{color} is used to differentiate 
-#'        \code{Experimental Series}.}
+#'        \code{Experimental Series}. Where \code{gerneration_of_algorithm} is
+#'        \code{2}, interpretation of \eqn{a} is less obvious and this layer is
+#'        thus ommited in the plot.}
 #'      \item{Points (\code{\link{geom_point}}) representing the corresponding 
 #'        datapoints. \code{color} is used to differentiate 
 #'        \code{Experimental Series}.}
@@ -302,12 +305,29 @@ base_function_scramblase_assay_plot <- function(
         data = fitResultsFromX)
   }
   ## Second layer: annotations indicating PPR at tau
-  if(any(!is.na(annotationsForX$"Experimental Series"))){
-    plotOutput <- plotOutput +
-      geom_segment(data=annotationsForX,aes_string(x="x1",xend="x2",y="y1",yend="y2",color="`Experimental Series`"),linetype=2)
-  } else {
-    plotOutput <- plotOutput +
-      geom_segment(data=annotationsForX,aes_string(x="x1",xend="x2",y="y1",yend="y2"),linetype=2)
+  if(generation_of_algorithm == 1){
+    if(any(!is.na(annotationsForX$"Experimental Series"))){
+      plotOutput <- plotOutput +
+        geom_segment(
+          data = annotationsForX,
+          aes_string(
+            x = "x1",
+            xend = "x2",
+            y = "y1",
+            yend = "y2",
+            color = "`Experimental Series`"),
+          linetype = 2)
+    } else {
+      plotOutput <- plotOutput +
+        geom_segment(
+          data = annotationsForX,
+          aes_string(
+            x = "x1",
+            xend = "x2",
+            y = "y1",
+            yend = "y2"),
+          linetype = 2)
+    }
   }
   ## Third Layer: data points
   if(any(!is.na(x$"Experimental Series"))){
