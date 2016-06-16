@@ -394,7 +394,6 @@ rhodopsin series in experiment 1, where $\text{PPR}=`r max_PPR`$.
 Figure 2A emphasizes reproducibility between independent experiments
 ("Experiment 1" and "Experiment 2") on the four probed rhodopsins. Forgoing
 reproducibility analysis in favor of a potentially more reliable result and
-following more closely the analysis in Figure 4C/D by
 following more closely the analysis in Figure 4C--F by
 @ploier_perturbed_submitted, a single fit may be performed for the combined data
 from all experiments as follows, resulting in Figure 2B:
@@ -417,13 +416,12 @@ and produces tabular output represented in Table 1.
 # Write out results in tabular manner (Table 1)
 scramblase_assay_stats(
   "inputTable.txt",
-  generation_of_algorithm = 2,
   split_by_experiment = FALSE)
 ```
 
 ```{r analysis_tabular_output, echo = FALSE}
 ppr_results <- scramblase_assay_stats(
-    x, generation_of_algorithm = 2, split_by_experiment = FALSE) %>%
+    x, split_by_experiment = FALSE) %>%
   mutate(`Fit Constant` = round(`Fit Constant` * 10^4, 2)) %>%
   set_names(c("Experimental Series", "Fit Constant ($\\times 10^4$)"))
 ppr_results_names <- ppr_results %>%
@@ -467,15 +465,12 @@ analysis_timing_function <- function(){
     x,
     time_max_sec = 350)
   scramblase_assay_plot(
-    x,
-    generation_of_algorithm = 2)
+    x)
   scramblase_assay_plot(
     x,
-    generation_of_algorithm = 2,
     split_by_experiment = FALSE)
   scramblase_assay_stats(
     x,
-    generation_of_algorithm = 2, 
     split_by_experiment = FALSE)
 }
 
