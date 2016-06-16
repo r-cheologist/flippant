@@ -89,7 +89,7 @@ Dithionite scramblase assays are an established means of probing the lipid
 scrambling activity of protein extracts and purified proteins. While the assay
 has yielded insight into the scramblase activity in crude membrane preparations,
 functional validation of candidate scramblases, stoichiometry of scramblase 
-complexes and probe ATP--dependence of flippases, data analysis in its context 
+complexes as well as ATP--dependence of flippases, data analysis in its context 
 has remained a task involving many manual steps. With the extension package 
 `flippant` to `R`, a free software environment for statistical computing and 
 graphics, we introduce an integrated solution for the analysis and 
@@ -114,7 +114,7 @@ None the less, there has been much recent progress in scramblase identification
 and characterization. Proteins shown to have scramblase activity include 
 FtsW [@mohammadi_identification_2011], opsin/rhodopsin
 [@menon_opsin_2011;@goren_constitutive_2014], TMEM16 
-[@malvezzi_ca2-dependent_2013], $\beta$ 2--adrenergic and adenosine A2A 
+[@malvezzi_ca2-dependent_2013], $\beta~2$--adrenergic and adenosine A2A 
 receptors [both @goren_constitutive_2014]. Extrapolating from the latter findings 
 and the opsin/rhodopsin case, one may speculate that lipid scrambling may, in
 fact, be an intrinsic property of G--protein coupled receptors in general 
@@ -147,7 +147,8 @@ from fluorometer--generated spectra, via the calculation of the underlying
 statistics and through publication--grade representation of the results, data 
 analysis in the context of this assay has until now involved an extensive series
 of manual steps, at most supported by spreadsheet calculation facilities
-[see @menon_opsin_2011;@goren_constitutive_2014 for extensive step--wise discussion].
+[see @menon_opsin_2011;@goren_constitutive_2014;@ploier_perturbed_submitted for
+extensive step--wise discussion].
 Based on the `R` free software environment for statistical computing and 
 graphics [@r_core_team_r:_2015] and prominently drawing on the power and 
 elegance of the `ggplot2` plotting system [@wickham_ggplot2_2009], we here 
@@ -164,7 +165,7 @@ within a functional `R` environment:
 ```{r noeval_demonstrate_installation, eval = FALSE}
 source("http://bioconductor.org/biocLite.R")
 biocLite(pkgs = "flippant")
-library(flippant)
+library("flippant")
 ```
 
 The package depends on the following packaged extensions to `R` base 
@@ -190,7 +191,7 @@ and fluorescence intensity representing columns are currently supported. The
 latter is trivially assembled from any fluorescence data using a spreadsheet 
 program. File type determination is handled algorithmically.
 
-Based on @menon_opsin_2011, @goren_constitutive_2014 and
+Based on @menon_opsin_2011, @goren_constitutive_2014 as well as
 @ploier_perturbed_submitted and largely keeping with nomenclature used therein,
 data is processed as follows. Input is format checked and defaults are injected
 for facultative parameters/columns as appropriate. 
@@ -317,7 +318,6 @@ hypothesis that the mutations may cause disease by interfering with the highly
 ordered quarternary structure of the molecule in the retina 
 [@ploier_perturbed_submitted].
 
-Figure 4C/D in @ploier_perturbed_submitted. The following work flow in a first 
 `flippant`s capabilities are demonstrated here by reanalyzing data underlying 
 Figure 4C--F in @ploier_perturbed_submitted. The following work flow in a first 
 step plots the corresponding spectral traces (Figure 1). Note that algorithmic
@@ -389,9 +389,7 @@ The call results in the protein to phospholipid ratio (PPR) plot shown in
 Figure 2A. Using the customization facilities provided by `ggplot2` 
 [@wickham_ggplot2_2009] as a plotting system the plot's x--axis is trimmed to
 avoid visual compression of all data by a single data point from the wild type 
-rhodopsin series in experiment 1, where $\text{PPR}=`r max_PPR`$. Dashed lines
-are added automatically as graphical representations of the fit constant 
-$\alpha$.
+rhodopsin series in experiment 1, where $\text{PPR}=`r max_PPR`$.
 
 Figure 2A emphasizes reproducibility between independent experiments
 ("Experiment 1" and "Experiment 2") on the four probed rhodopsins. Forgoing
