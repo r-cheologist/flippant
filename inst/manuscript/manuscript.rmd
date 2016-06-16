@@ -1,8 +1,8 @@
 ---
 title: '*flippant* --- An R package for the automated analysis of dithionite scramblase
   assays'
-author: Johannes Graumann ^†,^*, Birgit Ploier ^‡^, Richard J. Cotton ^†^,
-  Michael A. Goren ^‡^ and Anant K. Menon ^‡^
+author: Richard J. Cotton ^†^, Birgit Ploier ^‡^, Michael A. Goren ^‡^,
+  Anant K. Menon ^‡^ and Johannes Graumann ^†,^*
 date: '`r format(Sys.Date(), "%B %d,%Y")`'
 output:
   pdf_document:
