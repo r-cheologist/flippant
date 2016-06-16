@@ -7,7 +7,9 @@ scramblase_assay_stats <- function(
   ppr_scale_factor = 0.65,
   force_through_origin = TRUE,
   generation_of_algorithm = c(2, 1),
-  split_by_experiment = TRUE){
+  split_by_experiment = TRUE,
+  r_bar = 88,
+  sigma_r_bar = 28){
   UseMethod("scramblase_assay_stats",x)
 }
 #' @export
