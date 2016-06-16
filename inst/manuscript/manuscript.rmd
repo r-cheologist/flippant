@@ -33,7 +33,7 @@ Git Clean
 :   `r ifelse(length(system("git status -s", intern = TRUE)) == 0, "TRUE", "FALSE")`
 
 ```{r setting_up_r, echo = FALSE}
-library(dplyr)
+library(dplyr, quietly = TRUE)
 library(flippant, quietly = TRUE)
 library(grid, quietly = TRUE)
 library(magrittr, quietly = TRUE)
