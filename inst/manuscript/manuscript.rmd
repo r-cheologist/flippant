@@ -233,7 +233,7 @@ generates a spreadsheet program--compatible tab--delimited plain text template,
 including column names, commentary, expected data type and the default used when
 omitted.
 
-```{r noeval_template_generation_call, code=formatR::usage('scramblase_assay_input_template'), eval=FALSE}
+```{r noeval_template_generation_call, code=formatR::usage('scramblase_assay_input_template', width = 60), eval=FALSE}
 ```
 
 The application agnostic tab--delimited format must be maintained for the 
@@ -246,7 +246,7 @@ set, fluorescent spectra or traces may be plotted in publication--appropriate
 quality with acquisition time on the x-- and fluorescence intensity on the
 y--axis using
 
-```{r noeval_traces_call, code = formatR::usage('scramblase_assay_traces'), eval = FALSE}
+```{r noeval_traces_call, code = formatR::usage('scramblase_assay_traces', width = 60), eval = FALSE}
 ```
 
 and handing the function the path to the user assembled spreadsheet of input 
@@ -267,7 +267,7 @@ series, which may, for example, be representative of protein preparations
 including mutant protein forms or crude extracts with or without depletion of a
 candidate scramblase.
 
-```{r noeval_plot_call, code = formatR::usage('scramblase_assay_plot'), eval = FALSE}
+```{r noeval_plot_call, code = formatR::usage('scramblase_assay_plot', width = 65), eval = FALSE}
 ```
 
 allows for the complete generation of the PPR plot in publication quality from
@@ -293,7 +293,7 @@ better fit to some experimental data, its mechanistic implications are unclear.
 Numeric scramblase assay results such as $\alpha$ may be generated in 
 tabular form using
 
-```{r noeval_stats_call, code = formatR::usage('scramblase_assay_stats'), eval = FALSE}
+```{r noeval_stats_call, code = formatR::usage('scramblase_assay_stats', width = 65), eval = FALSE}
 ```
 
 with the same modifying arguments to the function as for `scramblase_assay_plot`.
@@ -323,12 +323,15 @@ times between experiments. PPR scaling is used with the default factor of 0.65.
 
 ```{r noeval_demonstrate_traces, eval = FALSE}
 # Plot spectral traces (Figure 1A)
-scramblase_assay_traces("inputTable.txt", time_max_sec = 350)
+scramblase_assay_traces(
+  "inputTable.txt",
+  time_max_sec = 350)
 ```
 
 ```{r figure1_creation, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "***flippant*--based reanalysis of data in Figure 4C/D from @ploier_perturbed_submitted.** (A) represents spectral traces as produced by a call to the function `scramblase_assay_traces`, while (B) and (C) show protein to phospholipid ration (PPR) plots for the data using a x--axis trimmed to a maximum value of 2 (see text for details). In (B) data is separately plotted for independent experiments, while (C) combines all data points, aiming for reliability of fit. 'adj. PPR' indicates that the measure has been scaled to account for a vesicle pool refractory to flippase reconsitution."}
-x <- flippant:::read_scramblase_input_file(
-  file.path(tmpDir,"inputTable.txt"))
+x <- tmpDir %>%
+  file.path("inputTable.txt") %>%
+  flippant:::read_scramblase_input_file()
 x[["Path"]] <- file.path(tmpDir, x[["Path"]])
 figure1 <- add_panel(
   figure = figure1,
@@ -369,7 +372,10 @@ the following calls.
 
 ```{r noeval_demonstrate_plot, eval = FALSE}
 # Plot PPR plot (Figure 1B)
-scramblase_assay_plot("inputTable.txt", generation_of_algorithm = 2) + xlim(0, 2)
+scramblase_assay_plot(
+  "inputTable.txt",
+  generation_of_algorithm = 2) +
+xlim(0, 2)
 ```
 
 ```{r calculate_pprs, echo = FALSE}
@@ -401,7 +407,8 @@ from all experiments as follows, resulting in Figure 1C:
 
 ```{r noeval_demonstrate_plot2, eval = FALSE}
 # Plot PPR plot (Figure 1C)
-scramblase_assay_plot("inputTable.txt",
+scramblase_assay_plot(
+  "inputTable.txt",
   generation_of_algorithm = 2,
   split_by_experiment = FALSE) + 
 xlim(0, 2)
@@ -415,7 +422,10 @@ and produces tabular output represented in Table 1.
 
 ```{r noeval_demonstrate_tabular_writeout, eval = FALSE}
 # Write out results in tabular manner (Table 1)
-scramblase_assay_stats("inputTable.txt", generation_of_algorithm = 2, split_by_experiment = FALSE)
+scramblase_assay_stats(
+  "inputTable.txt",
+  generation_of_algorithm = 2,
+  split_by_experiment = FALSE)
 ```
 
 ```{r analysis_tabular_output, echo = FALSE}
