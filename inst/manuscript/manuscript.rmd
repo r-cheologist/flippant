@@ -32,7 +32,7 @@ Current Git Hash
 Git Clean
 :   `r ifelse(length(system("git status -s", intern = TRUE)) == 0, "TRUE", "FALSE")`
 
-```{r setting_up_r, echo = FALSE}
+```{r setting_up_r, echo = FALSE, message = FALSE}
 library(dplyr, quietly = TRUE)
 library(flippant, quietly = TRUE)
 library(grid, quietly = TRUE)
