@@ -275,17 +275,17 @@ candidate scramblase.
 ```
 
 allows for the complete generation of the PPR plot in publication quality from
-the user assembled spreadsheet of input data (`x`), including automatically
-added graphical representations the PPR value equal to the fit constant
-$\alpha$ ($P_{\geq 1} = 1 - e^{-1}$), which implies all liposomes on average
-carrying one scramblase and 63% have one or more 
-[i.e. are active; @goren_constitutive_2014]. The behavior of the function may be
-adjusted to use scramblase--mediated fluorescence reduction normalized to either
-the maximum measurement in the series (`scale_to = "data"`) or the plateau of an
-exponential fit to it (`scale_to = "model"`; for reasoning see above) and whether
-or not to require the exponential curve fitted to the data to go through the
-origin. `ppr_scale_factor` allows for the modification of scaling to account for
-a pool of vesicles that is scramblase--inaccessible (see above). The
+the user assembled spreadsheet of input data (`x`). The behavior of the function
+may be adjusted to use scramblase--mediated fluorescence reduction normalized to
+either the maximum measurement in the series (`scale_to = "data"`) or the
+plateau of an exponential fit to it (`scale_to = "model"`; default; for
+reasoning see above). `ppr_scale_factor` allows for the modification of scaling
+to account for a pool of vesicles that is scramblase--inaccessible (see above).
+The formula to which the data is fitted has evolved over time and `flippant`
+supports both the original (@menon_opsin_2011; @goren_constitutive_2014; `generation_of_algorithm = 1`), as well as the more recent iteration (@ploier_perturbed_submitted; default; `generation_of_algorithm = 2`), which
+takes into account the size distribution of the liposome polulation used and
+thus also requires parameters for liposome radius and its standard deviation 
+(`r_bar` and `sigma_r_bar`, respectively; in nm, both). The
 `split_by_experiment` argument is used to indicate whether independent
 experiments are integrated into a single analysis
 (`split_by_experiment = FALSE`) or treated separately
