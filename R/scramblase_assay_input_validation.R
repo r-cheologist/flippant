@@ -16,11 +16,11 @@ scramblase_assay_input_validation <- function(
   sigma_r_bar,
   verbose=TRUE){
   # Check verbose
-  assert_is_a_bool(verbose)
+  assertive.types::assert_is_a_bool(verbose)
   # Check x
   ## General DF characteristics
-  assert_is_data.frame(x)
-  assert_has_rows(x)
+  assertive.types::assert_is_data.frame(x)
+  assertive.properties::assert_has_rows(x)
   if(any(is.na(x))){
     stop("'x' cannot contain 'NA'.")
   }
@@ -132,7 +132,7 @@ scramblase_assay_input_validation <- function(
   # Check ppr_scale_factor
   if(!is.null(ppr_scale_factor)){
     ppr_scale_factor %>%
-      assert_is_a_number()
+      assertive.types::assert_is_a_number()
     if(verbose){
       message("PPR will be scaled by a factor of ", ppr_scale_factor, ".")
     }
@@ -157,18 +157,18 @@ scramblase_assay_input_validation <- function(
   }
   # Check force_through_origin
   force_through_origin %>%
-    assert_is_a_bool()
+    assertive.types::assert_is_a_bool()
   # Check split_by_experiment
   split_by_experiment %>%
-    assert_is_a_bool()
+    assertive.types::assert_is_a_bool()
   # check r_bar
   r_bar %>%
-    assert_is_a_number() %>%
-    assert_all_are_greater_than(0)
+    assertive.types::assert_is_a_number() %>%
+    assertive.numbers::assert_all_are_greater_than(0)
   # check sigmar_bar
   sigma_r_bar %>%
-    assert_is_a_number() %>%
-    assert_all_are_greater_than(0)
+    assertive.types::assert_is_a_number() %>%
+    assertive.numbers::assert_all_are_greater_than(0)
   # Return
   list(
     x = x,

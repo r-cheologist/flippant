@@ -33,19 +33,13 @@ Git Clean
 :   `r ifelse(length(system("git status -s", intern = TRUE)) == 0, "TRUE", "FALSE")`
 
 ```{r setting_up_r, echo = FALSE, message = FALSE}
-library(dplyr, quietly = TRUE)
-library(flippant, quietly = TRUE)
-library(grid, quietly = TRUE)
 library(magrittr, quietly = TRUE)
-library(microbenchmark, quietly = TRUE)
-library(multipanelfigure, quietly = TRUE)
-library(stringi, quietly = TRUE)
 flippant_dependencies <- packageDescription("flippant",fields=c("Depends","Imports")) %>%
   unlist(use.names = FALSE) %>%
-  stri_split(regex = ",", omit_empty = TRUE) %>%
+  stringi::stri_split(regex = ",", omit_empty = TRUE) %>%
   unlist(use.names = FALSE) %>%
-  stri_replace_all(replacement = "", regex = "\\s*\\(.*\\)\\s*", omit_empty = TRUE) %>%
-  stri_replace_all(replacement = "", regex = "\\s*", omit_empty = TRUE) %>%
+  stringi::stri_replace_all(replacement = "", regex = "\\s*\\(.*\\)\\s*", omit_empty = TRUE) %>%
+  stringi::stri_replace_all(replacement = "", regex = "\\s*", omit_empty = TRUE) %>%
   tail(n=length(.) - 1) %>%
   sort() %>%
   ( function(x){
@@ -68,7 +62,7 @@ file.path("extdata", "PloierEtAl_Data.zip") %>%
     exdir = tmpDir)
 
 divisor <- 20
-figure2 <- multi_panel_figure(
+figure2 <- multipanelfigure::multi_panel_figure(
   widths = rep(17.22), 
   heights = c(
     18/divisor * 7 - 0.25,
@@ -338,7 +332,7 @@ x <- tmpDir %>%
   file.path("inputTable.txt") %>%
   flippant:::read_scramblase_input_file()
 x[["Path"]] <- file.path(tmpDir, x[["Path"]])
-scramblase_assay_traces(
+flippant::scramblase_assay_traces(
   x,
   time_max_sec = 350)
 ```
@@ -356,20 +350,20 @@ xlim(0, 2)
 ```{r figure2_creation, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "**`flippant`--based reanalysis of data in Figure 4C--F from @ploier_perturbed_submitted.** (A) and (B) show protein to phospholipid ration (PPR) plots for the data using a x--axis trimmed to a maximum value of 2 (see text for details). In (A) data is separately plotted for independent experiments, while (B) combines all data points, aiming for reliability of fit. 'adj. PPR' indicates that the measure has been scaled to account for a vesicle pool refractory to flippase reconsitution."}
 figure2 %<>% add_panel(
   top_panel = 1,
-  panel = scramblase_assay_plot(x) + 
-    theme_bw() + 
-    xlim(0, 2) + 
-    xlab(expression("adj. PPR"~~("mg"/"mmol"))) +
-    ylab(expression(P[{phantom()>=1}])))
-figure2 %<>% add_panel(
+  panel = flippant::scramblase_assay_plot(x) + 
+    ggplot2::theme_bw() + 
+    ggplot2::xlim(0, 3) + 
+    ggplot2::xlab(expression("adj. PPR"~~("mg"/"mmol"))) +
+    ggplot2::ylab(expression(P[{phantom()>=1}])))
+figure2 %<>% multipanelfigure::add_panel(
   top_panel = 2,
-  panel = scramblase_assay_plot(x, split_by_experiment = FALSE) + 
-    theme_bw() + 
-    xlim(0, 2) + 
-    xlab(expression("adj. PPR"~~("mg"/"mmol"))) +
-    ylab(expression(P[{phantom()>=1}])) +
-    facet_wrap(c("`Experimental Series`"))+
-    guides(colour = "none"))
+  panel = flippant::scramblase_assay_plot(x, split_by_experiment = FALSE) + 
+    ggplot2::theme_bw() + 
+    ggplot2::xlim(0, 3) + 
+    ggplot2::xlab(expression("adj. PPR"~~("mg"/"mmol"))) +
+    ggplot2::ylab(expression(P[{phantom()>=1}])) +
+    ggplot2::facet_wrap(c("`Experimental Series`"))+
+    ggplot2::guides(colour = "none"))
 figure2
 ```
 
@@ -420,18 +414,18 @@ scramblase_assay_stats(
 ```
 
 ```{r analysis_tabular_output, echo = FALSE}
-ppr_results <- scramblase_assay_stats(
+ppr_results <- flippant::scramblase_assay_stats(
     x, split_by_experiment = FALSE) %>%
-  mutate(`Fit Constant` = round(`Fit Constant` * 10^4, 2)) %>%
-  set_names(c("Experimental Series", "Fit Constant ($\\times 10^4$)"))
+  dplyr::mutate(`Fit Constant` = round(`Fit Constant` * 10^4, 2)) %>%
+  magrittr::set_names(c("Experimental Series", "Fit Constant ($\\times 10^4$)"))
 ppr_results_names <- ppr_results %>%
-  extract2("Experimental Series") %>%
+  magrittr::extract2("Experimental Series") %>%
   head(n = nrow(ppr_results) - 1) %>%
   paste(collapse = ", ") %>%
   paste("and") %>%
   paste(tail(ppr_results$`Experimental Series`, n = 1))
 ppr_results_alpha_print <- ppr_results %>%
-  extract2("Fit Constant ($\\times 10^4$)") %>%
+  magrittr::extract2("Fit Constant ($\\times 10^4$)") %>%
   round(2) %>%
   head(n = nrow(ppr_results) - 1) %>%
   paste(collapse = ", ") %>%
@@ -461,20 +455,20 @@ results, supporting identical conclusions.
 analysis_timing_n <- 100
 
 analysis_timing_function <- function(){
-  scramblase_assay_traces(
+  flippant::scramblase_assay_traces(
     x,
     time_max_sec = 350)
-  scramblase_assay_plot(
+  flippant::scramblase_assay_plot(
     x)
-  scramblase_assay_plot(
+  flippant::scramblase_assay_plot(
     x,
     split_by_experiment = FALSE)
-  scramblase_assay_stats(
+  flippant::scramblase_assay_stats(
     x,
     split_by_experiment = FALSE)
 }
 
-analysis_timing <- microbenchmark(
+analysis_timing <- microbenchmark::microbenchmark(
   analysis_timing_function(),
   times = analysis_timing_n)
 

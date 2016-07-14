@@ -17,8 +17,8 @@ parse_felix_gx_output <- function(x = NULL){
   #######################
   # Check Prerequisites #
   #######################
-  assert_is_not_null(x)
-  assert_all_are_non_missing_nor_empty_character(x)
+  assertive.properties::assert_is_not_null(x)
+  assertive.strings::assert_all_are_non_missing_nor_empty_character(x)
   ##############
   # Processing #
   ##############

@@ -63,9 +63,9 @@ parse_fluorimeter_output <- function(
   #######################
   # Check Prerequisites #
   #######################
-  assert_is_a_string(spec_file)
-  assert_all_are_readable_files(spec_file)
-  assert_is_a_bool(adjust)
+  assertive.types::assert_is_a_string(spec_file)
+  assertive.files::assert_all_are_readable_files(spec_file)
+  assertive.types::assert_is_a_bool(adjust)
   ##############
   # Processing #
   ##############
@@ -110,9 +110,9 @@ parse_fluorimeter_output <- function(
     smoothedTmpData <- RcppRoll::roll_mean(output$Data$Fluorescence.Intensity, n)
     # Wavelet-based peak detection
     gradient <- -diff(smoothedTmpData)
-    cwt <- wavCWT(gradient)
-    tree <- wavCWTTree(cwt)
-    peaks <- wavCWTPeaks(tree)
+    cwt <- wmtsa::wavCWT(gradient)
+    tree <- wmtsa::wavCWTTree(cwt)
+    peaks <- wmtsa::wavCWTPeaks(tree)
     # Functionality appears to have memory mapping issues ...
     gc()
     # Safeguard against artifact peaks (based on incomplete understanding of wmtsa)

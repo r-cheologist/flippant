@@ -4,8 +4,8 @@
 #' @importFrom utils read.delim
 read_scramblase_input_file <- function(x){
   x %>%
-    assert_is_a_non_empty_string() %>%
-    assert_all_are_readable_files() %>%
+    assertive.strings::assert_is_a_non_empty_string() %>%
+    assertive.files::assert_all_are_readable_files() %>%
     read.delim(
       header=TRUE,
       sep="\t",

@@ -40,8 +40,8 @@ base_function_scramblase_assay_traces <- function(
     sigma_r_bar = 28,
     verbose = FALSE)
   x <- validatedParams[["x"]]
-  assert_is_a_number(time_min_sec)
-  assert_is_a_number(time_max_sec)
+  assertive.types::assert_is_a_number(time_min_sec)
+  assertive.types::assert_is_a_number(time_max_sec)
 
 # Processing --------------------------------------------------------------
   # Perform assay calculations to retrive PPR

@@ -12,8 +12,8 @@
 scramblase_assay_input_template <- function(path="scramblase_assay_input_template.txt"){
 # Check input -------------------------------------------------------------
   path %>%
-    assert_is_a_non_empty_string() %>%
-    assert_any_are_existing_files()
+    assertive.strings::assert_is_a_non_empty_string() %>%
+    assertive.files::assert_any_are_existing_files()
 
 # Generate template data.frame --------------------------------------------
   # Create data structure in list form
@@ -58,18 +58,18 @@ scramblase_assay_input_template <- function(path="scramblase_assay_input_templat
       function(x){
         if(x == "columnName"){
           dataStructure %>%
-            extract2(x) %>%
+            magrittr::extract2(x) %>%
             return()
         } else {
           dataStructure %>%
-            extract2(x) %>%
-            inset2(1,paste("#", .[1])) %>%
+            magrittr::extract2(x) %>%
+            magrittr::inset2(1,paste("#", .[1])) %>%
             return()
         }
       })
   # Assemble the data.frame
   commentedDataStructure %>%
-    extract(2:length(.)) %>%
+    magrittr::extract(2:length(.)) %>%
     lapply(
       function(x){
         x %>%
@@ -78,8 +78,8 @@ scramblase_assay_input_template <- function(path="scramblase_assay_input_templat
           return()
       }
     ) %>%
-    rbind.fill() %>%
-    set_names(dataStructure %>% extract2(1)) %>%
+    plyr::rbind.fill() %>%
+    set_names(dataStructure %>% magrittr::extract2(1)) %>%
   # Write the table out
     write.table(
       file=path,

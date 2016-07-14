@@ -48,7 +48,7 @@ scramblase_assay_calculations <- function(
   
 # Parsing spectra ---------------------------------------------------------
   spectralData <- x %>%
-    extract2("Path") %>%
+    magrittr::extract2("Path") %>%
     lapply(parse_fluorimeter_output)
   
 # Read out data -----------------------------------------------------------
@@ -58,23 +58,23 @@ scramblase_assay_calculations <- function(
     sapply(
       function(y){
         y %>%
-          extract2("Min.Acquisition.Time.in.sec") %>%
+          magrittr::extract2("Min.Acquisition.Time.in.sec") %>%
           return()
       }
     ) %>%
-    assert_all_are_less_than(0)
+    assertive.numbers::assert_all_are_less_than(0)
   
   spectralData %>%
     sapply(
       function(y){
         y %>%
-          extract2("Max.Acquisition.Time.in.sec") %>%
+          magrittr::extract2("Max.Acquisition.Time.in.sec") %>%
           return()
       }
     ) %>%
-    assert_all_are_greater_than_or_equal_to(x[["Timepoint of Measurement (s)"]])
+    assertive.numbers::assert_all_are_greater_than_or_equal_to(x[["Timepoint of Measurement (s)"]])
   maxAcquisitionTime <- x %>%
-      extract2("Timepoint of Measurement (s)") %>%
+      magrittr::extract2("Timepoint of Measurement (s)") %>%
       max(na.rm = TRUE)
   
   # Average over 10 values before dithionite addition for activity baseline
@@ -82,15 +82,15 @@ scramblase_assay_calculations <- function(
     vapply(
       function(z){
         indexesForAveraging <- z %>%
-          extract2("Data") %>%
-          extract2("Time.in.sec") %>%
-          is_less_than(0) %>%
+          magrittr::extract2("Data") %>%
+          magrittr::extract2("Time.in.sec") %>%
+          magrittr::is_less_than(0) %>%
           which() %>%
           tail(n = 10)
         z %>%
-          extract2("Data") %>%
-          extract2("Fluorescence.Intensity") %>%
-          extract(indexesForAveraging) %>%
+          magrittr::extract2("Data") %>%
+          magrittr::extract2("Fluorescence.Intensity") %>%
+          magrittr::extract(indexesForAveraging) %>%
           median(na.rm = TRUE) %>%
           return()
       },
@@ -101,20 +101,20 @@ scramblase_assay_calculations <- function(
     vapply(
       function(z){
         stopIndexForAveraging <- spectralData %>%
-          extract2(z) %>%
-          extract2("Data") %>%
-          extract2("Time.in.sec") %>%
-          is_weakly_less_than(x[z,"Timepoint of Measurement (s)"]) %>%
+          magrittr::extract2(z) %>%
+          magrittr::extract2("Data") %>%
+          magrittr::extract2("Time.in.sec") %>%
+          magrittr::is_less_than(x[z,"Timepoint of Measurement (s)"]) %>%
           which() %>%
           max(na.rm = TRUE)
         indexesForAveraging <- seq(
           from=stopIndexForAveraging-9,
           to=stopIndexForAveraging)
         spectralData %>%
-          extract2(z) %>%
-          extract2("Data") %>%
-          extract2("Fluorescence.Intensity") %>%
-          extract(indexesForAveraging) %>%
+          magrittr::extract2(z) %>%
+          magrittr::extract2("Data") %>%
+          magrittr::extract2("Fluorescence.Intensity") %>%
+          magrittr::extract(indexesForAveraging) %>%
           median(na.rm = TRUE) %>%
           return()
       },
@@ -148,8 +148,8 @@ scramblase_assay_calculations <- function(
         ## Ensure that there's a data point with liposomes ONLY as a unique 
         ## reference point
         indexOfLiposomesOnlyData <- z %>%
-          extract2("Protein in Reconstitution (mg)") %>%
-          equals(0) %>%
+          magrittr::extract2("Protein in Reconstitution (mg)") %>%
+          magrittr::equals(0) %>%
           which()
         if(length(indexOfLiposomesOnlyData) == 0){
           stop("Experimental series '",unique(z[["Experimental Series"]]),"' does 
@@ -178,9 +178,9 @@ scramblase_assay_calculations <- function(
           calculate_ppr(ppr_scale_factor = ppr_scale_factor)
         ## Calculate p>=1Scramblase/Liposome
         y <- z %>%
-          extract2("Relative Fluorescence Reduction")
+          magrittr::extract2("Relative Fluorescence Reduction")
         y0 <- y %>%
-          extract(indexOfLiposomesOnlyData)
+          magrittr::extract(indexOfLiposomesOnlyData)
         if(scale_to == "model"){
           fit_prep <- z %>%
             fit_prep(y = "Relative Fluorescence Reduction")
@@ -201,10 +201,10 @@ scramblase_assay_calculations <- function(
             control = nlsControl)
           yMax <- rMod %>%
             coef() %>%
-            extract2("b")
+            magrittr::extract2("b")
         } else {
           yMax <- z %>%
-            extract2("Relative Fluorescence Reduction") %>%
+            magrittr::extract2("Relative Fluorescence Reduction") %>%
             max(na.rm = TRUE)
         }
         z[["Probability >= 1 Scramblase in Vesicle"]] <- (y-y0)/(yMax-y0)
@@ -322,25 +322,25 @@ fit_prep <- function(z, y = c("Relative Fluorescence Reduction", "Probability >=
         "Probability >= 1 Scramblase in Vesicle"),
       several.ok =  FALSE)
   fit_set <- z %>%
-    extract(
+    magrittr::extract(
       c("Protein per Phospholipid (mg/mmol)",
         y)) %>%
-    set_names(c("x", "y"))
+    magrittr::set_names(c("x", "y"))
   ### Determine a sensible start point for 'a'
   pointSixY <- fit_set %>%
-    extract2("y") %>%
+    magrittr::extract2("y") %>%
     max(na.rm = TRUE) %>%
-    multiply_by(0.6)
+    magrittr::multiply_by(0.6)
   estimated_a <- fit_set %>%
-    extract2("x") %>%
-    extract(
+    magrittr::extract2("x") %>%
+    magrittr::extract(
       fit_set %>%
-        extract2("y") %>%
-        subtract(pointSixY) %>%
+        magrittr::extract2("y") %>%
+        magrittr::subtract(pointSixY) %>%
         abs() %>%
         which.min())
   estimated_b <- z %>%
-    extract2(y) %>%
+    magrittr::extract2(y) %>%
     max(na.rm = TRUE)
   
   list(

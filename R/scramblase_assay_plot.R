@@ -177,7 +177,6 @@
 #' @export
 #' @seealso \code{\link{parse_fluorimeter_output}} \code{\link{nlsLM}}
 #' @import ggplot2
-#' @importFrom assertive.types assert_is_a_string
 #' @importFrom plyr rbind.fill
 #' @examples
 #' stop("Cite Birgit's paper.")
