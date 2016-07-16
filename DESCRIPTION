@@ -2,10 +2,14 @@ Package: flippant
 Title: flippant - Dithionite Scramblase Assay Analysis
 Description: A package for the analysis of data provided by dithionite
     scramblase assays.
-URL: http://chili.qatar-med.cornell.edu/projects/flippant
-Version: 0.6.2
-Authors@R: person("Johannes", "Graumann", role = c("aut","cre"),
-    email="johannes_graumann@web.de")
+Version: 0.7.0
+Author: Johannes Graumann [cre, aut],
+    Richard Cotton [ctb]
+Maintainer: Johannes Graumann <jog2030@qatar-med.cornell.edu>
+Authors@R: c(person("Johannes", "Graumann", email =
+    "jog2030@qatar-med.cornell.edu", role = c("cre", "aut")),
+    person("Richard","Cotton", email = "richierocks@gmail.com",
+    role = c("ctb")))
 Depends:
     R (>= 3.3.1),
     ggplot2 (>= 2.1.0)
