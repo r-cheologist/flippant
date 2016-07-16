@@ -328,7 +328,7 @@ scramblase_assay_traces(
   time_max_sec = 350)
 ```
 
-```{r figure1_creation, echo = FALSE, fig.height = 4, fig.cap = "**`flippant`--based plotting of spectral traces underlying the data in Figure 4C--F from @ploier_dimerization_2016.** See text for command and details."}
+```{r figure1_creation, echo = FALSE, fig.height = 4, fig.cap = "**`flippant`--based plotting of spectral traces underlying a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** See text for command and details."}
 # Plot spectral traces (Figure 1)
 x <- tmpDir %>%
   file.path("inputTable.txt") %>%
@@ -349,7 +349,7 @@ scramblase_assay_plot(
 xlim(0, 3)
 ```
 
-```{r figure2_creation, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "**`flippant`--based reanalysis of data in Figure 4C--F from @ploier_dimerization_2016.** (A) and (B) show protein to phospholipid ration (PPR) plots for the data using a x--axis trimmed to a maximum value of 3 (see text for details). In (A) data is separately plotted for independent experiments, while (B) combines all data points, aiming for reliability of fit. 'adj. PPR' indicates that the measure has been scaled to account for a vesicle pool refractory to flippase reconsitution."}
+```{r figure2_creation, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "**`flippant`--based reanalysis of a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** (A) and (B) show protein to phospholipid ration (PPR) plots for the data using a x--axis trimmed to a maximum value of 3 (see text for details). In (A) data is separately plotted for independent experiments, while (B) combines all data points, aiming for reliability of fit. 'adj. PPR' indicates that the measure has been scaled to account for a vesicle pool refractory to flippase reconsitution."}
 figure2 %<>% multipanelfigure::add_panel(
   top_panel = 1,
   panel = flippant::scramblase_assay_plot(x) + 
@@ -436,7 +436,7 @@ ppr_results_alpha_print <- ppr_results %>%
 knitr::kable(
   ppr_results,
   row.names = FALSE,
-  caption = "**Tabular output of `flippant`--based reanalysis of data in Figure 4C--F from @ploier_dimerization_2016.** An plain text--version of this output is produced by calling `scramblase_assay_stats`.")
+  caption = "**Tabular output of `flippant`--based reanalysis of a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** An plain text--version of this output is produced by calling `scramblase_assay_stats`.")
 ```
 
 The resulting values for the fit constant $\alpha$ correspond with
