@@ -518,7 +518,7 @@ extraction, a different assay for lipid translocation across liposome bilayers
 identical data analysis workflow, `flippant` is expected to facilitate analysis
 of such experiments as well.
 
-# Funding
+# Acknowledgements
 J.G., R.J.C. and the Proteomics Core at WCM--Q are supported by ``Biomedical 
 Research Program'' funds at Weill Cornell Medicine -- Qatar, a program 
 funded by Qatar Foundation. This study was made possible by NPRP grant
@@ -526,7 +526,5 @@ funded by Qatar Foundation. This study was made possible by NPRP grant
 Foundation). The statements made herein are solely the responsibility of the
 authors. B.P. was also supported by the Austrian Science Fund (FWF), project
 J3686--B21.
-
-# Acknowledgements
 
 # References
