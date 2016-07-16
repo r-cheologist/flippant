@@ -201,14 +201,10 @@
 #'   time_max_sec = 350)
 #' # Plot the PPR plot(s) faceting by experiment
 #' scramblase_assay_plot("inputTable.txt")
-#' # Modify x-axis to avoid visual compression
-#' scramblase_assay_plot("inputTable.txt") +
-#'   xlim(0, 3)
 #' # Generate tabular results
 #' scramblase_assay_stats("inputTable.txt")
 #' # Plot the PPR plot(s) forgoing faceting by experiment
-#' scramblase_assay_plot("inputTable.txt", split_by_experiment = FALSE) +
-#'   xlim(0, 3)
+#' scramblase_assay_plot("inputTable.txt", split_by_experiment = FALSE)
 #' # Generate tabular results
 #' scramblase_assay_stats("inputTable.txt", split_by_experiment = FALSE)
 scramblase_assay_plot <- function(

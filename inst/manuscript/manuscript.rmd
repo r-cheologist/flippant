@@ -344,9 +344,7 @@ the following calls.
 
 ```{r noeval_demonstrate_plot, eval = FALSE}
 # Plot PPR plot (Figure 2A)
-scramblase_assay_plot(
-  "inputTable.txt") +
-xlim(0, 3)
+scramblase_assay_plot("inputTable.txt")
 ```
 
 ```{r figure2_creation, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "**`flippant`--based reanalysis of a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** (A) and (B) show protein to phospholipid ration (PPR) plots for the data using a x--axis trimmed to a maximum value of 3 (see text for details). In (A) data is separately plotted for independent experiments, while (B) combines all data points, aiming for reliability of fit. 'adj. PPR' indicates that the measure has been scaled to account for a vesicle pool refractory to flippase reconsitution."}
@@ -354,14 +352,12 @@ figure2 %<>% multipanelfigure::add_panel(
   top_panel = 1,
   panel = flippant::scramblase_assay_plot(x) + 
     ggplot2::theme_bw() + 
-    ggplot2::xlim(0, 3) + 
     ggplot2::xlab(expression("adj. PPR"~~("mg"/"mmol"))) +
     ggplot2::ylab(expression(P[{phantom()>=1}])))
 figure2 %<>% multipanelfigure::add_panel(
   top_panel = 2,
   panel = flippant::scramblase_assay_plot(x, split_by_experiment = FALSE) + 
     ggplot2::theme_bw() + 
-    ggplot2::xlim(0, 3) + 
     ggplot2::xlab(expression("adj. PPR"~~("mg"/"mmol"))) +
     ggplot2::ylab(expression(P[{phantom()>=1}])) +
     ggplot2::facet_wrap(c("`Experimental Series`"))+
@@ -369,23 +365,8 @@ figure2 %<>% multipanelfigure::add_panel(
 figure2
 ```
 
-```{r calculate_pprs, echo = FALSE}
-max_PPR <- utils::read.delim(
-    file.path(tmpDir,"inputTable.txt"),
-    check.names = FALSE) %>%
-  flippant:::calculate_ppr() %>%
-  max(
-    na.rm = TRUE) %>%
-  signif(
-    digits = 2
-  )
-```
-
 The call results in the protein to phospholipid ratio (PPR) plot shown in
-Figure 2A. Using the customization facilities provided by `ggplot2` 
-[@wickham_ggplot2_2009] as a plotting system the plot's x--axis is trimmed to
-avoid visual compression of all data by a single data point from the wild type 
-rhodopsin series in experiment 1, where $\text{PPR}=`r max_PPR`$.
+Figure 2A.
 
 Figure 2A emphasizes reproducibility between independent experiments
 ("Experiment 1" and "Experiment 2") on the four probed rhodopsins. Forgoing
@@ -398,8 +379,7 @@ from all experiments as follows, resulting in Figure 2B:
 # Plot PPR plot (Figure 2B)
 scramblase_assay_plot(
   "inputTable.txt",
-  split_by_experiment = FALSE) + 
-xlim(0, 3)
+  split_by_experiment = FALSE)
 ```
 
 The graphical representation of the fit constant $\alpha$ in the PPR plots is
