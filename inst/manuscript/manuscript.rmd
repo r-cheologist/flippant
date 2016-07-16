@@ -312,12 +312,13 @@ hypothesis that the mutations may cause disease by interfering with the highly
 ordered quarternary structure of the molecule in the retina 
 [@ploier_perturbed_submitted].
 
-`flippant`s capabilities are demonstrated here by reanalyzing data underlying 
-Figure 4C--F in @ploier_perturbed_submitted. The following work flow in a first 
-step plots the corresponding spectral traces (Figure 1). Note that algorithmic
-alignment to the time of dithionite addition is employed (default) as well as 
-custom trimming of the time axis to account for divergent acquisition 
-times between experiments. PPR scaling is used with the default factor of 0.65.
+`flippant`s capabilities are demonstrated here by reanalyzing a subset of the
+data underlying  Figure 4C--F in @ploier_dimerization_2016. The following work
+flow in a first  step plots the corresponding spectral traces (Figure 1). Note
+that algorithmic alignment to the time of dithionite addition is employed
+(default) as well as  custom trimming of the time axis to account for divergent
+acquisition  times between experiments. PPR scaling is used with the default
+factor of 0.65.
 
 ```{r noeval_demonstrate_traces, eval = FALSE}
 # Plot spectral traces (Figure 1)
@@ -344,7 +345,7 @@ the following calls.
 # Plot PPR plot (Figure 2A)
 scramblase_assay_plot(
   "inputTable.txt") +
-xlim(0, 2)
+xlim(0, 3)
 ```
 
 ```{r figure2_creation, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "**`flippant`--based reanalysis of data in Figure 4C--F from @ploier_perturbed_submitted.** (A) and (B) show protein to phospholipid ration (PPR) plots for the data using a x--axis trimmed to a maximum value of 2 (see text for details). In (A) data is separately plotted for independent experiments, while (B) combines all data points, aiming for reliability of fit. 'adj. PPR' indicates that the measure has been scaled to account for a vesicle pool refractory to flippase reconsitution."}
@@ -397,7 +398,7 @@ from all experiments as follows, resulting in Figure 2B:
 scramblase_assay_plot(
   "inputTable.txt",
   split_by_experiment = FALSE) + 
-xlim(0, 2)
+xlim(0, 3)
 ```
 
 The graphical representation of the fit constant $\alpha$ in the PPR plots is
