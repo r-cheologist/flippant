@@ -1,5 +1,4 @@
 #' @rdname scramblase_assay_plot
-#' @importFrom plyr rbind.fill
 #' @export
 scramblase_assay_stats <- function(
   x,

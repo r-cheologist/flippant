@@ -8,8 +8,7 @@ Authors@R: person("Johannes", "Graumann", role = c("aut","cre"),
     email="johannes_graumann@web.de")
 Depends:
     R (>= 3.3.1),
-    ggplot2 (>= 2.1.0),
-    wmtsa (>= 2.0-2)
+    ggplot2 (>= 2.1.0)
 Suggests:
     devtools,
     multipanelfigure,
@@ -24,7 +23,8 @@ Imports:
     magrittr (>= 1.5),
     minpack.lm (>= 1.2-0),
     plyr (>= 1.8.4),
-    RcppRoll (>= 0.2.2)
+    RcppRoll (>= 0.2.2),
+    wmtsa (>= 2.0-2)
 License: GPL (>= 3)
 LazyData: true
 RoxygenNote: 5.0.1

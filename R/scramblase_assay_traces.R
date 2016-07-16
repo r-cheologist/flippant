@@ -1,7 +1,4 @@
 #' @rdname scramblase_assay_plot
-#' @import ggplot2
-#' @importFrom assertive.types assert_is_a_number
-#' @importFrom plyr rbind.fill
 #' @export
 scramblase_assay_traces <- function(
   x,

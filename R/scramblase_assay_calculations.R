@@ -1,20 +1,5 @@
-#' @importFrom assertive.numbers assert_all_are_greater_than_or_equal_to
-#' @importFrom assertive.numbers assert_all_are_less_than
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
-#' @importFrom magrittr equals
-#' @importFrom magrittr extract
-#' @importFrom magrittr extract2
-#' @importFrom magrittr is_less_than
-#' @importFrom magrittr is_weakly_less_than
-#' @importFrom magrittr multiply_by
-#' @importFrom magrittr set_names
-#' @importFrom magrittr subtract
-#' @importFrom minpack.lm nlsLM
-#' @importFrom stats as.formula
-#' @importFrom stats coef
-#' @importFrom stats median
-#' @importFrom stats predict
 scramblase_assay_calculations <- function(
   x,
   scale_to,
@@ -30,16 +15,16 @@ scramblase_assay_calculations <- function(
     maxit=100)
   formulae <- list(
     pre_fit = list(
-      "TRUE" = as.formula("y ~ b * ( 1 - exp( -x / a ))"),
-      "FALSE" = as.formula("y ~ b - c * exp( -x / a )")),
+      "TRUE" = stats::as.formula("y ~ b * ( 1 - exp( -x / a ))"),
+      "FALSE" = stats::as.formula("y ~ b - c * exp( -x / a )")),
     first_generation_algorithm = list(
-      "TRUE" = as.formula("y ~ b * ( 1 - exp( -x / a ) )"),
-      "FALSE" = as.formula("y ~ b - c * exp( -x / a )")),
+      "TRUE" = stats::as.formula("y ~ b * ( 1 - exp( -x / a ) )"),
+      "FALSE" = stats::as.formula("y ~ b - c * exp( -x / a )")),
     second_generation_algorithm = list(
-      # "TRUE" = as.formula("y ~ b * ( 1 - ( 1 / sqrt( 1 + 784 * a * x ) ) * exp( ( -3872 * a * x ) / ( 1 + 784 * a * x ) ) )"),
-      "TRUE" = as.formula("y ~ b * ( 1 - ( 1 / sqrt( 1 + sigma_r_bar^2 * a * x ) ) * exp( ( -a * r_bar^2 / 2 * x ) / ( 1 + sigma_r_bar^2 * a * x ) ) )"),
-      # "FALSE" = as.formula("y ~ b - c * ( ( 1 / sqrt( 1 + 784 * a * x ) ) * exp( ( -3872 * a * x ) / ( 1 + 784 * a * x ) ) )")))
-      "FALSE" = as.formula("y ~ b - c * ( ( 1 / sqrt( 1 + sigma_r_bar^2 * a * x ) ) * exp( ( -a * r_bar^2 / 2 * x ) / ( 1 + sigma_r_bar^2 * a * x ) ) )")))
+      # "TRUE" = stats::as.formula("y ~ b * ( 1 - ( 1 / sqrt( 1 + 784 * a * x ) ) * exp( ( -3872 * a * x ) / ( 1 + 784 * a * x ) ) )"),
+      "TRUE" = stats::as.formula("y ~ b * ( 1 - ( 1 / sqrt( 1 + sigma_r_bar^2 * a * x ) ) * exp( ( -a * r_bar^2 / 2 * x ) / ( 1 + sigma_r_bar^2 * a * x ) ) )"),
+      # "FALSE" = stats::as.formula("y ~ b - c * ( ( 1 / sqrt( 1 + 784 * a * x ) ) * exp( ( -3872 * a * x ) / ( 1 + 784 * a * x ) ) )")))
+      "FALSE" = stats::as.formula("y ~ b - c * ( ( 1 / sqrt( 1 + sigma_r_bar^2 * a * x ) ) * exp( ( -a * r_bar^2 / 2 * x ) / ( 1 + sigma_r_bar^2 * a * x ) ) )")))
 
   generation_of_algorithm %<>%
     switch(
@@ -86,12 +71,12 @@ scramblase_assay_calculations <- function(
           magrittr::extract2("Time.in.sec") %>%
           magrittr::is_less_than(0) %>%
           which() %>%
-          tail(n = 10)
+          utils::tail(n = 10)
         z %>%
           magrittr::extract2("Data") %>%
           magrittr::extract2("Fluorescence.Intensity") %>%
           magrittr::extract(indexesForAveraging) %>%
-          median(na.rm = TRUE) %>%
+          stats::median(na.rm = TRUE) %>%
           return()
       },
       1)
@@ -115,7 +100,7 @@ scramblase_assay_calculations <- function(
           magrittr::extract2("Data") %>%
           magrittr::extract2("Fluorescence.Intensity") %>%
           magrittr::extract(indexesForAveraging) %>%
-          median(na.rm = TRUE) %>%
+          stats::median(na.rm = TRUE) %>%
           return()
       },
       1
@@ -200,7 +185,7 @@ scramblase_assay_calculations <- function(
             start = fitStart,
             control = nlsControl)
           yMax <- rMod %>%
-            coef() %>%
+            stats::coef() %>%
             magrittr::extract2("b")
         } else {
           yMax <- z %>%
@@ -213,7 +198,7 @@ scramblase_assay_calculations <- function(
   # Is separate handling of experiments required?
   if(!split_by_experiment){
     processedListFromX <- processedListFromX %>%
-      rbind.fill()
+      plyr::rbind.fill()
     processedListFromX <- processedListFromX %>%
       split(processedListFromX$"Experimental Series")
   }
@@ -273,7 +258,7 @@ scramblase_assay_calculations <- function(
           },
           control = nlsControl)
         gc()
-        z[["Fit Constant (a)"]] <- coef(rMod)[["a"]]
+        z[["Fit Constant (a)"]] <- stats::coef(rMod)[["a"]]
         output <- list(
           Raw = z,
           FitObject = rMod)
@@ -286,7 +271,7 @@ scramblase_assay_calculations <- function(
             z[["Protein per Phospholipid (mg/mmol)"]],
             na.rm=TRUE),
           length.out=200)
-        yPredictedFromFit <- predict(
+        yPredictedFromFit <- stats::predict(
           rMod,
           newdata = list(x = xPredictedFromFit))
         output[["Fit"]] <- data.frame(

@@ -47,15 +47,6 @@
 #' @author Johannes Graumann
 #' @keywords manip IO file
 #' @examples
-#' # stop("Function is missing examples!")
-#' @importFrom assertive.files assert_all_are_readable_files
-#' @importFrom assertive.types assert_is_a_bool
-#' @importFrom assertive.types assert_is_a_string
-#' @importFrom RcppRoll roll_mean
-#' @importFrom utils tail
-#' @importFrom wmtsa wavCWT
-#' @importFrom wmtsa wavCWTPeaks
-#' @importFrom wmtsa wavCWTTree
 #' @export
 parse_fluorimeter_output <- function(
   spec_file = NULL,
@@ -77,12 +68,12 @@ parse_fluorimeter_output <- function(
   if(
     grepl(pattern="^<Trace>\\s*$",x=linesInSpecFile[1],ignore.case=TRUE) &
       grepl(pattern="^X\\tY\\s*$",x=linesInSpecFile[4],ignore.case=TRUE) &
-      grepl(pattern="^</Trace>\\s*$",x=tail(linesInSpecFile,n=1),ignore.case=TRUE)){
+      grepl(pattern="^</Trace>\\s*$",x=utils::tail(linesInSpecFile,n=1),ignore.case=TRUE)){
     formatOfSpecFile <- "FelixGXv4.1.0.3096"
   } else if(
     grepl(pattern="^1\\s*$",x=linesInSpecFile[1],ignore.case=TRUE) &
       grepl(pattern="^X\\tY\\s*$",x=linesInSpecFile[4],ignore.case=TRUE) &
-      grepl(pattern="^\\d+\\.{1,1}\\d+\t\\d+\\s*$",x=tail(linesInSpecFile,n=1),ignore.case=TRUE)
+      grepl(pattern="^\\d+\\.{1,1}\\d+\t\\d+\\s*$",x=utils::tail(linesInSpecFile,n=1),ignore.case=TRUE)
   ){
     formatOfSpecFile <- "Felix32v1.20"
   } else if(

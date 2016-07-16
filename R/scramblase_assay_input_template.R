@@ -1,13 +1,5 @@
 #' @rdname scramblase_assay_plot
-#' @importFrom assertive.files assert_any_are_existing_files
-#' @importFrom assertive.strings assert_is_a_non_empty_string
 #' @importFrom magrittr %>%
-#' @importFrom magrittr extract
-#' @importFrom magrittr extract2
-#' @importFrom magrittr inset2
-#' @importFrom plyr rbind.fill
-#' @importFrom utils globalVariables
-#' @importFrom utils write.table
 #' @export
 scramblase_assay_input_template <- function(path="scramblase_assay_input_template.txt"){
 # Check input -------------------------------------------------------------
@@ -79,9 +71,9 @@ scramblase_assay_input_template <- function(path="scramblase_assay_input_templat
       }
     ) %>%
     plyr::rbind.fill() %>%
-    set_names(dataStructure %>% magrittr::extract2(1)) %>%
+    magrittr::set_names(dataStructure %>% magrittr::extract2(1)) %>%
   # Write the table out
-    write.table(
+    utils::write.table(
       file=path,
       sep="\t",
       row.names=FALSE)

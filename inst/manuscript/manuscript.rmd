@@ -369,7 +369,7 @@ figure2
 ```
 
 ```{r calculate_pprs, echo = FALSE}
-max_PPR <- read.delim(
+max_PPR <- utils::read.delim(
     file.path(tmpDir,"inputTable.txt"),
     check.names = FALSE) %>%
   flippant:::calculate_ppr() %>%

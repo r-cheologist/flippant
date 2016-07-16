@@ -1,8 +1,3 @@
-#' @importFrom assertive.numbers assert_all_are_greater_than
-#' @importFrom assertive.properties assert_has_rows
-#' @importFrom assertive.types assert_is_a_bool
-#' @importFrom assertive.types assert_is_a_number
-#' @importFrom assertive.types assert_is_data.frame
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 scramblase_assay_input_validation <- function(
