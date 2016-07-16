@@ -47,6 +47,20 @@
 #' @author Johannes Graumann
 #' @keywords manip IO file
 #' @examples
+#' library(magrittr)
+#' # Extract example data
+#' tmpDir <- tempdir()
+#' file.path("extdata", "PloierEtAl_Data.zip") %>%
+#'  system.file(
+#'    package = "flippant",
+#'    mustWork = TRUE) %>%
+#'  unzip(
+#'    overwrite = TRUE,
+#'    exdir = tmpDir)
+#' # Parse an exemplary file
+#' file.path(tmpDir, "wildtypeEx1_0.txt") %>%
+#'   parse_fluorimeter_output() %>%
+#'   str()
 #' @export
 parse_fluorimeter_output <- function(
   spec_file = NULL,
