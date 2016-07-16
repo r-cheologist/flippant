@@ -177,7 +177,6 @@
 #' @export
 #' @seealso \code{\link{parse_fluorimeter_output}} \code{\link{nlsLM}}
 #' @import ggplot2
-#' @importFrom plyr rbind.fill
 #' @examples
 #' library(magrittr)
 #' library(ggplot2)
