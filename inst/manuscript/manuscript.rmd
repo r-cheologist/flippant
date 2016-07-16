@@ -132,7 +132,7 @@ membrane preparations [@chang_chemical_2004;@rajasekharan_flip-flop_2011] and
 functional validation of candidate scramblases [@menon_opsin_2011;@malvezzi_ca2-dependent_2013;@goren_constitutive_2014], the 
 assay has also been used to characterize the stoichiometry of scramblase 
 homo--multimers reconstituting into the proteoliposomes 
-[@ploier_perturbed_submitted] and probe the ATP--dependence of flippases, 
+[@ploier_dimerization_2016] and probe the ATP--dependence of flippases, 
 molecules that under energy--consumption flip lipids against a concentration 
 gradient between bilayer leaflets [@soupene_atp8a1_2008]. 
 
@@ -141,10 +141,10 @@ from fluorometer--generated spectra, via the calculation of the underlying
 statistics and through publication--grade representation of the results, data 
 analysis in the context of this assay has until now involved an extensive series
 of manual steps, at most supported by spreadsheet calculation facilities
-[see @menon_opsin_2011;@goren_constitutive_2014;@ploier_perturbed_submitted for
+[see @menon_opsin_2011;@goren_constitutive_2014;@ploier_dimerization_2016 for
 extensive step--wise discussion].
 Based on the `R` free software environment for statistical computing and 
-graphics [@r_core_team_r:_2015] and prominently drawing on the power and 
+graphics [@r_core_team_r:_2016] and prominently drawing on the power and 
 elegance of the `ggplot2` plotting system [@wickham_ggplot2_2009], we here 
 provide `flippant`, a package that comprehensively, fast and reproducibly covers
 all data analysis and graphing needs from raw fluorescence spectra produced by 
@@ -152,7 +152,7 @@ scramblase assays. A simple parametrizing spreadsheet is the sole required user
 input.
 
 # Availablility and Implementation
-`flippant` has been implemented in `R` [@r_core_team_r:_2015] and integrated 
+`flippant` has been implemented in `R` [@r_core_team_r:_2016] and integrated 
 into the `bioconductor` collection of tools for biomedical data analysis [@huber_orchestrating_2015]. It is thus install-- and loadable as follows from 
 within a functional `R` environment:
 
@@ -186,7 +186,7 @@ latter is trivially assembled from any fluorescence data using a spreadsheet
 program. File type determination is handled algorithmically.
 
 Based on @menon_opsin_2011, @goren_constitutive_2014 as well as
-@ploier_perturbed_submitted and largely keeping with nomenclature used therein,
+@ploier_dimerization_2016 and largely keeping with nomenclature used therein,
 data is processed as follows. Input is format checked and defaults are injected
 for facultative parameters/columns as appropriate. 
 Fluorescence spectra are parsed. This includes algorithmic determination of when 
@@ -219,7 +219,7 @@ saturation curve. The behavior is adjustable using the `scale_to` parameter of
 the corresponding functions (see below). Next a monoexponential curve is fitted
 to the relationship of $P_{\geq 1}$ to the protein to phospholipid ratio (PPR; 
 (mg/mmol)), providing the scramblase--characterizing fit factor $\alpha$. By
-default and following @ploier_perturbed_submitted, PPR is scaled by a factor of
+default and following @ploier_dimerization_2016, PPR is scaled by a factor of
 0.65 to account for a fraction of the vesicle pool used that is refractory to
 scramblase reconstitution. This behavior can be modified using the 
 `ppr_scale_factor` parameter and avoided alltogether setting it to `NULL`.
@@ -276,7 +276,7 @@ plateau of an exponential fit to it (`scale_to = "model"`; default; for
 reasoning see above). `ppr_scale_factor` allows for the modification of scaling
 to account for a pool of vesicles that is scramblase--inaccessible (see above).
 The formula to which the data is fitted has evolved over time and `flippant`
-supports both the original (@menon_opsin_2011; @goren_constitutive_2014; `generation_of_algorithm = 1`), as well as the more recent iteration (@ploier_perturbed_submitted; default; `generation_of_algorithm = 2`), which
+supports both the original (@menon_opsin_2011; @goren_constitutive_2014; `generation_of_algorithm = 1`), as well as the more recent iteration (@ploier_dimerization_2016; default; `generation_of_algorithm = 2`), which
 takes into account the size distribution of the liposome polulation used and
 thus also requires parameters for liposome radius and its standard deviation 
 (`r_bar` and `sigma_r_bar`, respectively; in nm, both). The
@@ -310,7 +310,7 @@ among other techniques. However, the same set of experiments pointed at a defect
 in rhodopsin dimerization prior to insertion into liposomes, generating the new 
 hypothesis that the mutations may cause disease by interfering with the highly 
 ordered quarternary structure of the molecule in the retina 
-[@ploier_perturbed_submitted].
+[@ploier_dimerization_2016].
 
 `flippant`s capabilities are demonstrated here by reanalyzing a subset of the
 data underlying  Figure 4C--F in @ploier_dimerization_2016. The following work
@@ -327,7 +327,7 @@ scramblase_assay_traces(
   time_max_sec = 350)
 ```
 
-```{r figure1_creation, echo = FALSE, fig.height = 4, fig.cap = "**`flippant`--based plotting of spectral traces underlying the data in Figure 4C--F from @ploier_perturbed_submitted.** See text for command and details."}
+```{r figure1_creation, echo = FALSE, fig.height = 4, fig.cap = "**`flippant`--based plotting of spectral traces underlying the data in Figure 4C--F from @ploier_dimerization_2016.** See text for command and details."}
 # Plot spectral traces (Figure 1)
 x <- tmpDir %>%
   file.path("inputTable.txt") %>%
@@ -348,8 +348,8 @@ scramblase_assay_plot(
 xlim(0, 3)
 ```
 
-```{r figure2_creation, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "**`flippant`--based reanalysis of data in Figure 4C--F from @ploier_perturbed_submitted.** (A) and (B) show protein to phospholipid ration (PPR) plots for the data using a x--axis trimmed to a maximum value of 2 (see text for details). In (A) data is separately plotted for independent experiments, while (B) combines all data points, aiming for reliability of fit. 'adj. PPR' indicates that the measure has been scaled to account for a vesicle pool refractory to flippase reconsitution."}
-figure2 %<>% add_panel(
+```{r figure2_creation, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "**`flippant`--based reanalysis of data in Figure 4C--F from @ploier_dimerization_2016.** (A) and (B) show protein to phospholipid ration (PPR) plots for the data using a x--axis trimmed to a maximum value of 3 (see text for details). In (A) data is separately plotted for independent experiments, while (B) combines all data points, aiming for reliability of fit. 'adj. PPR' indicates that the measure has been scaled to account for a vesicle pool refractory to flippase reconsitution."}
+figure2 %<>% multipanelfigure::add_panel(
   top_panel = 1,
   panel = flippant::scramblase_assay_plot(x) + 
     ggplot2::theme_bw() + 
@@ -390,7 +390,7 @@ Figure 2A emphasizes reproducibility between independent experiments
 ("Experiment 1" and "Experiment 2") on the four probed rhodopsins. Forgoing
 reproducibility analysis in favor of a potentially more reliable result and
 following more closely the analysis in Figure 4C--F by
-@ploier_perturbed_submitted, a single fit may be performed for the combined data
+@ploier_dimerization_2016, a single fit may be performed for the combined data
 from all experiments as follows, resulting in Figure 2B:
 
 ```{r noeval_demonstrate_plot2, eval = FALSE}
@@ -435,15 +435,15 @@ ppr_results_alpha_print <- ppr_results %>%
 knitr::kable(
   ppr_results,
   row.names = FALSE,
-  caption = "**Tabular output of `flippant`--based reanalysis of data in Figure 4C--F from @ploier_perturbed_submitted.** An plain text--version of this output is produced by calling `scramblase_assay_stats`.")
+  caption = "**Tabular output of `flippant`--based reanalysis of data in Figure 4C--F from @ploier_dimerization_2016.** An plain text--version of this output is produced by calling `scramblase_assay_stats`.")
 ```
 
 The resulting values for the fit constant $\alpha$ correspond with
 `r ppr_results_alpha_print` for `r ppr_results_names`, respectively, well to the
-prior manual analysis by @ploier_perturbed_submitted (Table S2), where $\alpha
+prior manual analysis by @ploier_dimerization_2016 (Table S2), where $\alpha
 \times 10^4 \approx 16$ was reported for mutant and $\alpha \times 10^4 \approx
 7$ for wild type rhodopsin. Based on the manual analysis of the data we conclude
-in @ploier_perturbed_submitted that the mutant rhodopsins investigated are
+in @ploier_dimerization_2016 that the mutant rhodopsins investigated are
 reconstituted into proteoliposomes in monomeric form, contrary to the wild type,
 which is reconstituting as a homodimer. 
 `flippant` analysis of the data shows identical trends and close matches of the
@@ -489,7 +489,7 @@ analysis_timing_iqr <- signif(
 With `flippant` we present an integrated solution for data analysis in the 
 context of dithionite scramblase assays. Requiring only basic familiarity with 
 R as an environment for statistical computing and graphics 
-[@r_core_team_r:_2015], scientists can quickly analyse such data and arrive at 
+[@r_core_team_r:_2016], scientists can quickly analyse such data and arrive at 
 publication--grade graphics that offer extensive facilities for individual 
 optimization and adaptation [@wickham_ggplot2_2009]. On a laptop system with 
 `r parallel::detectCores()` cores and 8 GB RAM (no SSD), running `Linux` and 
