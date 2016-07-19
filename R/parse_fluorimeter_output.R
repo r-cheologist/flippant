@@ -69,7 +69,7 @@ parse_fluorimeter_output <- function(
   # Check Prerequisites #
   #######################
   assertive.types::assert_is_a_string(spec_file)
-  assertive.files::assert_all_are_readable_files(spec_file)
+  assertive.files::assert_all_are_readable_files(spec_file, warn_about_windows = FALSE)
   assertive.types::assert_is_a_bool(adjust)
   ##############
   # Processing #
