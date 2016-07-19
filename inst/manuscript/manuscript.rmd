@@ -391,17 +391,11 @@ ppr_results <- flippant::scramblase_assay_stats(
   magrittr::set_names(c("Experimental Series", "Fit Constant ($\\times 10^4$)"))
 ppr_results_names <- ppr_results %>%
   magrittr::extract2("Experimental Series") %>%
-  head(n = nrow(ppr_results) - 1) %>%
-  paste(collapse = ", ") %>%
-  paste("and") %>%
-  paste(tail(ppr_results$`Experimental Series`, n = 1))
+  to_string
 ppr_results_alpha_print <- ppr_results %>%
   magrittr::extract2("Fit Constant ($\\times 10^4$)") %>%
   round(2) %>%
-  head(n = nrow(ppr_results) - 1) %>%
-  paste(collapse = ", ") %>%
-  paste("and") %>%
-  paste(tail(ppr_results$`Fit Constant ($\\times 10^4$)`, n = 1))
+  to_string
 knitr::kable(
   ppr_results,
   row.names = FALSE,
