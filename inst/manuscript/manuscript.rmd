@@ -53,14 +53,14 @@ flippant_dependencies <- packageDescription("flippant",fields=c("Depends","Impor
         "`"),
       collapse = "")} )
 
-tmpDir <- tempdir()
+analysis_dir <- tempdir()
 file.path("extdata", "PloierEtAl_Data.zip") %>%
   system.file(
     package = "flippant",
     mustWork = TRUE) %>%
   unzip(
     overwrite = TRUE,
-    exdir = tmpDir)
+    exdir = analysis_dir)
 
 divisor <- 20
 figure2 <- multipanelfigure::multi_panel_figure(
@@ -322,9 +322,11 @@ acquisition  times between experiments. PPR scaling is used with the default
 factor of 0.65.
 
 ```{r noeval_demonstrate_traces, eval = FALSE}
+analysis_dir <- tempdir()
 template_file <- "extdata/PloierEtAl_Data.zip" %>% 
   system.file(package = "flippant") %>% 
-  unzip(files = "inputTable.txt")
+  unzip(files = "inputTable.txt", exdir = analysis_dir)
+  
 # Plot spectral traces (Figure 1)
 scramblase_assay_traces(
   template_file,
@@ -337,10 +339,10 @@ template_file <- "inputTable.txt"
 
 ```{r figure1_creation, echo = FALSE, fig.height = 4, fig.cap = "**`flippant`--based plotting of spectral traces underlying a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** See text for command and details."}
 # Plot spectral traces (Figure 1)
-x <- tmpDir %>%
+x <- analysis_dir %>%
   file.path(template_file) %>%
   flippant:::read_scramblase_input_file()
-x[["Path"]] <- file.path(tmpDir, x[["Path"]])
+x[["Path"]] <- file.path(analysis_dir, x[["Path"]])
 flippant::scramblase_assay_traces(
   x,
   time_max_sec = 350)
