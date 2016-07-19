@@ -195,7 +195,7 @@
 #'    overwrite = TRUE,
 #'    exdir = tmpDir)
 #' setwd(tmpDir)
-#' # Plot the spectal traces
+#' # Plot the spectral traces
 #' scramblase_assay_traces(
 #'   "inputTable.txt",
 #'   time_max_sec = 350)
