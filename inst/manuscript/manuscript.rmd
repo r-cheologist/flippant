@@ -53,15 +53,6 @@ flippant_dependencies <- packageDescription("flippant",fields=c("Depends","Impor
         "`"),
       collapse = "")} )
 
-analysis_dir <- tempdir()
-file.path("extdata", "PloierEtAl_Data.zip") %>%
-  system.file(
-    package = "flippant",
-    mustWork = TRUE) %>%
-  unzip(
-    overwrite = TRUE,
-    exdir = analysis_dir)
-
 divisor <- 20
 figure2 <- multipanelfigure::multi_panel_figure(
   widths = rep(17.22), 
@@ -313,38 +304,28 @@ hypothesis that the mutations may cause disease by interfering with the highly
 ordered quarternary structure of the molecule in the retina 
 [@ploier_dimerization_2016].
 
-`flippant`s capabilities are demonstrated here by reanalyzing a subset of the
-data underlying  Figure 4C--F in @ploier_dimerization_2016. The following work
-flow in a first  step plots the corresponding spectral traces (Figure 1). Note
+`flippant`'s capabilities are demonstrated here by reanalyzing a subset of the
+data underlying Figure 4C--F in @ploier_dimerization_2016. The first step is to
+extract the data files, stored in a ZIP archive within the pacakge.
+
+```{r extract_case_study_dataset}
+analysis_dir <- file.path(tempdir(), "flippant-case-study")
+extract_case_study_data(analysis_dir)
+template_file <- file.path(analysis_dir, "inputTable.txt")
+```
+
+To begin the analysis it is useful to plot the spectral traces of each 
+experimental series (Figure 1). Note
 that algorithmic alignment to the time of dithionite addition is employed
 (default) as well as  custom trimming of the time axis to account for divergent
 acquisition  times between experiments. PPR scaling is used with the default
 factor of 0.65.
 
-```{r noeval_demonstrate_traces, eval = FALSE}
-analysis_dir <- tempdir()
-template_file <- "extdata/PloierEtAl_Data.zip" %>% 
-  system.file(package = "flippant") %>% 
-  unzip(files = "inputTable.txt", exdir = analysis_dir)
-  
+
+```{r figure1_creation, fig.height = 4, fig.cap = "**`flippant`--based plotting of spectral traces underlying a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** See text for command and details."}
 # Plot spectral traces (Figure 1)
 scramblase_assay_traces(
   template_file,
-  time_max_sec = 350)
-```
-
-```{r define_template_file, echo = FALSE}
-template_file <- "inputTable.txt"
-```
-
-```{r figure1_creation, echo = FALSE, fig.height = 4, fig.cap = "**`flippant`--based plotting of spectral traces underlying a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** See text for command and details."}
-# Plot spectral traces (Figure 1)
-x <- analysis_dir %>%
-  file.path(template_file) %>%
-  flippant:::read_scramblase_input_file()
-x[["Path"]] <- file.path(analysis_dir, x[["Path"]])
-flippant::scramblase_assay_traces(
-  x,
   time_max_sec = 350)
 ```
 
