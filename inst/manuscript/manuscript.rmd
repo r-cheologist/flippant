@@ -340,13 +340,13 @@ scramblase_assay_plot(template_file)
 ```{r figure2_creation, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "**`flippant`--based reanalysis of a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** (A) and (B) show protein to phospholipid ration (PPR) plots for the data using a x--axis trimmed to a maximum value of 3 (see text for details). In (A) data is separately plotted for independent experiments, while (B) combines all data points, aiming for reliability of fit. 'adj. PPR' indicates that the measure has been scaled to account for a vesicle pool refractory to flippase reconsitution."}
 figure2 %<>% multipanelfigure::add_panel(
   top_panel = 1,
-  panel = flippant::scramblase_assay_plot(x) + 
+  panel = flippant::scramblase_assay_plot(template_file) + 
     ggplot2::theme_bw() + 
     ggplot2::xlab(expression("adj. PPR"~~("mg"/"mmol"))) +
     ggplot2::ylab(expression(P[{phantom()>=1}])))
 figure2 %<>% multipanelfigure::add_panel(
   top_panel = 2,
-  panel = flippant::scramblase_assay_plot(x, split_by_experiment = FALSE) + 
+  panel = flippant::scramblase_assay_plot(template_file, split_by_experiment = FALSE) + 
     ggplot2::theme_bw() + 
     ggplot2::xlab(expression("adj. PPR"~~("mg"/"mmol"))) +
     ggplot2::ylab(expression(P[{phantom()>=1}])) +
