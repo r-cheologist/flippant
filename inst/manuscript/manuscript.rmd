@@ -35,23 +35,22 @@ Git Clean
 ```{r setting_up_r, echo = FALSE, message = FALSE}
 library(flippant, quietly = TRUE)
 library(magrittr, quietly = TRUE)
-flippant_dependencies <- packageDescription("flippant",fields=c("Depends","Imports")) %>%
-  unlist(use.names = FALSE) %>%
-  stringi::stri_split(regex = ",", omit_empty = TRUE) %>%
-  unlist(use.names = FALSE) %>%
-  stringi::stri_replace_all(replacement = "", regex = "\\s*\\(.*\\)\\s*", omit_empty = TRUE) %>%
-  stringi::stri_replace_all(replacement = "", regex = "\\s*", omit_empty = TRUE) %>%
-  tail(n=length(.) - 1) %>%
-  sort() %>%
-  ( function(x){
-    paste0(
-      c(
-        "`",
-        paste0(head(x, n = length(x) - 1), collapse = "`, `"),
-        "` and `",
-        tail(x, n = 1),
-        "`"),
-      collapse = "")} )
+to_string <- function(x)
+{
+  paste(toString(head(x, -1)), "and", tail(x, 1))
+}
+
+# Copied from sig:::backquote
+backquote <- function (x)
+{
+    x <- gsub("`", "\\\\`", x)
+    paste0("`", x, "`")
+}
+flippant_dependencies <- "flippant" %>%
+  tools::package_dependencies(installed.packages()) %>%
+  extract2("flippant") %>%
+  backquote %>%
+  to_string
 
 divisor <- 20
 figure2 <- multipanelfigure::multi_panel_figure(
