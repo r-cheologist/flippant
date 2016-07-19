@@ -28,6 +28,7 @@ Imports:
     minpack.lm (>= 1.2-0),
     plyr (>= 1.8.4),
     RcppRoll (>= 0.2.2),
+    utils,
     wmtsa (>= 2.0-2)
 License: GPL (>= 3)
 LazyData: true
