@@ -29,6 +29,7 @@ Imports:
     plyr (>= 1.8.4),
     RcppRoll (>= 0.2.2),
     utils,
+    withr (>= 1.0.2),
     wmtsa (>= 2.0-2)
 License: GPL (>= 3)
 LazyData: true

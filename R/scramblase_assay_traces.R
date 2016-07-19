@@ -14,10 +14,15 @@ scramblase_assay_traces.data.frame <- function(
   ...){
   base_function_scramblase_assay_traces(x, ...)
 }
+
+#' @importFrom withr with_dir
 #' @export
 scramblase_assay_traces.character <- function(x, ...){
   parsedInputFile <- read_scramblase_input_file(x)
-  base_function_scramblase_assay_traces(x=parsedInputFile, ...)
+  withr::with_dir(
+    dirname(x),
+    base_function_scramblase_assay_traces(x=parsedInputFile, ...)
+  )
 }
 base_function_scramblase_assay_traces <- function(
   x,
