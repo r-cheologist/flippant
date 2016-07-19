@@ -322,16 +322,23 @@ acquisition  times between experiments. PPR scaling is used with the default
 factor of 0.65.
 
 ```{r noeval_demonstrate_traces, eval = FALSE}
+template_file <- "extdata/PloierEtAl_Data.zip" %>% 
+  system.file(package = "flippant") %>% 
+  unzip(files = "inputTable.txt")
 # Plot spectral traces (Figure 1)
 scramblase_assay_traces(
-  "inputTable.txt",
+  template_file,
   time_max_sec = 350)
+```
+
+```{r define_template_file, echo = FALSE}
+template_file <- "inputTable.txt"
 ```
 
 ```{r figure1_creation, echo = FALSE, fig.height = 4, fig.cap = "**`flippant`--based plotting of spectral traces underlying a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** See text for command and details."}
 # Plot spectral traces (Figure 1)
 x <- tmpDir %>%
-  file.path("inputTable.txt") %>%
+  file.path(template_file) %>%
   flippant:::read_scramblase_input_file()
 x[["Path"]] <- file.path(tmpDir, x[["Path"]])
 flippant::scramblase_assay_traces(
@@ -344,7 +351,7 @@ the following calls.
 
 ```{r noeval_demonstrate_plot, eval = FALSE}
 # Plot PPR plot (Figure 2A)
-scramblase_assay_plot("inputTable.txt")
+scramblase_assay_plot(template_file)
 ```
 
 ```{r figure2_creation, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "**`flippant`--based reanalysis of a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** (A) and (B) show protein to phospholipid ration (PPR) plots for the data using a x--axis trimmed to a maximum value of 3 (see text for details). In (A) data is separately plotted for independent experiments, while (B) combines all data points, aiming for reliability of fit. 'adj. PPR' indicates that the measure has been scaled to account for a vesicle pool refractory to flippase reconsitution."}
@@ -378,7 +385,7 @@ from all experiments as follows, resulting in Figure 2B:
 ```{r noeval_demonstrate_plot2, eval = FALSE}
 # Plot PPR plot (Figure 2B)
 scramblase_assay_plot(
-  "inputTable.txt",
+  template_file,
   split_by_experiment = FALSE)
 ```
 
@@ -391,7 +398,7 @@ and produces tabular output represented in Table 1.
 ```{r noeval_demonstrate_tabular_writeout, eval = FALSE}
 # Write out results in tabular manner (Table 1)
 scramblase_assay_stats(
-  "inputTable.txt",
+  template_file,
   split_by_experiment = FALSE)
 ```
 
