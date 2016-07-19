@@ -222,10 +222,14 @@ scramblase_assay_plot <- function(
 scramblase_assay_plot.data.frame <- function(x, ...){
   base_function_scramblase_assay_plot(x, ...)
 }
+
 #' @export
 scramblase_assay_plot.character <- function(x, ...){
   parsedInputFile <- read_scramblase_input_file(x)
-  base_function_scramblase_assay_plot(x=parsedInputFile, ...)
+  withr::with_dir(
+    dirname(x),
+    base_function_scramblase_assay_plot(x=parsedInputFile, ...)
+  )
 }
 base_function_scramblase_assay_plot <- function(
   x,
@@ -313,19 +317,12 @@ base_function_scramblase_assay_plot <- function(
       y="`Probability >= 1 Scramblase in Vesicle`"))
   # Layering
   ## First layer: lines/curves representing the monoexponential fit
-  if(any(!is.na(fitResultsFromX$"Experimental Series"))){
-    plotOutput <- plotOutput +
-      geom_line(
-        data=fitResultsFromX,
-        aes_string(color = "`Experimental Series`"))
-  } else {
-    plotOutput <- plotOutput +
-      geom_line(
-        data = fitResultsFromX)
-  }
+  plotOutput <- plotOutput +
+    geom_line(
+      data=fitResultsFromX,
+      aes_string(color = get_color_var(fitResultsFromX)))
   ## Second layer: annotations indicating PPR at tau
   if(generation_of_algorithm == 1){
-    if(any(!is.na(annotationsForX$"Experimental Series"))){
       plotOutput <- plotOutput +
         geom_segment(
           data = annotationsForX,
@@ -334,28 +331,13 @@ base_function_scramblase_assay_plot <- function(
             xend = "x2",
             y = "y1",
             yend = "y2",
-            color = "`Experimental Series`"),
+            color = get_color_var(annotationsForX)),
           linetype = 2)
-    } else {
-      plotOutput <- plotOutput +
-        geom_segment(
-          data = annotationsForX,
-          aes_string(
-            x = "x1",
-            xend = "x2",
-            y = "y1",
-            yend = "y2"),
-          linetype = 2)
-    }
   }
   ## Third Layer: data points
-  if(any(!is.na(x$"Experimental Series"))){
-    plotOutput <- plotOutput +
-      geom_point(aes_string(color="`Experimental Series`"))
-  } else {
-    plotOutput <- plotOutput +
-      geom_point()
-  }
+  plotOutput <- plotOutput +
+    geom_point(aes_string(color=get_color_var(x)))
+    
   # Faceting by "Experiment"
   if(any(!is.na(x$"Experiment"))){
     if(split_by_experiment){
@@ -364,20 +346,24 @@ base_function_scramblase_assay_plot <- function(
     }
   }
   # Prettifications
+  x_label <- if(is.null(ppr_scale_factor)){
+    expression(frac("Protein","Phospholipid")~~bgroup("(",frac("mg","mmol"),")"))
+  } else {
+    expression(frac("Protein","Phospholipid")^"adj."~~bgroup("(",frac("mg","mmol"),")"))
+  }
   plotOutput <- plotOutput +
     labs(
+      x=x_label,
       y=expression(P~bgroup("(",frac("Scramblase","Liposome")>=1,")")),
       color="Experiment")
-  if(is.null(ppr_scale_factor)){
-    plotOutput <- plotOutput +
-      labs(
-        x=expression(frac("Protein","Phospholipid")~~bgroup("(",frac("mg","mmol"),")")))
-  } else {
-    plotOutput <- plotOutput +
-      labs(
-        x = expression(
-          frac("Protein","Phospholipid")^"adj."~~bgroup("(",frac("mg","mmol"),")")))
-  }
+  
   # Return
   return(plotOutput)
+}
+
+get_color_var <- function(data) {
+  if(any(!is.na(data$"Experimental Series"))) 
+  {
+    "`Experimental Series`"
+  }
 }
