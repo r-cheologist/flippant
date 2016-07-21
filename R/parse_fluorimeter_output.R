@@ -7,9 +7,9 @@
 #' QuantaMaster instruments (Photon Technology International, Inc., Edison, 
 #' New Jersey)running software versions \code{FelixGX v4.1} 
 #' (see \code{\link{parse_felix_gx_output}}) and \code{Felix32 v1.20} (see 
-#' \code{\link{parse_felix_32_output}}). The format used in a given file is devined
-#' from the data structure and appropriate internal parsing functions are 
-#' called.
+#' \code{\link{parse_felix_32_output}}). The format used in a given file is 
+#' divined from the data structure and appropriate internal parsing functions  
+#' are called.
 #' 
 #' If requested the time point of dithionite addition to a sample is determined 
 #' using \pkg{wmtsa}-supplied methodology and the acquisition time reset
@@ -19,27 +19,17 @@
 #' @param adjust A \code{\link{logical}} indicating of whether (default) or not
 #' acquisition time should be reset to have \code{0} (zero) coincide with the 
 #' addition of dithionite (see 'Details' section).
-#' @return Returns a \code{\link{list}} with the follwoing keys:
+#' @param file_type A string specifying whether or the file was created using
+#' Felix GX or Felix 32 or is a "manual" tab delimited file.
+#' @return A data frame with two columns:
 #' \describe{
-#'  \item{\code{Data}}{A \code{\link{data.frame}} representing the actual 
-#'    spectrum with the columns \code{Time.in.sec} and 
-#'    \code{Fluorescence.Intensity} (all \code{\link{numeric}}).}
-#'  \item{\code{Data.Points}}{Number of data points in the spectrum as a 
-#'    \code{\link{numeric}}. Ecquivalent to \code{\link{nrow}} of the 
-#'    \code{link{data.frame}} in \code{Data}.}
-#'  \item{\code{Max.Fluorescence.Intensity}}{\code{\link{numeric}} 
-#'    representation of the maximal fluorescence intensity from \code{Data}.}
-#'  \item{\code{Min.Fluorescence.Intensity}}{\code{\link{numeric}} 
-#'    representation of the minimal fluorescence intensity from \code{Data}.}
-#'  \item{\code{Max.Acquisition.Time.in.sec}}{\code{\link{numeric}} 
-#'    representation of the maximal \code{Time.in.sec} from \code{Data}.}
-#'  \item{\code{Min.Acquisition.Time.in.sec}}{\code{\link{numeric}} 
-#'    representation of the minimal \code{Time.in.sec} from \code{Data}.}}
-#' If provided by the data file parsed, an additional field is present:
-#' \describe{
-#'  \item{\code{File.Name}}{\code{\link{character}} representation of the 
-#'    file name (as saved by the instrument).}
+#' \item{Time.in.sec}{Numeric. Number of seconds since the start of experiment.}
+#' \item{Fluorescence.Intensity}{Numeric. Intensity of fluorescence (relative 
+#' scale, no official unit).}
 #' }
+#' For Felix GX, if the file contains the information, the return value will  
+#' also have anattribute \code{WavelengthsInNanometres}, which contains the 
+#' excitation and emission wavelengths.
 #' @seealso \code{scramblase_assay_input_validation},
 #' \code{\link[flippant]{parse_felix_gx_output}}, 
 #' \code{\link[flippant]{parse_felix_32_output}},
@@ -49,22 +39,16 @@
 #' @examples
 #' library(magrittr)
 #' # Extract example data
-#' tmpDir <- tempdir()
-#' file.path("extdata", "PloierEtAl_Data.zip") %>%
-#'  system.file(
-#'    package = "flippant",
-#'    mustWork = TRUE) %>%
-#'  unzip(
-#'    overwrite = TRUE,
-#'    exdir = tmpDir)
+#' analysis_dir <- file.path(tempdir(), "flippant-case-study")
+#' fluor_file <- extract_case_study_data(analysis_dir, "wildtypeEx1_0.txt")
 #' # Parse an exemplary file
-#' file.path(tmpDir, "wildtypeEx1_0.txt") %>%
-#'   parse_fluorimeter_output() %>%
+#' parse_fluorimeter_output(fluor_file) %>%
 #'   str()
 #' @export
 parse_fluorimeter_output <- function(
   spec_file = NULL,
-  adjust = TRUE){
+  adjust = TRUE,
+  file_type = c("auto", "FelixGXv4.1.0.3096", "Felix32v1.20", "manual")){
   #######################
   # Check Prerequisites #
   #######################
@@ -74,45 +58,52 @@ parse_fluorimeter_output <- function(
   ##############
   # Processing #
   ##############
-  # Aspirate the file
-  ###################
-  linesInSpecFile <- readLines(spec_file)
+  
   # Divine the output-producing fluorimeter
   #########################################
-  if(
-    grepl(pattern="^<Trace>\\s*$",x=linesInSpecFile[1],ignore.case=TRUE) &
-      grepl(pattern="^X\\tY\\s*$",x=linesInSpecFile[4],ignore.case=TRUE) &
-      grepl(pattern="^</Trace>\\s*$",x=utils::tail(linesInSpecFile,n=1),ignore.case=TRUE)){
-    formatOfSpecFile <- "FelixGXv4.1.0.3096"
-  } else if(
-    grepl(pattern="^1\\s*$",x=linesInSpecFile[1],ignore.case=TRUE) &
-      grepl(pattern="^X\\tY\\s*$",x=linesInSpecFile[4],ignore.case=TRUE) &
-      grepl(pattern="^\\d+\\.{1,1}\\d+\t\\d+\\s*$",x=utils::tail(linesInSpecFile,n=1),ignore.case=TRUE)
-  ){
-    formatOfSpecFile <- "Felix32v1.20"
-  } else if(
-    grepl(pattern="^Time \\(sec\\)\tFluorescense Intensity\\s*$",x=linesInSpecFile[1],ignore.case=TRUE)
-  ){
-    formatOfSpecFile <- "Manual"
-  } else {
-    stop("Unsupported data format in ",spec_file)
+  file_type <- match.arg(file_type)
+  if(file_type == "auto")
+  {
+    first_lines <- readLines(spec_file, 4)
+    formatOfSpecFile <- if(
+      grepl(pattern="^<Trace>\\s*$",x=first_lines[1],ignore.case=TRUE) &
+        grepl(pattern="^X\\tY\\s*$",x=first_lines[4],ignore.case=TRUE)){
+      "FelixGXv4.1.0.3096"
+    } else if(
+      grepl(pattern="^1\\s*$",x=first_lines[1],ignore.case=TRUE) &
+        grepl(pattern="^X\\tY\\s*$",x=first_lines[4],ignore.case=TRUE)){
+      formatOfSpecFile <- "Felix32v1.20"
+    } else if(
+      grepl(pattern="^Time.\\(sec\\)\tFluorescense.Intensity\\s*$",x=first_lines[1],ignore.case=TRUE)
+    ){
+      "manual"
+    } else {
+      stop("Unsupported data format in ",spec_file)
+    }
   }
   # Extract data
   ##############
-  if(formatOfSpecFile == "FelixGXv4.1.0.3096"){
-    output <- parse_felix_gx_output(linesInSpecFile)
-  } else if(formatOfSpecFile == "Felix32v1.20"){
-    output <- parse_felix_32_output(linesInSpecFile)
-  } else if(formatOfSpecFile == "Manual"){
-    output <- parse_manual_output(linesInSpecFile)
-  }
+  output <- switch(
+    formatOfSpecFile,
+    FelixGXv4.1.0.3096 = read_felix_gx(spec_file),
+    Felix32v1.20 = {
+      lines <- readLines(spec_file)
+      y <- parse_felix_32_output(lines)
+      structure(y$Data, File.Name = y$File.Name) 
+    },
+    manual = {
+      lines <- readLines(spec_file)
+      y <- parse_manual_output(lines)
+      structure(y$Data, File.Name = y$File.Name) 
+    }
+  )
   # Determine timepoint of dithionite addition and adjust time axis accordingly
   #############################################################################
   # Following http://stackoverflow.com/a/24560355/2103880
   if(adjust){
     # Smooth the intensity using a simple rolling mean
     n <- 10
-    smoothedTmpData <- RcppRoll::roll_mean(output$Data$Fluorescence.Intensity, n)
+    smoothedTmpData <- RcppRoll::roll_mean(output$Fluorescence.Intensity, n)
     # Wavelet-based peak detection
     gradient <- -diff(smoothedTmpData)
     cwt <- wmtsa::wavCWT(gradient)
@@ -124,13 +115,11 @@ parse_fluorimeter_output <- function(
     peakMax <- peaks$x[which.max(peaks$y)]
     # Reset acquisition time
     if(length(peakMax) < 1){
-      stop("No ditionite addition detected in '",spec_file,"'.")
+      stop("No dithionite addition detected in '",spec_file,"'.")
     }
-    zeroTimePoint <- output$Data$Time.in.sec[peakMax[1]]
-    output$Data$Time.in.sec <- output$Data$Time.in.sec - zeroTimePoint
+    zeroTimePoint <- output$Time.in.sec[peakMax[1]]
+    output$Time.in.sec <- output$Time.in.sec - zeroTimePoint
   }
-  output$Max.Acquisition.Time.in.sec <- max(output$Data$Time.in.sec,na.rm=TRUE)
-  output$Min.Acquisition.Time.in.sec <- min(output$Data$Time.in.sec,na.rm=TRUE)
   #################
   # Return result #
   #################
