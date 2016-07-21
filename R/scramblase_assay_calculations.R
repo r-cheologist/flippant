@@ -37,25 +37,9 @@ scramblase_assay_calculations <- function(
 # Read out data -----------------------------------------------------------
   # What spectral time windows to extract?
   ## Just checking ...
-  spectralData %>%
-    sapply(
-      function(y){
-        y %>%
-          magrittr::extract2("Min.Acquisition.Time.in.sec") %>%
-          return()
-      }
-    ) %>%
-    assertive.numbers::assert_all_are_less_than(0)
+ 
   
-  spectralData %>%
-    sapply(
-      function(y){
-        y %>%
-          magrittr::extract2("Max.Acquisition.Time.in.sec") %>%
-          return()
-      }
-    ) %>%
-    assertive.numbers::assert_all_are_greater_than_or_equal_to(x[["Timepoint of Measurement (s)"]])
+ 
   maxAcquisitionTime <- x %>%
       magrittr::extract2("Timepoint of Measurement (s)") %>%
       max(na.rm = TRUE)
@@ -63,46 +47,29 @@ scramblase_assay_calculations <- function(
   # Average over 10 values before dithionite addition for activity baseline
   x[["Baseline Fluorescence"]] <- spectralData %>%
     vapply(
-      function(z){
-        indexesForAveraging <- z %>%
-          magrittr::extract2("Data") %>%
-          magrittr::extract2("Time.in.sec") %>%
-          magrittr::is_less_than(0) %>%
-          which() %>%
-          utils::tail(n = 10)
-        z %>%
-          magrittr::extract2("Data") %>%
-          magrittr::extract2("Fluorescence.Intensity") %>%
-          magrittr::extract(indexesForAveraging) %>%
-          stats::median(na.rm = TRUE) %>%
-          return()
+      function(spectral_data_i){
+        spectral_data_i %>% 
+          magrittr::extract(.$Time.in.sec < 0, ) %>% 
+          utils::tail(10) %>% 
+          magrittr::extract2("Fluorescence.Intensity") %>% 
+          stats::median(na.rm = TRUE)
       },
       1)
   # Average over last 10 values (in common time range) for activity
-  x[["Minimum Fluorescence"]] <- spectralData %>%
-    seq_along() %>%
-    vapply(
-      function(z){
-        stopIndexForAveraging <- spectralData %>%
-          magrittr::extract2(z) %>%
-          magrittr::extract2("Data") %>%
-          magrittr::extract2("Time.in.sec") %>%
-          magrittr::is_less_than(x[z,"Timepoint of Measurement (s)"]) %>%
-          which() %>%
-          max(na.rm = TRUE)
-        indexesForAveraging <- seq(
-          from=stopIndexForAveraging-9,
-          to=stopIndexForAveraging)
-        spectralData %>%
-          magrittr::extract2(z) %>%
-          magrittr::extract2("Data") %>%
-          magrittr::extract2("Fluorescence.Intensity") %>%
-          magrittr::extract(indexesForAveraging) %>%
-          stats::median(na.rm = TRUE) %>%
-          return()
-      },
-      1
-    )
+  x[["Minimum Fluorescence"]] <- mapply(
+    function(spectral_data_i, timepoint_of_measurement_s)
+    {
+      # TODO: this behaviour matches the previous implementation, but using <=
+      # seems slightly more intuitive
+      spectral_data_i %>% 
+        magrittr::extract(.$Time.in.sec < timepoint_of_measurement_s, ) %>% 
+        utils::tail(10) %>% 
+        magrittr::extract2("Fluorescence.Intensity") %>% 
+        stats::median(na.rm = TRUE)
+    },
+    spectralData,
+    x$"Timepoint of Measurement (s)"
+  )
 
   # Apply volume correction factors as needed
   volumeCorrectionFactor <- x[["Fluorescence Assay Vol. with DT (ul)"]] / 
