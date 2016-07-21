@@ -15,16 +15,14 @@ scramblase_assay_calculations <- function(
     maxit=100)
   formulae <- list(
     pre_fit = list(
-      "TRUE" = stats::as.formula("y ~ b * ( 1 - exp( -x / a ))"),
-      "FALSE" = stats::as.formula("y ~ b - c * exp( -x / a )")),
+      "TRUE" = y ~ b * ( 1 - exp( -x / a ) ),
+      "FALSE" = y ~ b - c * exp( -x / a )),
     first_generation_algorithm = list(
-      "TRUE" = stats::as.formula("y ~ b * ( 1 - exp( -x / a ) )"),
-      "FALSE" = stats::as.formula("y ~ b - c * exp( -x / a )")),
+      "TRUE" = y ~ b * ( 1 - exp( -x / a ) ),
+      "FALSE" = y ~ b - c * exp( -x / a )),
     second_generation_algorithm = list(
-      # "TRUE" = stats::as.formula("y ~ b * ( 1 - ( 1 / sqrt( 1 + 784 * a * x ) ) * exp( ( -3872 * a * x ) / ( 1 + 784 * a * x ) ) )"),
-      "TRUE" = stats::as.formula("y ~ b * ( 1 - ( 1 / sqrt( 1 + sigma_r_bar^2 * a * x ) ) * exp( ( -a * r_bar^2 / 2 * x ) / ( 1 + sigma_r_bar^2 * a * x ) ) )"),
-      # "FALSE" = stats::as.formula("y ~ b - c * ( ( 1 / sqrt( 1 + 784 * a * x ) ) * exp( ( -3872 * a * x ) / ( 1 + 784 * a * x ) ) )")))
-      "FALSE" = stats::as.formula("y ~ b - c * ( ( 1 / sqrt( 1 + sigma_r_bar^2 * a * x ) ) * exp( ( -a * r_bar^2 / 2 * x ) / ( 1 + sigma_r_bar^2 * a * x ) ) )")))
+      "TRUE" = y ~ b * ( 1 - ( 1 / sqrt( 1 + sigma_r_bar^2 * a * x ) ) * exp( ( -a * r_bar^2 / 2 * x ) / ( 1 + sigma_r_bar^2 * a * x ) ) ),
+      "FALSE" = y ~ b - c * ( ( 1 / sqrt( 1 + sigma_r_bar^2 * a * x ) ) * exp( ( -a * r_bar^2 / 2 * x ) / ( 1 + sigma_r_bar^2 * a * x ) ) )))
 
   generation_of_algorithm %<>%
     switch(
