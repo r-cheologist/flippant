@@ -14,10 +14,14 @@ scramblase_assay_traces.data.frame <- function(
   ...){
   base_function_scramblase_assay_traces(x, ...)
 }
+
 #' @export
 scramblase_assay_traces.character <- function(x, ...){
   parsedInputFile <- read_scramblase_input_file(x)
-  base_function_scramblase_assay_traces(x=parsedInputFile, ...)
+  withr::with_dir(
+    dirname(x),
+    base_function_scramblase_assay_traces(x=parsedInputFile, ...)
+  )
 }
 base_function_scramblase_assay_traces <- function(
   x,
@@ -52,8 +56,8 @@ base_function_scramblase_assay_traces <- function(
     lapply(
       names(rawFluorimeterOutput),
       function(y){
-        time.in.sec <- rawFluorimeterOutput[[y]][["Data"]][["Time.in.sec"]]
-        fluorescenceIntensity <- rawFluorimeterOutput[[y]][["Data"]][["Fluorescence.Intensity"]]
+        time.in.sec <- rawFluorimeterOutput[[y]][["Time.in.sec"]]
+        fluorescenceIntensity <- rawFluorimeterOutput[[y]][["Fluorescence.Intensity"]]
         fluorescenceIntensity <- fluorescenceIntensity/max(fluorescenceIntensity,na.rm=TRUE)
         return(
           data.frame(

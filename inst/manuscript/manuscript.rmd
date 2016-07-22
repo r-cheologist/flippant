@@ -35,32 +35,22 @@ Git Clean
 ```{r setting_up_r, echo = FALSE, message = FALSE}
 library(flippant, quietly = TRUE)
 library(magrittr, quietly = TRUE)
-flippant_dependencies <- packageDescription("flippant",fields=c("Depends","Imports")) %>%
-  unlist(use.names = FALSE) %>%
-  stringi::stri_split(regex = ",", omit_empty = TRUE) %>%
-  unlist(use.names = FALSE) %>%
-  stringi::stri_replace_all(replacement = "", regex = "\\s*\\(.*\\)\\s*", omit_empty = TRUE) %>%
-  stringi::stri_replace_all(replacement = "", regex = "\\s*", omit_empty = TRUE) %>%
-  tail(n=length(.) - 1) %>%
-  sort() %>%
-  ( function(x){
-    paste0(
-      c(
-        "`",
-        paste0(head(x, n = length(x) - 1), collapse = "`, `"),
-        "` and `",
-        tail(x, n = 1),
-        "`"),
-      collapse = "")} )
+to_string <- function(x)
+{
+  paste(toString(head(x, -1)), "and", tail(x, 1))
+}
 
-tmpDir <- tempdir()
-file.path("extdata", "PloierEtAl_Data.zip") %>%
-  system.file(
-    package = "flippant",
-    mustWork = TRUE) %>%
-  unzip(
-    overwrite = TRUE,
-    exdir = tmpDir)
+# Copied from sig:::backquote
+backquote <- function (x)
+{
+    x <- gsub("`", "\\\\`", x)
+    paste0("`", x, "`")
+}
+flippant_dependencies <- "flippant" %>%
+  tools::package_dependencies(installed.packages()) %>%
+  extract2("flippant") %>%
+  backquote %>%
+  to_string
 
 divisor <- 20
 figure2 <- multipanelfigure::multi_panel_figure(
@@ -154,7 +144,7 @@ input.
 
 # Availablility and Implementation
 `flippant` has been implemented in `R` [@r_core_team_r:_2016] and integrated 
-into the `bioconductor` collection of tools for biomedical data analysis [@huber_orchestrating_2015]. It is thus install-- and loadable as follows from 
+into the `Bioconductor` collection of tools for biomedical data analysis [@huber_orchestrating_2015]. It is thus install-- and loadable as follows from 
 within a functional `R` environment:
 
 ```{r noeval_demonstrate_installation, eval = FALSE}
@@ -313,29 +303,28 @@ hypothesis that the mutations may cause disease by interfering with the highly
 ordered quarternary structure of the molecule in the retina 
 [@ploier_dimerization_2016].
 
-`flippant`s capabilities are demonstrated here by reanalyzing a subset of the
-data underlying  Figure 4C--F in @ploier_dimerization_2016. The following work
-flow in a first  step plots the corresponding spectral traces (Figure 1). Note
+`flippant`'s capabilities are demonstrated here by reanalyzing a subset of the
+data underlying Figure 4C--F in @ploier_dimerization_2016. The first step is to
+extract the data files, stored in a ZIP archive within the pacakge.
+
+```{r extract_case_study_dataset}
+analysis_dir <- file.path(tempdir(), "flippant-case-study")
+extract_case_study_data(analysis_dir)
+template_file <- file.path(analysis_dir, "inputTable.txt")
+```
+
+To begin the analysis it is useful to plot the spectral traces of each 
+experimental series (Figure 1). Note
 that algorithmic alignment to the time of dithionite addition is employed
 (default) as well as  custom trimming of the time axis to account for divergent
 acquisition  times between experiments. PPR scaling is used with the default
 factor of 0.65.
 
-```{r noeval_demonstrate_traces, eval = FALSE}
+
+```{r figure1_creation, fig.height = 4, fig.cap = "**`flippant`--based plotting of spectral traces underlying a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** See text for command and details."}
 # Plot spectral traces (Figure 1)
 scramblase_assay_traces(
-  "inputTable.txt",
-  time_max_sec = 350)
-```
-
-```{r figure1_creation, echo = FALSE, fig.height = 4, fig.cap = "**`flippant`--based plotting of spectral traces underlying a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** See text for command and details."}
-# Plot spectral traces (Figure 1)
-x <- tmpDir %>%
-  file.path("inputTable.txt") %>%
-  flippant:::read_scramblase_input_file()
-x[["Path"]] <- file.path(tmpDir, x[["Path"]])
-flippant::scramblase_assay_traces(
-  x,
+  template_file,
   time_max_sec = 350)
 ```
 
@@ -344,19 +333,19 @@ the following calls.
 
 ```{r noeval_demonstrate_plot, eval = FALSE}
 # Plot PPR plot (Figure 2A)
-scramblase_assay_plot("inputTable.txt")
+scramblase_assay_plot(template_file)
 ```
 
 ```{r figure2_creation, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "**`flippant`--based reanalysis of a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** (A) and (B) show protein to phospholipid ration (PPR) plots for the data using a x--axis trimmed to a maximum value of 3 (see text for details). In (A) data is separately plotted for independent experiments, while (B) combines all data points, aiming for reliability of fit. 'adj. PPR' indicates that the measure has been scaled to account for a vesicle pool refractory to flippase reconsitution."}
 figure2 %<>% multipanelfigure::add_panel(
   top_panel = 1,
-  panel = flippant::scramblase_assay_plot(x) + 
+  panel = flippant::scramblase_assay_plot(template_file) + 
     ggplot2::theme_bw() + 
     ggplot2::xlab(expression("adj. PPR"~~("mg"/"mmol"))) +
     ggplot2::ylab(expression(P[{phantom()>=1}])))
 figure2 %<>% multipanelfigure::add_panel(
   top_panel = 2,
-  panel = flippant::scramblase_assay_plot(x, split_by_experiment = FALSE) + 
+  panel = flippant::scramblase_assay_plot(template_file, split_by_experiment = FALSE) + 
     ggplot2::theme_bw() + 
     ggplot2::xlab(expression("adj. PPR"~~("mg"/"mmol"))) +
     ggplot2::ylab(expression(P[{phantom()>=1}])) +
@@ -378,7 +367,7 @@ from all experiments as follows, resulting in Figure 2B:
 ```{r noeval_demonstrate_plot2, eval = FALSE}
 # Plot PPR plot (Figure 2B)
 scramblase_assay_plot(
-  "inputTable.txt",
+  template_file,
   split_by_experiment = FALSE)
 ```
 
@@ -391,7 +380,7 @@ and produces tabular output represented in Table 1.
 ```{r noeval_demonstrate_tabular_writeout, eval = FALSE}
 # Write out results in tabular manner (Table 1)
 scramblase_assay_stats(
-  "inputTable.txt",
+  template_file,
   split_by_experiment = FALSE)
 ```
 
@@ -402,17 +391,11 @@ ppr_results <- flippant::scramblase_assay_stats(
   magrittr::set_names(c("Experimental Series", "Fit Constant ($\\times 10^4$)"))
 ppr_results_names <- ppr_results %>%
   magrittr::extract2("Experimental Series") %>%
-  head(n = nrow(ppr_results) - 1) %>%
-  paste(collapse = ", ") %>%
-  paste("and") %>%
-  paste(tail(ppr_results$`Experimental Series`, n = 1))
+  to_string
 ppr_results_alpha_print <- ppr_results %>%
   magrittr::extract2("Fit Constant ($\\times 10^4$)") %>%
   round(2) %>%
-  head(n = nrow(ppr_results) - 1) %>%
-  paste(collapse = ", ") %>%
-  paste("and") %>%
-  paste(tail(ppr_results$`Fit Constant ($\\times 10^4$)`, n = 1))
+  to_string
 knitr::kable(
   ppr_results,
   row.names = FALSE,

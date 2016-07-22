@@ -80,4 +80,4 @@ scramblase_assay_input_template <- function(path="scramblase_assay_input_templat
 }
 
 # Add global variables to satisfy 'R CMD check' ---------------------------
-globalVariables(".")
+utils::globalVariables(".")

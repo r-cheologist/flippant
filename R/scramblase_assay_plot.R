@@ -1,5 +1,5 @@
 #' @title scramblase_assay_plot
-#' @aliases scrambalseAssayCalculations scramblase_assay_input_template 
+#' @aliases scramblaseAssayCalculations scramblase_assay_input_template 
 #' scramblase_assay_plot scramblase_assay_stats scramblase_assay_traces
 #' @description Functions for the presentation and evaluaton of dithionite 
 #' scramblase assays
@@ -23,9 +23,9 @@
 #'  \item{\code{Lipid in Reconstitution (mmol)}:}{Self-explanatory. For the 
 #'    standard phospholipid experiment defaulting to \code{0.0045} (1 ml of a 
 #'    4.5 mM solution).}
-#'  \item{\code{Timepoint of Measurement (s)}:}{Timepoint (in seconds) used as 
-#'    an anchor for the extraction of terminal fluorescence (defaulting to 
-#'    \code{400}).}
+#'  \item{\code{Timepoint of Measurement (s)}:}{The time to determine terminal 
+#'    fluorescence, calculated from the point when dithionite is added, in
+#'    seconds, defaulting to \code{400}).}
 #'  \item{\code{Experiment}:}{Identifier for any given experiment. Used for 
 #'    \code{\link{facet_wrap}} during generation of \code{\link{ggplot}} output.
 #'    All data with one \code{Experiment} identifier ends up on one plot/facet.}
@@ -186,27 +186,21 @@
 #' library(magrittr)
 #' library(ggplot2)
 #' # Extract example data
-#' tmpDir <- tempdir()
-#' file.path("extdata", "PloierEtAl_Data.zip") %>%
-#'  system.file(
-#'    package = "flippant",
-#'    mustWork = TRUE) %>%
-#'  unzip(
-#'    overwrite = TRUE,
-#'    exdir = tmpDir)
-#' setwd(tmpDir)
-#' # Plot the spectal traces
+#' analysis_dir <- file.path(tempdir(), "flippant-case-study")
+#' extract_case_study_data(analysis_dir)
+#' template_file <- file.path(analysis_dir, "inputTable.txt")
+#' # Plot the spectral traces
 #' scramblase_assay_traces(
-#'   "inputTable.txt",
+#'   template_file,
 #'   time_max_sec = 350)
 #' # Plot the PPR plot(s) faceting by experiment
-#' scramblase_assay_plot("inputTable.txt")
+#' scramblase_assay_plot(template_file)
 #' # Generate tabular results
-#' scramblase_assay_stats("inputTable.txt")
+#' scramblase_assay_stats(template_file)
 #' # Plot the PPR plot(s) forgoing faceting by experiment
-#' scramblase_assay_plot("inputTable.txt", split_by_experiment = FALSE)
+#' scramblase_assay_plot(template_file, split_by_experiment = FALSE)
 #' # Generate tabular results
-#' scramblase_assay_stats("inputTable.txt", split_by_experiment = FALSE)
+#' scramblase_assay_stats(template_file, split_by_experiment = FALSE)
 scramblase_assay_plot <- function(
   x,
   scale_to = c("model","data"),
@@ -222,10 +216,14 @@ scramblase_assay_plot <- function(
 scramblase_assay_plot.data.frame <- function(x, ...){
   base_function_scramblase_assay_plot(x, ...)
 }
+
 #' @export
 scramblase_assay_plot.character <- function(x, ...){
   parsedInputFile <- read_scramblase_input_file(x)
-  base_function_scramblase_assay_plot(x=parsedInputFile, ...)
+  withr::with_dir(
+    dirname(x),
+    base_function_scramblase_assay_plot(x=parsedInputFile, ...)
+  )
 }
 base_function_scramblase_assay_plot <- function(
   x,
@@ -313,19 +311,12 @@ base_function_scramblase_assay_plot <- function(
       y="`Probability >= 1 Scramblase in Vesicle`"))
   # Layering
   ## First layer: lines/curves representing the monoexponential fit
-  if(any(!is.na(fitResultsFromX$"Experimental Series"))){
-    plotOutput <- plotOutput +
-      geom_line(
-        data=fitResultsFromX,
-        aes_string(color = "`Experimental Series`"))
-  } else {
-    plotOutput <- plotOutput +
-      geom_line(
-        data = fitResultsFromX)
-  }
+  plotOutput <- plotOutput +
+    geom_line(
+      data=fitResultsFromX,
+      aes_string(color = get_color_var(fitResultsFromX)))
   ## Second layer: annotations indicating PPR at tau
   if(generation_of_algorithm == 1){
-    if(any(!is.na(annotationsForX$"Experimental Series"))){
       plotOutput <- plotOutput +
         geom_segment(
           data = annotationsForX,
@@ -334,28 +325,13 @@ base_function_scramblase_assay_plot <- function(
             xend = "x2",
             y = "y1",
             yend = "y2",
-            color = "`Experimental Series`"),
+            color = get_color_var(annotationsForX)),
           linetype = 2)
-    } else {
-      plotOutput <- plotOutput +
-        geom_segment(
-          data = annotationsForX,
-          aes_string(
-            x = "x1",
-            xend = "x2",
-            y = "y1",
-            yend = "y2"),
-          linetype = 2)
-    }
   }
   ## Third Layer: data points
-  if(any(!is.na(x$"Experimental Series"))){
-    plotOutput <- plotOutput +
-      geom_point(aes_string(color="`Experimental Series`"))
-  } else {
-    plotOutput <- plotOutput +
-      geom_point()
-  }
+  plotOutput <- plotOutput +
+    geom_point(aes_string(color=get_color_var(x)))
+    
   # Faceting by "Experiment"
   if(any(!is.na(x$"Experiment"))){
     if(split_by_experiment){
@@ -364,20 +340,24 @@ base_function_scramblase_assay_plot <- function(
     }
   }
   # Prettifications
+  x_label <- if(is.null(ppr_scale_factor)){
+    expression(frac("Protein","Phospholipid")~~bgroup("(",frac("mg","mmol"),")"))
+  } else {
+    expression(frac("Protein","Phospholipid")^"adj."~~bgroup("(",frac("mg","mmol"),")"))
+  }
   plotOutput <- plotOutput +
     labs(
+      x=x_label,
       y=expression(P~bgroup("(",frac("Scramblase","Liposome")>=1,")")),
       color="Experiment")
-  if(is.null(ppr_scale_factor)){
-    plotOutput <- plotOutput +
-      labs(
-        x=expression(frac("Protein","Phospholipid")~~bgroup("(",frac("mg","mmol"),")")))
-  } else {
-    plotOutput <- plotOutput +
-      labs(
-        x = expression(
-          frac("Protein","Phospholipid")^"adj."~~bgroup("(",frac("mg","mmol"),")")))
-  }
+  
   # Return
   return(plotOutput)
+}
+
+get_color_var <- function(data) {
+  if(any(!is.na(data$"Experimental Series"))) 
+  {
+    "`Experimental Series`"
+  }
 }

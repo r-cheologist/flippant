@@ -17,17 +17,22 @@ Suggests:
     devtools,
     multipanelfigure,
     roxygen2,
-    testthat
+    testthat,
+    tools
 Imports:
     assertive.files (>= 0.0-2),
     assertive.numbers (>= 0.0-2),
     assertive.properties (>= 0.0-3),
     assertive.strings (>= 0.0-3),
     assertive.types (>= 0.0-2),
+    data.table (>= 1.9.6),
     magrittr (>= 1.5),
     minpack.lm (>= 1.2-0),
     plyr (>= 1.8.4),
     RcppRoll (>= 0.2.2),
+    stringi (>= 1.1.1),
+    utils,
+    withr (>= 1.0.2),
     wmtsa (>= 2.0-2)
 License: GPL (>= 3)
 LazyData: true
