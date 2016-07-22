@@ -454,17 +454,16 @@ analysis_timing <- microbenchmark::microbenchmark(
   analysis_timing_function(),
   times = analysis_timing_n)
 
-analysis_timing_median <- signif(
-  summary(
-    analysis_timing)$median,
-  2)
+analysis_timing_median <- analysis_timing %>%
+  summary() %>%
+  magrittr::extract2("median") %>%
+  signif(2)
 
-analysis_timing_iqr <- signif(
-  diff(
-    unlist(
-      summary(analysis_timing)[c("lq", "uq")],
-      use.names = FALSE)),
-  2)
+analysis_timing_mad <- analysis_timing %>%
+  magrittr::extract2("time") %>%
+  mad() %>%
+  magrittr::divide_by(1E9) %>%
+  signif(2)
 ```
 
 With `flippant` we present an integrated solution for data analysis in the 
@@ -477,7 +476,7 @@ optimization and adaptation [@wickham_ggplot2_2009]. On a laptop system with
 `R` version `r paste(R.version[c("major","minor")], collapse = ".")`, the
 statements generating equivalents to the plots and calculations presented here
 take a mere `r analysis_timing_median` seconds (median; 
-$\text{IQR}=`r analysis_timing_iqr`~\text{s}$; $n=`r analysis_timing_n`$).
+$\text{MAD}=`r analysis_timing_mad`~\text{s}$; $n=`r analysis_timing_n`$).
 
 Results from `flippant`--driven analysis track prior manual analysis well. 
 Deviations observed may stem from algorithmic differences such as the fitting 
