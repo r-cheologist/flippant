@@ -1,6 +1,6 @@
 ---
-title: '`flippant` --- An `R` package for the automated analysis of dithionite scramblase
-  assays'
+title: '`flippant` --- An `R` package for the automated analysis of
+  fluorescense--based scramblase assays'
 author: Richard J. Cotton ^†^, Birgit Ploier ^‡^, Michael A. Goren ^‡^,
   Anant K. Menon^‡^ and Johannes Graumann ^†,^*
 date: '`r format(Sys.Date(), "%B %d,%Y")`'
@@ -70,9 +70,9 @@ knitr::opts_chunk$set(
 ```
 
 # Abstract
-Dithionite scramblase assays are an established means of probing the lipid 
-scrambling activity of protein extracts and purified proteins. While the assay
-has yielded insight into the scramblase activity in crude membrane preparations,
+The lipid scrambling activity of protein extracts and purified scramblases is
+typically measured using a fluorescence--based assay. While the assay has
+yielded insight into the scramblase activity in crude membrane preparations,
 functional validation of candidate scramblases, stoichiometry of scramblase 
 complexes as well as ATP--dependence of flippases, data analysis in its context 
 has remained a task involving many manual steps. With the extension package 
@@ -85,17 +85,19 @@ publication record, closely reproducing the reported results.
 # Introduction
 Scramblases are proteins mediating the bidirectional, mass--action driven 
 equilibration of lipids between the leaflets of lipid bilayers that constitute 
-biological membranes [@waechter_flippases_2013]. Independent of energy 
-equivalents such as ATP they facilitate this ``flipping'' by providing a 
-mechanism of transition through the hydrophobic environment of membranes to 
-polar lipid head groups, thus reducing the massive energetic cost that process 
-would carry otherwise [@kornberg_inside-outside_1971]. The underlying molecular 
-mechanisms remain largely enigmatic [for a discussion including exceptions see @ernst_phospholipid_2015].
+biological membranes
+[@waechter_flippases_2013;@pomorski_lipid_2006;brunner_structural_2016].
+Independent of energy  equivalents such as ATP they facilitate this "flipping"
+by providing a mechanism by which polar lipid head groups can transition through
+the hydrophobic environment of membranes, thus reducing the massive energetic
+cost this process would carry otherwise [@kornberg_inside-outside_1971]. The
+underlying molecular  mechanisms remain largely enigmatic [for a discussion
+including exceptions see @ernst_phospholipid_2015].
 Proteins supporting flipping processes as central as the equilibration of the 
 ubiquitous phosphoglycerolipids across the membrane of the endoplasmic 
 reticulum, where they are synthesized in the cytoplasmic monolayer, have yet to 
 be identified [@menon_specific_2000]. 
-None the less, there has been much recent progress in scramblase identification 
+Nonetheless, there has been much recent progress in scramblase identification 
 and characterization. Proteins shown to have scramblase activity include 
 FtsW [@mohammadi_identification_2011], opsin/rhodopsin
 [@menon_opsin_2011;@goren_constitutive_2014], TMEM16 
@@ -111,24 +113,26 @@ proteins and protein extracts based on the reconstitution of scramblases or
 candidate proteins into preformed synthetic liposomes that contain trace amounts
 of nitrobenzoxadiazole (NBD) labeled fluorescent lipids [@chang_chemical_2004].
 Upon addition of membrane--impermeable reducing agents such as dithionite to 
-these liposomes, fluorophores in the external leaflet are quenched and fluorescence in scramblase--free liposomes accordingly quickly drops to approximately 50% of the 
-initial value. However, for proteoliposomes reconstituted with proteins 
-conferring a scramblase activity, fluorescence disappears entirely, as
-fast scramblase--mediated equilibration between outer (exposed) and inner
-(protected) leaflet of the bilayer renders all fluorescent lipids
-accessible to reduction. By titration of the protein amount reconstituted into
-the liposome membranes it is thus possible to characterize scramblases and probe
-their activity. Beyond the identification of scramblase activities in crude 
-membrane preparations [@chang_chemical_2004;@rajasekharan_flip-flop_2011] and 
-functional validation of candidate scramblases [@menon_opsin_2011;@malvezzi_ca2-dependent_2013;@goren_constitutive_2014], the 
-assay has also been used to characterize the stoichiometry of scramblase 
+these liposomes, fluorophores in the external leaflet are reduced and
+fluorescence in scramblase--free liposomes accordingly quickly drops to
+approximately 50% of the initial value. However, for proteoliposomes
+reconstituted with proteins  conferring a scramblase activity, fluorescence
+disappears almost entirely, as fast scramblase--mediated equilibration between
+outer (exposed) and inner (protected) leaflet of the bilayer renders all
+fluorescent lipids accessible to reduction. By titration of the protein amount
+reconstituted into the liposome membranes it is thus possible to characterize
+scramblases and probe their activity. Beyond the identification of scramblase
+activities in crude membrane preparations
+[@chang_chemical_2004;@rajasekharan_flip-flop_2011] and 
+functional validation of candidate scramblases [@menon_opsin_2011;@malvezzi_ca2-dependent_2013;@goren_constitutive_2014mohammadi_specificity_2014],
+the  assay has also been used to characterize the stoichiometry of scramblase 
 homo--multimers reconstituting into the proteoliposomes 
 [@ploier_dimerization_2016] and probe the ATP--dependence of flippases, 
 molecules that under energy--consumption flip lipids against a concentration 
 gradient between bilayer leaflets [@soupene_atp8a1_2008]. 
 
 Starting with the identification of baseline and post--reduction fluorescence 
-from fluorometer--generated spectra, via the calculation of the underlying 
+from fluorimeter--generated spectra, via the calculation of the underlying 
 statistics and through publication--grade representation of the results, data 
 analysis in the context of this assay has until now involved an extensive series
 of manual steps, at most supported by spreadsheet calculation facilities
@@ -160,7 +164,7 @@ functionality, which are automatically satisfied on installation:
 # Input Data and Data Processing
 To analyse raw data stemming from dithionite scramblase assays, `flippant` 
 requires for each data point information on the path to the 
-fluorometer--generated spectrum, the amount of protein used to reconstitute 
+fluorimeter--generated spectrum, the amount of protein used to reconstitute 
 proteoliposomes, the assay volume before and after addition of 
 dithionite (to calculate a volume correction factor), the amount of lipids 
 present (to calculate a protein to phospholipid ratio or PPR) etc. The user 
@@ -168,7 +172,7 @@ supplies this information in a spreadsheet (see below for supporting
 functionality).
 
 Spectral input data is read by `flippant` using the file paths provided in the
-spreadsheet. Raw spectra produced by QuantaMaster fluorometer instruments 
+spreadsheet. Raw spectra produced by QuantaMaster fluorimeter instruments 
 (Photon Technology International, Inc., Edison, New Jersey) running software 
 versions FelixGX v4.1 and Felix32 v1.20, respectively, as well as a simple 
 generic tab--delimited spectrum representing file format with time (in seconds) 
@@ -178,7 +182,7 @@ program. File type determination is handled algorithmically.
 
 Based on @menon_opsin_2011, @goren_constitutive_2014 as well as
 @ploier_dimerization_2016 and largely keeping with nomenclature used therein,
-data is processed as follows. Input is format checked and defaults are injected
+data are processed as follows. Input is format checked and defaults are injected
 for facultative parameters/columns as appropriate. 
 Fluorescence spectra are parsed. This includes algorithmic determination of when 
 dithionite was added to the sample using peak detection by continuous wavelet
@@ -213,7 +217,7 @@ to the relationship of $P_{\geq 1}$ to the protein to phospholipid ratio (PPR;
 default and following @ploier_dimerization_2016, PPR is scaled by a factor of
 0.65 to account for a fraction of the vesicle pool used that is refractory to
 scramblase reconstitution. This behavior can be modified using the 
-`ppr_scale_factor` parameter and avoided alltogether setting it to `NULL`.
+`ppr_scale_factor` parameter and avoided altogether setting it to `NULL`.
 
 # Main Features
 ## Template Generation for Data Input
@@ -268,7 +272,7 @@ reasoning see above). `ppr_scale_factor` allows for the modification of scaling
 to account for a pool of vesicles that is scramblase--inaccessible (see above).
 The formula to which the data is fitted has evolved over time and `flippant`
 supports both the original (@menon_opsin_2011; @goren_constitutive_2014; `generation_of_algorithm = 1`), as well as the more recent iteration (@ploier_dimerization_2016; default; `generation_of_algorithm = 2`), which
-takes into account the size distribution of the liposome polulation used and
+takes into account the size distribution of the liposome population used and
 thus also requires parameters for liposome radius and its standard deviation 
 (`r_bar` and `sigma_r_bar`, respectively; in nm, both). The
 `split_by_experiment` argument is used to indicate whether independent
@@ -296,11 +300,10 @@ we hypothesized that a class of enigmatic rhodopsin mutations, which are known
 to cause *retinitis pigmentosa* yet do not display the commonly associated 
 molecular phenotypes of impaired binding of retinal, folding and/or trafficking or 
 transducin activation, may in fact be impacted in their scramblase activity.
-This hypothesis was disproved when tested using the dithionite scramblase assay
-among other techniques. However, the same set of experiments pointed at a defect 
-in rhodopsin dimerization prior to insertion into liposomes, generating the new 
-hypothesis that the mutations may cause disease by interfering with the highly 
-ordered quarternary structure of the molecule in the retina 
+This hypothesis was disproved. However, the same set of experiments pointed at a
+defect  in rhodopsin dimerization prior to insertion into liposomes, generating
+the new hypothesis that the mutations may cause disease by interfering with the
+highly ordered quarternary structure of rhodopsin in the retina 
 [@ploier_dimerization_2016].
 
 `flippant`'s capabilities are demonstrated here by reanalyzing a subset of the
@@ -474,7 +477,7 @@ implementation unequivocally open to scrutiny and adaptation or extension by
 users.
 
 `flippant`, in conclusion, provides means for quick, reproducible data analysis
-in the context of dithionite scramblase analysis and a platform for review, 
+in the context of scramblase activity analysis and a platform for review, 
 dissemination and extension of the strategies it employs. As BSA--back 
 extraction, a different assay for lipid translocation across liposome bilayers
 [@kubelt_transbilayer_2002;@vehring_flip-flop_2007], can utilize an essentially 
