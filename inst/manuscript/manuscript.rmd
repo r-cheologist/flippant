@@ -164,7 +164,7 @@ functionality, which are automatically satisfied on installation:
 # Input Data and Data Processing
 To analyse raw data stemming from dithionite scramblase assays, `flippant` 
 requires for each data point information on the path to the 
-fluorimeter--generated spectrum, the amount of protein used to reconstitute 
+fluorimeter--generated spectrum, the amount of protein reconstituted into
 proteoliposomes, the assay volume before and after addition of 
 dithionite (to calculate a volume correction factor), the amount of lipids 
 present (to calculate a protein to phospholipid ratio or PPR) etc. The user 
