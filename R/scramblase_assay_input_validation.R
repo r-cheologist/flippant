@@ -30,7 +30,7 @@ scramblase_assay_input_validation <- function(
   requiredColumnsInX <- list(
     Name = c(
       "Path",
-      "Protein in Reconstitution (mg)"),
+      "Protein Reconstituted (mg)"),
     Class = c(
       "character",
       "numeric"))

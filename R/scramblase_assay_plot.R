@@ -10,7 +10,7 @@
 #'  \item{\code{Path}:}{Paths to existing and readable \code{ASCII} output files 
 #'    of a fluorimeter. See \code{\link{parse_fluorimeter_output}} for details and
 #'    supported formats.}
-#'  \item{\code{Protein in Reconstitution (mg)}:}{Self-explanatory.}}
+#'  \item{\code{Protein Reconstituted (mg)}:}{Self-explanatory.}}
 #' 
 #' Further (\bold{facultative}) columns are:
 #' \describe{

@@ -98,7 +98,7 @@ scramblase_assay_calculations <- function(
         ## Ensure that there's a data point with liposomes ONLY as a unique 
         ## reference point
         indexOfLiposomesOnlyData <- z %>%
-          magrittr::extract2("Protein in Reconstitution (mg)") %>%
+          magrittr::extract2("Protein Reconstituted (mg)") %>%
           magrittr::equals(0) %>%
           which()
         if(length(indexOfLiposomesOnlyData) == 0){
@@ -263,7 +263,7 @@ scramblase_assay_calculations <- function(
 }
 
 calculate_ppr <- function(x, ppr_scale_factor = 0.65){
-  ppr <- x[["Protein in Reconstitution (mg)"]]/x[["Lipid in Reconstitution (mmol)"]]
+  ppr <- x[["Protein Reconstituted (mg)"]]/x[["Lipid in Reconstitution (mmol)"]]
   if(!is.null(ppr_scale_factor)){
     ppr <- ppr/ppr_scale_factor
   }
