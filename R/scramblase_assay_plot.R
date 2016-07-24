@@ -15,11 +15,11 @@
 #' Further (\bold{facultative}) columns are:
 #' \describe{
 #'  \item{\code{Fluorescence Assay Vol. w/o DT (ul)}:}{Volume of the 
-#'    fluorescence assay prior to addition of fluorescence-quenching ditihionite
-#'    (defaulting to \code{2000}).}
+#'    fluorescence assay prior to addition of ditihionite (defaulting to
+#'    \code{2000}).}
 #'  \item{\code{Fluorescence Assay Vol. with DT (ul)}:}{Volume of the 
-#'    fluorescence assay after the addition of fluorescence-quenching 
-#'    ditihionite (defaulting to \code{2040}).}
+#'    fluorescence assay after the addition ditihionite (defaulting to
+#'    \code{2040}).}
 #'  \item{\code{Lipid in Reconstitution (mmol)}:}{Self-explanatory. For the 
 #'    standard phospholipid experiment defaulting to \code{0.0045} (1 ml of a 
 #'    4.5 mM solution).}
@@ -113,7 +113,7 @@
 #'        \eqn{\tau}{tau} value has the implication that at this \code{PPR} all 
 #'        vesicles on average have one scramblase and 63\% have one or more 
 #'        (i.e. are active). \code{color} is used to differentiate 
-#'        \code{Experimental Series}. Where \code{gerneration_of_algorithm} is
+#'        \code{Experimental Series}. Where \code{generation_of_algorithm} is
 #'        \code{2}, interpretation of \eqn{a} is less obvious and this layer is
 #'        thus ommited in the plot.}
 #'      \item{Points (\code{\link{geom_point}}) representing the corresponding 
@@ -159,11 +159,11 @@
 #' deviationaverage of the radius distribution  of the liposomes used in the
 #' assay. Only used in \code{generatio_of_algorithm = 2} and defaulting to
 #' \code{28} (see Ploier et al. 2016 for details).
-#' @return \code{scrambalse_assay_traces} and \code{scramblase_assay_plot} return 
+#' @return \code{scramblase_assay_traces} and \code{scramblase_assay_plot} return 
 #' \code{\link{ggplot}} objects representing the raw fluorescence traces and a
-#' complete PPR plot, respectively. \code{scrambalseAssayInputTemplate} 
+#' complete PPR plot, respectively. \code{scramblaseAssayInputTemplate} 
 #' generates a tab-delimited \code{ASCII} file in the file system and does not
-#' provide further output. \code{scrambalseAssayStats} assembles (and prints) 
+#' provide further output. \code{scramblaseAssayStats} assembles (and prints) 
 #' assay statistics as a \code{\link{data.frame}}.
 #' @author Johannes Graumann
 #' @references Menon, I., Huber, T., Sanyal, S., Banerjee, S., Barre, P., Canis, 
