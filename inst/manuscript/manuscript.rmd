@@ -389,7 +389,7 @@ scramblase_assay_stats(
 
 ```{r analysis_tabular_output, echo = FALSE}
 ppr_results <- flippant::scramblase_assay_stats(
-    x, split_by_experiment = FALSE) %>%
+    template_file, split_by_experiment = FALSE) %>%
   dplyr::mutate(`Fit Constant` = round(`Fit Constant` * 10^4, 2)) %>%
   magrittr::set_names(c("Experimental Series", "Fit Constant ($\\times 10^4$)"))
 ppr_results_names <- ppr_results %>%
@@ -424,15 +424,15 @@ analysis_timing_n <- 100
 
 analysis_timing_function <- function(){
   flippant::scramblase_assay_traces(
-    x,
+    template_file,
     time_max_sec = 350)
   flippant::scramblase_assay_plot(
-    x)
+    template_file)
   flippant::scramblase_assay_plot(
-    x,
+    template_file,
     split_by_experiment = FALSE)
   flippant::scramblase_assay_stats(
-    x,
+    template_file,
     split_by_experiment = FALSE)
 }
 
