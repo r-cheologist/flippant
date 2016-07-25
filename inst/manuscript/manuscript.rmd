@@ -1,8 +1,8 @@
 ---
-title: '`flippant` --- An `R` package for the automated analysis of
-  fluorescense--based scramblase assays'
-author: Richard J. Cotton ^†^, Birgit Ploier ^‡^, Michael A. Goren ^‡^,
-  Anant K. Menon^‡^ and Johannes Graumann ^†,^*
+title: '`flippant` --- An `R` package for the automated analysis of fluorescense--based
+  scramblase assays'
+author: Richard J. Cotton ^†^, Birgit Ploier ^‡^, Michael A. Goren ^‡^, Anant K. Menon^‡^
+  and Johannes Graumann ^†,^*
 date: '`r format(Sys.Date(), "%B %d,%Y")`'
 output:
   pdf_document:
