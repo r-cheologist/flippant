@@ -470,7 +470,7 @@ routine used (`flippant` uses the the Marquardt nonlinear least squares
 algorithm as implemented by @elzhov_minpack.lm:_2015) and 
 general handling of significant digits and rounding. Another potential source
 of minor divergence is the algorithmic *versus* manual determination of the time
-point at which reductant is added in an experiment, potentialy resulting in
+point at which reductant is added in an experiment, potentially resulting in
 slightly differing determination of relative fluorescence reduction.
 
 The choice of `R` for the implementation is not only motivated by the extensive
