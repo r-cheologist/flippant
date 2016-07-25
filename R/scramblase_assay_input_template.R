@@ -13,7 +13,7 @@ scramblase_assay_input_template <- function(path="scramblase_assay_input_templat
     ## Available fileds/columns
     columnName = c(
       "Path",
-      "Protein in Reconstitution (mg)",
+      "Protein Reconstituted (mg)",
       "Fluorescence Assay Vol. w/o DT (ul)",
       "Fluorescence Assay Vol. with DT (ul)",
       "Lipid in Reconstitution (mmol)",
