@@ -405,7 +405,7 @@ knitr::kable(
   caption = "**Tabular output of `flippant`--based reanalysis of a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** An plain text--version of this output is produced by calling `scramblase_assay_stats`.")
 ```
 
-The resulting values for the fit constant $\alpha$ correspond with
+The resulting values for the fit constant correspond with
 `r ppr_results_alpha_print` for `r ppr_results_names`, respectively, well to the
 prior manual analysis by @ploier_dimerization_2016 (Table S2), where $\alpha
 \times 10^4 \approx 16$ was reported for mutant and $\alpha \times 10^4 \approx
