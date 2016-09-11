@@ -89,7 +89,7 @@ scramblase activity assays and provides a platform for review, dissemination and
 extension of the strategies it employs.
 
 # Keywords
-scramblase; sithionite scramblase assay; R
+scramblase; dithionite scramblase assay; R
 
 # Background
 Scramblases are proteins mediating the bidirectional, mass--action driven 
@@ -317,7 +317,7 @@ highly ordered quarternary structure of rhodopsin in the retina
 
 `flippant`'s capabilities are demonstrated here by reanalyzing a subset of the
 data underlying Figure 4C--F in @ploier_dimerization_2016. The first step is to
-extract the data files, stored in a ZIP archive within the pacakge.
+extract the data files, stored in a ZIP archive within the package.
 
 ```{r extract_case_study_dataset}
 analysis_dir <- file.path(tempdir(), "flippant-case-study")
@@ -504,7 +504,7 @@ Not applicable.
 Not applicable.
 
 ## Availability of data and material
-Upon acceptance of the manuscript, `flippant` will be depositied as a
+Upon acceptance of the manuscript, `flippant` will be deposited as a
 self--contained `R` package including all data presented in the `Bioconductor`
 collection of tools for biomedical data analysis [@huber_orchestrating_2015].
 
