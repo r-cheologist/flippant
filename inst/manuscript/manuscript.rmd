@@ -1,5 +1,5 @@
 ---
-title: '`flippant` --- An `R` package for the automated analysis of fluorescense--based
+title: '`flippant` --- An `R` package for the automated analysis of fluorescence--based
   scramblase assays'
 author: Richard J. Cotton ^†^, Birgit Ploier ^‡^, Michael A. Goren ^‡^, Anant K. Menon^‡^
   and Johannes Graumann ^†,^*
