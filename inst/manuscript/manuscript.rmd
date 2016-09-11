@@ -86,7 +86,7 @@ publication record, closely reproducing the reported results.
 Scramblases are proteins mediating the bidirectional, mass--action driven 
 equilibration of lipids between the leaflets of lipid bilayers that constitute 
 biological membranes
-[@waechter_flippases_2013;@pomorski_lipid_2006;brunner_structural_2016].
+[@waechter_flippases_2013;@pomorski_lipid_2006;@brunner_structural_2016].
 Independent of energy  equivalents such as ATP they facilitate this "flipping"
 by providing a mechanism by which polar lipid head groups can transition through
 the hydrophobic environment of membranes, thus reducing the massive energetic
@@ -124,8 +124,8 @@ reconstituted into the liposome membranes it is thus possible to characterize
 scramblases and probe their activity. Beyond the identification of scramblase
 activities in crude membrane preparations
 [@chang_chemical_2004;@rajasekharan_flip-flop_2011] and 
-functional validation of candidate scramblases [@menon_opsin_2011;@malvezzi_ca2-dependent_2013;@goren_constitutive_2014mohammadi_specificity_2014],
-the  assay has also been used to characterize the stoichiometry of scramblase 
+functional validation of candidate scramblases [@menon_opsin_2011;@malvezzi_ca2-dependent_2013;@goren_constitutive_2014;@mohammadi_specificity_2014],
+the assay has also been used to characterize the stoichiometry of scramblase 
 homo--multimers reconstituting into the proteoliposomes 
 [@ploier_dimerization_2016] and probe the ATP--dependence of flippases, 
 molecules that under energy--consumption flip lipids against a concentration 
