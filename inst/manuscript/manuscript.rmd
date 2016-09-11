@@ -496,7 +496,22 @@ extraction, a different assay for lipid translocation across liposome bilayers
 identical data analysis workflow, `flippant` is expected to facilitate analysis
 of such experiments as well.
 
-# Acknowledgements
+# Declarations
+## Ethics approval and consent to participate
+Not applicable.
+
+## Consent for publication
+Not applicable.
+
+## Availability of data and material
+Upon acceptance of the manuscript, `flippant` will be depositied as a
+self--contained `R` package including all data presented in the `Bioconductor`
+collection of tools for biomedical data analysis [@huber_orchestrating_2015].
+
+## Competing interests
+The authors declare that they have no competing interests.
+
+## Funding
 J.G., R.J.C. and the Proteomics Core at WCM--Q are supported by ``Biomedical 
 Research Program'' funds at Weill Cornell Medicine -- Qatar, a program 
 funded by Qatar Foundation. This study was made possible by NPRP grant
@@ -504,5 +519,10 @@ funded by Qatar Foundation. This study was made possible by NPRP grant
 Foundation). The statements made herein are solely the responsibility of the
 authors. B.P. was also supported by the Austrian Science Fund (FWF), project
 J3686--B21.
+
+## Authors' contributions
+R.J.C and J.G. wrote the code, B.P., M.A.G. and A.K.M. guided the implementation
+and edited the manuscript, which J.G. wrote. B.P. provided the exemplary assay
+data. A.K.M. and J.G. supervised the work.
 
 # References
