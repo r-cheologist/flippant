@@ -5,11 +5,11 @@ author: Richard J. Cotton ^†^, Birgit Ploier ^‡^, Michael A. Goren ^‡^, An
   and Johannes Graumann ^†,^*
 date: '`r format(Sys.Date(), "%B %d,%Y")`'
 output:
-  word_document:
-    fig_caption: yes
   pdf_document:
     fig_caption: yes
   html_document:
+    fig_caption: yes
+  word_document:
     fig_caption: yes
 csl: bmc-bioinformatics.csl
 bibliography: flippant.bib
