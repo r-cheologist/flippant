@@ -89,6 +89,9 @@ scramblase activity assays and provides a platform for review, dissemination and
 extension of the strategies it employs.
 
 # Introduction
+# Keywords
+scramblase; sithionite scramblase assay; R
+
 Scramblases are proteins mediating the bidirectional, mass--action driven 
 equilibration of lipids between the leaflets of lipid bilayers that constitute 
 biological membranes
