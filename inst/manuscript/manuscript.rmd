@@ -11,7 +11,7 @@ output:
     fig_caption: yes
   html_document:
     fig_caption: yes
-csl: bioinformatics.csl
+csl: bmc-bioinformatics.csl
 bibliography: flippant.bib
 ---
 
