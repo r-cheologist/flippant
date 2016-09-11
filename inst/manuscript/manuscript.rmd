@@ -88,10 +88,10 @@ reported results.
 scramblase activity assays and provides a platform for review, dissemination and
 extension of the strategies it employs.
 
-# Introduction
 # Keywords
 scramblase; sithionite scramblase assay; R
 
+# Background
 Scramblases are proteins mediating the bidirectional, mass--action driven 
 equilibration of lipids between the leaflets of lipid bilayers that constitute 
 biological membranes
@@ -425,7 +425,7 @@ which is reconstituting as a homodimer.
 `flippant` analysis of the data shows identical trends and close matches of the
 results, supporting identical conclusions.
 
-# Conclusion
+# Conclusions
 
 ```{r analysis_timing, echo = FALSE, cache = TRUE}
 
