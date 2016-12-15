@@ -63,7 +63,7 @@ flippant_dependencies <- "flippant" %>%
   to_string
 
 divisor <- 20
-figure2 <- multipanelfigure::multi_panel_figure(
+figure2_plot <- multipanelfigure::multi_panel_figure(
   widths = rep(17.22), 
   heights = c(
     18/divisor * 7 - 0.25,
@@ -71,6 +71,11 @@ figure2 <- multipanelfigure::multi_panel_figure(
   unit = "cm",
   inter_row_spacing = 0.5,
   inter_column_spacing = 0.5)
+
+# Ensure presence of "figures" directory
+if(!dir.exists("figures")){
+  dir.create("figures")
+}
 
 knitr::opts_chunk$set(
   fig.width = 6.78, 
@@ -343,11 +348,19 @@ acquisition  times between experiments. PPR scaling is used with the default
 factor of 0.65.
 
 
-```{r figure1_creation, fig.height = 4, fig.cap = "**`flippant`--based plotting of spectral traces underlying a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** See text for command and details."}
+```{r figure1-creation, fig.height = 4, fig.cap = "**`flippant`--based plotting of spectral traces underlying a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** See text for command and details."}
 # Plot spectral traces (Figure 1)
-scramblase_assay_traces(
+figure1_plot <- scramblase_assay_traces(
   template_file,
   time_max_sec = 350)
+```
+```{r figure1-save, echo=FALSE}
+ggsave(
+  plot = figure1_plot,
+  filename = file.path("figures", "Cotton_et_al_-_flippant_-_Figure1.png"),
+  width = 177.2,
+  units = "mm",
+  dpi = 600)
 ```
 
 Scramblase activity analysis as described above is performed on the data set with
@@ -358,14 +371,14 @@ the following calls.
 scramblase_assay_plot(template_file)
 ```
 
-```{r figure2_creation, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "**`flippant`--based reanalysis of a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** (A) and (B) show protein to phospholipid ration (PPR) plots for the data using a x--axis trimmed to a maximum value of 3 (see text for details). In (A) data is separately plotted for independent experiments, while (B) combines all data points, aiming for reliability of fit. 'adj. PPR' indicates that the measure has been scaled to account for a vesicle pool refractory to flippase reconsitution."}
-figure2 %<>% multipanelfigure::add_panel(
+```{r figure2-creation, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "**`flippant`--based reanalysis of a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** (A) and (B) show protein to phospholipid ration (PPR) plots for the data using a x--axis trimmed to a maximum value of 3 (see text for details). In (A) data is separately plotted for independent experiments, while (B) combines all data points, aiming for reliability of fit. 'adj. PPR' indicates that the measure has been scaled to account for a vesicle pool refractory to flippase reconsitution."}
+figure2_plot %<>% multipanelfigure::add_panel(
   top_panel = 1,
   panel = flippant::scramblase_assay_plot(template_file) + 
     ggplot2::theme_bw() + 
     ggplot2::xlab(expression("adj. PPR"~~("mg"/"mmol"))) +
     ggplot2::ylab(expression(P[{phantom()>=1}])))
-figure2 %<>% multipanelfigure::add_panel(
+figure2_plot %<>% multipanelfigure::add_panel(
   top_panel = 2,
   panel = flippant::scramblase_assay_plot(template_file, split_by_experiment = FALSE) + 
     ggplot2::theme_bw() + 
@@ -373,9 +386,15 @@ figure2 %<>% multipanelfigure::add_panel(
     ggplot2::ylab(expression(P[{phantom()>=1}])) +
     ggplot2::facet_wrap(c("`Experimental Series`"))+
     ggplot2::guides(colour = "none"))
-figure2
 ```
-
+```{r figure2-save, echo=FALSE}
+ggsave(
+  plot = figure2_plot,
+  filename = file.path("figures", "Cotton_et_al_-_flippant_-_Figure2.png"),
+  width = 177.2,
+  units = "mm",
+  dpi = 600)
+```
 The call results in the protein to phospholipid ratio (PPR) plot shown in
 Figure 2A.
 
