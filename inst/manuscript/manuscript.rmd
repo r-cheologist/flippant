@@ -527,6 +527,10 @@ data. A.K.M. and J.G. supervised the work.
 figure1_plot <- scramblase_assay_traces(
   template_file,
   time_max_sec = 350)
+grid::rectGrob(
+    width = grid::unit(0.1, "mm"),
+    height = grid::unit(0.1, "mm")) %>%
+  grid::grid.draw()
 ```
 ```{r figure1-save, echo=FALSE}
 ggsave(
@@ -552,6 +556,10 @@ figure2_plot %<>% multipanelfigure::add_panel(
     ggplot2::ylab(expression(P[{phantom()>=1}])) +
     ggplot2::facet_wrap(c("`Experimental Series`"))+
     ggplot2::guides(colour = "none"))
+grid::rectGrob(
+    width = grid::unit(0.1, "mm"),
+    height = grid::unit(0.1, "mm")) %>%
+  grid::grid.draw()
 ```
 ```{r figure2-save, echo=FALSE}
 ggsave(
