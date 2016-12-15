@@ -26,6 +26,13 @@ bibliography: flippant.bib
 \*
 :   To whom correspondence should be addressed: jog2030@qatar-med.cornell.edu
 
+Author Emails
+:   Richard J. Cotton: [richierocks@gmail.com](mailto:richierocks@gmail.com)\
+    Birgit Ploier: [birgit.ploier@gmail.com](mailto:birgit.ploier@gmail.com)\
+    Michael A. Goren: [wiscmag@gmail.com](mailto:wiscmag@gmail.com)\
+    Anant K. Menon: [akm2003@med.cornell.edu](mailto:akm2003@med.cornell.edu)\
+    Johannes Graumann: [jog2030@qatar-med.cornell.edu](mailto:jog2030@qatar-med.cornell.edu)
+
 Current Git Hash
 :   `r system("git log -1 --format='%H'", intern = TRUE)`
 
