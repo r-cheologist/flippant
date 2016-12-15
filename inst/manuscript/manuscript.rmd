@@ -2,7 +2,7 @@
 title: '`flippant` --- An `R` package for the automated analysis of fluorescence--based
   scramblase assays'
 author: Richard J. Cotton ^†^, Birgit Ploier ^‡^, Michael A. Goren ^‡^, Anant K. Menon^‡^
-  and Johannes Graumann ^†,^*
+  and Johannes Graumann ^†,§,^*
 date: '`r format(Sys.Date(), "%B %d,%Y")`'
 output:
   pdf_document:
@@ -22,6 +22,9 @@ bibliography: flippant.bib
 ‡
 :   Department of Biochemistry, Weill Cornell Medical College, New York, NY 
     10065, USA
+
+§
+:   Current Address: Scientific Service Group Biomolecular Mass Spectrometry, Max Planck Institute for Heart and Lung Research, W.G. Kerckhoff Institute, Ludwigstr. 43, D--61231 Bad Nauheim, Germany
 
 \*
 :   To whom correspondence should be addressed: jog2030@qatar-med.cornell.edu
