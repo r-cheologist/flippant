@@ -11,13 +11,13 @@ Authors@R: c(person("Johannes", "Graumann", email =
     person("Richard","Cotton", email = "richierocks@gmail.com",
     role = c("ctb")))
 Depends:
-    R (>= 3.3.1),
-    ggplot2 (>= 2.1.0)
+    R (>= 3.3.2),
+    ggplot2 (>= 2.2.0)
 Suggests:
     devtools,
+    microbenchmark,
     multipanelfigure,
     roxygen2,
-    testthat,
     tools
 Imports:
     assertive.files (>= 0.0-2),
@@ -25,12 +25,12 @@ Imports:
     assertive.properties (>= 0.0-3),
     assertive.strings (>= 0.0-3),
     assertive.types (>= 0.0-2),
-    data.table (>= 1.9.6),
+    data.table (>= 1.10.0),
     magrittr (>= 1.5),
-    minpack.lm (>= 1.2-0),
+    minpack.lm (>= 1.2-1),
     plyr (>= 1.8.4),
     RcppRoll (>= 0.2.2),
-    stringi (>= 1.1.1),
+    stringi (>= 1.1.2),
     utils,
     withr (>= 1.0.2),
     wmtsa (>= 2.0-2)
