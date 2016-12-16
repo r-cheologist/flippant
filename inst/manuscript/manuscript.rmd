@@ -496,13 +496,25 @@ of such experiments as well.
 ## Ethics approval and consent to participate
 Not applicable.
 
-## Consent for publication
+## Consent to publish
 Not applicable.
 
-## Availability of data and material
-Upon acceptance of the manuscript, `flippant` will be deposited as a
-self--contained `R` package including all data presented in the `Bioconductor`
-collection of tools for biomedical data analysis [@huber_orchestrating_2015].
+## Availability of data and materials
+The `R` package `flippant` provides all functionality as well as data presented
+here along with extensive additional documentation and example code accessible
+from within `R` in an integrated manner.
+
+The package is available as an `R` source package in the version current at
+acceptance for publication in the supplementary material and may be installed
+from that file using ` install.packages(file.choose(), type = 'source')`.
+
+The package is also uploaded to the comprehensive `R` archive network (CRAN) and
+may thus be installed in its most up--to date version using 
+`install.packages('flippant')` from within any appropriately configured `R`
+installation.
+
+Thirdly the code base and development history is publicly accessible at \
+`https://bitbucket.org/graumannlabtools/flippant`.
 
 ## Competing interests
 The authors declare that they have no competing interests.
@@ -520,6 +532,9 @@ J3686--B21.
 R.J.C and J.G. wrote the code, B.P., M.A.G. and A.K.M. guided the implementation
 and edited the manuscript, which J.G. wrote. B.P. provided the exemplary assay
 data. A.K.M. and J.G. supervised the work.
+
+## Acknowledgements
+Not applicable.
 
 # Figure legends
 ```{r figure1-creation, echo=FALSE, fig.height = 4, fig.cap = "**`flippant`--based plotting of spectral traces underlying a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** See text for command and details."}
