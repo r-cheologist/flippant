@@ -15,7 +15,7 @@ Then you can install the *flippant* package using
 
 ```{r}
 library(devtools)
-install_bitbucket("richierocks/flippant")
+install_bitbucket("jog2030/flippant")
 ```
 
 A stable version is planned to be made available via Bioconductor.
@@ -37,5 +37,3 @@ The original data in contained in a `zip` file in the `inst/extdata` directory. 
 `scramblase_assay_stats` calculates the fit constant for each experiment.
 
 `scramblase_assay_calculations` provides a lower-level overview of model fit details.
-
-
