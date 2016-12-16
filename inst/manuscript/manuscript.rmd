@@ -547,6 +547,7 @@ grid::rectGrob(
     height = grid::unit(0.1, "mm")) %>%
   grid::grid.draw()
 ```
+
 ```{r figure1-save, echo=FALSE}
 ggsave(
   plot = figure1_plot,
@@ -576,6 +577,7 @@ grid::rectGrob(
     height = grid::unit(0.1, "mm")) %>%
   grid::grid.draw()
 ```
+
 ```{r figure2-save, echo=FALSE}
 ggsave(
   plot = figure2_plot,
