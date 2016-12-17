@@ -414,12 +414,12 @@ ppr_results %>%
 
 The resulting values for the fit constant correspond with
 `r ppr_results_alpha_print` for `r ppr_results_names`, respectively, well to the
-prior manual analysis by @ploier_dimerization_2016 (Table S2), where $\alpha
-\times 10^4 \approx 16$ was reported for mutant and $\alpha \times 10^4 \approx
-7$ for wild type rhodopsin. Based on the manual analysis of the data we conclude
-in @ploier_dimerization_2016 that the mutant rhodopsins investigated are
-reconstituted into proteoliposomes in monomeric form, contrary to the wild type,
-which is reconstituting as a homodimer. 
+prior manual analysis by @ploier_dimerization_2016 (Table S2 therein), where
+$\alpha \times 10^4 \approx 16$ was reported for mutant and 
+$\alpha \times 10^4 \approx 7$ for wild type rhodopsin. Based on the manual
+analysis of the data we conclude in @ploier_dimerization_2016 that the mutant
+rhodopsins investigated are reconstituted into proteoliposomes in monomeric
+form, contrary to the wild type, which is reconstituting as a homodimer. 
 `flippant` analysis of the data shows identical trends and close matches of the
 results, supporting identical conclusions.
 
