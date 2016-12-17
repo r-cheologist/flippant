@@ -501,21 +501,22 @@ Not applicable.
 Not applicable.
 
 ## Availability of data and materials {-}
-The `R` package `flippant` provides all functionality as well as data presented
-here along with extensive additional documentation and example code accessible
-from within `R` in an integrated manner.
+The `R` package `flippant` provides in an integrated manner and accessible
+from within `R` all functionality as well as data presented here along with
+extensive additional documentation and example code.
 
 The package is available as an `R` source package in the version current at
 acceptance for publication in the supplementary material and may be installed
-from that file using ` install.packages(file.choose(), type = 'source')`.
+from that file using `install.packages(file.choose(), type = 'source')`.
 
 The package is also uploaded to the comprehensive `R` archive network (CRAN) and
 may thus be installed in its most up--to date version using 
 `install.packages('flippant')` from within any appropriately configured `R`
 installation.
 
-Thirdly the code base and development history is publicly accessible at \
-`https://bitbucket.org/graumannlabtools/flippant`.
+Thirdly the code base and development history will, upon publication, be
+publicly accessible at
+[`https://bitbucket.org/graumannlabtools/flippant`](https://bitbucket.org/graumannlabtools/flippant).
 
 ## Competing interests {-}
 The authors declare that they have no competing interests.
