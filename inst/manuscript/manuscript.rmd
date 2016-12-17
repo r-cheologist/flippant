@@ -5,11 +5,13 @@ author: Richard J. Cotton ^†^, Birgit Ploier ^‡^, Michael A. Goren ^‡^, An
   and Johannes Graumann ^†,§,^*
 date: '`r format(Sys.Date(), "%B %d,%Y")`'
 output:
-  pdf_document:
+  bookdown::pdf_document2:
+    toc: no
     fig_caption: yes
   html_document:
     fig_caption: yes
-  word_document:
+  bookdown::word_document2:
+    toc: no
     fig_caption: yes
 csl: biomed-central.csl
 bibliography: flippant.bib
@@ -84,7 +86,7 @@ knitr::opts_chunk$set(
   message = FALSE)
 ```
 
-# Abstract
+# Abstract {-}
 **Background:** The lipid scrambling activity of protein extracts and purified
 scramblases is typically measured using a fluorescence--based assay. While the
 assay has yielded insight into the scramblase activity in crude membrane
@@ -103,10 +105,10 @@ reported results.
 scramblase activity assays and provides a platform for review, dissemination and
 extension of the strategies it employs.
 
-# Keywords
+# Keywords {-}
 scramblase; dithionite scramblase assay; R
 
-# Background
+# Background {-}
 Scramblases are proteins mediating the bidirectional, mass--action driven 
 equilibration of lipids between the leaflets of lipid bilayers that constitute 
 biological membranes
@@ -170,7 +172,7 @@ all data analysis and graphing needs from raw fluorescence spectra produced by
 scramblase assays. A simple parametrizing spreadsheet is the sole required user 
 input.
 
-# Availablility and Implementation
+# Availablility and Implementation {-}
 `flippant` has been implemented in `R` [@r_core_team_r:_2016] and integrated 
 into the `Bioconductor` collection of tools for biomedical data analysis [@huber_orchestrating_2015]. It is thus install-- and loadable as follows from 
 within a functional `R` environment:
@@ -185,7 +187,7 @@ The package depends on the following packaged extensions to `R` base
 functionality, which are automatically satisfied on installation: 
 `r flippant_dependencies`.
 
-# Input Data and Data Processing
+# Input Data and Data Processing {-}
 To analyse raw data stemming from dithionite scramblase assays, `flippant` 
 requires for each data point information on the path to the 
 fluorimeter--generated spectrum, the amount of protein reconstituted into
@@ -243,8 +245,8 @@ default and following @ploier_dimerization_2016, PPR is scaled by a factor of
 scramblase reconstitution. This behavior can be modified using the 
 `ppr_scale_factor` parameter and avoided altogether setting it to `NULL`.
 
-# Main Features
-## Template Generation for Data Input
+# Main Features {-}
+## Template Generation for Data Input {-}
 Supporting the user in providing the input data needed, the following function 
 generates a spreadsheet program--compatible tab--delimited plain text template, 
 including column names, commentary, expected data type and the default used when
@@ -257,7 +259,7 @@ The application agnostic tab--delimited format must be maintained for the
 completed table, which is subjected to extensive input checks when read by 
 `flippant`.
 
-## Graphic Representation of Spectral Traces
+## Graphic Representation of Spectral Traces {-}
 In a first, graphical data analytic step of a scramblase assay--derived data 
 set, fluorescent spectra or traces may be plotted in publication--appropriate
 quality with acquisition time on the x-- and fluorescence intensity on the
@@ -275,7 +277,7 @@ measure. Acquisition time coverage of the plot may be tuned  by user--provided
 minimal (`time_min_sec` ) and maximal (`time_max_sec`) time points to be
 included (in seconds).
 
-## Scramblase Assay Analysis
+## Scramblase Assay Analysis {-}
 Plotting protein to phospholipid ratio (PPR) against the likelihood for a given
 proteoliposome to contain one or more scramblases, the PPR plot is at the heart
 of the analysis of dithionite scramblase assays, allowing for the visual
@@ -315,7 +317,7 @@ tabular form using
 
 with the same modifying arguments to the function as for `scramblase_assay_plot`.
 
-# Case Study
+# Case Study {-}
 *Retinitis pigmentosa* is a degenerative disease of the retina, the majority of 
 cases of which is linked to mutant forms of the G--protein coupled receptor 
 rhodopsin [@mendes_mechanisms_2005]. Motivated by the recent discovery that 
@@ -341,7 +343,7 @@ template_file <- file.path(analysis_dir, "inputTable.txt")
 ```
 
 To begin the analysis it is useful to plot the spectral traces of each 
-experimental series (Figure 1). Note
+experimental series (Figure \@ref(fig:figure1-creation)). Note
 that algorithmic alignment to the time of dithionite addition is employed
 (default) as well as  custom trimming of the time axis to account for divergent
 acquisition  times between experiments. PPR scaling is used with the default
@@ -363,14 +365,15 @@ scramblase_assay_plot(template_file)
 ```
 
 The call results in the protein to phospholipid ratio (PPR) plot shown in
-Figure 2A.
+Figure \@ref(fig:figure2-creation)A.
 
-Figure 2A emphasizes reproducibility between independent experiments
-("Experiment 1" and "Experiment 2") on the four probed rhodopsins. Forgoing
-reproducibility analysis in favor of a potentially more reliable result and
-following more closely the analysis in Figure 4C--F by
+Figure \@ref(fig:figure2-creation) A emphasizes reproducibility between
+independent experiments ("Experiment 1" and "Experiment 2") on the four probed
+rhodopsins. Forgoing reproducibility analysis in favor of a potentially more
+reliable result and following more closely the analysis in Figure 4C--F by
 @ploier_dimerization_2016, a single fit may be performed for the combined data
-from all experiments as follows, resulting in Figure 2B:
+from all experiments as follows, resulting in 
+Figure \@ref(fig:figure2-creation)B:
 
 ```{r noeval_demonstrate_plot2, eval = FALSE}
 # Plot PPR plot (Figure 2B)
@@ -381,9 +384,9 @@ scramblase_assay_plot(
 
 The graphical representation of the fit constant $\alpha$ in the PPR plots is
 difficult to visually evaluate and easy access to the numeric values desirable.
-Recapitulation of the calculations underlying PPR plot generation for Figure 2B
-by `scramblase_assay_plot` in a call to `scramblase_assay_stats`, this is achieved
-and produces tabular output represented in Table 1.
+Recapitulation of the calculations underlying PPR plot generation for Figure \@ref(fig:figure2-creation)B by `scramblase_assay_plot` in a call to
+`scramblase_assay_stats`, this is achieved and produces tabular output
+represented in Table \@ref(tab:analysis-tabular-output).
 
 ```{r noeval_demonstrate_tabular_writeout, eval = FALSE}
 # Write out results in tabular manner (Table 1)
@@ -392,7 +395,7 @@ scramblase_assay_stats(
   split_by_experiment = FALSE)
 ```
 
-```{r analysis_tabular_output, echo = FALSE}
+```{r analysis-tabular-output, echo = FALSE}
 ppr_results <- flippant::scramblase_assay_stats(
     template_file, split_by_experiment = FALSE) %>%
   dplyr::mutate(`Fit Constant` = round(`Fit Constant` * 10^4, 2)) %>%
@@ -404,10 +407,9 @@ ppr_results_alpha_print <- ppr_results %>%
   magrittr::extract2("Fit Constant ($\\times 10^4$)") %>%
   round(2) %>%
   to_string
-knitr::kable(
-  ppr_results,
-  row.names = FALSE,
-  caption = "**Tabular output of `flippant`--based reanalysis of a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** An plain text--version of this output is produced by calling `scramblase_assay_stats`.")
+ppr_results %>%
+  pander::pander(
+    caption = "(\\#tab:analysis-tabular-output) **Tabular output of `flippant`--based reanalysis of a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** An plain text--version of this output is produced by calling `scramblase_assay_stats`.")
 ```
 
 The resulting values for the fit constant correspond with
@@ -421,8 +423,7 @@ which is reconstituting as a homodimer.
 `flippant` analysis of the data shows identical trends and close matches of the
 results, supporting identical conclusions.
 
-# Conclusions
-
+# Conclusions {-}
 ```{r analysis_timing, echo = FALSE, cache = TRUE}
 
 analysis_timing_n <- 100
@@ -492,14 +493,14 @@ extraction, a different assay for lipid translocation across liposome bilayers
 identical data analysis workflow, `flippant` is expected to facilitate analysis
 of such experiments as well.
 
-# Declarations
-## Ethics approval and consent to participate
+# Declarations {-}
+## Ethics approval and consent to participate {-}
 Not applicable.
 
-## Consent to publish
+## Consent to publish {-}
 Not applicable.
 
-## Availability of data and materials
+## Availability of data and materials {-}
 The `R` package `flippant` provides all functionality as well as data presented
 here along with extensive additional documentation and example code accessible
 from within `R` in an integrated manner.
@@ -516,10 +517,10 @@ installation.
 Thirdly the code base and development history is publicly accessible at \
 `https://bitbucket.org/graumannlabtools/flippant`.
 
-## Competing interests
+## Competing interests {-}
 The authors declare that they have no competing interests.
 
-## Funding
+## Funding {-}
 J.G., R.J.C. and the Proteomics Core at WCM--Q are supported by ``Biomedical 
 Research Program'' funds at Weill Cornell Medicine -- Qatar, a program 
 funded by Qatar Foundation. This study was made possible by NPRP grant
@@ -528,15 +529,15 @@ Foundation). The statements made herein are solely the responsibility of the
 authors. B.P. was also supported by the Austrian Science Fund (FWF), project
 J3686--B21.
 
-## Authors' contributions
+## Authors' contributions {-}
 R.J.C and J.G. wrote the code, B.P., M.A.G. and A.K.M. guided the implementation
 and edited the manuscript, which J.G. wrote. B.P. provided the exemplary assay
 data. A.K.M. and J.G. supervised the work.
 
-## Acknowledgements
+## Acknowledgements {-}
 Not applicable.
 
-# Figure legends
+# Figure legends {-}
 ```{r figure1-creation, echo=FALSE, fig.height = 4, fig.cap = "**`flippant`--based plotting of spectral traces underlying a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** See text for command and details."}
 # Plot spectral traces (Figure 1)
 figure1_plot <- scramblase_assay_traces(
@@ -590,4 +591,4 @@ ggsave(
   dpi = 600)
 ```
 
-# References
+# References {-}
