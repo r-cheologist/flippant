@@ -367,7 +367,7 @@ scramblase_assay_plot(template_file)
 The call results in the protein to phospholipid ratio (PPR) plot shown in
 Figure \@ref(fig:figure2-creation)A.
 
-Figure \@ref(fig:figure2-creation) A emphasizes reproducibility between
+Figure \@ref(fig:figure2-creation)A emphasizes reproducibility between
 independent experiments ("Experiment 1" and "Experiment 2") on the four probed
 rhodopsins. Forgoing reproducibility analysis in favor of a potentially more
 reliable result and following more closely the analysis in Figure 4C--F by
