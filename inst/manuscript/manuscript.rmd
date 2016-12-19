@@ -108,6 +108,31 @@ extension of the strategies it employs.
 # Keywords {-}
 scramblase; dithionite scramblase assay; R
 
+# Abbreviations {-}
+ATP: 
+  ~ Adenosine triphosphate
+  
+BSA:
+  ~ Bovine serum albumin
+  
+CRAN:
+  ~ The Comprehensive `R` Archive Network
+  
+MAD:
+  ~ Median absolute deviation
+  
+NBD:
+  ~ Nitrobenzoxadiazole
+  
+PPR:
+  ~ Protein to phospholipid ratio
+  
+RAM:
+  ~ Random--access memory
+  
+SSD:
+  ~ Solid state disk
+
 # Background {-}
 Scramblases are proteins mediating the bidirectional, mass--action driven 
 equilibration of lipids between the leaflets of lipid bilayers that constitute 
