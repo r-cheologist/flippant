@@ -181,6 +181,7 @@
 #' @seealso \code{\link{parse_fluorimeter_output}} \code{\link{nlsLM}}
 #' @import ggplot2
 #' @examples
+#' \dontrun{
 #' library(magrittr)
 #' library(ggplot2)
 #' # Extract example data
@@ -199,6 +200,7 @@
 #' scramblase_assay_plot(template_file, split_by_experiment = FALSE)
 #' # Generate tabular results
 #' scramblase_assay_stats(template_file, split_by_experiment = FALSE)
+#' }
 scramblase_assay_plot <- function(
   x,
   scale_to = c("model","data"),
