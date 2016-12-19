@@ -106,7 +106,7 @@ scramblase activity assays and provides a platform for review, dissemination and
 extension of the strategies it employs.
 
 # Keywords {-}
-scramblase; dithionite scramblase assay; R
+scramblase; dithionite scramblase assay; `R`
 
 # Abbreviations {-}
 ATP: 
@@ -484,7 +484,7 @@ analysis_timing_mad <- analysis_timing %>%
 
 With `flippant` we present an integrated solution for data analysis in the 
 context of dithionite scramblase assays. Requiring only basic familiarity with 
-R as an environment for statistical computing and graphics 
+`R` as an environment for statistical computing and graphics 
 [@r_core_team_r:_2016], scientists can quickly analyse such data and arrive at 
 publication--grade graphics that offer extensive facilities for individual 
 optimization and adaptation [@wickham_ggplot2_2009]. On a laptop system with 
