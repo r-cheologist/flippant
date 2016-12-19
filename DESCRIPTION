@@ -2,7 +2,7 @@ Package: flippant
 Title: Flippant - Dithionite Scramblase Assay Analysis
 Description: Tools for the analysis of data provided by dithionite
     scramblase assays.
-Version: 1.0.0
+Version: 1.0.1
 Author: Johannes Graumann [cre, aut],
     Richard Cotton [ctb]
 Maintainer: Johannes Graumann <jog2030@qatar-med.cornell.edu>
