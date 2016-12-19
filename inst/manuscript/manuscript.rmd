@@ -198,9 +198,9 @@ scramblase assays. A simple parametrizing spreadsheet is the sole required user
 input.
 
 # Availablility and Implementation {-}
-`flippant` has been implemented in `R` [@r_core_team_r:_2016] and Is available
-"Comprehensive `R` Archive Network" (CRAN). It is thus install-- and loadable as
-follows from within a functional `R` environment:
+`flippant` has been implemented in `R` [@r_core_team_r:_2016] and is available
+in The Comprehensive `R` Archive Network (CRAN). It is thus install-- and
+loadable as follows from within a functional `R` environment:
 
 ```{r noeval_demonstrate_installation, eval = FALSE}
 install.packages("flippant")
@@ -533,7 +533,7 @@ The package is available as an `R` source package in the version current at
 acceptance for publication in the supplementary material and may be installed
 from that file using `install.packages(file.choose(), type = 'source')`.
 
-The package is also uploaded to the comprehensive `R` archive network (CRAN) and
+The package is also uploaded to The Comprehensive `R` Archive Network (CRAN) and
 may thus be installed in its most up--to date version using 
 `install.packages('flippant')` from within any appropriately configured `R`
 installation.
