@@ -115,10 +115,10 @@ scramblase_assay_calculations <- function(
         ##> were obtained for proteoliposomes generated over a range of PPR 
         ##> values.
         ##> The data were transformed according to the formula
-        ##> P(≥1 flippase) = (y – yo)/(yMax – yo),
+        ##> P(>=1 flippase) = (y - yo)/(yMax - yo),
         ##> where yo is the percent reduction obtained with liposomes, yMax is the 
         ##> maximum percentage reduction observed and p is the probability that a 
-        ##> particular vesicle in the ensemble is ‘flippase-active’, i.e it 
+        ##> particular vesicle in the ensemble is 'flippase-active', i.e it 
         ##> possesses at least one flippase.
         ## Calculate the relative fluorescence reduction
         z[["Relative Fluorescence Reduction"]]<- z[["Fluorescence Reduction"]] -
@@ -178,13 +178,13 @@ scramblase_assay_calculations <- function(
         ##> "Protein-dependence of lipid flipping; analysis of Figure 1f."
         ##> https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3057128/#SD1
         ##> 
-        ##> The dependence of P(≥1 flippase) on PPR was analyzed as follows.
+        ##> The dependence of P(>=1 flippase) on PPR was analyzed as follows.
         ##> Definitions:
         ##>   f, number of flippases used for reconstitution
         ##>   v, number of vesicles(
         ##>   m, number of flippases per vesicle (=f/v)
         ##>   PPR, mg protein per mmol phospholipid
-        ##> To calculate P(≥1 flippase) as a function of the PPR, we assume that 
+        ##> To calculate P(>=1 flippase) as a function of the PPR, we assume that 
         ##> reconstitution of opsin/rhodopsin molecules into vesicles occurs 
         ##> independently and that the vesicles are identical and may have more
         ##> than one flippase. The probability that a flippase will be 
@@ -208,18 +208,18 @@ scramblase_assay_calculations <- function(
         ##> P(0) = e^(-m); therefore, the probability that a vesicle has one or 
         ##> more flippases, i.e, is active in the flippase assay, is
         ##> 
-        ##> P(≥1) = 1-P(0) = 1 - e^(-m)
+        ##> P(>=1) = 1-P(0) = 1 - e^(-m)
         ##> 
         ##> The average number of flippases per vesicle, m, is proportional to PPR
-        ##> and can be written as m = PPR/α, where α is a constant with units of
+        ##> and can be written as m = PPR/alpha, where alpha is a constant with units of
         ##> mg/mmol. 
         ##> Thus,
         ##> 
-        ##> P(≥1) = 1 - e^(-m) = 1 – exp(-PPR/α)
+        ##> P(>=1) = 1 - e^(-m) = 1 - exp(-PPR/alpha)
         ##> 
-        ##> The mono-exponential fit constant for a graph of P(≥1) vs PPR is 
-        ##> α mg/mmol; at this PPR value, m = 1 and ~63% (= 1 - e^(-1)) of the 
-        ##> vesicles in the population possess ≥1 flippase.
+        ##> The mono-exponential fit constant for a graph of P(>=1) vs PPR is 
+        ##> alpha mg/mmol; at this PPR value, m = 1 and ~63% (= 1 - e^(-1)) of the 
+        ##> vesicles in the population possess >=1 flippase.
         ## Fit a monoexponential curve to the data
         rMod <- minpack.lm::nlsLM(
           formula = formulae[[generation_of_algorithm]][[as.character(force_through_origin)]],
