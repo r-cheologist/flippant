@@ -173,13 +173,12 @@ scramblase assays. A simple parametrizing spreadsheet is the sole required user
 input.
 
 # Availablility and Implementation {-}
-`flippant` has been implemented in `R` [@r_core_team_r:_2016] and integrated 
-into the `Bioconductor` collection of tools for biomedical data analysis [@huber_orchestrating_2015]. It is thus install-- and loadable as follows from 
-within a functional `R` environment:
+`flippant` has been implemented in `R` [@r_core_team_r:_2016] and Is available
+"Comprehensive `R` Archive Network" (CRAN). It is thus install-- and loadable as
+follows from within a functional `R` environment:
 
 ```{r noeval_demonstrate_installation, eval = FALSE}
-source("http://bioconductor.org/biocLite.R")
-biocLite(pkgs = "flippant")
+install.packages("flippant")
 library("flippant")
 ```
 
