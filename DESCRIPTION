@@ -1,8 +1,13 @@
 Package: flippant
-Title: Flippant - Dithionite Scramblase Assay Analysis
-Description: Tools for the analysis of data provided by dithionite
-    scramblase assays.
-Version: 1.0.1
+Title: Dithionite Scramblase Assay Analysis
+Description: The lipid scrambling activity of protein extracts and purified
+    scramblases is often determined using a fluorescence-based assay involving
+    many manual steps. flippant offers an integrated solution for the analysis
+    and publication-grade graphical presentation of dithionite scramblase
+    assays, as well as a platform for review, dissemination and extension of the
+    strategies it employs. The package's name derives from a play on the fact
+    that lipid scrambling is also sometimes referred to as 'flipping'.
+Version: 1.0.2
 Author: Johannes Graumann [cre, aut],
     Richard Cotton [ctb]
 Maintainer: Johannes Graumann <jog2030@qatar-med.cornell.edu>
