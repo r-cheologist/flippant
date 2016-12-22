@@ -518,13 +518,13 @@ identical data analysis workflow, `flippant` is expected to facilitate analysis
 of such experiments as well.
 
 # Declarations {-}
-## Ethics approval and consent to participate {-}
+## Ethics Approval and Consent to Participate {-}
 Not applicable.
 
-## Consent to publish {-}
+## Consent to Publish {-}
 Not applicable.
 
-## Availability of data and materials {-}
+## Availability of Data and Materials {-}
 The `R` package `flippant` provides in an integrated manner and accessible
 from within `R` all functionality as well as data presented here along with
 extensive additional documentation and example code.
@@ -542,7 +542,7 @@ Thirdly the code base and development history will, upon publication, be
 publicly accessible at
 [`https://bitbucket.org/graumannlabtools/flippant`](https://bitbucket.org/graumannlabtools/flippant).
 
-## Competing interests {-}
+## Competing Interests {-}
 The authors declare that they have no competing interests.
 
 ## Funding {-}
@@ -554,7 +554,7 @@ Foundation). The statements made herein are solely the responsibility of the
 authors. B.P. was also supported by the Austrian Science Fund (FWF), project
 J3686--B21.
 
-## Authors' contributions {-}
+## Authors' Contributions {-}
 R.J.C and J.G. wrote the code, B.P., M.A.G. and A.K.M. guided the implementation
 and edited the manuscript, which J.G. wrote. B.P. provided the exemplary assay
 data. A.K.M. and J.G. supervised the work.
@@ -562,7 +562,7 @@ data. A.K.M. and J.G. supervised the work.
 ## Acknowledgements {-}
 Not applicable.
 
-# Figure legends {-}
+# Figure Legends {-}
 ```{r figure1-creation, echo=FALSE, fig.height = 4, fig.cap = "**`flippant`--based plotting of spectral traces underlying a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** See text for command and details."}
 # Plot spectral traces (Figure 1)
 figure1_plot <- scramblase_assay_traces(
