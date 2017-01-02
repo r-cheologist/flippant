@@ -1,32 +1,33 @@
 ---
 title: '`flippant` --- An `R` package for the automated analysis of fluorescence--based
   scramblase assays'
-author: Richard J. Cotton ^†^, Birgit Ploier ^‡^, Michael A. Goren ^‡^, Anant K. Menon^‡^
-  and Johannes Graumann ^†,§,^*
+author: Richard J. Cotton ^†^, Birgit Ploier ^‡^, Michael A. Goren ^‡^, Anant K. Menon
+  ^‡^ and Johannes Graumann ^†§\*^
 date: '`r format(Sys.Date(), "%B %d,%Y")`'
 output:
   bookdown::pdf_document2:
+    fig_caption: yes
+    keep_tex: yes
     toc: no
-    fig_caption: yes
-  html_document:
-    fig_caption: yes
   bookdown::word_document2:
-    toc: no
     fig_caption: yes
+    toc: no
 csl: biomed-central.csl
 bibliography: flippant.bib
 ---
 
 †
-:    \
-    Research Division, Weill Cornell Medicine -- Qatar, P.O.Box 24144, Doha, State of Qatar
+:   Research Division, Weill Cornell Medicine -- Qatar, P.O.Box 24144, Doha,
+    State of Qatar
 
 ‡
 :   Department of Biochemistry, Weill Cornell Medical College, New York, NY 
     10065, USA
 
 §
-:   Current Address: Scientific Service Group Biomolecular Mass Spectrometry, Max Planck Institute for Heart and Lung Research, W.G. Kerckhoff Institute, Ludwigstr. 43, D--61231 Bad Nauheim, Germany
+:   Current Address: Scientific Service Group Biomolecular Mass Spectrometry,
+    Max Planck Institute for Heart and Lung Research, W.G. Kerckhoff Institute,
+    Ludwigstr. 43, D--61231 Bad Nauheim, Germany
 
 \*
 :   To whom correspondence should be addressed: jog2030@qatar-med.cornell.edu
@@ -101,7 +102,7 @@ dithionite scramblase assays and demonstrate its utility in revisiting an
 originally manual analysis from the publication record, closely reproducing the
 reported results.
 
-**Conclusions:**  `flippant` allows for quick, reproducible data analysis of
+**Conclusions:** `flippant` allows for quick, reproducible data analysis of
 scramblase activity assays and provides a platform for review, dissemination and
 extension of the strategies it employs.
 
@@ -111,25 +112,25 @@ scramblase; dithionite scramblase assay; `R`
 # Abbreviations {-}
 ATP: 
   ~ Adenosine triphosphate
-  
+
 BSA:
   ~ Bovine serum albumin
-  
+
 CRAN:
   ~ The Comprehensive `R` Archive Network
-  
+
 MAD:
   ~ Median absolute deviation
-  
+
 NBD:
   ~ Nitrobenzoxadiazole
-  
+
 PPR:
   ~ Protein to phospholipid ratio
-  
+
 RAM:
   ~ Random--access memory
-  
+
 SSD:
   ~ Solid state disk
 
@@ -138,11 +139,11 @@ Scramblases are proteins mediating the bidirectional, mass--action driven
 equilibration of lipids between the leaflets of lipid bilayers that constitute 
 biological membranes
 [@waechter_flippases_2013;@pomorski_lipid_2006;@brunner_structural_2016].
-Independent of energy  equivalents such as ATP they facilitate this "flipping"
+Independent of energy equivalents such as ATP they facilitate this "flipping"
 by providing a mechanism by which polar lipid head groups can transition through
 the hydrophobic environment of membranes, thus reducing the massive energetic
 cost this process would carry otherwise [@kornberg_inside-outside_1971]. The
-underlying molecular  mechanisms remain largely enigmatic [for a discussion
+underlying molecular mechanisms remain largely enigmatic [for a discussion
 including exceptions see @ernst_phospholipid_2015].
 Proteins supporting flipping processes as central as the equilibration of the 
 ubiquitous phosphoglycerolipids across the membrane of the endoplasmic 
@@ -167,7 +168,7 @@ Upon addition of membrane--impermeable reducing agents such as dithionite to
 these liposomes, fluorophores in the external leaflet are reduced and
 fluorescence in scramblase--free liposomes accordingly quickly drops to
 approximately 50% of the initial value. However, for proteoliposomes
-reconstituted with proteins  conferring a scramblase activity, fluorescence
+reconstituted with proteins conferring a scramblase activity, fluorescence
 disappears almost entirely, as fast scramblase--mediated equilibration between
 outer (exposed) and inner (protected) leaflet of the bilayer renders all
 fluorescent lipids accessible to reduction. By titration of the protein amount
@@ -297,7 +298,7 @@ data (`x`). The `adjust` argument to the function call serves to selectively
 inactivate `wmtsa`--provided (see above) alignment of multiple spectra to the 
 time of dithionite addition, while the `ppr_scale_factor` parameter is used to
 scale PPR (see above) and is needed here as the traces are colored by that
-measure. Acquisition time coverage of the plot may be tuned  by user--provided
+measure. Acquisition time coverage of the plot may be tuned by user--provided
 minimal (`time_min_sec` ) and maximal (`time_max_sec`) time points to be
 included (in seconds).
 
@@ -351,7 +352,7 @@ to cause *retinitis pigmentosa* yet do not display the commonly associated
 molecular phenotypes of impaired binding of retinal, folding and/or trafficking or 
 transducin activation, may in fact be impacted in their scramblase activity.
 This hypothesis was disproved. However, the same set of experiments pointed at a
-defect  in rhodopsin dimerization prior to insertion into liposomes, generating
+defect in rhodopsin dimerization prior to insertion into liposomes, generating
 the new hypothesis that the mutations may cause disease by interfering with the
 highly ordered quarternary structure of rhodopsin in the retina 
 [@ploier_dimerization_2016].
@@ -369,8 +370,8 @@ template_file <- file.path(analysis_dir, "inputTable.txt")
 To begin the analysis it is useful to plot the spectral traces of each 
 experimental series (Figure \@ref(fig:figure1-creation)). Note
 that algorithmic alignment to the time of dithionite addition is employed
-(default) as well as  custom trimming of the time axis to account for divergent
-acquisition  times between experiments. PPR scaling is used with the default
+(default) as well as custom trimming of the time axis to account for divergent
+acquisition times between experiments. PPR scaling is used with the default
 factor of 0.65.
 
 ```{r eval=FALSE}
