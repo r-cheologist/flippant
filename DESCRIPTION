@@ -27,7 +27,7 @@ Suggests:
 Imports:
     assertive.files (>= 0.0-2),
     assertive.numbers (>= 0.0-2),
-    assertive.properties (>= 0.0-3),
+    assertive.properties (>= 0.0-4),
     assertive.strings (>= 0.0-3),
     assertive.types (>= 0.0-2),
     data.table (>= 1.10.0),
