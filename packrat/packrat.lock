@@ -195,6 +195,12 @@ Version: 0.3.5
 Hash: 49415ab4718e9d37c7ddf74988493c23
 Requires: Rcpp, digest
 
+Package: httpuv
+Source: CRAN
+Version: 1.3.3
+Hash: d503eac9dc82852a970018b4f88f5213
+Requires: Rcpp
+
 Package: httr
 Source: CRAN
 Version: 1.2.1
@@ -314,8 +320,8 @@ Requires: Rcpp, plyr, stringr
 
 Package: rmarkdown
 Source: CRAN
-Version: 1.2
-Hash: 0bcccd4b0db101c709ee10012320a66f
+Version: 1.3
+Hash: d8f0cf248116dbdfc23f35991d0ed3f7
 Requires: base64enc, caTools, evaluate, htmltools, jsonlite, knitr,
     rprojroot, yaml
 
@@ -346,6 +352,18 @@ Source: CRAN
 Version: 0.4.1
 Hash: cf658953d600d4736b058df1558df481
 Requires: RColorBrewer, Rcpp, dichromat, labeling, munsell, plyr
+
+Package: shiny
+Source: CRAN
+Version: 0.14.2
+Hash: b3151540f7d02b2b455bbc1c4d75f5e2
+Requires: R6, digest, htmltools, httpuv, jsonlite, mime, sourcetools,
+    xtable
+
+Package: sourcetools
+Source: CRAN
+Version: 0.1.5
+Hash: 04ddeb1c288302222562326a471e2945
 
 Package: splus2R
 Source: CRAN
@@ -389,6 +407,11 @@ Source: CRAN
 Version: 2.0-2
 Hash: a6a121282dba7a801ab9aa4511cdbd20
 Requires: ifultools, splus2R
+
+Package: xtable
+Source: CRAN
+Version: 1.8-2
+Hash: 7293235cfcc14cdff1ce7fd1a0212031
 
 Package: yaml
 Source: CRAN
