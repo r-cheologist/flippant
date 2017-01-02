@@ -5,13 +5,13 @@ author: Richard J. Cotton ^†^, Birgit Ploier ^‡^, Michael A. Goren ^‡^, An
   ^‡^ and Johannes Graumann ^†§\*^
 date: '`r format(Sys.Date(), "%B %d,%Y")`'
 output:
-  bookdown::pdf_document2:
-    fig_caption: yes
-    keep_tex: yes
-    toc: no
   bookdown::word_document2:
     fig_caption: yes
     toc: no
+  bookdown::pdf_document2:
+    fig_caption: yes
+    toc: no
+clean: no
 csl: biomed-central.csl
 bibliography: flippant.bib
 ---
