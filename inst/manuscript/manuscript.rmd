@@ -11,7 +11,6 @@ output:
   bookdown::pdf_document2:
     fig_caption: yes
     toc: no
-clean: no
 csl: biomed-central.csl
 bibliography: flippant.bib
 ---
