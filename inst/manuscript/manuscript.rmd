@@ -8,6 +8,7 @@ output:
   bookdown::word_document2:
     fig_caption: yes
     toc: no
+    pandoc_args: ["--smart"]
   bookdown::pdf_document2:
     fig_caption: yes
     toc: no
