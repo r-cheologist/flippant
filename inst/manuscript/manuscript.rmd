@@ -212,7 +212,7 @@ functionality, which are automatically satisfied on installation:
 `r flippant_dependencies`.
 
 # Input Data and Data Processing {-}
-To analyse raw data stemming from dithionite scramblase assays, `flippant` 
+To analyze raw data stemming from dithionite scramblase assays, `flippant` 
 requires for each data point information on the path to the 
 fluorimeter--generated spectrum, the amount of protein reconstituted into
 proteoliposomes, the assay volume before and after addition of 
@@ -485,7 +485,7 @@ analysis_timing_mad <- analysis_timing %>%
 With `flippant` we present an integrated solution for data analysis in the 
 context of dithionite scramblase assays. Requiring only basic familiarity with 
 `R` as an environment for statistical computing and graphics 
-[@r_core_team_r:_2016], scientists can quickly analyse such data and arrive at 
+[@r_core_team_r:_2016], scientists can quickly analyze such data and arrive at 
 publication--grade graphics that offer extensive facilities for individual 
 optimization and adaptation [@wickham_ggplot2_2009]. On a laptop system with 
 `r parallel::detectCores()` cores and 8 GB RAM (no SSD), running `Linux` and 
@@ -514,7 +514,7 @@ in the context of scramblase activity analysis and a platform for review,
 dissemination and extension of the strategies it employs. As BSA--back 
 extraction, a different assay for lipid translocation across liposome bilayers
 [@kubelt_transbilayer_2002;@vehring_flip-flop_2007], can utilize an essentially 
-identical data analysis workflow, `flippant` is expected to facilitate analysis
+identical data analysis work flow, `flippant` is expected to facilitate analysis
 of such experiments as well.
 
 # Declarations {-}
@@ -583,7 +583,7 @@ ggsave(
   dpi = 600)
 ```
 
-```{r figure2-creation, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "**`flippant`--based reanalysis of a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** (A) and (B) show protein to phospholipid ration (PPR) plots for the data using a x--axis trimmed to a maximum value of 3 (see text for details). In (A) data is separately plotted for independent experiments, while (B) combines all data points, aiming for reliability of fit. 'adj. PPR' indicates that the measure has been scaled to account for a vesicle pool refractory to flippase reconsitution."}
+```{r figure2-creation, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "**`flippant`--based reanalysis of a subset of the data in Figure 4C--F from @ploier_dimerization_2016.** (A) and (B) show protein to phospholipid ration (PPR) plots for the data using a x--axis trimmed to a maximum value of 3 (see text for details). In (A) data is separately plotted for independent experiments, while (B) combines all data points, aiming for reliability of fit. 'adj. PPR' indicates that the measure has been scaled to account for a vesicle pool refractory to flippase reconstitution."}
 figure2_plot %<>% multipanelfigure::add_panel(
   top_panel = 1,
   panel = flippant::scramblase_assay_plot(template_file) + 
