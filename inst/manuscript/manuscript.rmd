@@ -539,8 +539,7 @@ may thus be installed in its most up--to date version using
 `install.packages('flippant')` from within any appropriately configured `R`
 installation.
 
-Thirdly the code base and development history will, upon publication, be
-publicly accessible at
+Thirdly the code base and development history is publicly accessible at
 [`https://bitbucket.org/graumannlabtools/flippant`](https://bitbucket.org/graumannlabtools/flippant).
 
 ## Competing Interests {-}
