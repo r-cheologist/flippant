@@ -7,8 +7,8 @@ date: '`r format(Sys.Date(), "%B %d,%Y")`'
 output:
   bookdown::word_document2:
     fig_caption: yes
+    pandoc_args: --smart
     toc: no
-    pandoc_args: ["--smart"]
   bookdown::pdf_document2:
     fig_caption: yes
     toc: no
