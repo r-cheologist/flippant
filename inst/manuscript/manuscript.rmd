@@ -617,7 +617,6 @@ ggsave(
   dpi = 600)
 ```
 
-
 # Additional Files {-}
 Additional file 1: `R` source package of `flippant` in the version current at
 acceptance for publication.
