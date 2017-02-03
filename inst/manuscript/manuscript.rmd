@@ -173,7 +173,7 @@ all data analysis and graphing needs from raw fluorescence spectra produced by
 scramblase assays. A simple parametrizing spreadsheet is the sole required user 
 input.
 
-# Availablility and Implementation {-}
+# Implementation {-}
 `flippant` has been implemented in `R` [@r_core_team_r:_2016] and is available
 in The Comprehensive `R` Archive Network (CRAN). It is thus install-- and
 loadable as follows from within a functional `R` environment:
@@ -187,7 +187,7 @@ The package depends on the following packaged extensions to `R` base
 functionality, which are automatically satisfied on installation: 
 `r flippant_dependencies`.
 
-# Input Data and Data Processing {-}
+## Input Data and Data Processing {-}
 To analyze raw data stemming from dithionite scramblase assays, `flippant` 
 requires for each data point information on the path to the 
 fluorimeter--generated spectrum, the amount of protein reconstituted into
@@ -245,8 +245,8 @@ default and following @ploier_dimerization_2016, PPR is scaled by a factor of
 scramblase reconstitution. This behavior can be modified using the 
 `ppr_scale_factor` parameter and avoided altogether setting it to `NULL`.
 
-# Main Features {-}
-## Template Generation for Data Input {-}
+## Main Features {-}
+### Template Generation for Data Input {-}
 Supporting the user in providing the input data needed, the following function 
 generates a spreadsheet program--compatible tab--delimited plain text template, 
 including column names, commentary, expected data type and the default used when
@@ -259,7 +259,7 @@ The application agnostic tab--delimited format must be maintained for the
 completed table, which is subjected to extensive input checks when read by 
 `flippant`.
 
-## Graphic Representation of Spectral Traces {-}
+### Graphic Representation of Spectral Traces {-}
 In a first, graphical data analytic step of a scramblase assay--derived data 
 set, fluorescent spectra or traces may be plotted in publication--appropriate
 quality with acquisition time on the x-- and fluorescence intensity on the
@@ -277,7 +277,7 @@ measure. Acquisition time coverage of the plot may be tuned by user--provided
 minimal (`time_min_sec` ) and maximal (`time_max_sec`) time points to be
 included (in seconds).
 
-## Scramblase Assay Analysis {-}
+### Scramblase Assay Analysis {-}
 Plotting protein to phospholipid ratio (PPR) against the likelihood for a given
 proteoliposome to contain one or more scramblases, the PPR plot is at the heart
 of the analysis of dithionite scramblase assays, allowing for the visual
@@ -317,7 +317,7 @@ tabular form using
 
 with the same modifying arguments to the function as for `scramblase_assay_plot`.
 
-# Case Study {-}
+# Results and Discussion {-}
 *Retinitis pigmentosa* is a degenerative disease of the retina, the majority of 
 cases of which is linked to mutant forms of the G--protein coupled receptor 
 rhodopsin [@mendes_mechanisms_2005]. Motivated by the recent discovery that 
