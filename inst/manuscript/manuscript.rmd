@@ -109,31 +109,6 @@ extension of the strategies it employs.
 # Keywords {-}
 scramblase; dithionite scramblase assay; `R`
 
-# Abbreviations {-}
-ATP: 
-  ~ Adenosine triphosphate
-
-BSA:
-  ~ Bovine serum albumin
-
-CRAN:
-  ~ The Comprehensive `R` Archive Network
-
-MAD:
-  ~ Median absolute deviation
-
-NBD:
-  ~ Nitrobenzoxadiazole
-
-PPR:
-  ~ Protein to phospholipid ratio
-
-RAM:
-  ~ Random--access memory
-
-SSD:
-  ~ Solid state disk
-
 # Background {-}
 Scramblases are proteins mediating the bidirectional, mass--action driven 
 equilibration of lipids between the leaflets of lipid bilayers that constitute 
@@ -517,6 +492,31 @@ extraction, a different assay for lipid translocation across liposome bilayers
 [@kubelt_transbilayer_2002;@vehring_flip-flop_2007], can utilize an essentially 
 identical data analysis work flow, `flippant` is expected to facilitate analysis
 of such experiments as well.
+
+# Abbreviations {-}
+ATP: 
+  ~ Adenosine triphosphate
+
+BSA:
+  ~ Bovine serum albumin
+
+CRAN:
+  ~ The Comprehensive `R` Archive Network
+
+MAD:
+  ~ Median absolute deviation
+
+NBD:
+  ~ Nitrobenzoxadiazole
+
+PPR:
+  ~ Protein to phospholipid ratio
+
+RAM:
+  ~ Random--access memory
+
+SSD:
+  ~ Solid state disk
 
 # Declarations {-}
 ## Ethics Approval and Consent to Participate {-}
