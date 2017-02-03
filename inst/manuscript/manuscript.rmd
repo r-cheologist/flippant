@@ -333,8 +333,8 @@ highly ordered quarternary structure of rhodopsin in the retina
 [@ploier_dimerization_2016].
 
 `flippant`'s capabilities are demonstrated here by reanalyzing a subset of the
-data underlying Figure 4C--F in @ploier_dimerization_2016. The first step is to
-extract the data files, stored in a ZIP archive within the package.
+data in @ploier_dimerization_2016. The first step is to extract the data files,
+stored in a ZIP archive within the package.
 
 ```{r extract_case_study_dataset}
 analysis_dir <- file.path(tempdir(), "flippant-case-study")
@@ -370,7 +370,7 @@ Figure \@ref(fig:figure2-creation)A.
 Figure \@ref(fig:figure2-creation)A emphasizes reproducibility between
 independent experiments ("Experiment 1" and "Experiment 2") on the four probed
 rhodopsins. Forgoing reproducibility analysis in favor of a potentially more
-reliable result and following more closely the analysis in Figure 4C--F by
+reliable result and following more closely the analysis by
 @ploier_dimerization_2016, a single fit may be performed for the combined data
 from all experiments as follows, resulting in 
 Figure \@ref(fig:figure2-creation)B:
@@ -414,7 +414,7 @@ ppr_results %>%
 
 The resulting values for the fit constant correspond with
 `r ppr_results_alpha_print` for `r ppr_results_names`, respectively, well to the
-prior manual analysis by @ploier_dimerization_2016 (Table S2 therein), where
+prior manual analysis by @ploier_dimerization_2016, where
 $\alpha \times 10^4 \approx 16$ was reported for mutant and 
 $\alpha \times 10^4 \approx 7$ for wild type rhodopsin. Based on the manual
 analysis of the data we conclude in @ploier_dimerization_2016 that the mutant
