@@ -531,7 +531,7 @@ from within `R` all functionality as well as data presented here along with
 extensive additional documentation and example code.
 
 The package is available as an `R` source package in the version current at
-acceptance for publication in the supplementary material and may be installed
+acceptance for publication as Additional file 1 and may be installed
 from that file using `install.packages(file.choose(), type = 'source')`.
 
 The package is also uploaded to The Comprehensive `R` Archive Network (CRAN) and
@@ -617,5 +617,10 @@ ggsave(
   units = "mm",
   dpi = 600)
 ```
+
+
+# Additional Files {-}
+Additional file 1: `R` source package of `flippant` in the version current at
+acceptance for publication.
 
 # References {-}
