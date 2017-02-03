@@ -17,11 +17,13 @@ Authors@R: c(person("Johannes", "Graumann", email =
     role = c("ctb")))
 Depends:
     R (>= 3.3.2),
-    ggplot2 (>= 2.2.0)
+    ggplot2 (>= 2.2.1)
 Suggests:
+    bookdown,
     devtools,
     microbenchmark,
     multipanelfigure,
+    pander,
     roxygen2,
     tools
 Imports:
@@ -29,8 +31,8 @@ Imports:
     assertive.numbers (>= 0.0-2),
     assertive.properties (>= 0.0-4),
     assertive.strings (>= 0.0-3),
-    assertive.types (>= 0.0-2),
-    data.table (>= 1.10.0),
+    assertive.types (>= 0.0-3),
+    data.table (>= 1.10.4),
     magrittr (>= 1.5),
     minpack.lm (>= 1.2-1),
     plyr (>= 1.8.4),
@@ -41,4 +43,4 @@ Imports:
     wmtsa (>= 2.0-2)
 License: GPL (>= 3)
 LazyData: true
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.0
