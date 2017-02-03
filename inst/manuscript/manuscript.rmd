@@ -553,7 +553,8 @@ funded by Qatar Foundation. This study was made possible by NPRP grant
 5--669--1--112 from the Qatar National Research Fund (a member of Qatar 
 Foundation). The statements made herein are solely the responsibility of the
 authors. B.P. was also supported by the Austrian Science Fund (FWF), project
-J3686--B21.
+J3686--B21. No funding body was involved in the design of or conclusions drawn
+from this study.
 
 ## Authors' Contributions {-}
 R.J.C and J.G. wrote the code, B.P., M.A.G. and A.K.M. guided the implementation
