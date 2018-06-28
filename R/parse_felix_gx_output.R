@@ -8,6 +8,7 @@
 #' @return See \code{\link{parse_fluorimeter_output}}.
 #' @seealso \code{\link{parse_fluorimeter_output}}, 
 #' \code{\link[flippant]{parse_felix_32_output}},
+#' \code{\link[flippant]{parse_FluorS_Essence_3.8_output}},
 #' \code{\link[flippant]{parse_manual_output}}
 #' @author Johannes Graumann
 #' @keywords manip IO file

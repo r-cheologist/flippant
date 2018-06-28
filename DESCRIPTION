@@ -7,7 +7,7 @@ Description: The lipid scrambling activity of protein extracts and purified
     assays, as well as a platform for review, dissemination and extension of the
     strategies it employs. The package's name derives from a play on the fact
     that lipid scrambling is also sometimes referred to as 'flipping'.
-Version: 1.2.0
+Version: 1.3.0
 Author: Johannes Graumann [cre, aut],
     Richard Cotton [ctb]
 Maintainer: Johannes Graumann <johannes.graumann@mpi-bn.mpg.de>
@@ -16,7 +16,7 @@ Authors@R: c(person("Johannes", "Graumann", email =
     person("Richard","Cotton", email = "richierocks@gmail.com",
     role = c("ctb")))
 Depends:
-    R (>= 3.3.2),
+    R (>= 3.5.0),
     ggplot2 (>= 2.2.1)
 Suggests:
     bookdown,
@@ -27,20 +27,21 @@ Suggests:
     roxygen2,
     tools
 Imports:
+    assertive.base (>= 0.0-7),
     assertive.files (>= 0.0-2),
     assertive.numbers (>= 0.0-2),
     assertive.properties (>= 0.0-4),
     assertive.strings (>= 0.0-3),
     assertive.types (>= 0.0-3),
-    data.table (>= 1.10.4),
+    data.table (>= 1.11.4),
     magrittr (>= 1.5),
     minpack.lm (>= 1.2-1),
     plyr (>= 1.8.4),
-    RcppRoll (>= 0.2.2),
-    stringi (>= 1.1.2),
+    RcppRoll (>= 0.3.0),
+    stringi (>= 1.2.3),
     utils,
-    withr (>= 1.0.2),
-    wmtsa (>= 2.0-2)
+    withr (>= 2.1.2),
+    wmtsa (>= 2.0-3)
 License: GPL (>= 3)
 LazyData: true
 RoxygenNote: 6.0.1

@@ -1,20 +1,19 @@
-#' @title parse_felix_32_output
-#' @description Parse spectra from files provided by a QuantaMaster fluorimeter 
-#' (Photon Technology International, Inc., Edison, New Jersey) using 
-#' \code{Felix32 v1.20}
+#' @title parse_FluorS_Essence_3.8_output
+#' @description Parse spectra from files provided by a Horiba fluorimeter 
+#' (HORIBA Europe GmbH, Oberursel, Germany) using \code{FluorS Essence v3.8}
 #' @details A helper function to \code{\link{parse_fluorimeter_output}}.
 #' @param x \code{\link{character}} vector resulting from 
 #' \code{\link{readLines}} of the corresponding data file.
 #' @return See \code{\link{parse_fluorimeter_output}}.
-#' @seealso \code{\link{parse_fluorimeter_output}}, 
+#' @seealso \code{\link{parse_fluorimeter_output}},
+#' \code{\link{parse_felix_32_output}},
 #' \code{\link[flippant]{parse_felix_gx_output}},
-#' \code{\link[flippant]{parse_FluorS_Essence_3.8_output}},
 #' \code{\link[flippant]{parse_manual_output}}
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @author Johannes Graumann
 #' @keywords manip IO file
-parse_felix_32_output <- function(x = NULL){
+parse_FluorS_Essence_3.8_output <- function(x = NULL){
 
 # Check Prerequisites -----------------------------------------------------
   x %>%
@@ -25,7 +24,7 @@ parse_felix_32_output <- function(x = NULL){
   # Extract data
   ## Where are data blocks starting?
   blockIndecesInX <- lapply(
-    c("^X\\tY"),
+    c("^s\\tCPS"),
     function(y){
       which(sapply(x,function(z){grep(pattern=y,x=z)}) == 1)
     })
@@ -53,7 +52,7 @@ parse_felix_32_output <- function(x = NULL){
     })
   names(blocksInX) <- sub(pattern="\\s+$",replacement="",names(blocksInX))
   ## Rough format check
-  rightLengthBlocksInX <- sapply(blocksInX,length) == c(3,NA)
+  rightLengthBlocksInX <- sapply(blocksInX,length) == c(1,NA)
   rightLengthBlocksInX[is.na(rightLengthBlocksInX)] <- TRUE
   if(!all(rightLengthBlocksInX)){
     stop(
@@ -63,7 +62,7 @@ parse_felix_32_output <- function(x = NULL){
   }
   # Process spectral data
   output <- list(
-    Data = blocksInX$"X\tY")
+    Data = blocksInX$"s\tCPS")
   ## Parse data apart & numerizise
   output$Data <- lapply(
     output$Data,
@@ -82,12 +81,8 @@ parse_felix_32_output <- function(x = NULL){
   ## Create fluorescence min
   output$Min.Fluorescence.Intensity <- min(output$Data$Fluorescence.Intensity,na.rm=TRUE)
   ## Extract file name
-  output$File.Name <- blocksInX[[1]][2]
-  ## Extract/check acquisition time  max
-  maxAcqTime <- as.numeric(blocksInX[[1]][2])
-  if(maxAcqTime != floor(max(output$Data$Time.in.sec,na.rm=TRUE))){
-    stop("Reported and home-made acquisition time maxima differ.")
-  }
+  output$File.Name <- NA
+  ## Extract acquisition time  max
   output$Max.Acquisition.Time.in.sec <- max(output$Data$Time.in.sec,na.rm=TRUE)
   ## Create acquisition time  min
   output$Min.Acquisition.Time.in.sec <- min(output$Data$Time.in.sec,na.rm=TRUE)

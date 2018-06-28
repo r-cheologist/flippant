@@ -6,10 +6,11 @@
 #' The function is currently capable to deal with input derived from 
 #' QuantaMaster instruments (Photon Technology International, Inc., Edison, 
 #' New Jersey)running software versions \code{FelixGX v4.1} 
-#' (see \code{\link{parse_felix_gx_output}}) and \code{Felix32 v1.20} (see 
-#' \code{\link{parse_felix_32_output}}). The format used in a given file is 
-#' divined from the data structure and appropriate internal parsing functions  
-#' are called.
+#' (see \code{\link{parse_felix_gx_output}}), \code{Felix32 v1.20} (see 
+#' \code{\link{parse_felix_32_output}}) as well as Horiba fluorimeters 
+#' (HORIBA Europe GmbH, Oberursel, Germany) using \code{FluorS Essence v3.8}.
+#' The format used in a given file is divined from the data structure and
+#' appropriate internal parsing functions are called.
 #' 
 #' If requested the time point of dithionite addition to a sample is determined 
 #' using \pkg{wmtsa}-supplied methodology and the acquisition time reset
@@ -20,7 +21,8 @@
 #' acquisition time should be reset to have \code{0} (zero) coincide with the 
 #' addition of dithionite (see 'Details' section).
 #' @param file_type A string specifying whether or the file was created using
-#' Felix GX or Felix 32 or is a "manual" tab delimited file.
+#' Felix GX or Felix 32 or FluorS Essence v3.8 or is a "manual" tab delimited
+#' file.
 #' @return A data frame with two columns:
 #' \describe{
 #' \item{Time.in.sec}{Numeric. Number of seconds since the start of experiment.}
@@ -33,6 +35,7 @@
 #' @seealso \code{scramblase_assay_input_validation},
 #' \code{\link[flippant]{parse_felix_gx_output}}, 
 #' \code{\link[flippant]{parse_felix_32_output}},
+#' \code{\link[flippant]{parse_FluorS_Essence_3.8_output}},
 #' \code{\link[flippant]{parse_manual_output}}
 #' @author Johannes Graumann
 #' @keywords manip IO file
@@ -48,7 +51,7 @@
 parse_fluorimeter_output <- function(
   spec_file = NULL,
   adjust = TRUE,
-  file_type = c("auto", "FelixGXv4.1.0.3096", "Felix32v1.20", "manual")){
+  file_type = c("auto", "FelixGXv4.1.0.3096", "Felix32v1.20", "FluorSEssencev3.8", "manual")){
   #######################
   # Check Prerequisites #
   #######################
@@ -72,7 +75,12 @@ parse_fluorimeter_output <- function(
     } else if(
       grepl(pattern="^1\\s*$",x=first_lines[1],ignore.case=TRUE) &
         grepl(pattern="^X\\tY\\s*$",x=first_lines[4],ignore.case=TRUE)){
-      formatOfSpecFile <- "Felix32v1.20"
+      "Felix32v1.20"
+    } else if(
+      grepl(pattern="^Time\\tS1\\s*$",x=first_lines[1],ignore.case = TRUE) &
+        grepl(pattern="^s\\tCPS\\s*$",x=first_lines[2],ignore.case = TRUE))
+    {
+      "FluorSEssencev3.8"
     } else if(
       grepl(pattern="^Time.\\(sec\\)\tFluorescense.Intensity\\s*$",x=first_lines[1],ignore.case=TRUE)
     ){
@@ -90,6 +98,11 @@ parse_fluorimeter_output <- function(
       lines <- readLines(spec_file)
       y <- parse_felix_32_output(lines)
       structure(y$Data, File.Name = y$File.Name) 
+    },
+    FluorSEssencev3.8 = {
+      lines <- readLines(spec_file)
+      y <- parse_FluorS_Essence_3.8_output(lines)
+      structure(y$Data, File.Name = basename(spec_file))
     },
     manual = {
       lines <- readLines(spec_file)

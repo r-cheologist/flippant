@@ -5,7 +5,8 @@
 \title{parse_fluorimeter_output}
 \usage{
 parse_fluorimeter_output(spec_file = NULL, adjust = TRUE,
-  file_type = c("auto", "FelixGXv4.1.0.3096", "Felix32v1.20", "manual"))
+  file_type = c("auto", "FelixGXv4.1.0.3096", "Felix32v1.20",
+  "FluorSEssencev3.8", "manual"))
 }
 \arguments{
 \item{spec_file}{Path to a \file{*.txt} file as a \code{\link{character}} 
@@ -16,7 +17,8 @@ acquisition time should be reset to have \code{0} (zero) coincide with the
 addition of dithionite (see 'Details' section).}
 
 \item{file_type}{A string specifying whether or the file was created using
-Felix GX or Felix 32 or is a "manual" tab delimited file.}
+Felix GX or Felix 32 or FluorS Essence v3.8 or is a "manual" tab delimited
+file.}
 }
 \value{
 A data frame with two columns:
@@ -39,10 +41,11 @@ function to scramblase activity determinations from dithionite assays.
 The function is currently capable to deal with input derived from 
 QuantaMaster instruments (Photon Technology International, Inc., Edison, 
 New Jersey)running software versions \code{FelixGX v4.1} 
-(see \code{\link{parse_felix_gx_output}}) and \code{Felix32 v1.20} (see 
-\code{\link{parse_felix_32_output}}). The format used in a given file is 
-divined from the data structure and appropriate internal parsing functions  
-are called.
+(see \code{\link{parse_felix_gx_output}}), \code{Felix32 v1.20} (see 
+\code{\link{parse_felix_32_output}}) as well as Horiba fluorimeters 
+(HORIBA Europe GmbH, Oberursel, Germany) using \code{FluorS Essence v3.8}.
+The format used in a given file is divined from the data structure and
+appropriate internal parsing functions are called.
 
 If requested the time point of dithionite addition to a sample is determined 
 using \pkg{wmtsa}-supplied methodology and the acquisition time reset
@@ -61,6 +64,7 @@ parse_fluorimeter_output(fluor_file) \%>\%
 \code{scramblase_assay_input_validation},
 \code{\link[flippant]{parse_felix_gx_output}}, 
 \code{\link[flippant]{parse_felix_32_output}},
+\code{\link[flippant]{parse_FluorS_Essence_3.8_output}},
 \code{\link[flippant]{parse_manual_output}}
 }
 \author{
