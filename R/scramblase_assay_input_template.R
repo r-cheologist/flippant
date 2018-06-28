@@ -1,12 +1,18 @@
 #' @rdname scramblase_assay_plot
 #' @importFrom magrittr %>%
 #' @export
-scramblase_assay_input_template <- function(path="scramblase_assay_input_template.txt"){
+scramblase_assay_input_template <- function(path="scramblase_assay_input_template.txt", input_directory = NULL){
 # Check input -------------------------------------------------------------
   path %>%
     assertive.strings::assert_is_a_non_empty_string() %>%
     assertive.files::is_existing_file() %>%
     assertive.base::assert_all_are_false()
+  if(!is.null(input_directory))
+  {
+    input_directory %>%
+      assertive.strings::assert_is_a_non_empty_string() %>%
+      assertive.files::assert_all_are_dirs()
+  }
 
 # Generate template data.frame --------------------------------------------
   # Create data structure in list form
@@ -61,7 +67,7 @@ scramblase_assay_input_template <- function(path="scramblase_assay_input_templat
         }
       })
   # Assemble the data.frame
-  commentedDataStructure %>%
+  commentedDataStructure %<>%
     magrittr::extract(2:length(.)) %>%
     lapply(
       function(x){
@@ -72,8 +78,26 @@ scramblase_assay_input_template <- function(path="scramblase_assay_input_templat
       }
     ) %>%
     plyr::rbind.fill() %>%
-    magrittr::set_names(dataStructure %>% magrittr::extract2(1)) %>%
+    magrittr::set_names(dataStructure %>% magrittr::extract2(1))
+  # Get files in input_directory for prepopulation
+  if(!is.null(input_directory))
+  {
+    paths <- input_directory %>%
+        list.files()
+    tmp_content <- matrix(
+      nrow = length(paths),
+      ncol = ncol(commentedDataStructure)) %>%
+      as.data.frame() %>%
+      magrittr::set_colnames(names(commentedDataStructure))
+    tmp_content$Path <- paths
+    tmp_content[is.na(tmp_content)] <- ''
+    commentedDataStructure %<>%
+      plyr::rbind.fill(
+        tmp_content)
+  }
+  
   # Write the table out
+  commentedDataStructure %>%
     utils::write.table(
       file=path,
       sep="\t",

@@ -125,6 +125,9 @@
 #'  }}
 #' @param path \code{\link{character}} object giving the path of an \bold{empty}
 #' template for a spreadsheet that can provide \code{x}.
+#' @param input_directory if not \code{NULL}, \code{\link{character}} object giving
+#' the path to a directory where spectrometer output resides for the prepopulation of
+#' the template spreadsheet.
 #' @param x \code{\link{data.frame}} or path to a tab delimited file 
 #' representing it (see "Details").
 #' @param ppr_scale_factor \code{\link{numeric}} object providing a scale factor

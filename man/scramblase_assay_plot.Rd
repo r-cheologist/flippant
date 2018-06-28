@@ -13,7 +13,8 @@
 \alias{scramblase_assay_traces}
 \title{scramblase_assay_plot}
 \usage{
-scramblase_assay_input_template(path = "scramblase_assay_input_template.txt")
+scramblase_assay_input_template(path = "scramblase_assay_input_template.txt",
+  input_directory = NULL)
 
 scramblase_assay_plot(x, scale_to = c("model", "data"),
   ppr_scale_factor = 0.65, force_through_origin = TRUE,
@@ -31,6 +32,10 @@ scramblase_assay_traces(x, ppr_scale_factor = 0.65, time_min_sec = NA_real_,
 \arguments{
 \item{path}{\code{\link{character}} object giving the path of an \bold{empty}
 template for a spreadsheet that can provide \code{x}.}
+
+\item{input_directory}{if not \code{NULL}, \code{\link{character}} object giving
+the path to a directory where spectrometer output resides for the prepopulation of
+the template spreadsheet.}
 
 \item{x}{\code{\link{data.frame}} or path to a tab delimited file 
 representing it (see "Details").}
