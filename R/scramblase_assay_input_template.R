@@ -5,7 +5,8 @@ scramblase_assay_input_template <- function(path="scramblase_assay_input_templat
 # Check input -------------------------------------------------------------
   path %>%
     assertive.strings::assert_is_a_non_empty_string() %>%
-    assertive.files::assert_any_are_existing_files()
+    assertive.files::is_existing_file() %>%
+    assertive.base::assert_all_are_false()
 
 # Generate template data.frame --------------------------------------------
   # Create data structure in list form
