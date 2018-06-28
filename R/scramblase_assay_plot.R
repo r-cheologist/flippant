@@ -1,5 +1,5 @@
 #' @title scramblase_assay_plot
-#' @aliases scramblaseAssayCalculations scramblase_assay_input_template 
+#' @aliases scramblase_assay_calculations scramblase_assay_input_template 
 #' scramblase_assay_plot scramblase_assay_stats scramblase_assay_traces
 #' @description Functions for the presentation and evaluaton of dithionite 
 #' scramblase assays
@@ -161,9 +161,9 @@
 #' \code{28} (see Ploier et al. 2016 for details).
 #' @return \code{scramblase_assay_traces} and \code{scramblase_assay_plot} return 
 #' \code{\link{ggplot}} objects representing the raw fluorescence traces and a
-#' complete PPR plot, respectively. \code{scramblaseAssayInputTemplate} 
+#' complete PPR plot, respectively. \code{scramblase_assay_input_template} 
 #' generates a tab-delimited \code{ASCII} file in the file system and does not
-#' provide further output. \code{scramblaseAssayStats} assembles (and prints) 
+#' provide further output. \code{scramblase_assay_stats} assembles (and prints) 
 #' assay statistics as a \code{\link{data.frame}}.
 #' @author Johannes Graumann
 #' @references Menon, I., Huber, T., Sanyal, S., Banerjee, S., Barre, P., Canis, 

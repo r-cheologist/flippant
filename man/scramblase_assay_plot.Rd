@@ -5,7 +5,7 @@
 \name{scramblase_assay_input_template}
 \alias{scramblase_assay_input_template}
 \alias{scramblase_assay_plot}
-\alias{scramblaseAssayCalculations}
+\alias{scramblase_assay_calculations}
 \alias{scramblase_assay_input_template}
 \alias{scramblase_assay_stats}
 \alias{scramblase_assay_traces}
@@ -80,9 +80,9 @@ point of dithionite addition.}
 \value{
 \code{scramblase_assay_traces} and \code{scramblase_assay_plot} return 
 \code{\link{ggplot}} objects representing the raw fluorescence traces and a
-complete PPR plot, respectively. \code{scramblaseAssayInputTemplate} 
+complete PPR plot, respectively. \code{scramblase_assay_input_template} 
 generates a tab-delimited \code{ASCII} file in the file system and does not
-provide further output. \code{scramblaseAssayStats} assembles (and prints) 
+provide further output. \code{scramblase_assay_stats} assembles (and prints) 
 assay statistics as a \code{\link{data.frame}}.
 }
 \description{
