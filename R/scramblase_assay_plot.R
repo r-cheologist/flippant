@@ -10,7 +10,11 @@
 #'  \item{\code{Path}:}{Paths to existing and readable \code{ASCII} output files 
 #'    of a fluorimeter. See \code{\link{parse_fluorimeter_output}} for details and
 #'    supported formats.}
-#'  \item{\code{Protein Reconstituted (mg)}:}{Self-explanatory.}}
+#'  \item{\code{Protein Reconstituted (mg)}:}{Self-explanatory. In the case of
+#'    \code{\link{scramblase_assay_traces}} \strong{ONLY} this may be abused by
+#'     taking \code{\link{character}} values rather than the usually required
+#'     \code{\link{numeric}}s. Handy when e.g. plotting traces for "Liposomes"
+#'     and "Proteoliposomes", rather than defined PPRs.}}
 #' 
 #' Further (\bold{facultative}) columns are:
 #' \describe{

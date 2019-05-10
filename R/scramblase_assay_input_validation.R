@@ -9,22 +9,20 @@ scramblase_assay_input_validation <- function(
   split_by_experiment,
   r_bar,
   sigma_r_bar,
-  verbose=TRUE){
-  # Check verbose
+  protein_is_factor = FALSE,
+  verbose = TRUE){
+  # Check switches
+  assertive.types::assert_is_a_bool(protein_is_factor)
   assertive.types::assert_is_a_bool(verbose)
   # Check x
   ## General DF characteristics
   assertive.types::assert_is_data.frame(x)
   assertive.properties::assert_has_rows(x)
-  if(any(is.na(x))){
-    stop("'x' cannot contain 'NA'.")
-  }
+  if (any(is.na(x))) stop("'x' cannot contain 'NA'.")
   ## Enforce use of 'numeric' over 'integer'
   integerColumns <- names(x)[sapply(names(x),function(y){is.integer(x[[y]])})]
-  if(length(integerColumns) > 0){
-    for(column in integerColumns){
-      x[[column]] <- as.numeric(x[[column]])
-    }
+  if (length(integerColumns) > 0) {
+    for (column in integerColumns)  x[[column]] <- as.numeric(x[[column]])
   }
   ## Required parameters
   requiredColumnsInX <- list(
@@ -33,28 +31,28 @@ scramblase_assay_input_validation <- function(
       "Protein Reconstituted (mg)"),
     Class = c(
       "character",
-      "numeric"))
-  if(!all( requiredColumnsInX$Name %in% names(x))){
+      ifelse(protein_is_factor, "character", "numeric")))
+  if (!all( requiredColumnsInX$Name %in% names(x))) {
     stop(
       "'x' must hold at least the following columns: '",
-      paste(requiredColumnsInX,collapse="', '"),
+      paste(requiredColumnsInX,collapse = "', '"),
       "'.")
   }
-  if(!identical(
-    unname(vapply(x[requiredColumnsInX$Name],class,c(A="A"))),
-    requiredColumnsInX$Class)){
+  if (!identical(
+    unname(vapply(x[requiredColumnsInX$Name],class,c(A = "A"))),
+    requiredColumnsInX$Class)) {
     stop(
       "Required columns '",
-      paste(requiredColumnsInX$Name,collapse="', '"),
+      paste(requiredColumnsInX$Name,collapse = "', '"),
       "' must be of classes '",
-      paste(requiredColumnsInX$Class,collapse="', '"),
+      paste(requiredColumnsInX$Class,collapse = "', '"),
       "'.")
   }
   ## Check paths
-  if(!all(file.exists(x$Path))){
+  if (!all(file.exists(x$Path))) {
     stop("All entries in column 'Path' must refer to existing files.")
   }
-  if(any(file.access(x$Path,mode=4) == -1)){
+  if (any(file.access(x$Path,mode = 4) == -1)) {
     stop("All entries in column 'Path' must refer to existing files.")
   }
   ## Facultative parameters
@@ -81,12 +79,12 @@ scramblase_assay_input_validation <- function(
       NA_character_,
       NA_character_))
   missingFacultativeColumnsInX <- which(!(facultativeColumnsInX$Name %in% names(x)))
-  if(length(missingFacultativeColumnsInX) != 0){
-    for (y in missingFacultativeColumnsInX){
-      if(facultativeColumnsInX$Name[y] %in% c("Experiment","Experimental Series")) {
+  if (length(missingFacultativeColumnsInX) != 0) {
+    for (y in missingFacultativeColumnsInX) {
+      if (facultativeColumnsInX$Name[y] %in% c("Experiment","Experimental Series")) {
         toBeAddedOn <- facultativeColumnsInX$Default[[y]]
       } else {
-        if(verbose){
+        if (verbose) {
           message(
             "Providing missing column '",
             facultativeColumnsInX$Name[y],
@@ -98,72 +96,69 @@ scramblase_assay_input_validation <- function(
       }
       output <- cbind(
         x,
-        rep(x=toBeAddedOn,times=nrow(x)),
-        stringsAsFactors=FALSE)
+        rep(x = toBeAddedOn, times = nrow(x)),
+        stringsAsFactors = FALSE)
       names(output)[ncol(output)] <- facultativeColumnsInX$Name[y]
       x <- output
     }
   }
   
-  if(!identical(
-    unname(vapply(x[facultativeColumnsInX$Name],class,c(A="A"))),
-    facultativeColumnsInX$Class)){
+  if (!identical(
+    unname(vapply(x[facultativeColumnsInX$Name],class,c(A = "A"))),
+    facultativeColumnsInX$Class)) {
     stop(
       "Facultative columns '",
-      paste(facultativeColumnsInX$Name,collapse="', '"),
+      paste(facultativeColumnsInX$Name,collapse = "', '"),
       "' must be of classes '",
-      paste(facultativeColumnsInX$Class,collapse="', '"),
+      paste(facultativeColumnsInX$Class,collapse = "', '"),
       "'.")
   }
 
   # Check scale_to
   scale_to %<>%
     match.arg(
-      choices=c("model","data"),
-      several.ok=FALSE)
-  if(scale_to == "model" & verbose){
+      choices = c("model","data"),
+      several.ok = FALSE)
+  if (scale_to == "model" & verbose) {
     message("Data will be scaled to the plateau of its monoexponential fit.")
   }
   # Check ppr_scale_factor
-  if(!is.null(ppr_scale_factor)){
+  if (!is.null(ppr_scale_factor)) {
     ppr_scale_factor %>%
       assertive.types::assert_is_a_number()
-    if(verbose){
+    if (verbose) {
       message("PPR will be scaled by a factor of ", ppr_scale_factor, ".")
     }
   }
   # Check generation_of_algorithm
   generation_of_algorithm %<>% 
     as.character()
-  if(identical(generation_of_algorithm, c("2","1"))){
+  if (identical(generation_of_algorithm, c("2","1"))) {
     generation_of_algorithm <- "2"
   }
   generation_of_algorithm %<>%
     match.arg(
       choices = c("second","first", "2", "1"),
       several.ok = FALSE)
-  if(generation_of_algorithm %in% c("first","1")){
+  if (generation_of_algorithm %in% c("first","1")) {
     generation_of_algorithm <- 1
-  } else if(generation_of_algorithm %in% c("second", "2")){
+  } else if (generation_of_algorithm %in% c("second", "2")) {
     generation_of_algorithm <- 2
   }
-  if(verbose){
-    message("Data will be fitted to algorithm generation ", generation_of_algorithm, ".")
+  if (verbose) {
+    message("Data will be fitted to algorithm generation ",
+            generation_of_algorithm, ".")
   }
   # Check force_through_origin
-  force_through_origin %>%
-    assertive.types::assert_is_a_bool()
+  assertive.types::assert_is_a_bool(force_through_origin)
   # Check split_by_experiment
-  split_by_experiment %>%
-    assertive.types::assert_is_a_bool()
+  assertive.types::assert_is_a_bool(split_by_experiment)
   # check r_bar
-  r_bar %>%
-    assertive.types::assert_is_a_number() %>%
-    assertive.numbers::assert_all_are_greater_than(0)
+  assertive.types::assert_is_a_number(r_bar)
+  assertive.numbers::assert_all_are_greater_than(r_bar, 0)
   # check sigmar_bar
-  sigma_r_bar %>%
-    assertive.types::assert_is_a_number() %>%
-    assertive.numbers::assert_all_are_greater_than(0)
+  assertive.types::assert_is_a_number(sigma_r_bar)
+  assertive.numbers::assert_all_are_greater_than(sigma_r_bar, 0)
   # Return
   list(
     x = x,
