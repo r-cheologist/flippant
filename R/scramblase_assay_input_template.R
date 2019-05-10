@@ -82,7 +82,7 @@ scramblase_assay_input_template <- function(
     plyr::rbind.fill() %>%
     magrittr::set_names(dataStructure %>% magrittr::extract2(1))
   # Get files in input_directory for prepopulation
-  if(!is.null(input_directory))
+  if (!is.null(input_directory))
   {
     paths <- input_directory %>%
         list.files()
