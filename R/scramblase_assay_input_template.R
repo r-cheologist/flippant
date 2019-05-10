@@ -1,17 +1,19 @@
 #' @rdname scramblase_assay_plot
 #' @importFrom magrittr %>%
 #' @export
-scramblase_assay_input_template <- function(path="scramblase_assay_input_template.txt", input_directory = NULL){
+scramblase_assay_input_template <- function(
+  path = "scramblase_assay_input_template.txt", input_directory = NULL,
+  overwrite = FALSE){
 # Check input -------------------------------------------------------------
-  path %>%
-    assertive.strings::assert_is_a_non_empty_string() %>%
-    assertive.files::is_existing_file() %>%
-    assertive.base::assert_all_are_false()
-  if(!is.null(input_directory))
-  {
-    input_directory %>%
-      assertive.strings::assert_is_a_non_empty_string() %>%
-      assertive.files::assert_all_are_dirs()
+  assertive.types::assert_is_a_bool(overwrite)
+  assertive.strings::assert_is_a_non_empty_string(path)
+  if (!overwrite) {
+    assertive.base::assert_all_are_false(
+      assertive.files::assert_any_are_existing_files(path))
+  }
+  if (!is.null(input_directory)) {
+    assertive.strings::assert_is_a_non_empty_string(input_directory)
+    assertive.files::assert_all_are_dirs(input_directory)
   }
 
 # Generate template data.frame --------------------------------------------
@@ -98,10 +100,9 @@ scramblase_assay_input_template <- function(path="scramblase_assay_input_templat
   
   # Write the table out
   commentedDataStructure %>%
-    utils::write.table(
-      file=path,
-      sep="\t",
-      row.names=FALSE)
+    utils::write.table(file = path, sep = "\t", row.names = FALSE)
+  # Silently return path
+  invisible(path)
 }
 
 # Add global variables to satisfy 'R CMD check' ---------------------------

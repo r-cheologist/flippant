@@ -6,15 +6,13 @@
 \alias{scramblase_assay_input_template}
 \alias{scramblase_assay_plot}
 \alias{scramblase_assay_calculations}
-\alias{scramblase_assay_input_template}
-\alias{scramblase_assay_stats}
-\alias{scramblase_assay_traces}
 \alias{scramblase_assay_stats}
 \alias{scramblase_assay_traces}
 \title{scramblase_assay_plot}
 \usage{
-scramblase_assay_input_template(path = "scramblase_assay_input_template.txt",
-  input_directory = NULL)
+
+  scramblase_assay_input_template(path = "scramblase_assay_input_template.txt",
+  input_directory = NULL, overwrite = FALSE)
 
 scramblase_assay_plot(x, scale_to = c("model", "data"),
   ppr_scale_factor = 0.65, force_through_origin = TRUE,
@@ -26,16 +24,19 @@ scramblase_assay_stats(x, scale_to = c("model", "data"),
   generation_of_algorithm = c(2, 1), split_by_experiment = TRUE,
   r_bar = 88, sigma_r_bar = 28)
 
-scramblase_assay_traces(x, ppr_scale_factor = 0.65, time_min_sec = NA_real_,
-  time_max_sec = NA_real_, adjust = TRUE)
+scramblase_assay_traces(x, ppr_scale_factor = 0.65,
+  time_min_sec = NA_real_, time_max_sec = NA_real_, adjust = TRUE)
 }
 \arguments{
 \item{path}{\code{\link{character}} object giving the path of an \bold{empty}
 template for a spreadsheet that can provide \code{x}.}
 
-\item{input_directory}{if not \code{NULL}, \code{\link{character}} object giving
-the path to a directory where spectrometer output resides for the prepopulation of
-the template spreadsheet.}
+\item{input_directory}{if not \code{NULL}, \code{\link{character}} object
+giving the path to a directory where spectrometer output resides for the
+prepopulation of the template spreadsheet.}
+
+\item{overwrite}{\code{\link{logical}} object allowing to overwrite existing
+template paths.}
 
 \item{x}{\code{\link{data.frame}} or path to a tab delimited file 
 representing it (see "Details").}
@@ -86,8 +87,8 @@ point of dithionite addition.}
 \code{scramblase_assay_traces} and \code{scramblase_assay_plot} return 
 \code{\link{ggplot}} objects representing the raw fluorescence traces and a
 complete PPR plot, respectively. \code{scramblase_assay_input_template} 
-generates a tab-delimited \code{ASCII} file in the file system and does not
-provide further output. \code{scramblase_assay_stats} assembles (and prints) 
+generates a tab-delimited \code{ASCII} file in the file system and invisibly
+returns the path name. \code{scramblase_assay_stats} assembles (and prints) 
 assay statistics as a \code{\link{data.frame}}.
 }
 \description{

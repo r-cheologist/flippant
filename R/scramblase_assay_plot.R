@@ -125,9 +125,11 @@
 #'  }}
 #' @param path \code{\link{character}} object giving the path of an \bold{empty}
 #' template for a spreadsheet that can provide \code{x}.
-#' @param input_directory if not \code{NULL}, \code{\link{character}} object giving
-#' the path to a directory where spectrometer output resides for the prepopulation of
-#' the template spreadsheet.
+#' @param input_directory if not \code{NULL}, \code{\link{character}} object
+#' giving the path to a directory where spectrometer output resides for the
+#' prepopulation of the template spreadsheet.
+#' @param overwrite \code{\link{logical}} object allowing to overwrite existing
+#' template paths.
 #' @param x \code{\link{data.frame}} or path to a tab delimited file 
 #' representing it (see "Details").
 #' @param ppr_scale_factor \code{\link{numeric}} object providing a scale factor
@@ -165,8 +167,8 @@
 #' @return \code{scramblase_assay_traces} and \code{scramblase_assay_plot} return 
 #' \code{\link{ggplot}} objects representing the raw fluorescence traces and a
 #' complete PPR plot, respectively. \code{scramblase_assay_input_template} 
-#' generates a tab-delimited \code{ASCII} file in the file system and does not
-#' provide further output. \code{scramblase_assay_stats} assembles (and prints) 
+#' generates a tab-delimited \code{ASCII} file in the file system and invisibly
+#' returns the path name. \code{scramblase_assay_stats} assembles (and prints) 
 #' assay statistics as a \code{\link{data.frame}}.
 #' @author Johannes Graumann
 #' @references Menon, I., Huber, T., Sanyal, S., Banerjee, S., Barre, P., Canis, 
