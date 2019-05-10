@@ -100,7 +100,8 @@ scramblase_assay_input_template <- function(
   
   # Write the table out
   commentedDataStructure %>%
-    utils::write.table(file = path, sep = "\t", row.names = FALSE)
+    utils::write.table(file = path, quote = FALSE, sep = "\t",
+                       row.names = FALSE)
   # Silently return path
   invisible(path)
 }
