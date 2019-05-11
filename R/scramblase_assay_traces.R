@@ -47,7 +47,7 @@ base_function_scramblase_assay_traces <- function(
   assertive.types::assert_is_a_number(time_max_sec)
 
 # Processing --------------------------------------------------------------
-  # Perform assay calculations to retrive PPR
+  # Perform assay calculations to retrive PPR - as necessary
   processedX <- x
   if (!protein_is_factor) {
     processedX$"Protein per Phospholipid (mg/mmol)" <- calculate_ppr(x, ppr_scale_factor = validatedParams[["ppr_scale_factor"]])
@@ -62,7 +62,7 @@ base_function_scramblase_assay_traces <- function(
       function(y){
         time.in.sec <- rawFluorimeterOutput[[y]][["Time.in.sec"]]
         fluorescenceIntensity <- rawFluorimeterOutput[[y]][["Fluorescence.Intensity"]]
-        fluorescenceIntensity <- fluorescenceIntensity/max(fluorescenceIntensity,na.rm=TRUE)
+        fluorescenceIntensity <- fluorescenceIntensity/max(fluorescenceIntensity,na.rm = TRUE)
         return(
           data.frame(
             Path = y,
@@ -73,11 +73,11 @@ base_function_scramblase_assay_traces <- function(
   mergedData <- merge(x = dataFromRawFluorimeterOutput, y = processedX,
                       by = "Path")
   names(mergedData) <- make.names(names(mergedData))
-  if (protein_is_factor) {
-    mergedData$Path <- mergedData$Protein.Reconstituted..mg.
+  mergedData$Path <- if (protein_is_factor) {
+    mergedData$Protein.Reconstituted..mg.
   } else {
     # Use corresponding PPR as path
-    mergedData$Path <- round(mergedData$Protein.per.Phospholipid..mg.mmol.,2)
+    round(mergedData$Protein.per.Phospholipid..mg.mmol.,2)
   }
 # Assemble the output -----------------------------------------
   # Groundwork
@@ -98,40 +98,38 @@ base_function_scramblase_assay_traces <- function(
     plotOutput <- plotOutput + xlim(xRange)
   }
   # Render color scale friendly to the color blind
-  if (protein_is_factor) {
-    plotOutput <- plotOutput + 
-      scale_color_brewer(palette = "YlGnBu")
+  plotOutput <- if (protein_is_factor) {
+    plotOutput + scale_color_brewer(palette = "YlGnBu")
   } else {
-    plotOutput <- plotOutput + 
-      scale_color_continuous(low = "#0072B2",high = "#E69F00")
+    plotOutput + scale_color_continuous(low = "#0072B2",high = "#E69F00")
   }
   # Prettify
   plotOutput <- plotOutput +
     labs(
       x = "Acquisition Time (s)",
       y = "Relative Fluorescence Intensity")
-  if (protein_is_factor) {
-    plotOutput <- plotOutput + labs(colour = NULL)
+  plotOutput <- if (protein_is_factor) {
+    plotOutput + labs(colour = NULL)
   } else {
     if (is.null(ppr_scale_factor)) {
-      plotOutput <- plotOutput +
-        labs(
-          colour = expression("PPR "*bgroup("(",frac("mg","mmol"),")")))
+      plotOutput +
+        labs(colour = expression("PPR "*bgroup("(",frac("mg","mmol"),")")))
     } else {
-      plotOutput <- plotOutput +
-        labs(
-          colour = expression("adj. PPR "*bgroup("(",frac("mg","mmol"),")")))
+      plotOutput +
+        labs(colour = expression("adj. PPR "*bgroup("(",frac("mg","mmol"),")")))
     }
   }
   # Facetting
   hasExperiment <- any(!is.na(mergedData$Experiment))
   hasSeries <- any(!is.na(mergedData$Experimental.Series))
-  if (hasExperiment && hasSeries) {
-    plotOutput <- plotOutput + facet_grid(Experimental.Series~Experiment)
+  plotOutput <- if (hasExperiment && hasSeries) {
+    plotOutput + facet_grid(Experimental.Series~Experiment)
   } else if (hasExperiment) {
-    plotOutput <- plotOutput + facet_wrap(~Experiment)
+    plotOutput + facet_wrap(~Experiment)
   } else if (hasSeries) {
-    plotOutput <- plotOutput + facet_wrap(~Experimental.Series)
+    plotOutput + facet_wrap(~Experimental.Series)
+  } else {
+    plotOutput
   }
   return(plotOutput)
 }
