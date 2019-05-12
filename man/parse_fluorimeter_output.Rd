@@ -4,13 +4,17 @@
 \alias{parse_fluorimeter_output}
 \title{parse_fluorimeter_output}
 \usage{
-parse_fluorimeter_output(spec_file = NULL, adjust = TRUE,
-  file_type = c("auto", "FelixGXv4.1.0.3096", "Felix32v1.20",
-  "FluorSEssencev3.8", "manual"))
+parse_fluorimeter_output(spec_file = NULL, determine_zero_time = TRUE,
+  adjust = TRUE, file_type = c("auto", "FelixGXv4.1.0.3096",
+  "Felix32v1.20", "FluorSEssencev3.8", "manual"))
 }
 \arguments{
 \item{spec_file}{Path to a \file{*.txt} file as a \code{\link{character}} 
 object.}
+
+\item{determine_zero_time}{A \code{\link{logical}} indicating whether
+(default) or not the timepoint of dithionite addition should be determined
+using \pkg{wmtsa}-derived functionality.}
 
 \item{adjust}{A \code{\link{logical}} indicating of whether (default) or not
 acquisition time should be reset to have \code{0} (zero) coincide with the 
@@ -27,8 +31,13 @@ A data frame with two columns:
 \item{Fluorescence.Intensity}{Numeric. Intensity of fluorescence (relative 
 scale, no official unit).}
 }
+If \code{determine_zero_time} and/or \code{adjust} are set to \code{TRUE},
+the return value will have an attribute \code{ZeroTimePoint} corresponding to
+the determined time point of dithionite addition (always \code{0} (zero)
+where \code{adjust == TRUE}).
+
 For Felix GX, if the file contains the information, the return value will  
-also have anattribute \code{WavelengthsInNanometres}, which contains the 
+also have an attribute \code{WavelengthsInNanometres}, which contains the 
 excitation and emission wavelengths.
 }
 \description{

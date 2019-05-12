@@ -17,6 +17,9 @@
 #' accordingly (\code{0} henceforth corresponds to the time of addition).
 #' @param spec_file Path to a \file{*.txt} file as a \code{\link{character}} 
 #' object.
+#' @param determine_zero_time A \code{\link{logical}} indicating whether
+#' (default) or not the timepoint of dithionite addition should be determined
+#' using \pkg{wmtsa}-derived functionality.
 #' @param adjust A \code{\link{logical}} indicating of whether (default) or not
 #' acquisition time should be reset to have \code{0} (zero) coincide with the 
 #' addition of dithionite (see 'Details' section).
@@ -29,8 +32,13 @@
 #' \item{Fluorescence.Intensity}{Numeric. Intensity of fluorescence (relative 
 #' scale, no official unit).}
 #' }
+#' If \code{determine_zero_time} and/or \code{adjust} are set to \code{TRUE},
+#' the return value will have an attribute \code{ZeroTimePoint} corresponding to
+#' the determined time point of dithionite addition (always \code{0} (zero)
+#' where \code{adjust == TRUE}).
+#' 
 #' For Felix GX, if the file contains the information, the return value will  
-#' also have anattribute \code{WavelengthsInNanometres}, which contains the 
+#' also have an attribute \code{WavelengthsInNanometres}, which contains the 
 #' excitation and emission wavelengths.
 #' @seealso \code{scramblase_assay_input_validation},
 #' \code{\link[flippant]{parse_felix_gx_output}}, 
@@ -50,11 +58,13 @@
 #' @export
 parse_fluorimeter_output <- function(
   spec_file = NULL,
+  determine_zero_time = TRUE,
   adjust = TRUE,
   file_type = c("auto", "FelixGXv4.1.0.3096", "Felix32v1.20", "FluorSEssencev3.8", "manual")) {
   # Check prerequisites -----------------------------------------------------
   assertive.types::assert_is_a_string(spec_file)
   assertive.files::assert_all_are_readable_files(spec_file, warn_about_windows = FALSE)
+  assertive.types::assert_is_a_bool(determine_zero_time)
   assertive.types::assert_is_a_bool(adjust)
 
   # Processing --------------------------------------------------------------
@@ -107,8 +117,8 @@ parse_fluorimeter_output <- function(
   )
   # Determine timepoint of dithionite addition and adjust time axis accordingly
   #############################################################################
-  # Following http://stackoverflow.com/a/24560355/2103880
-  if(adjust){
+  if (adjust || determine_zero_time) {
+    # Following http://stackoverflow.com/a/24560355/2103880
     # Smooth the intensity using a simple rolling mean
     n <- 10
     smoothedTmpData <- RcppRoll::roll_mean(output$Fluorescence.Intensity, n)
@@ -122,14 +132,17 @@ parse_fluorimeter_output <- function(
     # Safeguard against artifact peaks (based on incomplete understanding of wmtsa)
     peakMax <- peaks$x[which.max(peaks$y)]
     # Reset acquisition time
-    if(length(peakMax) < 1){
+    if (length(peakMax) < 1) {
       stop("No dithionite addition detected in '",spec_file,"'.")
     }
     zeroTimePoint <- output$Time.in.sec[peakMax[1]]
-    output$Time.in.sec <- output$Time.in.sec - zeroTimePoint
+    if (adjust) {
+      output$Time.in.sec <- output$Time.in.sec - zeroTimePoint
+      zeroTimePoint <- 0
+    }
+    attr(output, "ZeroTimePoint") <- zeroTimePoint
   }
-  #################
-  # Return result #
-  #################
+
+  # Return results ----------------------------------------------------------
   invisible(output)
 }
