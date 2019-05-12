@@ -11,8 +11,8 @@ scramblase_assay_calculations <- function(
   sigma_r_bar = 28){
 # Set parameters ----------------------------------------------------------
   nlsControl <- list(
-    minFactor=1/20480,
-    maxit=100)
+    minFactor = 1/20480,
+    maxit = 100)
   formulae <- list(
     pre_fit = list(
       "TRUE" = y ~ b * ( 1 - exp( -x / a ) ),
@@ -32,7 +32,7 @@ scramblase_assay_calculations <- function(
 # Parsing spectra ---------------------------------------------------------
   spectralData <- x %>%
     magrittr::extract2("Path") %>%
-    lapply(parse_fluorimeter_output)
+    lapply(parse_fluorimeter_output, adjust = TRUE)
   
 # Read out data -----------------------------------------------------------
   # What spectral time windows to extract?
@@ -86,7 +86,7 @@ scramblase_assay_calculations <- function(
   x[["CombinedId"]] <- paste(
     x[["Experimental Series"]],
     x[["Experiment"]],
-    sep="_")
+    sep = "_")
   inputListFromX <- split(
     x,
     x[["CombinedId"]])

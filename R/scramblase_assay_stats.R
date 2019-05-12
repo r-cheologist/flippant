@@ -20,7 +20,7 @@ scramblase_assay_stats.character <- function(x, ...){
   parsedInputFile <- read_scramblase_input_file(x)
   withr::with_dir(
     dirname(x),
-    base_function_scramblase_assay_stats(x=parsedInputFile, ...)
+    base_function_scramblase_assay_stats(x = parsedInputFile, ...)
   )
 }
 base_function_scramblase_assay_stats <- function(
@@ -65,12 +65,12 @@ base_function_scramblase_assay_stats <- function(
 
 # Assemble the output -----------------------------------------
   output <- plyr::rbind.fill(processedListFromX)
-  if(split_by_experiment){
+  if (split_by_experiment) {
    output <- output[!duplicated(output$CombinedId),]
   } else {
     output <- output[!duplicated(output$`Experimental Series`),]
   }
-  if(split_by_experiment){
+  if (split_by_experiment) {
     columns <- c("Fit Constant (a)","Experimental Series","Experiment")
   } else {
     columns <- c("Fit Constant (a)","Experimental Series")

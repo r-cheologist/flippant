@@ -51,39 +51,34 @@
 parse_fluorimeter_output <- function(
   spec_file = NULL,
   adjust = TRUE,
-  file_type = c("auto", "FelixGXv4.1.0.3096", "Felix32v1.20", "FluorSEssencev3.8", "manual")){
-  #######################
-  # Check Prerequisites #
-  #######################
+  file_type = c("auto", "FelixGXv4.1.0.3096", "Felix32v1.20", "FluorSEssencev3.8", "manual")) {
+  # Check prerequisites -----------------------------------------------------
   assertive.types::assert_is_a_string(spec_file)
   assertive.files::assert_all_are_readable_files(spec_file, warn_about_windows = FALSE)
   assertive.types::assert_is_a_bool(adjust)
-  ##############
-  # Processing #
-  ##############
-  
+
+  # Processing --------------------------------------------------------------
+
   # Divine the output-producing fluorimeter
   #########################################
   file_type <- match.arg(file_type)
-  if(file_type == "auto")
-  {
+  if (file_type == "auto") {
     first_lines <- readLines(spec_file, 4)
-    formatOfSpecFile <- if(
-      grepl(pattern="^<Trace>\\s*$",x=first_lines[1],ignore.case=TRUE) &
-        grepl(pattern="^X\\tY\\s*$",x=first_lines[4],ignore.case=TRUE)){
+    formatOfSpecFile <- if (
+      grepl(pattern = "^<Trace>\\s*$",x = first_lines[1],ignore.case = TRUE) &
+        grepl(pattern = "^X\\tY\\s*$",x = first_lines[4],ignore.case = TRUE)) {
       "FelixGXv4.1.0.3096"
-    } else if(
-      grepl(pattern="^1\\s*$",x=first_lines[1],ignore.case=TRUE) &
-        grepl(pattern="^X\\tY\\s*$",x=first_lines[4],ignore.case=TRUE)){
+    } else if (
+      grepl(pattern = "^1\\s*$",x = first_lines[1],ignore.case = TRUE) &
+        grepl(pattern = "^X\\tY\\s*$",x = first_lines[4],ignore.case = TRUE)) {
       "Felix32v1.20"
-    } else if(
-      grepl(pattern="^Time\\tS1\\s*$",x=first_lines[1],ignore.case = TRUE) &
-        grepl(pattern="^s\\tCPS\\s*$",x=first_lines[2],ignore.case = TRUE))
-    {
+    } else if (
+      grepl(pattern = "^Time\\tS1\\s*$",x = first_lines[1],ignore.case = TRUE) &
+        grepl(pattern = "^s\\tCPS\\s*$",x = first_lines[2],ignore.case = TRUE)) {
       "FluorSEssencev3.8"
-    } else if(
-      grepl(pattern="^Time.\\(sec\\)\tFluorescense.Intensity\\s*$",x=first_lines[1],ignore.case=TRUE)
-    ){
+    } else if (
+      grepl(pattern = "^Time.\\(sec\\)\tFluorescense.Intensity\\s*$",
+            x = first_lines[1],ignore.case = TRUE)) {
       "manual"
     } else {
       stop("Unsupported data format in ",spec_file)

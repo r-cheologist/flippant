@@ -20,7 +20,7 @@ scramblase_assay_traces.character <- function(x, ...){
   parsedInputFile <- read_scramblase_input_file(x)
   withr::with_dir(
     dirname(x),
-    base_function_scramblase_assay_traces(x=parsedInputFile, ...)
+    base_function_scramblase_assay_traces(x = parsedInputFile, ...)
   )
 }
 base_function_scramblase_assay_traces <- function(
@@ -56,8 +56,7 @@ base_function_scramblase_assay_traces <- function(
   # Parse the fluorimeter data and whip it into shape
   rawFluorimeterOutput <- lapply(processedX$Path,parse_fluorimeter_output,adjust = adjust)
   names(rawFluorimeterOutput) <- processedX$Path
-  dataFromRawFluorimeterOutput <- plyr::rbind.fill(
-    lapply(
+  dataFromRawFluorimeterOutput <- lapply(
       names(rawFluorimeterOutput),
       function(y){
         time.in.sec <- rawFluorimeterOutput[[y]][["Time.in.sec"]]
@@ -68,7 +67,8 @@ base_function_scramblase_assay_traces <- function(
             Path = y,
             Time.in.sec = time.in.sec,
             Fluorescence.Intensity = fluorescenceIntensity))
-    }))
+      }) %>%
+    plyr::rbind.fill()
   # Merge spectral data and analysis
   mergedData <- merge(x = dataFromRawFluorimeterOutput, y = processedX,
                       by = "Path")
