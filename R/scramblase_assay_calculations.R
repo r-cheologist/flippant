@@ -7,6 +7,7 @@ scramblase_assay_calculations <- function(
   generation_of_algorithm = 2,
   force_through_origin = TRUE,
   split_by_experiment = TRUE,
+  n_averaging = 10,
   r_bar = 88,
   sigma_r_bar = 28){
 # Set parameters ----------------------------------------------------------
@@ -50,7 +51,7 @@ scramblase_assay_calculations <- function(
       function(spectral_data_i){
         spectral_data_i %>% 
           magrittr::extract(.$Time.in.sec < 0, ) %>% 
-          utils::tail(10) %>% 
+          utils::tail(n_averaging) %>% 
           magrittr::extract2("Fluorescence.Intensity") %>% 
           stats::median(na.rm = TRUE)
       },
@@ -63,7 +64,7 @@ scramblase_assay_calculations <- function(
       # seems slightly more intuitive
       spectral_data_i %>% 
         magrittr::extract(.$Time.in.sec < timepoint_of_measurement_s, ) %>% 
-        utils::tail(10) %>% 
+        utils::tail(n_averaging) %>% 
         magrittr::extract2("Fluorescence.Intensity") %>% 
         stats::median(na.rm = TRUE)
     },
