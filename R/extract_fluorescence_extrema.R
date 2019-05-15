@@ -38,6 +38,7 @@ extract_fluorescence_extrema <- function(
     min_fluorescence_to_extract, max_fluorescence_to_extract) %>%
     lapply(magrittr::extract2, "Fluorescence.Intensity") %>%
     sapply(stats::median, na.rm = TRUE) %>%
+    unlist() %>%
     magrittr::set_names(c("Baseline.Fluorescence", "Endpoint.Fluorescence"))
 
   # Return ------------------------------------------------------------------
