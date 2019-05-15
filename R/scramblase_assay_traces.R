@@ -40,19 +40,27 @@ base_function_scramblase_assay_traces <- function(
     split_by_experiment = TRUE,
     r_bar = 88,
     sigma_r_bar = 28,
-    protein_is_factor = protein_is_factor,
-    verbose = FALSE)
+    verbose = FALSE,
+    n_averaging = n_averaging, 
+    protein_is_factor = protein_is_factor)
   x <- validatedParams[["x"]]
   assertive.types::assert_is_a_number(time_min_sec)
   assertive.types::assert_is_a_number(time_max_sec)
 
 # Processing --------------------------------------------------------------
-  # Perform assay calculations to retrive PPR - as necessary
+  columns_retained <- c("Path", "Experimental Series", "Experiment")
+  # Perform assay calculations to retrive PPR
   processedX <- x
   if (!protein_is_factor) {
-    processedX$"Protein per Phospholipid (mg/mmol)" <- calculate_ppr(x, ppr_scale_factor = validatedParams[["ppr_scale_factor"]])
-    processedX <- processedX[c("Path","Experimental Series","Experiment","Protein per Phospholipid (mg/mmol)")]
+    processedX$"Protein per Phospholipid (mg/mmol)" <- calculate_ppr(
+      x, ppr_scale_factor = validatedParams[["ppr_scale_factor"]])
+    columns_retained %<>%
+      c("Protein per Phospholipid (mg/mmol)")
+  } else {
+    columns_retained %<>%
+      c("Protein Reconstituted (mg)")
   }
+  processedX <- processedX %>% magrittr::extract(columns_retained)
   # Parse the fluorimeter data and whip it into shape
   rawFluorimeterOutput <- lapply(processedX$Path,parse_fluorimeter_output,adjust = adjust)
   names(rawFluorimeterOutput) <- processedX$Path
@@ -73,21 +81,22 @@ base_function_scramblase_assay_traces <- function(
   mergedData <- merge(x = dataFromRawFluorimeterOutput, y = processedX,
                       by = "Path")
   names(mergedData) <- make.names(names(mergedData))
-  mergedData$Path <- if (protein_is_factor) {
-    mergedData$Protein.Reconstituted..mg.
+  if (!protein_is_factor) {
+    # Use corresponding PPR as a trace identifier
+    mergedData$ID <- round(mergedData$Protein.per.Phospholipid..mg.mmol.,2)
   } else {
-    # Use corresponding PPR as path
-    round(mergedData$Protein.per.Phospholipid..mg.mmol.,2)
+    mergedData$ID <- mergedData$Protein.Reconstituted..mg.
   }
+  
 # Assemble the output -----------------------------------------
   # Groundwork
   plotOutput <- ggplot(
     data = mergedData,
     aes_string(
-      x = "Time.in.sec",
-      y = "Fluorescence.Intensity",
-      group = "Path",
-      colour = "Path"))
+      x      = "Time.in.sec",
+      y      = "Fluorescence.Intensity",
+      group  = "ID",
+      colour = "ID"))
   # Plot traces with lines
   plotOutput <- plotOutput + geom_line()
   # Restrict x axis as requested
@@ -108,15 +117,17 @@ base_function_scramblase_assay_traces <- function(
     labs(
       x = "Acquisition Time (s)",
       y = "Relative Fluorescence Intensity")
-  plotOutput <- if (protein_is_factor) {
-    plotOutput + labs(colour = NULL)
+  if (protein_is_factor) {
+    plotOutput <- plotOutput + ggplot2::labs(colour = NULL)
   } else {
     if (is.null(ppr_scale_factor)) {
-      plotOutput +
-        labs(colour = expression("PPR "*bgroup("(",frac("mg","mmol"),")")))
+      plotOutput <- plotOutput +
+        labs(
+          colour = expression("PPR "*bgroup("(",frac("mg","mmol"),")")))
     } else {
-      plotOutput +
-        labs(colour = expression("adj. PPR "*bgroup("(",frac("mg","mmol"),")")))
+      plotOutput <- plotOutput +
+        labs(
+          colour = expression("adj. PPR "*bgroup("(",frac("mg","mmol"),")")))
     }
   }
   # Facetting
