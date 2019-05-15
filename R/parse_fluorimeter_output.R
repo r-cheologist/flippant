@@ -58,12 +58,21 @@
 #' @export
 parse_fluorimeter_output <- function(
   spec_file = NULL,
+  timepoint_of_measurement = NULL,
+  n_averaging = 10,
   determine_zero_time = TRUE,
   adjust = TRUE,
   file_type = c("auto", "FelixGXv4.1.0.3096", "Felix32v1.20", "FluorSEssencev3.8", "manual")) {
   # Check prerequisites -----------------------------------------------------
   assertive.types::assert_is_a_string(spec_file)
   assertive.files::assert_all_are_readable_files(spec_file, warn_about_windows = FALSE)
+  if (!is.null(timepoint_of_measurement)) {
+    assertive.types::assert_is_a_number(timepoint_of_measurement)
+    assertive.numbers::assert_all_are_positive(timepoint_of_measurement)
+  }
+  assertive.types::assert_is_a_number(n_averaging)
+  assertive.numbers::assert_all_are_positive(n_averaging)
+  assertive.numbers::assert_all_are_whole_numbers(n_averaging)
   assertive.types::assert_is_a_bool(determine_zero_time)
   assertive.types::assert_is_a_bool(adjust)
 
@@ -141,6 +150,14 @@ parse_fluorimeter_output <- function(
       zeroTimePoint <- 0
     }
     attr(output, "ZeroTimePoint") <- zeroTimePoint
+  }
+
+  # Calculate fluorescence extrema
+  ################################
+  if (adjust || determine_zero_time) {
+    attr(output, "FluorescenceExtrema") <- extract_fluorescence_extrema(
+      output, timepoint_of_measurement = timepoint_of_measurement,
+      n_averaging = n_averaging)
   }
 
   # Return results ----------------------------------------------------------
