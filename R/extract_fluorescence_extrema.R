@@ -24,7 +24,8 @@ extract_fluorescence_extrema <- function(
   if (nrow(min_fluorescence_to_extract) < n_averaging) {
     stop("Insufficient baseline data points (n = ",
          nrow(min_fluorescence_to_extract),
-         "to extract where 'n_averaging' equals ", n_averaging, ".")
+         "to extract where 'n_averaging' equals '", n_averaging,
+         "' and 'timepoint_of_measurment' is '", timepoint_of_measurement, "'.")
   }
 
   # Extract endpoint fluorescence -------------------------------------------
@@ -34,7 +35,8 @@ extract_fluorescence_extrema <- function(
   if (nrow(max_fluorescence_to_extract) < n_averaging) {
     stop("Insufficient endpoint data points (n = ",
          nrow(max_fluorescence_to_extract),
-         "to extract where 'n_averaging' equals ", n_averaging, ".")
+         "to extract where 'n_averaging' equals '", n_averaging,
+         "' and 'timepoint_of_measurment' is '", timepoint_of_measurement, "'.")
   }
 
   # Averaging ---------------------------------------------------------------
