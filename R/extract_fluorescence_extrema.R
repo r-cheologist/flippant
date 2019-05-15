@@ -30,7 +30,7 @@ extract_fluorescence_extrema <- function(
 
   # Extract endpoint fluorescence -------------------------------------------
   max_fluorescence_to_extract <- x %>%
-    magrittr::extract(.$Time.in.sec <= timepoint_of_measurement, ) %>%
+    magrittr::extract(.$Time.in.sec >= timepoint_of_measurement, ) %>%
     utils::tail(n_averaging)
   if (nrow(max_fluorescence_to_extract) < n_averaging) {
     stop("Insufficient endpoint data points (n = ",
