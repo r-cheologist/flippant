@@ -4,9 +4,10 @@
 \alias{parse_fluorimeter_output}
 \title{parse_fluorimeter_output}
 \usage{
-parse_fluorimeter_output(spec_file = NULL, determine_zero_time = TRUE,
-  adjust = TRUE, file_type = c("auto", "FelixGXv4.1.0.3096",
-  "Felix32v1.20", "FluorSEssencev3.8", "manual"))
+parse_fluorimeter_output(spec_file = NULL,
+  timepoint_of_measurement = NULL, n_averaging = 10,
+  determine_zero_time = TRUE, adjust = TRUE, file_type = c("auto",
+  "FelixGXv4.1.0.3096", "Felix32v1.20", "FluorSEssencev3.8", "manual"))
 }
 \arguments{
 \item{spec_file}{Path to a \file{*.txt} file as a \code{\link{character}} 

@@ -25,7 +25,9 @@ scramblase_assay_stats(x, scale_to = c("model", "data"),
   r_bar = 88, sigma_r_bar = 28)
 
 scramblase_assay_traces(x, ppr_scale_factor = 0.65,
-  time_min_sec = NA_real_, time_max_sec = NA_real_, adjust = TRUE)
+  time_min_sec = NA_real_, time_max_sec = NA_real_, adjust = TRUE,
+  timepoint_of_measurement = 400, n_averaging = 10,
+  annotate_traces = FALSE)
 }
 \arguments{
 \item{path}{\code{\link{character}} object giving the path of an \bold{empty}
