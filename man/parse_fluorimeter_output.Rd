@@ -67,7 +67,7 @@ library(magrittr)
 analysis_dir <- file.path(tempdir(), "flippant-case-study")
 fluor_file <- extract_case_study_data(analysis_dir, "wildtypeEx1_0.txt")
 # Parse an exemplary file
-parse_fluorimeter_output(fluor_file) \%>\%
+parse_fluorimeter_output(fluor_file, timepoint_of_measurement = 350) \%>\%
   str()
 }
 \seealso{

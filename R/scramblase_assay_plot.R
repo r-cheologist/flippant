@@ -200,7 +200,8 @@
 #' # Plot the spectral traces
 #' scramblase_assay_traces(
 #'   template_file,
-#'   time_max_sec = 350)
+#'   time_max_sec = 350,
+#'   timepoint_of_measurement = 350)
 #' # Plot the PPR plot(s) faceting by experiment
 #' scramblase_assay_plot(template_file)
 #' # Generate tabular results
