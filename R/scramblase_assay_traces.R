@@ -102,16 +102,15 @@ base_function_scramblase_assay_traces <- function(
             max(na.rm = TRUE)) %>%
         as.list() %>% c(list(Path = x))}) %>%
     lapply(as.data.frame, stringsAsFactors = FALSE) %>%
-    dplyr::bind_rows() %>%
-    dplyr::mutate(
-      Fractional.Fluorescence.Change = Endpoint.Fluorescence %>%
-        magrittr::divide_by(Baseline.Fluorescence),
-      )
+    plyr::rbind.fill()
+  fluorescence_extrema[["Fractional.Fluorescence.Change"]] <- 
+                         fluorescence_extrema$Endpoint.Fluorescence %>%
+        magrittr::divide_by(fluorescence_extrema$Baseline.Fluorescence)
   # Merge spectral data and analysis
   mergedData <- merge(x = dataFromRawFluorimeterOutput, y = processedX,
                       by = "Path")
-  mergedData %<>% merge(y = fluorescence_extrema, by = "Path") %>%
-    dplyr::mutate(Path = as.character(Path))
+  mergedData %<>% merge(y = fluorescence_extrema, by = "Path")
+  mergedData$Path %<>% as.character()
   names(mergedData) <- make.names(names(mergedData))
   if (!protein_is_factor) {
     # Use corresponding PPR as a trace identifier
@@ -163,7 +162,7 @@ base_function_scramblase_assay_traces <- function(
   if (annotate_traces) {
     plotOutput <- plotOutput +
       ggplot2::geom_text(
-        data = dplyr::distinct(plotOutput$data, Path, .keep_all = TRUE), 
+        data = plotOutput$data[!duplicated(plotOutput$data$Path),], 
         mapping = ggplot2::aes(
           label = Fractional.Fluorescence.Change %>%
             magrittr::multiply_by(100) %>%
