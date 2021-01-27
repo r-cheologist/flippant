@@ -153,6 +153,11 @@
 #' @param adjust A single \code{\link{logical}}, indicating whether (default) or 
 #' not spectral traces to be plotted are algorithmically aligned at the time
 #' point of dithionite addition.
+#' @param timepoint_of_measurement A \code{\link{numeric}} indicating the time
+#' (in sec) at which fluorescence extrema are calculated (DEPENDENT ON
+#' \code{adjust}!).
+#' @param n_averaging A \code{\link{numeric}} indicating the number of
+#' data points used for extrema calculations.
 #' @param generation_of_algorithm Either \code{2} or \code{1}
 #' (\code{\link{numeric}}; defaulting to \code{2}). See "Details".
 #' @param split_by_experiment A single \code{\link{logical}}, indicating whether or
@@ -168,6 +173,8 @@
 #' deviationaverage of the radius distribution  of the liposomes used in the
 #' assay. Only used in \code{generatio_of_algorithm = 2} and defaulting to
 #' \code{28} (see Ploier et al. 2016 for details).
+#' @param annotate_traces A \code{\link{logical}} idicating whether fluorescence
+#' traces should be annotated.
 #' @return \code{scramblase_assay_traces} and \code{scramblase_assay_plot} return 
 #' \code{\link{ggplot}} objects representing the raw fluorescence traces and a
 #' complete PPR plot, respectively. \code{scramblase_assay_input_template} 

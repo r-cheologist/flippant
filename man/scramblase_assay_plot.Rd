@@ -10,24 +10,44 @@
 \alias{scramblase_assay_traces}
 \title{scramblase_assay_plot}
 \usage{
+scramblase_assay_input_template(
+  path = "scramblase_assay_input_template.txt",
+  input_directory = NULL,
+  overwrite = FALSE
+)
 
-  scramblase_assay_input_template(path = "scramblase_assay_input_template.txt",
-  input_directory = NULL, overwrite = FALSE)
+scramblase_assay_plot(
+  x,
+  scale_to = c("model", "data"),
+  ppr_scale_factor = 0.65,
+  force_through_origin = TRUE,
+  generation_of_algorithm = c(2, 1),
+  split_by_experiment = TRUE,
+  r_bar = 88,
+  sigma_r_bar = 28
+)
 
-scramblase_assay_plot(x, scale_to = c("model", "data"),
-  ppr_scale_factor = 0.65, force_through_origin = TRUE,
-  generation_of_algorithm = c(2, 1), split_by_experiment = TRUE,
-  r_bar = 88, sigma_r_bar = 28)
+scramblase_assay_stats(
+  x,
+  scale_to = c("model", "data"),
+  ppr_scale_factor = 0.65,
+  force_through_origin = TRUE,
+  generation_of_algorithm = c(2, 1),
+  split_by_experiment = TRUE,
+  r_bar = 88,
+  sigma_r_bar = 28
+)
 
-scramblase_assay_stats(x, scale_to = c("model", "data"),
-  ppr_scale_factor = 0.65, force_through_origin = TRUE,
-  generation_of_algorithm = c(2, 1), split_by_experiment = TRUE,
-  r_bar = 88, sigma_r_bar = 28)
-
-scramblase_assay_traces(x, ppr_scale_factor = 0.65,
-  time_min_sec = NA_real_, time_max_sec = NA_real_, adjust = TRUE,
-  timepoint_of_measurement = 400, n_averaging = 10,
-  annotate_traces = FALSE)
+scramblase_assay_traces(
+  x,
+  ppr_scale_factor = 0.65,
+  time_min_sec = NA_real_,
+  time_max_sec = NA_real_,
+  adjust = TRUE,
+  timepoint_of_measurement = 400,
+  n_averaging = 10,
+  annotate_traces = FALSE
+)
 }
 \arguments{
 \item{path}{\code{\link{character}} object giving the path of an \bold{empty}
@@ -84,6 +104,16 @@ this value (in seconds).}
 \item{adjust}{A single \code{\link{logical}}, indicating whether (default) or 
 not spectral traces to be plotted are algorithmically aligned at the time
 point of dithionite addition.}
+
+\item{timepoint_of_measurement}{A \code{\link{numeric}} indicating the time
+(in sec) at which fluorescence extrema are calculated (DEPENDENT ON
+\code{adjust}!).}
+
+\item{n_averaging}{A \code{\link{numeric}} indicating the number of
+data points used for extrema calculations.}
+
+\item{annotate_traces}{A \code{\link{logical}} idicating whether fluorescence
+traces should be annotated.}
 }
 \value{
 \code{scramblase_assay_traces} and \code{scramblase_assay_plot} return 
