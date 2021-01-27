@@ -20,7 +20,7 @@ scramblase_assay_traces.data.frame <- function(
 
 #' @export
 scramblase_assay_traces.character <- function(x, ...) {
-  parsedInputFile <- flippant:::read_scramblase_input_file(x)
+  parsedInputFile <- read_scramblase_input_file(x)
   withr::with_dir(
     dirname(x),
     base_function_scramblase_assay_traces(x = parsedInputFile, ...)
@@ -38,7 +38,7 @@ base_function_scramblase_assay_traces <- function(
 # Check Prerequisites -----------------------------------------------------
   protein_is_factor = class(x$`Protein Reconstituted (mg)`) %in%
     c("character", "factor")
-  validatedParams <- flippant:::scramblase_assay_input_validation(
+  validatedParams <- scramblase_assay_input_validation(
     x = x,
     scale_to = "data",
     ppr_scale_factor = ppr_scale_factor,
