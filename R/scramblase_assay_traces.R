@@ -160,6 +160,7 @@ base_function_scramblase_assay_traces <- function(
   }
   # Annotate as requested
   if (annotate_traces) {
+    Fractional.Fluorescence.Change <- Endpoint.Fluorescence <- NULL
     plotOutput <- plotOutput +
       ggplot2::geom_text(
         data = plotOutput$data[!duplicated(plotOutput$data$Path),], 
