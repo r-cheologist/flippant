@@ -154,6 +154,9 @@ parse_fluorimeter_output <- function(
   # Calculate fluorescence extrema
   ################################
   if (adjust || determine_zero_time) {
+    if (is.null(timepoint_of_measurement)) {
+      timepoint_of_measurement <- output$Time.in.sec[nrow(output) - n_averaging]
+    }
     attr(output, "FluorescenceExtrema") <- extract_fluorescence_extrema(
       output, timepoint_of_measurement = timepoint_of_measurement,
       n_averaging = n_averaging)
