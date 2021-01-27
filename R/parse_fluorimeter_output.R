@@ -13,13 +13,18 @@
 #' appropriate internal parsing functions are called.
 #' 
 #' If requested the time point of dithionite addition to a sample is determined 
-#' using \pkg{wmtsa}-supplied methodology and the acquisition time reset
+#' using \pkg{pracma}-supplied methodology and the acquisition time reset
 #' accordingly (\code{0} henceforth corresponds to the time of addition).
 #' @param spec_file Path to a \file{*.txt} file as a \code{\link{character}} 
 #' object.
+#' @param timepoint_of_measurement A \code{\link{numeric}} indicating the time
+#' (in sec) at which fluorescence extrema are calculated (DEPENDENT ON
+#' \code{adjust}!).
+#' @param n_averaging A \code{\link{numeric}} indicating the number of
+#' data points used for extrema calculations.
 #' @param determine_zero_time A \code{\link{logical}} indicating whether
 #' (default) or not the timepoint of dithionite addition should be determined
-#' using \pkg{wmtsa}-derived functionality.
+#' using \pkg{pracma}-derived functionality.
 #' @param adjust A \code{\link{logical}} indicating of whether (default) or not
 #' acquisition time should be reset to have \code{0} (zero) coincide with the 
 #' addition of dithionite (see 'Details' section).
@@ -127,24 +132,18 @@ parse_fluorimeter_output <- function(
   # Determine timepoint of dithionite addition and adjust time axis accordingly
   #############################################################################
   if (adjust || determine_zero_time) {
-    # Following http://stackoverflow.com/a/24560355/2103880
-    # Smooth the intensity using a simple rolling mean
+    # Peak detection
     n <- 10
-    smoothedTmpData <- RcppRoll::roll_mean(output$Fluorescence.Intensity, n)
-    # Wavelet-based peak detection
-    gradient <- -diff(smoothedTmpData)
-    cwt <- wmtsa::wavCWT(gradient)
-    tree <- wmtsa::wavCWTTree(cwt)
-    peaks <- wmtsa::wavCWTPeaks(tree)
-    # Functionality appears to have memory mapping issues ...
-    gc()
-    # Safeguard against artifact peaks (based on incomplete understanding of wmtsa)
-    peakMax <- peaks$x[which.max(peaks$y)]
-    # Reset acquisition time
-    if (length(peakMax) < 1) {
+    peaks <- pracma::findpeaks(
+      output$Fluorescence.Intensity, ndowns = 10, sortstr = TRUE) %>%
+      as.data.frame()
+    if (nrow(peaks) < 1) {
       stop("No dithionite addition detected in '",spec_file,"'.")
     }
-    zeroTimePoint <- output$Time.in.sec[peakMax[1]]
+    peaks %<>% magrittr::set_colnames(c("height", "i.max", "i.start", "i.end"))
+    iMaxPeak <- peaks[1, "i.max"]
+    # Reset acquisition time
+    zeroTimePoint <- output$Time.in.sec[iMaxPeak]
     if (adjust) {
       output$Time.in.sec <- output$Time.in.sec - zeroTimePoint
       zeroTimePoint <- 0

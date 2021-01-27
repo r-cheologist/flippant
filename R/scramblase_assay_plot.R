@@ -50,7 +50,7 @@
 #'  \item{Fluorescence spectra are parsed using 
 #'    \code{\link{parse_fluorimeter_output}}. This includes automated 
 #'    determination of when dithionite was added to the sample using 
-#'    \pkg{wmtsa}-supplied methodology and resetting the acquisition time 
+#'    \pkg{pracma}-supplied methodology and resetting the acquisition time 
 #'    accordingly (\code{0} henceforth corresponds to the time of addition).}
 #'  \item{Pre-dithionite-addition \code{Baseline Fluorescence} is determined for
 #'    each spectrum by averaging (\code{\link{median}}) over the 10 

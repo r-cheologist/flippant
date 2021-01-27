@@ -15,7 +15,7 @@ object.}
 
 \item{determine_zero_time}{A \code{\link{logical}} indicating whether
 (default) or not the timepoint of dithionite addition should be determined
-using \pkg{wmtsa}-derived functionality.}
+using \pkg{pracma}-derived functionality.}
 
 \item{adjust}{A \code{\link{logical}} indicating of whether (default) or not
 acquisition time should be reset to have \code{0} (zero) coincide with the 
@@ -58,7 +58,7 @@ The format used in a given file is divined from the data structure and
 appropriate internal parsing functions are called.
 
 If requested the time point of dithionite addition to a sample is determined 
-using \pkg{wmtsa}-supplied methodology and the acquisition time reset
+using \pkg{pracma}-supplied methodology and the acquisition time reset
 accordingly (\code{0} henceforth corresponds to the time of addition).
 }
 \examples{

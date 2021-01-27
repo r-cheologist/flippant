@@ -37,11 +37,10 @@ Imports:
     magrittr (>= 1.5),
     minpack.lm (>= 1.2-1),
     plyr (>= 1.8.4),
-    RcppRoll (>= 0.3.0),
+    pracma (>= 2.3.3),
     stringi (>= 1.2.3),
     utils,
-    withr (>= 2.1.2),
-    wmtsa (>= 2.0-3)
+    withr (>= 2.1.2)
 License: GPL (>= 3)
 LazyData: true
 RoxygenNote: 7.1.1
