@@ -1,0 +1,16 @@
+structure(list(cotton_flippantr_2017 = structure(list(title = "flippant–An R package for the automated analysis of fluorescence-based scramblase assays", 
+    volume = "18", rights = "All rights reserved", issn = "1471-2105", 
+    url = "http://dx.doi.org/10.1186/s12859-017-1542-y", doi = "10.1186/s12859-017-1542-y", 
+    abstract = "The lipid scrambling activity of protein extracts and purified scramblases is typically measured using a fluorescence-based assay. While the assay has yielded insight into the scramblase activity in crude membrane preparations, functional validation of candidate scramblases, stoichiometry of scramblase complexes as well as {ATP}-dependence of flippases, data analysis in its context has remained a task involving many manual steps.", 
+    pages = "146", journal = "{BMC} Bioinformatics", journaltitle = "{BMC} Bioinformatics", 
+    shortjournal = "{BMC} Bioinformatics", author = structure(list(
+        list(given = c("Richard", "J."), family = "Cotton", role = NULL, 
+            email = NULL, comment = NULL), list(given = "Birgit", 
+            family = "Ploier", role = NULL, email = NULL, comment = NULL), 
+        list(given = c("Michael", "A."), family = "Goren", role = NULL, 
+            email = NULL, comment = NULL), list(given = c("Anant", 
+        "K."), family = "Menon", role = NULL, email = NULL, comment = NULL), 
+        list(given = "Johannes", family = "Graumann", role = NULL, 
+            email = NULL, comment = NULL)), class = "person"), 
+    urldate = "2017/03/03", date = "2017/03/03", keywords = "R, Scramblase, Dithionite scramblase assay", 
+    year = "2017"), bibtype = "Article", key = "cotton_flippantr_2017")), class = "bibentry", strings = structure(character(0), .Names = character(0)))
