@@ -3,7 +3,6 @@
 \docType{package}
 \name{flippant}
 \alias{flippant}
-\alias{flippant-package}
 \title{flippant}
 \description{
 A package for the analysis of data provided by dithionite 

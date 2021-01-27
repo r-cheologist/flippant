@@ -44,5 +44,5 @@ Imports:
     wmtsa (>= 2.0-3)
 License: GPL (>= 3)
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
 Encoding: UTF-8
