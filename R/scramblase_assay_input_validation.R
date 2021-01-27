@@ -154,10 +154,6 @@ scramblase_assay_input_validation <- function(
   assertive.types::assert_is_a_bool(force_through_origin)
   # Check split_by_experiment
   assertive.types::assert_is_a_bool(split_by_experiment)
-  # Check n_averaging
-  assertive.types::assert_is_a_number(n_averaging)
-  assertive.numbers::assert_all_are_whole_numbers(n_averaging)
-  assertive.numbers::assert_all_are_positive(n_averaging)
   # check r_bar
   assertive.types::assert_is_a_number(r_bar)
   assertive.numbers::assert_all_are_greater_than(r_bar, 0)
