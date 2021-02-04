@@ -70,8 +70,13 @@ scramblase_assay_input_validation <- function(
       "numeric",
       "numeric",
       "numeric",
-      "character",
-      "character"),
+      ifelse(
+        "Experiment" %in% names(x) && is.factor(x$Experiment),
+        "factor", "character"),
+      ifelse(
+        "Experimental Series" %in% names(x) &&
+          is.factor(x[["Experimental Series"]]),
+        "factor", "character")),
     Default = list(
       2000.0,
       2040.0,
