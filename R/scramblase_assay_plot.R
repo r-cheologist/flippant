@@ -183,16 +183,19 @@
 #' assay statistics as a \code{\link{data.frame}}.
 #' @author Johannes Graumann
 #' @references Menon, I., Huber, T., Sanyal, S., Banerjee, S., Barre, P., Canis, 
-#' S., Warren, J.D., Hwa, J., Sakmar, T.P., and Menon, A.K. (2011)
+#' S., Warren, J.D., Hwa, J., Sakmar, T.P., and Menon, A.K. (2011).
 #' <DOI:10.1016/j.cub.2010.12.031>
 #' 
 #' Goren, M.A., Morizumi, T., Menon, I., Joseph, J.S., Dittman, J.S., 
-#' Cherezov, V., Stevens, R.C., Ernst, O.P., and Menon, A.K. (2014)
+#' Cherezov, V., Stevens, R.C., Ernst, O.P., and Menon, A.K. (2014).
 #' <DOI:10.1038/ncomms6115>
 #' 
 #' Ploier, B., Caro, L.N., Morizumi, T., Pandey, K., Pearring, J.N.,
 #' Goren, M.A., Finnemann, S.C., Graumann, J., Arshavsky, V.Y., Dittman, J.S.,
 #' Ernst, O.P., Menon, A.K. (2016). <DOI:10.1038/ncomms12832>
+#' 
+#' Cotton, R.J., Ploier, B., Goren, M.A., Menon, A.K., and Graumann, J. (2017).
+#' <DOI:10.1186/s12859-017-1542-y>
 #' @export
 #' @seealso \code{\link{parse_fluorimeter_output}} \code{\link{nlsLM}}
 #' @import ggplot2
