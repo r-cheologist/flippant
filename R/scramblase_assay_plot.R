@@ -57,7 +57,7 @@
 #'    values preceding dithionite addition.}
 #'  \item{Post-dithinonite-addition \code{Minimum Fluorescence} is determined 
 #'    for each spectrum by averaging (\code{\link{median}}) over the last ten
-#'    datapoints \eqn{\leq 400\,\mbox{s}}{\ge 400 s} (or 
+#'    datapoints \eqn{\le 400\,\mbox{s}}{\le 400 s} (or 
 #'    \code{Timepoint of Measurement (s)}, see above).}
 #'  \item{The \code{Minimum Fluorescence} is volume-corrected based on 
 #'    \code{Reaction Volume w/o DT (ul)} and \code{Reaction Volume with DT (ul)}

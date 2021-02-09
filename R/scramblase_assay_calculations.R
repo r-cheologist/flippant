@@ -60,10 +60,8 @@ scramblase_assay_calculations <- function(
   x[["Minimum Fluorescence"]] <- mapply(
     function(spectral_data_i, timepoint_of_measurement_s)
     {
-      # TODO: this behaviour matches the previous implementation, but using <=
-      # seems slightly more intuitive
       spectral_data_i %>% 
-        magrittr::extract(.$Time.in.sec < timepoint_of_measurement_s, ) %>% 
+        magrittr::extract(.$Time.in.sec <= timepoint_of_measurement_s, ) %>% 
         utils::tail(n_averaging) %>% 
         magrittr::extract2("Fluorescence.Intensity") %>% 
         stats::median(na.rm = TRUE)
