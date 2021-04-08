@@ -42,6 +42,7 @@ Imports:
     minpack.lm (>= 1.2-1),
     plyr (>= 1.8.4),
     pracma (>= 2.3.3),
+    R.utils,
     stringi (>= 1.2.3),
     utils,
     withr (>= 2.1.2)

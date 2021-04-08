@@ -8,7 +8,8 @@
 #' New Jersey)running software versions \code{FelixGX v4.1} 
 #' (see \code{\link{parse_felix_gx_output}}), \code{Felix32 v1.20} (see 
 #' \code{\link{parse_felix_32_output}}) as well as Horiba fluorimeters 
-#' (HORIBA Europe GmbH, Oberursel, Germany) using \code{FluorS Essence v3.8}.
+#' (HORIBA Europe GmbH, Oberursel, Germany) using \code{FluorS Essence v3.8} or
+#' EasySpec.
 #' The format used in a given file is divined from the data structure and
 #' appropriate internal parsing functions are called.
 #' 
@@ -46,6 +47,7 @@
 #' also have an attribute \code{WavelengthsInNanometres}, which contains the 
 #' excitation and emission wavelengths.
 #' @seealso \code{scramblase_assay_input_validation},
+#' \code{\link[flippant]{parse_easyspec_output}},
 #' \code{\link[flippant]{parse_felix_gx_output}}, 
 #' \code{\link[flippant]{parse_felix_32_output}},
 #' \code{\link[flippant]{parse_FluorS_Essence_3.8_output}},
@@ -94,6 +96,16 @@ parse_fluorimeter_output <- function(
       "FelixGXv4.1.0.3096"
     } else if (
       grepl(pattern = "^1\\s*$",x = first_lines[1],ignore.case = TRUE) &
+      grepl(pattern = "^X\\tY\\s*$",x = first_lines[4],ignore.case = TRUE) &
+      grepl(
+        pattern = "^Properties$",
+        x = scan(
+          spec_file, what = "character",
+          n = 1, skip = R.utils::countLines(spec_file) - 2),
+        ignore.case = TRUE)) {
+      "EzSpec"
+    } else if (
+      grepl(pattern = "^1\\s*$",x = first_lines[1],ignore.case = TRUE) &
         grepl(pattern = "^X\\tY\\s*$",x = first_lines[4],ignore.case = TRUE)) {
       "Felix32v1.20"
     } else if (
@@ -112,6 +124,11 @@ parse_fluorimeter_output <- function(
   ##############
   output <- switch(
     formatOfSpecFile,
+    EzSpec = {
+      lines <- readLines(spec_file)
+      y <- parse_easyspec_output(lines)
+      structure(y$Data, File.Name = basename(spec_file)) 
+    },
     FelixGXv4.1.0.3096 = read_felix_gx(spec_file),
     Felix32v1.20 = {
       lines <- readLines(spec_file)

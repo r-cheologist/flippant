@@ -65,7 +65,8 @@ QuantaMaster instruments (Photon Technology International, Inc., Edison,
 New Jersey)running software versions \code{FelixGX v4.1} 
 (see \code{\link{parse_felix_gx_output}}), \code{Felix32 v1.20} (see 
 \code{\link{parse_felix_32_output}}) as well as Horiba fluorimeters 
-(HORIBA Europe GmbH, Oberursel, Germany) using \code{FluorS Essence v3.8}.
+(HORIBA Europe GmbH, Oberursel, Germany) using \code{FluorS Essence v3.8} or
+EasySpec.
 The format used in a given file is divined from the data structure and
 appropriate internal parsing functions are called.
 
@@ -84,6 +85,7 @@ parse_fluorimeter_output(fluor_file, timepoint_of_measurement = 350) \%>\%
 }
 \seealso{
 \code{scramblase_assay_input_validation},
+\code{\link[flippant]{parse_easyspec_output}},
 \code{\link[flippant]{parse_felix_gx_output}}, 
 \code{\link[flippant]{parse_felix_32_output}},
 \code{\link[flippant]{parse_FluorS_Essence_3.8_output}},

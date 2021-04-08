@@ -24,6 +24,7 @@ with the columns \code{Time (sec)} and \code{Fluorescense Intensity}.
 }
 \seealso{
 \code{\link{parse_fluorimeter_output}},
+\code{\link[flippant]{parse_easyspec_output}},
 \code{\link[flippant]{parse_felix_gx_output}}, 
 \code{\link[flippant]{parse_felix_32_output}}
 }

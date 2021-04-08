@@ -6,6 +6,7 @@
 #' \code{\link{readLines}} of the corresponding data file.
 #' @return See \code{\link{parse_fluorimeter_output}}.
 #' @seealso \code{\link{parse_fluorimeter_output}},
+#' \code{\link[flippant]{parse_easyspec_output}},
 #' \code{\link{parse_felix_32_output}},
 #' \code{\link[flippant]{parse_felix_gx_output}},
 #' \code{\link[flippant]{parse_manual_output}}
