@@ -85,7 +85,16 @@ base_function_scramblase_assay_traces <- function(
       function(y) {
         time.in.sec <- rawFluorimeterOutput[[y]][["Time.in.sec"]]
         fluorescenceIntensity <- rawFluorimeterOutput[[y]][["Fluorescence.Intensity"]]
-        fluorescenceIntensity <- fluorescenceIntensity/max(fluorescenceIntensity, na.rm = TRUE)
+        if (is.element("FluorescenceExtrema", names(attributes(rawFluorimeterOutput[[y]])))) {
+          fluorescenceIntensity <-
+            fluorescenceIntensity/
+            attr(
+              rawFluorimeterOutput[[y]],
+              "FluorescenceExtrema")["Baseline.Fluorescence"]
+        } else { 
+          fluorescenceIntensity <-
+            fluorescenceIntensity/max(fluorescenceIntensity, na.rm = TRUE)
+        }
         return(
           data.frame(
             Path = y,
