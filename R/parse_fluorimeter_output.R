@@ -152,7 +152,7 @@ parse_fluorimeter_output <- function(
     # Peak detection
     n <- 10
     peaks <- pracma::findpeaks(
-      output$Fluorescence.Intensity, ndowns = 10, sortstr = TRUE) %>%
+      output$Fluorescence.Intensity, ndowns = 5, sortstr = TRUE) %>%
       as.data.frame()
     if (nrow(peaks) < 1) {
       stop("No dithionite addition detected in '",spec_file,"'.")
