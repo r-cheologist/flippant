@@ -17,8 +17,8 @@ parse_FluorS_Essence_3.8_output <- function(x = NULL){
 
 # Check Prerequisites -----------------------------------------------------
   x %>%
-    assertive.properties::assert_is_not_null() %>%
-    assertive.strings::assert_all_are_non_missing_nor_empty_character()
+    assert_is_not_null() %>%
+    assert_all_are_non_missing_nor_empty_character()
 
 # Processing --------------------------------------------------------------
   # Extract data

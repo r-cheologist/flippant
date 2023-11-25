@@ -1,7 +1,7 @@
 #' @importFrom magrittr %>%
 read_scramblase_input_file <- function(x){
   x %>%
-    assertive.strings::assert_is_a_non_empty_string() %>%
+    assert_is_a_non_empty_string() %>%
     assertive.files::assert_all_are_readable_files(warn_about_windows = FALSE) %>%
     utils::read.delim(
       header=TRUE,

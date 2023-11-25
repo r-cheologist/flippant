@@ -13,12 +13,12 @@ scramblase_assay_input_validation <- function(
   protein_is_factor = FALSE,
   verbose = TRUE){
   # Check switches
-  assertive.types::assert_is_a_bool(protein_is_factor)
-  assertive.types::assert_is_a_bool(verbose)
+  assert_is_a_bool(protein_is_factor)
+  assert_is_a_bool(verbose)
   # Check x
   ## General DF characteristics
-  assertive.types::assert_is_data.frame(x)
-  assertive.properties::assert_has_rows(x)
+  assert_is_data.frame(x)
+  assert_has_rows(x)
   if (any(is.na(x))) stop("'x' cannot contain 'NA'.")
   ## Enforce use of 'numeric' over 'integer'
   integerColumns <- names(x)[sapply(names(x),function(y){is.integer(x[[y]])})]
@@ -131,7 +131,7 @@ scramblase_assay_input_validation <- function(
   # Check ppr_scale_factor
   if (!is.null(ppr_scale_factor)) {
     ppr_scale_factor %>%
-      assertive.types::assert_is_a_number()
+      assert_is_a_number()
     if (verbose) {
       message("PPR will be scaled by a factor of ", ppr_scale_factor, ".")
     }
@@ -156,14 +156,14 @@ scramblase_assay_input_validation <- function(
             generation_of_algorithm, ".")
   }
   # Check force_through_origin
-  assertive.types::assert_is_a_bool(force_through_origin)
+  assert_is_a_bool(force_through_origin)
   # Check split_by_experiment
-  assertive.types::assert_is_a_bool(split_by_experiment)
+  assert_is_a_bool(split_by_experiment)
   # check r_bar
-  assertive.types::assert_is_a_number(r_bar)
+  assert_is_a_number(r_bar)
   assertive.numbers::assert_all_are_greater_than(r_bar, 0)
   # check sigmar_bar
-  assertive.types::assert_is_a_number(sigma_r_bar)
+  assert_is_a_number(sigma_r_bar)
   assertive.numbers::assert_all_are_greater_than(sigma_r_bar, 0)
   # Return
   list(

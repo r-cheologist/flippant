@@ -5,14 +5,14 @@ scramblase_assay_input_template <- function(
   path = "scramblase_assay_input_template.txt", input_directory = NULL,
   overwrite = FALSE){
 # Check input -------------------------------------------------------------
-  assertive.types::assert_is_a_bool(overwrite)
-  assertive.strings::assert_is_a_non_empty_string(path)
+  assert_is_a_bool(overwrite)
+  assert_is_a_non_empty_string(path)
   if (!overwrite) {
     assertive.base::assert_all_are_false(
       assertive.files::assert_any_are_existing_files(path))
   }
   if (!is.null(input_directory)) {
-    assertive.strings::assert_is_a_non_empty_string(input_directory)
+    assert_is_a_non_empty_string(input_directory)
     assertive.files::assert_all_are_dirs(input_directory)
   }
 

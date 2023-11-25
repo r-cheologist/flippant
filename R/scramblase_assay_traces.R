@@ -51,13 +51,13 @@ base_function_scramblase_assay_traces <- function(
     n_averaging = n_averaging, 
     protein_is_factor = protein_is_factor)
   x <- validatedParams[["x"]]
-  assertive.types::assert_is_a_number(time_min_sec)
-  assertive.types::assert_is_a_number(time_max_sec)
-  assertive.types::assert_is_a_number(timepoint_of_measurement)
-  assertive.types::assert_is_a_number(n_averaging)
+  assert_is_a_number(time_min_sec)
+  assert_is_a_number(time_max_sec)
+  assert_is_a_number(timepoint_of_measurement)
+  assert_is_a_number(n_averaging)
   assertive.numbers::assert_all_are_whole_numbers(n_averaging)
   assertive.numbers::assert_all_are_positive(n_averaging)
-  assertive.types::assert_is_a_bool(annotate_traces)
+  assert_is_a_bool(annotate_traces)
 
 # Processing --------------------------------------------------------------
   columns_retained <- c("Path", "Experimental Series", "Experiment")

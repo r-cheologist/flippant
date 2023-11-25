@@ -6,15 +6,15 @@ extract_fluorescence_extrema <- function(
   n_averaging = 10
 ) {
   # Check prerequisites -----------------------------------------------------
-  assertive.properties::assert_has_all_attributes(x, "ZeroTimePoint")
-  assertive.types::assert_is_a_number(attr(x, "ZeroTimePoint"))
+  assert_has_all_attributes(x, "ZeroTimePoint")
+  assert_is_a_number(attr(x, "ZeroTimePoint"))
   if (!is.null(timepoint_of_measurement))
-      assertive.types::assert_is_a_number(timepoint_of_measurement)
+      assert_is_a_number(timepoint_of_measurement)
   assertive.numbers::assert_all_are_in_closed_range(
     timepoint_of_measurement,
     lower = min(x$Time.in.sec, na.rm = TRUE),
     upper = max(x$Time.in.sec, na.rm = TRUE))
-  assertive.types::is_a_number(n_averaging)
+  is_a_number(n_averaging)
   assertive.numbers::assert_all_are_positive(n_averaging)
   assertive.numbers::assert_all_are_whole_numbers(n_averaging)
 
