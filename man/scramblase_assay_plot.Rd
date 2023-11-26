@@ -254,7 +254,6 @@ function \code{scramblase_assay_calculations}):
  }}
 }
 \examples{
-\dontrun{
 library(magrittr)
 library(ggplot2)
 # Extract example data
@@ -274,7 +273,6 @@ scramblase_assay_stats(template_file)
 scramblase_assay_plot(template_file, split_by_experiment = FALSE)
 # Generate tabular results
 scramblase_assay_stats(template_file, split_by_experiment = FALSE)
-}
 }
 \references{
 Menon, I., Huber, T., Sanyal, S., Banerjee, S., Barre, P., Canis, 
