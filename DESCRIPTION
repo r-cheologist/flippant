@@ -31,11 +31,9 @@ Suggests:
     roxygen2,
     tools
 Imports:
-    assertive.base (>= 0.0-7),
-    assertive.files (>= 0.0-2),
-    assertive.numbers (>= 0.0-2),
     data.table (>= 1.11.4),
     magrittr (>= 1.5),
+    methods,
     minpack.lm (>= 1.2-1),
     plyr (>= 1.8.4),
     pracma (>= 2.3.3),

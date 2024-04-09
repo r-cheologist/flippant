@@ -70,14 +70,14 @@ parse_fluorimeter_output <- function(
   file_type = c("auto", "FelixGXv4.1.0.3096", "Felix32v1.20", "FluorSEssencev3.8", "manual")) {
   # Check prerequisites -----------------------------------------------------
   assert_is_a_string(spec_file)
-  assertive.files::assert_all_are_readable_files(spec_file, warn_about_windows = FALSE)
+  assert_all_are_readable_files(spec_file, warn_about_windows = FALSE)
   if (!is.null(timepoint_of_measurement)) {
     assert_is_a_number(timepoint_of_measurement)
-    assertive.numbers::assert_all_are_positive(timepoint_of_measurement)
+    assert_all_are_positive(timepoint_of_measurement)
   }
   assert_is_a_number(n_averaging)
-  assertive.numbers::assert_all_are_positive(n_averaging)
-  assertive.numbers::assert_all_are_whole_numbers(n_averaging)
+  assert_all_are_positive(n_averaging)
+  assert_all_are_whole_numbers(n_averaging)
   assert_is_a_bool(determine_zero_time)
   assert_is_a_bool(adjust)
 

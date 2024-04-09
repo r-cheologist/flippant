@@ -8,12 +8,12 @@ scramblase_assay_input_template <- function(
   assert_is_a_bool(overwrite)
   assert_is_a_non_empty_string(path)
   if (!overwrite) {
-    assertive.base::assert_all_are_false(
-      assertive.files::assert_any_are_existing_files(path))
+   assert_all_are_false(
+      assert_any_are_existing_files(path))
   }
   if (!is.null(input_directory)) {
     assert_is_a_non_empty_string(input_directory)
-    assertive.files::assert_all_are_dirs(input_directory)
+    assert_all_are_dirs(input_directory)
   }
 
 # Generate template data.frame --------------------------------------------

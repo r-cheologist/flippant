@@ -161,10 +161,10 @@ scramblase_assay_input_validation <- function(
   assert_is_a_bool(split_by_experiment)
   # check r_bar
   assert_is_a_number(r_bar)
-  assertive.numbers::assert_all_are_greater_than(r_bar, 0)
+  assert_all_are_greater_than(r_bar, 0)
   # check sigmar_bar
   assert_is_a_number(sigma_r_bar)
-  assertive.numbers::assert_all_are_greater_than(sigma_r_bar, 0)
+  assert_all_are_greater_than(sigma_r_bar, 0)
   # Return
   list(
     x = x,

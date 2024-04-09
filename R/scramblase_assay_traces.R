@@ -55,8 +55,8 @@ base_function_scramblase_assay_traces <- function(
   assert_is_a_number(time_max_sec)
   assert_is_a_number(timepoint_of_measurement)
   assert_is_a_number(n_averaging)
-  assertive.numbers::assert_all_are_whole_numbers(n_averaging)
-  assertive.numbers::assert_all_are_positive(n_averaging)
+  assert_all_are_whole_numbers(n_averaging)
+  assert_all_are_positive(n_averaging)
   assert_is_a_bool(annotate_traces)
 
 # Processing --------------------------------------------------------------
