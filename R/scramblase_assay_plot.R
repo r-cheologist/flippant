@@ -8,8 +8,8 @@
 #' must have the following \bold{mandatory} columns:
 #' \describe{
 #'  \item{\code{Path}:}{Paths to existing and readable \code{ASCII} output files 
-#'    of a fluorimeter. See \code{\link{parse_fluorimeter_output}} for details and
-#'    supported formats.}
+#'    of a fluorimeter. See \code{\link{parse_fluorimeter_output}} for details
+#'    and supported formats.}
 #'  \item{\code{Protein Reconstituted (mg)}:}{Self-explanatory. In the case of
 #'    \code{\link{scramblase_assay_traces}} \strong{ONLY} this may be abused by
 #'     taking \code{\link{character}} values rather than the usually required
@@ -31,12 +31,13 @@
 #'    fluorescence, calculated from the point when dithionite is added, in
 #'    seconds, defaulting to \code{400}).}
 #'  \item{\code{Experiment}:}{Identifier for any given experiment. Used for 
-#'    \code{\link{facet_wrap}} during generation of \code{\link{ggplot}} output.
+#'    \code{\link[ggplot2]{facet_wrap}} during generation of
+#'    \code{\link[ggplot2]{ggplot}} output.
 #'    All data with one \code{Experiment} identifier ends up on one plot/facet.}
 #'  \item{\code{Experimental Series}:}{Identifier for a given series/graph (e.g.
 #'    \code{Extract} and \code{Depleted Extract}). Used by \code{color} during 
-#'    generation of \code{\link{ggplot}} output to differentiate lines in the
-#'    same plot/facet.}}
+#'    generation of \code{\link[ggplot2]{ggplot}} output to differentiate lines
+#'    in the same plot/facet.}}
 #'    
 #' Based on Goren et al. (2014) and Ploier et al. (2016) data is processed as
 #' follows (the majority of the processing is split off into the internal
@@ -82,12 +83,13 @@
 #'    where \eqn{y} is the \code{Relative Fluorescence Reduction} and \eqn{y_0}{y0}
 #'    is the \code{Relative Fluorescence Reduction} in an experiment without
 #'    addition of protein extract. Depending on the \code{scale_to} parameter, 
-#'    \eqn{y_{\mbox{\scriptsize max}}}{ymax} is either the maximal \code{Relative Fluorescence Reduction} 
-#'    in the series (\code{scale_to = "data"}) or derived from a 
-#'    mono-exponential fit to the data (\code{scale_to = "model"}). The latter 
-#'    (default) is a precaution for the case where the protein/phospholipid
-#'    titration did not reach the plateau of the saturation curve.}
-#'  \item{A monoexponential curve is fitted using \code{\link{nlsLM}}.
+#'    \eqn{y_{\mbox{\scriptsize max}}}{ymax} is either the maximal
+#'    \code{Relative Fluorescence Reduction} in the series
+#'    (\code{scale_to = "data"}) or derived from a mono-exponential fit to the
+#'    data (\code{scale_to = "model"}). The latter (default) is a precaution for
+#'    the case where the protein/phospholipid titration did not reach the
+#'    plateau of the saturation curve.}
+#'  \item{A monoexponential curve is fitted using \code{\link[minpack.lm]{nlsLM}}.
 #'  
 #'    If \code{generation_of_algorithm} is \code{1}, the underlying formula is
 #'    derived from Goren et al. (2014) and data is fitted to either
@@ -106,13 +108,13 @@
 #'    \deqn{p(\geq 1)=b-c\cdot(\frac{1}{\sqrt{1+\sigma^2\cdot a \cdot x}})\cdot exp(\frac{-\bar{r}^2\cdot a \cdot x}{1+\sigma^2\cdot a\cdot x})}{p(\ge 1) = b - c (1 - (1/\sqrt{1 + \sigma^2 * a * x}) * exp((-\bar{r}^2 * a * x)/(1 + \sigma^2 * a * x))}
 #'    (if \code{force_through_origin = FALSE}).}
 #'  \item{Data \code{\link{split}} apart above are recombined and a 
-#'    \code{\link{ggplot}} object is assembled with the following layers:
+#'    \code{\link[ggplot2]{ggplot}} object is assembled with the following layers:
 #'    \itemize{
-#'      \item{Lines (\code{\link{geom_line}}) representing the monoexponential
-#'        fit(s). \code{color} is used to differentiate 
+#'      \item{Lines (\code{\link[ggplot2]{geom_line}}) representing the
+#'        monoexponential fit(s). \code{color} is used to differentiate 
 #'        \code{Experimental Series}.}
 #'      \item{If \code{generation_of_algorithm} is \code{1}, segments
-#'       (\code{\link{geom_segment}}) representing the \code{PPR}
+#'       (\code{\link[ggplot2]{geom_segment}}) representing the \code{PPR}
 #'        at which the fit constant \eqn{a} is equal to \code{PPR}. This 
 #'        \eqn{\tau}{tau} value has the implication that at this \code{PPR} all 
 #'        vesicles on average have one scramblase and 63\% have one or more 
@@ -120,12 +122,12 @@
 #'        \code{Experimental Series}. Where \code{generation_of_algorithm} is
 #'        \code{2}, interpretation of \eqn{a} is less obvious and this layer is
 #'        thus ommited in the plot.}
-#'      \item{Points (\code{\link{geom_point}}) representing the corresponding 
-#'        datapoints. \code{color} is used to differentiate 
+#'      \item{Points (\code{\link[ggplot2]{geom_point}}) representing the
+#'        corresponding datapoints. \code{color} is used to differentiate 
 #'        \code{Experimental Series}.}
-#'      \item{Plots are finally \code{\link{facet_wrap}}ed by \code{Experiment} 
-#'        (if \code{split_by_experiment = TRUE}) and labels adjusted
-#'        cosmetically.}}
+#'      \item{Plots are finally \code{\link[ggplot2]{facet_wrap}}ed by
+#'        \code{Experiment} (if \code{split_by_experiment = TRUE}) and labels
+#'        adjusted cosmetically.}}
 #'  }}
 #' @param path \code{\link{character}} object giving the path of an \bold{empty}
 #' template for a spreadsheet that can provide \code{x}.
@@ -160,8 +162,8 @@
 #' data points used for extrema calculations.
 #' @param generation_of_algorithm Either \code{2} or \code{1}
 #' (\code{\link{numeric}}; defaulting to \code{2}). See "Details".
-#' @param split_by_experiment A single \code{\link{logical}}, indicating whether or
-#' not calculations and plots will treat experimental series from different
+#' @param split_by_experiment A single \code{\link{logical}}, indicating whether
+#' or not calculations and plots will treat experimental series from different
 #' experiments separately (\code{TRUE}, default) or whether data from all
 #' experiments included is used for a single calculation/plot per experimental
 #' series (\code{FALSE}). While the former emphasizes reproducibility, the
@@ -176,11 +178,12 @@
 #' @param annotate_traces A \code{\link{logical}} idicating whether fluorescence
 #' traces should be annotated.
 #' @return \code{scramblase_assay_traces} and \code{scramblase_assay_plot} return 
-#' \code{\link{ggplot}} objects representing the raw fluorescence traces and a
-#' complete PPR plot, respectively. \code{scramblase_assay_input_template} 
-#' generates a tab-delimited \code{ASCII} file in the file system and invisibly
-#' returns the path name. \code{scramblase_assay_stats} assembles (and prints) 
-#' assay statistics as a \code{\link{data.frame}}.
+#' \code{\link[ggplot2]{ggplot}} objects representing the raw fluorescence
+#' traces and a complete PPR plot, respectively.
+#' \code{scramblase_assay_input_template} generates a tab-delimited \code{ASCII}
+#' file in the file system and invisibly returns the path name.
+#' \code{scramblase_assay_stats} assembles (and prints) assay statistics as a
+#' \code{\link{data.frame}}.
 #' @author Johannes Graumann
 #' @references Menon, I., Huber, T., Sanyal, S., Banerjee, S., Barre, P., Canis, 
 #' S., Warren, J.D., Hwa, J., Sakmar, T.P., and Menon, A.K. (2011)
@@ -194,7 +197,7 @@
 #' Goren, M.A., Finnemann, S.C., Graumann, J., Arshavsky, V.Y., Dittman, J.S.,
 #' Ernst, O.P., Menon, A.K. (2016). <DOI:10.1038/ncomms12832>
 #' @export
-#' @seealso \code{\link{parse_fluorimeter_output}} \code{\link{nlsLM}}
+#' @seealso \code{\link{parse_fluorimeter_output}} \code{\link[minpack.lm]{nlsLM}}
 #' @import ggplot2
 #' @examples
 #' library(magrittr)
