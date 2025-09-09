@@ -4,3 +4,4 @@
 ^inst/manuscript$
 ^\.Rprofile$
 ^README.md
+^.git-credentials
