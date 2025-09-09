@@ -3,6 +3,5 @@
 #' scramblase assays.
 #' @author Johannes Graumann
 #' @keywords package
-#' @docType package
 #' @name flippant
-NULL
+"_PACKAGE"

@@ -2,6 +2,7 @@
 % Please edit documentation in R/flippant-package.R
 \docType{package}
 \name{flippant}
+\alias{flippant-package}
 \alias{flippant}
 \title{flippant}
 \description{
